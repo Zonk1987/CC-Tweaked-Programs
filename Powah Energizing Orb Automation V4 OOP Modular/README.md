@@ -6,6 +6,9 @@ This script fully automates the crafting process for Powah's Energizing Orbs usi
 This edition features a completely modular architecture, strict mode scoping, localized global lookups, and EmmyLua type annotations.
 
 ## Hardware Setup
+
+![Ingame Setup](images/setup.png)
+
 1. Place an Advanced Computer.
 2. Connect an ME Pattern Provider (or similar) to a Chest/Buffer.
 3. Place the Chest directly next to the Computer (e.g., on the left side).
