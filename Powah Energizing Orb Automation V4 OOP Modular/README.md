@@ -18,8 +18,9 @@ Scroll to the very bottom of the `startup` file to configure the chest/buffer.
 Change `"left"` in `PowahSystem:new("left", "rezepte.json")` to the correct side (`"right"`, `"top"`, `"bottom"`, `"front"`, `"back"`) or the network name (e.g., `"extendedae:ingredient_buffer_0"`) if connected via modem.
 
 ## How to Add Recipes
-Create or edit the `rezepte.json` file in the same directory.
-Add your recipes in the following format:
+If the `rezepte.json` file does not exist when the script starts, it will **automatically generate** a template file with placeholder items and wait for you. You can then edit the file and press <kbd>R</kbd> to load your changes without restarting!
+
+Here is an example of a correctly configured recipe:
 
 ```json
 [

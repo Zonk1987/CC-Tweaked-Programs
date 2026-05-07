@@ -144,12 +144,11 @@ end
 
 --- Starts the system
 function PowahSystem:start()
-    if self.recipeManager:load() then
-        parallel_waitForAll(
-            function() self:mainLoop() end,
-            function() self:keyListener() end
-        )
-    end
+    self.recipeManager:load()
+    parallel_waitForAll(
+        function() self:mainLoop() end,
+        function() self:keyListener() end
+    )
 end
 
 return PowahSystem

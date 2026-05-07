@@ -27,8 +27,8 @@ Change "left" in `PowahSystem:new("left", "rezepte.json")` to the correct side
 (e.g., "extendedae:ingredient_buffer_0") if connected via modem.
 
 HOW TO ADD RECIPES:
-Create or edit the `rezepte.json` file in the same directory.
-Add your recipes in the following format:
+If `rezepte.json` does not exist, the script will auto-generate a template.
+Here is an example of a correctly configured recipe:
 [
     {
         "name": "Nitro Crystal",

@@ -31,7 +31,21 @@ end
 ---@return boolean success
 function RecipeManager:load()
     if not fs.exists(self.filename) then
-        self.dashboard:setError(self.filename .. " not found!")
+        local file = fs.open(self.filename, "w")
+        local template = [=[
+[
+    {
+        "name": "YOUR RECIPE NAME HERE",
+        "ingredients": {
+            "minecraft:dirt": 1,
+            "modname:itemname": 2
+        }
+    }
+]
+]=]
+        file.write(template)
+        file.close()
+        self.dashboard:setError("Generated " .. self.filename .. "! Please edit.")
         return false
     end
 
