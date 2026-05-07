@@ -1,0 +1,49 @@
+--[[
+================================================================================
+Powah Energizing Orb Automation (V5 Modular Edition)
+================================================================================
+
+DESCRIPTION:
+This script fully automates the crafting process for Powah's Energizing Orbs
+using Applied Energistics 2 (AE2) or Refined Storage. It supports multiple orbs
+(auto-scaling), auto-recovery on failures, and strict recipe validation.
+
+This edition features a completely modular architecture, strict mode scoping,
+localized global lookups, and EmmyLua type annotations.
+
+HARDWARE SETUP:
+1. Place an Advanced Computer.
+2. Connect an ME Pattern Provider (or similar) to a Chest/Buffer.
+3. Place the Chest directly next to the Computer (e.g., on the left side).
+4. Connect one or multiple Powah Energizing Orbs to the Computer using
+   Networking Cables and Wired Modems.
+5. (Optional but recommended) Set the Pattern Provider to "Blocking Mode".
+6. Use an Import Bus on the Energizing Orbs to extract the finished items.
+
+CONFIGURATION:
+Scroll to the very bottom of this file to configure the chest/buffer.
+Change "left" in `PowahSystem:new("left", "rezepte.json")` to the correct side
+("right", "top", "bottom", "front", "back") or the network name
+(e.g., "extendedae:ingredient_buffer_0") if connected via modem.
+
+HOW TO ADD RECIPES:
+Create or edit the `rezepte.json` file in the same directory.
+Add your recipes in the following format:
+[
+    {
+        "name": "Nitro Crystal",
+        "ingredients": {
+            "minecraft:redstone_block": 2,
+            "powah:blazing_crystal_block": 1,
+            "minecraft:nether_star": 1
+        }
+    }
+]
+- "name": The display name on the dashboard.
+- "ingredients": The exact registry names of the items and their amounts.
+Note: The Energizing Orb can hold a maximum of 6 items!
+
+HOTKEYS:
+- Press 'R' while the script is running to hot-reload recipes from JSON.
+================================================================================
+]] --
