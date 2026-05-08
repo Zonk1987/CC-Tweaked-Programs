@@ -11,6 +11,10 @@ using Applied Energistics 2 (AE2) or Refined Storage. It supports multiple orbs
 This edition features a completely modular architecture, strict mode scoping,
 localized global lookups, and EmmyLua type annotations.
 
+INSTALLATION:
+To install this system on a new computer, run:
+wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/main/Powah%20Energizing%20Orb%20Automation%20V4%20OOP%20Modular/install.lua
+
 HARDWARE SETUP:
 1. Place an Advanced Computer.
 2. Connect an ME Pattern Provider (or similar) to a Chest/Buffer.
