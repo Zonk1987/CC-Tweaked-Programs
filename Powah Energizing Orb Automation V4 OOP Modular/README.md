@@ -5,6 +5,12 @@ This script fully automates the crafting process for Powah's Energizing Orbs usi
 
 This edition features a completely modular architecture, strict mode scoping, localized global lookups, and EmmyLua type annotations.
 
+## Installation
+Run the following command in your ComputerCraft terminal to automatically download and install all required files:
+```bash
+wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/refs/heads/main/Powah%20Energizing%20Orb%20Automation%20V4%20OOP%20Modular/install.lua
+```
+
 ## Hardware Setup
 
 ![Ingame Setup](images/setup.png)

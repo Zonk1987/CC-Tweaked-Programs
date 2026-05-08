@@ -1,4 +1,4 @@
-local baseUrl = "https://raw.githubusercontent.com/YOUR_GITHUB_NAME/YOUR_REPOSITORY/main/"
+local baseUrl = "https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/refs/heads/main/Powah%20Energizing%20Orb%20Automation%20V4%20OOP%20Modular/"
 
 local files = {
     "Dashboard.lua",
