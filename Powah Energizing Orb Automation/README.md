@@ -8,7 +8,7 @@ This edition features a completely modular architecture, strict mode scoping, lo
 ## Installation
 Run the following command in your ComputerCraft terminal to automatically download and install all required files:
 ```bash
-wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/main/Powah%20Energizing%20Orb%20Automation%20V4%20OOP%20Modular/install.lua
+wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/main/Powah%20Energizing%20Orb%20Automation/install.lua
 ```
 
 ## Hardware Setup
