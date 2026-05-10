@@ -12,8 +12,8 @@ This edition features a completely modular architecture, strict mode scoping,
 localized global lookups, and EmmyLua type annotations.
 
 INSTALLATION:
-To install this system on a new computer, run:
-wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/main/Powah%20Energizing%20Orb%20Automation/install.lua
+To install this system on a new computer, run the universal installer:
+pastebin run vYK0cPkU
 
 
 HARDWARE SETUP:
@@ -53,21 +53,15 @@ HOTKEYS:
 ================================================================================
 ]] --
 
--- STRICT MODE: Prevent accidental global variables
-setmetatable(_G, {
-    __newindex = function(_, n)
-        error("Attempt to write to undeclared global variable '" .. tostring(n) .. "'\n(Did you forget 'local'?)", 2)
-    end,
-    __index = function(_, n)
-        -- In Lua 5.1/5.2 _G is accessed by some native CC functions.
-        -- We return rawget if it exists to be safe, but mostly we error on missing.
-        local v = rawget(_G, n)
-        if v ~= nil then return v end
-        -- NOTE: strict mode throws errors for math/string/etc if not found.
-        -- In CC, standard libs are in _G, so rawget handles them.
-        -- But attempting to read a typo will correctly throw.
-        error("Attempt to read undeclared global variable '" .. tostring(n) .. "'", 2)
-    end,
+
+
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
 })
 
 -- Load the main system

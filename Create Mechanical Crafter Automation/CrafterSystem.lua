@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 local Dashboard = require("Dashboard")
 local RecipeManager = require("RecipeManager")
 local Chest = require("Chest")
@@ -217,3 +225,4 @@ function CrafterSystem:start()
 end
 
 return CrafterSystem
+

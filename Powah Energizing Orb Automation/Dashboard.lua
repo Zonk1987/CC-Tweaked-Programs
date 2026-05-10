@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 -- Localize globals
 local setmetatable = setmetatable
 local print = print
@@ -58,40 +66,73 @@ function Dashboard:setLastCraft(recipeName)
     self.lastCraft = recipeName
 end
 
+local function setColor(color)
+    if term.isColor() then
+        term.setTextColor(color)
+    end
+end
+
 --- Draws the dashboard to the terminal
 function Dashboard:draw()
+    local oldColor = term.getTextColor()
     term.clear()
     term.setCursorPos(1, 1)
+
+    setColor(colors.cyan)
     print("===================================")
     print("   Powah System v5.0 (Modular)")
     print("===================================")
 
     local orbCount = #{ peripheral.find("powah:energizing_orb") }
+    setColor(colors.white)
     print("Connected Orbs: " .. orbCount)
-    print("Status:      " .. self.statusMsg)
+
+    term.write("Status:      ")
+    if self.statusMsg:find("Crafting") or self.statusMsg:find("Filling") or self.statusMsg:find("Processing") then
+        setColor(colors.lime)
+    elseif self.statusMsg:find("Waiting") or self.statusMsg:find("Starting") then
+        setColor(colors.yellow)
+    else
+        setColor(colors.white)
+    end
+    print(self.statusMsg)
+
+    setColor(colors.white)
     print("Last Job:    " .. self.lastCraft)
     if self.recipeCount > 0 then
         print("Recipes:     " .. self.recipeCount)
     end
+
+    setColor(colors.cyan)
     print("-----------------------------------")
 
     local jobsFound = false
     if self.activeJobs then
         for name, job in pairs(self.activeJobs) do
-            print("-> " .. job.recipeName .. " (" .. name .. ")")
+            setColor(colors.lime)
+            term.write("-> ")
+            setColor(colors.white)
+            print(job.recipeName .. " (" .. name .. ")")
             jobsFound = true
         end
     end
     if not jobsFound then
+        setColor(colors.lightGray)
         print("No active crafting processes.")
     end
+
+    setColor(colors.cyan)
     print("-----------------------------------")
 
     if self.errorMsg ~= "" then
+        setColor(colors.red)
         print("ERROR: " .. self.errorMsg)
     else
+        setColor(colors.lightGray)
         print("[Press 'R' to reload JSON]")
     end
+
+    setColor(oldColor)
 end
 
 return Dashboard

@@ -1,53 +1,104 @@
-# Powah Energizing Orb Automation (V5 Modular Edition)
+# Powah Energizing Orb Automation (CC:Tweaked)
 
-## Description
-This script fully automates the crafting process for Powah's Energizing Orbs using Applied Energistics 2 (AE2) or Refined Storage. It supports multiple orbs (auto-scaling), auto-recovery on failures, and strict recipe validation.
+> Fully automated, production-ready ComputerCraft system for the **Energizing Orbs** from the **Powah** mod. Supports multiple orbs in parallel and seamless integration with AE2 / Refined Storage in **Blocking Mode**.
 
-This edition features a completely modular architecture, strict mode scoping, localized global lookups, and EmmyLua type annotations.
+---
 
-## Installation
-Run the following command in your ComputerCraft terminal to automatically download and install all required files:
-```bash
-wget run https://raw.githubusercontent.com/Zonk1987/CC-Tweaked/main/Powah%20Energizing%20Orb%20Automation/install.lua
-```
+## ✨ Features
 
-## Hardware Setup
+- **Multi-Orb Support** — Automatically discovers all connected Energizing Orbs and crafts in parallel across all of them.
+- **AE2 / RS Blocking Mode Ready** — Point your Pattern Provider into the buffer chest. The system processes one recipe at a time, perfectly.
+- **Strict Recipe Validation** — Validates all recipes on startup. Detects missing names, wrong item counts, and recipes exceeding the 6-item orb limit.
+- **Auto-Recovery** — If an orb times out (60 seconds), the system automatically pulls items back to the buffer chest and resets.
+- **Auto-Template Generation** — If `rezepte.json` does not exist, the system creates a ready-to-edit template automatically.
+- **Live Dashboard** — Color-coded UI showing connected orb count, current status, active jobs per orb, and last crafted item.
+- **Hot-Reload** — Press `R` to reload your recipe file without restarting the script.
+
+---
+
+## 🛠️ Hardware Setup
 
 ![Ingame Setup](images/setup.png)
 
-1. Place an Advanced Computer.
-2. Connect an ME Pattern Provider (or similar) to a Chest/Buffer.
-3. Place the Chest directly next to the Computer (e.g., on the left side).
-4. Connect one or multiple Powah Energizing Orbs to the Computer using Networking Cables and Wired Modems.
-5. *(Optional but recommended)* Set the Pattern Provider to "Blocking Mode".
-6. Use an Import Bus on the Energizing Orbs to extract the finished items.
+1. **Computer** — Place an **Advanced Computer** (required for colored display).
+2. **Buffer Chest**
+   - Place a Chest or Barrel directly next to the Computer (e.g. on the **left** side).
+   - The side must match the value set in `startup` (default: `"left"`).
+3. **Energizing Orbs**
+   - Attach a **Wired Modem** to each Energizing Orb.
+   - Connect all modems to the Computer via **Networking Cables**.
+   - Right-click every modem until the **red ring** lights up.
+4. **AE2 / RS (Optional)**
+   - Place an ME Pattern Provider or RS Crafter facing the Buffer Chest. Enable **Blocking Mode**.
+   - Use an **Import Bus** (AE2) or **Importer** (RS) on the Energizing Orbs to extract finished items.
 
-## Configuration
-Scroll to the very bottom of the `startup` file to configure the chest/buffer.
-Change `"left"` in `PowahSystem:new("left", "rezepte.json")` to the correct side (`"right"`, `"top"`, `"bottom"`, `"front"`, `"back"`) or the network name (e.g., `"extendedae:ingredient_buffer_0"`) if connected via modem.
+---
 
-## How to Add Recipes
-If the `rezepte.json` file does not exist when the script starts, it will **automatically generate** a template file with placeholder items and wait for you. You can then edit the file and press <kbd>R</kbd> to load your changes without restarting!
+## 🚀 Installation
 
-Here is an example of a correctly configured recipe:
+Run this single command on your ComputerCraft terminal:
+```
+pastebin run vYK0cPkU
+```
+Select **Powah Energizing Orb Automation** from the menu. The installer downloads all files and reboots automatically.
+
+---
+
+## ⚙️ Configuration
+
+Open `startup` on the computer (`edit startup`) and scroll to the bottom. Change `"left"` to the correct side or peripheral name of your buffer chest:
+
+```lua
+local system = PowahSystem:new("left", "rezepte.json")
+```
+
+**Valid side values:** `"top"`, `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`
+
+**Modem network name (if connected via cable):** Use `peripheral.getNames()` in the Lua prompt to find the exact name (e.g. `"extendedae:ingredient_buffer_0"`).
+
+---
+
+## 📖 How to Add Recipes
+
+Edit `rezepte.json` on the computer (`edit rezepte.json`). Add one entry per recipe:
 
 ```json
 [
     {
         "name": "Nitro Crystal",
         "ingredients": {
+            "minecraft:nether_star": 1,
             "minecraft:redstone_block": 2,
-            "powah:blazing_crystal_block": 1,
-            "minecraft:nether_star": 1
+            "powah:blazing_crystal_block": 1
         }
     }
 ]
 ```
 
-- **name**: The display name on the dashboard.
-- **ingredients**: The exact registry names of the items and their amounts.
+- **`name`** — Display name shown on the dashboard.
+- **`ingredients`** — Exact item registry names and their required amounts.
 
-> **Note**: The Energizing Orb can hold a maximum of 6 items!
+> ⚠️ The Energizing Orb holds a **maximum of 6 items** across all ingredients.
 
-## Hotkeys
-- Press <kbd>R</kbd> while the script is running to hot-reload recipes from JSON.
+**To find the exact item name:** Use `lua peripheral.getItemDetail("left", 1)` in the Lua prompt. The `name` field in the output is the registry name.
+
+After editing, press **`R`** in the dashboard to reload without restarting.
+
+---
+
+## ⌨️ Hotkeys
+
+| Key | Action |
+|---|---|
+| `R` | Hot-reload `rezepte.json` without restarting |
+
+---
+
+## 🛑 Troubleshooting
+
+| Error | Cause & Fix |
+|---|---|
+| `Chest missing!` | The buffer chest side is wrong or the chest was removed. Check the `"left"` value in `startup`. |
+| `Transfer Error! Starting Recovery...` | Items could not be pushed into the orb. Check modem connections and that the orb is empty. |
+| `Timeout in <orb>. Recovering...` | The orb did not finish within 60 seconds. Check if the orb has power. Items are returned to the chest automatically. |
+| `Generated rezepte.json! Please edit.` | First-time setup. Edit `rezepte.json` with your real recipes, then press `R`. |

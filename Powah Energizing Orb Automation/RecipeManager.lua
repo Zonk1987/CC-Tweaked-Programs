@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 -- Localize globals
 local setmetatable = setmetatable
 local type = type
@@ -10,14 +18,14 @@ local textutils = textutils
 
 ---@class RecipeManager
 ---@field filename string
----@field dashboard Dashboard
+---@field dashboard any
 ---@field recipes table[]
 local RecipeManager = {}
 RecipeManager.__index = RecipeManager
 
 --- Creates a new RecipeManager instance
 ---@param filename string
----@param dashboard Dashboard
+---@param dashboard any
 ---@return RecipeManager
 function RecipeManager:new(filename, dashboard)
     local instance = setmetatable({}, self)

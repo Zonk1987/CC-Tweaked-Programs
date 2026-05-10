@@ -1,0 +1,14 @@
+{
+  "runtime.version": "Lua 5.2",
+  "diagnostics.globals": [
+    "term", "colors", "colours", "keys", "http", "fs", "shell",
+    "peripheral", "redstone", "parallel", "textutils", "read",
+    "sleep", "write", "printError"
+  ],
+  "diagnostics.disable": [
+    "duplicate-set-field",
+    "duplicate-doc-field",
+    "undefined-field",
+    "undefined-doc-class"
+  ]
+}

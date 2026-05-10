@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 -- Localize globals
 local setmetatable = setmetatable
 local print = print
@@ -9,6 +17,9 @@ local peripheral = peripheral
 ---@field errorMsg string
 ---@field lastCraft string
 ---@field recipeCount number
+---@field crafterCount number
+---@field suppressDraw boolean
+---@field missingData table|nil
 local Dashboard = {}
 Dashboard.__index = Dashboard
 
@@ -127,3 +138,4 @@ function Dashboard:draw()
 end
 
 return Dashboard
+

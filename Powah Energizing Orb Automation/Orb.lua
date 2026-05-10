@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 local InventoryComponent = require("InventoryComponent")
 
 -- Localize globals
@@ -13,8 +21,8 @@ Orb.__index = Orb
 ---@return Orb
 function Orb:new(name)
     local instance = InventoryComponent:new(name)
-    setmetatable(instance, self)
-    return instance
+    ---@cast instance Orb
+    return setmetatable(instance, self)
 end
 
 --- Recovers items back to a chest

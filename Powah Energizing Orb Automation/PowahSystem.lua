@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 local Dashboard = require("Dashboard")
 local RecipeManager = require("RecipeManager")
 local Chest = require("Chest")
@@ -15,8 +23,8 @@ local parallel_waitForAll = parallel.waitForAll
 local keys_r = keys.r
 
 ---@class PowahSystem
----@field chest Chest
----@field dashboard Dashboard
+---@field chest any
+---@field dashboard any
 ---@field recipeManager RecipeManager
 ---@field activeJobs table<string, table>
 local PowahSystem = {}
@@ -36,7 +44,7 @@ function PowahSystem:new(chestName, recipeFile)
 end
 
 --- Finds an orb without a current job
----@return Orb|nil
+---@return any|nil
 function PowahSystem:getFreeOrb()
     local allOrbsNames = { peripheral.find("powah:energizing_orb") }
     for _, orbPeripheral in ipairs(allOrbsNames) do

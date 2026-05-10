@@ -1,3 +1,11 @@
+-- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 -- Localize globals
 local setmetatable = setmetatable
 local peripheral = peripheral
@@ -23,13 +31,13 @@ end
 function CrafterGrid:runInteractiveCalibration()
     term.clear()
     term.setCursorPos(1, 1)
-    print("=== ERSTEINRICHTUNG: CRAFTER KALIBRIERUNG ===")
-    print("1. Bitte verkable alle Crafter mit Modems.")
-    print("2. Lasse alle roten Ringe an den Modems AUS.")
-    print("3. Klicke nun nacheinander auf die Modems, um sie")
-    print("   einzuschalten (von links nach rechts, oben nach unten).")
+    print("=== INITIAL SETUP: CRAFTER CALIBRATION ===")
+    print("1. Connect all Mechanical Crafters with Wired Modems.")
+    print("2. Make sure all modem red rings are OFF initially.")
+    print("3. Now click the modems ONE BY ONE to turn them on,")
+    print("   in order: left-to-right, top-to-bottom.")
     print("")
-    print("[Druecke ENTER wenn du alle Modems eingeschaltet hast]")
+    print("[Press ENTER when all modems are turned on]")
     print("-----------------------------------------------------")
 
     self.crafters = {}
@@ -41,14 +49,14 @@ function CrafterGrid:runInteractiveCalibration()
             if peripheral.getType(param1) == "create:mechanical_crafter" then
                 -- Add to mapping
                 self.crafters[#self.crafters + 1] = param1
-                print("Crafter #" .. #self.crafters .. " verbunden: " .. param1)
+                print("Crafter #" .. #self.crafters .. " connected: " .. param1)
             end
         elseif event == "key" then
             if param1 == keys.enter then
                 if #self.crafters > 0 then
                     break
                 else
-                    print("Fehler: Du musst mindestens ein Modem einschalten!")
+                    print("Error: You must turn on at least one modem!")
                 end
             end
         end
@@ -61,7 +69,7 @@ function CrafterGrid:runInteractiveCalibration()
 
     term.clear()
     term.setCursorPos(1, 1)
-    print("Kalibrierung erfolgreich gespeichert!")
+    print("Calibration saved successfully!")
     os.sleep(1.5)
 end
 

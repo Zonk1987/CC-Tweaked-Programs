@@ -7,20 +7,20 @@ local args = { ... }
 local recipeName = args[1]
 
 if not recipeName then
-    print("Bitte gib einen Namen fuer das Rezept ein:")
+    print("Enter a name for the recipe:")
     recipeName = io.read()
 end
 
-print("Bitte gib die Breite deines Rechtecks an (z.B. 9):")
+print("Enter the width of your crafter grid (e.g. 9):")
 local width = tonumber(io.read())
 if not width or width <= 0 then
-    print("Ungueltige Breite!")
+    print("Invalid width!")
     return
 end
 
 if not fs.exists("crafter_mapping.json") then
-    print("Fehler: crafter_mapping.json nicht gefunden.")
-    print("Bitte starte zuerst startup.lua um dein Feld zu kalibrieren!")
+    print("Error: crafter_mapping.json not found.")
+    print("Please run startup.lua first to calibrate your grid!")
     return
 end
 
@@ -29,11 +29,11 @@ local mappingData = textutils.unserializeJSON(mappingFile.readAll())
 mappingFile.close()
 
 if not mappingData or #mappingData == 0 then
-    print("Fehler beim Lesen der Kalibrierung.")
+    print("Error reading calibration data.")
     return
 end
 
-print("Scanne Crafter...")
+print("Scanning crafters...")
 
 local keys = {}
 local patternRows = {}
@@ -105,5 +105,5 @@ local file = fs.open(recipeFilename, "w")
 file.write(textutils.serializeJSON(existingRecipes))
 file.close()
 
-print("Erfolgreich! Rezept '" .. recipeName .. "' wurde gespeichert.")
-print("Du kannst die Items nun wieder aus den Craftern nehmen.")
+print("Success! Recipe '" .. recipeName .. "' was saved.")
+print("You may now remove the items from the crafters.")
