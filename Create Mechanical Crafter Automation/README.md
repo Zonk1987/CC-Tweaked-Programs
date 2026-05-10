@@ -25,7 +25,7 @@
 3. **Networking**
    - Attach a **Wired Modem** to **every single** Mechanical Crafter.
    - Connect all modems to the Computer with **Networking Cables**.
-   - Right-click every modem until the **red ring** lights up.
+   - Right-click every modem until the **red ring** lights up. **⚠️ IMPORTANT:** You MUST activate the modems in **reading order** (top-left → top-right, then row by row) so the system understands your grid layout.
 4. **Buffer Chest / Barrel**
    - Place a Chest or Barrel **adjacent** to the Computer.
    - Attach a **Wired Modem** to it and connect it to the same cable network.
