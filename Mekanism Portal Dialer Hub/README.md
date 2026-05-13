@@ -18,6 +18,8 @@
 
 ## 🛠️ Hardware Setup
 
+![Ingame Setup](images/setup.png)
+
 1. **Advanced Computer** — Required for high-resolution graphics and double-buffering.
 2. **Advanced Monitor**
    - Recommended size: **4x3 blocks** for the best button layout.
