@@ -77,36 +77,95 @@ function RecipeManager:load()
     return false
 end
 
+--- Helper: Manually formats JSON for readability
+local function formatJSON(raw)
+    local out = ""
+    local indent = 0
+    local quoted = false
+    for i = 1, #raw do
+        local c = raw:sub(i, i)
+        if c == '"' and raw:sub(i-1, i-1) ~= "\\" then quoted = not quoted end
+        
+        if not quoted then
+            if c == "{" or c == "[" then
+                indent = indent + 1
+                out = out .. c .. "\n" .. string.rep("    ", indent)
+            elseif c == "}" or c == "]" then
+                indent = indent - 1
+                out = out .. "\n" .. string.rep("    ", indent) .. c
+            elseif c == "," then
+                out = out .. c .. "\n" .. string.rep("    ", indent)
+            elseif c == ":" then
+                out = out .. ": "
+            else
+                out = out .. c
+            end
+        else
+            out = out .. c
+        end
+    end
+    return out
+end
+
+--- Saves current recipes to JSON
+function RecipeManager:save()
+    local file = fs.open(self.filename, "w")
+    local raw = textutils.serialiseJSON(self.recipes)
+    file.write(formatJSON(raw))
+    file.close()
+    self.dashboard.errorMsg = ""
+    self.dashboard:setRecipeCount(#self.recipes)
+end
+
+--- Adds a recipe to the list and saves it
+---@param recipe table
+function RecipeManager:addRecipe(recipe)
+    -- Check if recipe with same name already exists
+    for i, r in ipairs(self.recipes) do
+        if r.name == recipe.name then
+            self.recipes[i] = recipe -- Update
+            self:save()
+            return
+        end
+    end
+    
+    table_insert(self.recipes, recipe)
+    self:save()
+end
+
 --- Validates a raw recipe table
 ---@param rawRecipes table[]
 ---@return table[]|nil
 function RecipeManager:validate(rawRecipes)
     local validRecipes = {}
     for i, recipe in ipairs(rawRecipes) do
-        if type(recipe.name) ~= "string" or recipe.name == "" then
-            self.dashboard:setError("Recipe #" .. i .. ": Missing name!")
-            return nil
-        end
-        if type(recipe.ingredients) ~= "table" then
-            self.dashboard:setError("Recipe '" .. recipe.name .. "': Missing ingredients!")
-            return nil
-        end
-
-        local totalItems = 0
-        for item, count in pairs(recipe.ingredients) do
-            if type(count) ~= "number" or count <= 0 then
-                self.dashboard:setError("Recipe '" .. recipe.name .. "': Ingredient " .. item .. " has amount <= 0")
+        -- Skip the placeholder template
+        if recipe.name ~= "YOUR RECIPE NAME HERE" then
+            if type(recipe.name) ~= "string" or recipe.name == "" then
+                self.dashboard:setError("Recipe #" .. i .. ": Missing name!")
                 return nil
             end
-            totalItems = totalItems + count
-        end
+            if type(recipe.ingredients) ~= "table" then
+                self.dashboard:setError("Recipe '" .. recipe.name .. "': Missing ingredients!")
+                return nil
+            end
 
-        if totalItems > 6 then
-            self.dashboard:setError("Recipe '" .. recipe.name .. "': Too large! Max 6 items!")
-            return nil
-        end
+            local totalItems = 0
+            for item, count in pairs(recipe.ingredients) do
+                if type(count) ~= "number" or count <= 0 then
+                    self.dashboard:setError("Recipe '" .. recipe.name .. "': Ingredient " .. item .. " has amount <= 0")
+                    return nil
+                end
+                totalItems = totalItems + count
+            end
 
-        table_insert(validRecipes, recipe)
+            if totalItems > 6 then
+                self.dashboard:setError("Recipe '" .. recipe.name .. "': Too large! Max 6 items!")
+                return nil
+            end
+
+            table_insert(validRecipes, recipe)
+        end
     end
     return validRecipes
 end
@@ -143,7 +202,7 @@ end
 ---@return table|nil
 function RecipeManager:findReadyRecipe(chest)
     local chestItems = chest:list()
-    if not next(chestItems) then return nil end
+    if not chestItems or not next(chestItems) then return nil end
 
     for _, recipe in ipairs(self.recipes) do
         if self:isRecipeComplete(recipe, chestItems) then

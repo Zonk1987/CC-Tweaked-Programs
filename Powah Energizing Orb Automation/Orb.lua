@@ -6,32 +6,51 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
-local InventoryComponent = require("InventoryComponent")
 
 -- Localize globals
 local setmetatable = setmetatable
+local peripheral = peripheral
 local pairs = pairs
 
----@class Orb : InventoryComponent
-local Orb = setmetatable({}, { __index = InventoryComponent })
+---@class Orb
+---@field name string
+---@field native any
+local Orb = {}
 Orb.__index = Orb
 
---- Creates a new Orb
+--- Creates a new Orb instance
 ---@param name string
 ---@return Orb
 function Orb:new(name)
-    local instance = InventoryComponent:new(name)
-    ---@cast instance Orb
-    return setmetatable(instance, self)
+    local instance = setmetatable({}, self)
+    instance.name = name
+    instance.native = peripheral.wrap(name)
+    return instance
 end
 
---- Recovers items back to a chest
----@param targetChestName string
-function Orb:recover(targetChestName)
-    local p = self:getPeripheral()
-    if not p then return end
-    for slot, item in pairs(p.list()) do
-        p.pushItems(targetChestName, slot)
+--- Checks if the orb is connected
+---@return boolean
+function Orb:isPresent()
+    self.native = peripheral.wrap(self.name)
+    return self.native ~= nil
+end
+
+--- Checks if the orb has items
+---@return boolean
+function Orb:isEmpty()
+    if not self:isPresent() then return true end
+    local list = self.native.list()
+    for _ in pairs(list) do return false end
+    return true
+end
+
+--- Recovers items from the orb back to the chest
+---@param chestName string
+function Orb:recover(chestName)
+    if not self:isPresent() then return end
+    local list = self.native.list()
+    for slot, _ in pairs(list) do
+        self.native.pushItems(chestName, slot)
     end
 end
 

@@ -6,19 +6,21 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
+
 -- Localize globals
 local setmetatable = setmetatable
-local print = print
-local pairs = pairs
 local term = term
-local peripheral = peripheral
+local colors = colors
+local pairs = pairs
+local string = string
+local math = math
 
 ---@class Dashboard
 ---@field statusMsg string
 ---@field errorMsg string
 ---@field lastCraft string
----@field activeJobs table<string, table>
 ---@field recipeCount number
+---@field activeJobs table
 local Dashboard = {}
 Dashboard.__index = Dashboard
 
@@ -26,67 +28,68 @@ Dashboard.__index = Dashboard
 ---@return Dashboard
 function Dashboard:new()
     local instance = setmetatable({}, self)
-    instance.statusMsg = "Starting System..."
+    instance.statusMsg = "Starting..."
     instance.errorMsg = ""
-    instance.lastCraft = "-"
-    instance.activeJobs = {}
+    instance.lastCraft = "None"
     instance.recipeCount = 0
+    instance.activeJobs = {}
+    instance.suppressDraw = false
     return instance
 end
 
---- Updates the list of active jobs
----@param jobs table<string, table>
-function Dashboard:updateJobs(jobs)
-    self.activeJobs = jobs
-end
-
---- Sets the recipe count
----@param count number
-function Dashboard:setRecipeCount(count)
-    self.recipeCount = count
-end
-
---- Sets the status message and redraws
+--- Updates the current status message
 ---@param msg string
 function Dashboard:setStatus(msg)
     self.statusMsg = msg
     self:draw()
 end
 
---- Sets the error message and redraws
+--- Updates the last crafted item name
+---@param msg string
+function Dashboard:setLastCraft(msg)
+    self.lastCraft = msg
+end
+
+--- Updates the number of loaded recipes
+---@param count number
+function Dashboard:setRecipeCount(count)
+    self.recipeCount = count
+end
+
+--- Updates the error message
 ---@param msg string
 function Dashboard:setError(msg)
     self.errorMsg = msg
     self:draw()
 end
 
---- Sets the last crafted recipe
----@param recipeName string
-function Dashboard:setLastCraft(recipeName)
-    self.lastCraft = recipeName
+--- Updates the active jobs table
+---@param jobs table
+function Dashboard:updateJobs(jobs)
+    self.activeJobs = jobs
+    self:draw()
 end
 
+--- Internal helper for color drawing
 local function setColor(color)
-    if term.isColor() then
-        term.setTextColor(color)
-    end
+    term.setTextColor(color)
 end
 
---- Draws the dashboard to the terminal
+--- Draws the full dashboard UI
 function Dashboard:draw()
+    if self.suppressDraw then return end
     local oldColor = term.getTextColor()
+    local w, h = term.getSize()
+    
     term.clear()
     term.setCursorPos(1, 1)
-
+    
+    setColor(colors.yellow)
+    print("=== Powah Energizing Automation ===")
     setColor(colors.cyan)
-    print("===================================")
-    print("   Powah System v5.0 (Modular)")
-    print("===================================")
-
-    local orbCount = #{ peripheral.find("powah:energizing_orb") }
+    print("-----------------------------------")
+    
     setColor(colors.white)
-    print("Connected Orbs: " .. orbCount)
-
     term.write("Status:      ")
     if self.statusMsg:find("Crafting") or self.statusMsg:find("Filling") or self.statusMsg:find("Processing") then
         setColor(colors.lime)
@@ -129,7 +132,7 @@ function Dashboard:draw()
         print("ERROR: " .. self.errorMsg)
     else
         setColor(colors.lightGray)
-        print("[Press 'R' to reload JSON]")
+        print("[R] Reload  [I] Import AE2")
     end
 
     setColor(oldColor)

@@ -6,67 +6,70 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
-local InventoryComponent = require("InventoryComponent")
 
 -- Localize globals
 local setmetatable = setmetatable
+local peripheral = peripheral
 local pairs = pairs
-local next = next
-local os_epoch = os.epoch
-local os_sleep = os.sleep
 
----@class Chest : InventoryComponent
-local Chest = setmetatable({}, { __index = InventoryComponent })
+---@class Chest
+---@field name string
+---@field native any
+local Chest = {}
 Chest.__index = Chest
 
---- Creates a new Chest
+--- Creates a new Chest instance
 ---@param name string
 ---@return Chest
 function Chest:new(name)
-    local instance = InventoryComponent:new(name)
-    setmetatable(instance, self)
-    ---@cast instance Chest
+    local instance = setmetatable({}, self)
+    instance.name = name
+    instance.native = peripheral.wrap(name)
     return instance
 end
 
---- Transfers recipe ingredients to an orb
+--- Checks if the chest is connected
+---@return boolean
+function Chest:isPresent()
+    self.native = peripheral.wrap(self.name)
+    return self.native ~= nil
+end
+
+--- Lists items in the chest
+---@return table|nil
+function Chest:list()
+    if not self:isPresent() then return nil end
+    return self.native.list()
+end
+
+--- Transfers recipe items to an orb
 ---@param recipe table
 ---@param orbName string
 ---@return boolean success
 function Chest:transferRecipe(recipe, orbName)
-    local itemsToTransfer = {}
-    for k, v in pairs(recipe.ingredients) do
-        itemsToTransfer[k] = v
-    end
-
-    local p = self:getPeripheral()
-    if not p then return false end
-
-    local timeoutStart = os_epoch("utc")
-
-    while next(itemsToTransfer) ~= nil do
-        if not self:isPresent() then return false end
-
-        for slot, item in pairs(self:list()) do
-            if itemsToTransfer[item.name] ~= nil then
-                local needed = itemsToTransfer[item.name]
-                local transferred = p.pushItems(orbName, slot, needed)
-
-                local itemsLeft = needed - transferred
-                if itemsLeft <= 0 then
-                    itemsToTransfer[item.name] = nil
-                else
-                    itemsToTransfer[item.name] = itemsLeft
+    if not self:isPresent() then return false end
+    
+    local success = true
+    for itemName, count in pairs(recipe.ingredients) do
+        local transferred = 0
+        local items = self.native.list()
+        
+        for slot, item in pairs(items) do
+            if item.name == itemName then
+                local toMove = count - transferred
+                if toMove > 0 then
+                    local moved = self.native.pushItems(orbName, slot, toMove)
+                    transferred = transferred + moved
                 end
             end
         end
-
-        if (os_epoch("utc") - timeoutStart) > 5000 then
-            return false
+        
+        if transferred < count then
+            success = false
         end
-        os_sleep(0.1)
     end
-    return true
+    
+    return success
 end
 
 return Chest

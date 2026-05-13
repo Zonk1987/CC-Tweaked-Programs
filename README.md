@@ -1,22 +1,47 @@
 # CC-Tweaked Automations
 
-> A collection of professional, production-ready ComputerCraft / CC:Tweaked automation scripts for Minecraft mods. All scripts feature a live terminal dashboard, strict code quality standards, and seamless integration with **AE2** and **Refined Storage** via **Blocking Mode**.
+> A collection of professional, production-ready ComputerCraft / CC:Tweaked automation scripts. All systems feature a live terminal dashboard, strict code quality standards, and seamless integration with **AE2** and **Refined Storage**.
+
+---
+
+## 🚀 Universal Installer
+
+Install **any** program with a single command on your ComputerCraft terminal:
+
+```bash
+pastebin run vYK0cPkU
+```
+
+An interactive menu will appear, allowing you to select and install any system listed below.
 
 ---
 
 ## 📂 Projects
 
-### ⚙️ [Create Mechanical Crafter Automation](./Create%20Mechanical%20Crafter%20Automation/)
-Fully automates the **Mechanical Crafters** from the **Create** mod. Supports in-game recipe recording, interactive grid calibration, jam detection, and AE2/RS Blocking Mode.
-
-[👉 Setup Guide](./Create%20Mechanical%20Crafter%20Automation/README.md)
-
----
-
 ### ⚡ [Powah Energizing Orb Automation](./Powah%20Energizing%20Orb%20Automation/)
-Fully automates the **Energizing Orbs** from the **Powah** mod. Supports multiple orbs in parallel, auto-recovery on failures, and AE2/RS Blocking Mode.
+*State-of-the-art energy crafting.*
+*   **AE2 ME Bridge Support**: Direct pattern import via GUI (Key `I`).
+- **Bulk Processing**: Intelligent multiplier logic for large recipes.
+*   **Multi-Orb Scaling**: Automatic discovery and parallel crafting across all connected orbs.
+*   **Modpack Ready**: Smart filters (Key `F`) for custom modded recipes.
 
-[👉 Setup Guide](./Powah%20Energizing%20Orb%20Automation/README.md)
+### 🌌 [Mekanism Portal System](./MekanismPortalDailerHub/)
+*Effortless travel through the stars.*
+*   **Central Hub**: Touch-screen monitor support for dialing unlimited destinations.
+*   **Recall Sender**: Remote triggers to dial back to the hub from any location.
+*   **Interactive Setup**: Wizard-based configuration for easy deployment.
+
+### 🛠️ [Developer Suite](./CC Developer Suite/)
+*The power-user's toolkit.*
+*   **Superior Inspector**: Interactive method exploration for any peripheral.
+*   **Item Browser**: Deep-dive into inventory NBT data and registry names.
+*   **Event Sniffer**: Real-time monitoring of all OS events.
+
+### ⚙️ [Create Mechanical Crafter](./Create%20Mechanical%20Crafter%20Automation/)
+*Fully automated large-grid crafting.*
+*   **Visual Calibration**: Interactive grid setup.
+*   **Recipe Recording**: Save recipes directly from the crafter.
+*   **Jam Detection**: Auto-recovery and inventory balancing.
 
 ---
 
@@ -24,24 +49,11 @@ Fully automates the **Energizing Orbs** from the **Powah** mod. Supports multipl
 
 | Requirement | Notes |
 |---|---|
-| **CC:Tweaked** | Required for all scripts |
-| **Advanced Computer** | Needed for colored dashboards |
-| **Wired Modems** | For connecting machines and inventories |
-| **Networking Cables** | To build the peripheral network |
-| **AE2 or RS** | Optional, but recommended for full automation |
+| **Advanced Computer** | Essential for colored dashboards |
+| **Wired Modems** | For machine networking |
+| **ME Bridge** | Optional, for advanced AE2 features |
+| **AE2 or RS** | For full automation (Blocking Mode recommended) |
 
 ---
 
-## 🚀 Universal Installer
-
-All programs are installed with a **single command** on any ComputerCraft computer:
-
-```
-pastebin run vYK0cPkU
-```
-
-An interactive menu appears, listing all available programs. Select one and the installer automatically downloads all required files and reboots into the system.
-
----
-
-*Feel free to use, modify, and improve these scripts for your own modded Minecraft worlds!*
+*Developed with ❤️ for Advanced Agentic Coding. Feel free to use and modify for your modded worlds!*
