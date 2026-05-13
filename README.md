@@ -25,13 +25,18 @@ An interactive menu will appear, allowing you to select and install any system l
 *   **Multi-Orb Scaling**: Automatic discovery and parallel crafting across all connected orbs.
 *   **Modpack Ready**: Smart filters (Key `F`) for custom modded recipes.
 
-### 🌌 [Mekanism Portal System](./MekanismPortalDailerHub/)
+### 🌌 [Mekanism Portal Dialer Hub](./Mekanism%20Portal%20Dialer%20Hub/)
 *Effortless travel through the stars.*
 *   **Central Hub**: Touch-screen monitor support for dialing unlimited destinations.
-*   **Recall Sender**: Remote triggers to dial back to the hub from any location.
 *   **Interactive Setup**: Wizard-based configuration for easy deployment.
 
-### 🛠️ [Developer Suite](./CC Developer Suite/)
+### 📡 [Mekanism Portal Recall Sender](./Mekanism%20Portal%20Dialer%20Recall%20Sender/)
+*Remote triggers for the Hub system.*
+*   **Wireless Triggering**: Send recall commands to the Hub from anywhere in the world.
+*   **Plug & Play**: Simple setup wizard to link the sender to a specific destination name.
+*   **Redstone Integration**: Trigger recalls via buttons, pressure plates, or any redstone signal.
+
+### 🛠️ [Developer Suite](./CC%20Developer%20Suite/)
 *The power-user's toolkit.*
 *   **Superior Inspector**: Interactive method exploration for any peripheral.
 *   **Item Browser**: Deep-dive into inventory NBT data and registry names.
