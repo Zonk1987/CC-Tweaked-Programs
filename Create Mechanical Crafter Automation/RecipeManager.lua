@@ -8,6 +8,7 @@ local _ENV = setmetatable({}, {
 })
 
 -- Localize globals
+local table_insert = table.insert
 local RecipeStore = require("RecipeStore")
 local ItemMatcher = require("ItemMatcher")
 
