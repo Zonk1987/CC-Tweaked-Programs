@@ -18,6 +18,29 @@ function RednetProtocol.openAuto()
     return nil
 end
 
+--- Checks if rednet is open on any modem
+--- @return boolean
+function RednetProtocol.isOpen()
+    local modems = { peripheral.find("modem") }
+    for _, modem in ipairs(modems) do
+        if rednet.isOpen(peripheral.getName(modem)) then
+            return true
+        end
+    end
+    return false
+end
+
+--- Closes rednet on all modems
+function RednetProtocol.closeAll()
+    local modems = { peripheral.find("modem") }
+    for _, modem in ipairs(modems) do
+        local side = peripheral.getName(modem)
+        if rednet.isOpen(side) then
+            rednet.close(side)
+        end
+    end
+end
+
 --- Broadcasts a formatted message
 --- @param protocol string
 --- @param msgType string

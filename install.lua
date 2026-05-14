@@ -14,6 +14,7 @@ local args = { ... }
 
 --- Helper: Download a file from GitHub
 local function downloadFile(url, path)
+    print("Fetching: " .. url)
     local response, err = http.get(url)
     if not response then return false, "Connection failed: " .. (err or "unknown") end
     local content = response.readAll()
@@ -161,6 +162,38 @@ local function install(packageId, manifest, isDryRun)
     end
 end
 
+----- Helper: Word wrap text for the description pane
+local function drawWrappedText(text, x, y, width, center)
+    local words = {}
+    for word in text:gmatch("%S+") do table.insert(words, word) end
+    
+    local line = ""
+    local currY = y
+    local function writeLine(l)
+        local drawX = x
+        if center then
+            drawX = x + math.floor((width - #l) / 2)
+        end
+        term.setCursorPos(drawX, currY)
+        term.write(l:sub(1, width))
+        currY = currY + 1
+    end
+
+    for _, word in ipairs(words) do
+        if #line + #word + 1 > width then
+            writeLine(line)
+            line = word
+        else
+            line = line == "" and word or line .. " " .. word
+        end
+        -- Prevent vertical overflow
+        local _, h = term.getSize()
+        if currY > h - 3 then break end
+    end
+    writeLine(line)
+    return currY
+end
+
 --- Main Entry Point
 local function main()
     local manifest, err = loadManifest()
@@ -170,7 +203,7 @@ local function main()
     end
     
     local isDryRun = false
-    local selectedPkg = nil
+    local selectedPkgId = nil
     
     for _, arg in ipairs(args) do
         if arg == "--validate" then
@@ -179,22 +212,16 @@ local function main()
         elseif arg == "--dry-run" then
             isDryRun = true
         elseif manifest.packages[arg] then
-            selectedPkg = arg
+            selectedPkgId = arg
         end
     end
     
-    if selectedPkg then
-        install(selectedPkg, manifest, isDryRun)
+    if selectedPkgId then
+        install(selectedPkgId, manifest, isDryRun)
         return
     end
     
-    -- Interactive Mode
-    term.clear()
-    term.setCursorPos(1,1)
-    print("=======================================")
-    print("      Zonk's Universal Installer       ")
-    print("=======================================\n")
-    
+    -- Interactive Mode Setup
     local menu = {}
     for id, pkg in pairs(manifest.packages) do
         if not pkg.hidden then
@@ -203,24 +230,90 @@ local function main()
     end
     table.sort(menu, function(a, b) return a.id < b.id end)
     
-    for i, item in ipairs(menu) do
-        print(string.format("[%d] %s", i, item.name))
-        term.setTextColor(colors.gray)
-        print("    " .. item.desc)
-        term.setTextColor(colors.white)
-    end
-    print("\n[Q] Quit")
+    local selectedIndex = 1
     
     while true do
-        write("\nChoice: ")
-        local input = read()
-        if input:lower() == "q" then return end
-        local num = tonumber(input)
-        if num and menu[num] then
-            install(menu[num].id, manifest, false)
+        local w, h = term.getSize()
+        local leftWidth = math.floor(w * 0.45)
+        local rightWidth = w - leftWidth - 4
+        local rightX = leftWidth + 3
+        
+        term.setBackgroundColor(colors.black)
+        term.clear()
+        
+        -- Dynamic Header
+        local line = string.rep("=", w)
+        local title = "Zonk's Universal Installer"
+        local titleX = math.floor((w - #title) / 2) + 1
+        
+        term.setCursorPos(1, 1)
+        term.setTextColor(colors.cyan)
+        term.write(line)
+        term.setCursorPos(titleX, 2)
+        term.write(title)
+        term.setCursorPos(1, 3)
+        term.write(line)
+        
+        -- Draw Columns
+        for i, item in ipairs(menu) do
+            local y = i + 4
+            if y > h - 2 then break end
+            
+            term.setCursorPos(1, y) -- Back to column 1
+            local displayName = item.name:sub(1, leftWidth - 2)
+            if i == selectedIndex then
+                term.setBackgroundColor(colors.gray)
+                term.setTextColor(colors.white)
+                term.write("> " .. displayName .. string.rep(" ", leftWidth - #displayName - 1))
+                term.setBackgroundColor(colors.black)
+            else
+                term.setTextColor(colors.lightGray)
+                term.write("  " .. displayName)
+            end
+        end
+        
+        -- Separator
+        term.setTextColor(colors.cyan)
+        for y = 4, h - 2 do
+            term.setCursorPos(leftWidth + 1, y)
+            term.write("|")
+        end
+        
+        -- Description Box
+        local current = menu[selectedIndex]
+        term.setTextColor(colors.yellow)
+        local nextY = drawWrappedText(current.name:upper(), rightX, 4, rightWidth, true)
+        
+        term.setTextColor(colors.cyan)
+        term.setCursorPos(rightX, nextY)
+        term.write(string.rep("-", rightWidth))
+        
+        term.setTextColor(colors.white)
+        drawWrappedText(current.desc, rightX, nextY + 2, rightWidth, false)
+        
+        -- Status Bar
+        term.setTextColor(colors.gray)
+        term.setCursorPos(2, h)
+        term.write("[Arrows] Scroll | [Enter] Install | [Q] Quit")
+        term.setTextColor(colors.white)
+        
+        -- Event Loop
+        local _, key = os.pullEvent("key")
+        if key == keys.up then
+            selectedIndex = selectedIndex > 1 and selectedIndex - 1 or #menu
+        elseif key == keys.down then
+            selectedIndex = selectedIndex < #menu and selectedIndex + 1 or 1
+        elseif key == keys.enter then
+            term.clear()
+            term.setCursorPos(1, 1)
+            install(menu[selectedIndex].id, manifest, false)
+            break
+        elseif key == keys.q then
+            term.clear()
+            term.setCursorPos(1, 1)
+            print("Exit.")
             break
         end
-        print("Invalid choice.")
     end
 end
 
