@@ -11,7 +11,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/base/ConfigStore.lua", target = "ConfigStore.lua" },
+                { source = "lib/core/base/ConfigStore.lua", target = "lib/core/base/ConfigStore.lua" },
             },
         },
         ["core.peripherals"] = {
@@ -20,7 +20,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/peripherals/PeripheralScanner.lua", target = "PeripheralScanner.lua" },
+                { source = "lib/core/peripherals/PeripheralScanner.lua", target = "lib/core/peripherals/PeripheralScanner.lua" },
             },
         },
         ["core.network"] = {
@@ -29,7 +29,7 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/network/RednetProtocol.lua", target = "RednetProtocol.lua" },
+                { source = "lib/core/network/RednetProtocol.lua", target = "lib/core/network/RednetProtocol.lua" },
             },
         },
         ["core.redstone"] = {
@@ -38,7 +38,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/redstone/RedstoneController.lua", target = "RedstoneController.lua" },
+                { source = "lib/core/redstone/RedstoneController.lua", target = "lib/core/redstone/RedstoneController.lua" },
             },
         },
         ["core.ui"] = {
@@ -47,7 +47,7 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/ui/ButtonGrid.lua", target = "ButtonGrid.lua" },
+                { source = "lib/core/ui/ButtonGrid.lua", target = "lib/core/ui/ButtonGrid.lua" },
             },
         },
         ["core.inventory"] = {
@@ -56,8 +56,8 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/inventory/InventoryAdapter.lua", target = "InventoryAdapter.lua" },
-                { source = "lib/core/inventory/ItemMatcher.lua", target = "ItemMatcher.lua" },
+                { source = "lib/core/inventory/InventoryAdapter.lua", target = "lib/core/inventory/InventoryAdapter.lua" },
+                { source = "lib/core/inventory/ItemMatcher.lua", target = "lib/core/inventory/ItemMatcher.lua" },
             },
         },
         ["core.recipes"] = {
@@ -66,7 +66,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/recipes/RecipeStore.lua", target = "RecipeStore.lua" },
+                { source = "lib/core/recipes/RecipeStore.lua", target = "lib/core/recipes/RecipeStore.lua" },
             },
         },
 

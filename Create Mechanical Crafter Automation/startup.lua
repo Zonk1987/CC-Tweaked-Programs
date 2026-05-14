@@ -15,6 +15,18 @@ local _ENV = setmetatable({}, {
     end
 })
 
+-- Configure library paths for lib/core
+local corePaths = {
+    "/lib/core/base/?.lua",
+    "/lib/core/peripherals/?.lua",
+    "/lib/core/inventory/?.lua",
+    "/lib/core/recipes/?.lua",
+    "/lib/core/ui/?.lua",
+    "/lib/core/network/?.lua",
+    "/lib/core/redstone/?.lua"
+}
+package.path = package.path .. ";" .. table.concat(corePaths, ";")
+
 local CrafterSystem = require("CrafterSystem")
 
 -- Execution Setup

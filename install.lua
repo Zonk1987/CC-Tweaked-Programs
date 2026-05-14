@@ -152,12 +152,31 @@ local function install(packageId, manifest, isDryRun)
     print("\nTotal files processed: " .. total)
     if not isDryRun then
         print("Installation complete.")
+        
+        -- Cleanup
+        if fs.exists(MANIFEST_NAME) then fs.delete(MANIFEST_NAME) end
+        print("Cleanup: Removed manifest.")
+        
         if targetPkg.entry and fs.exists(targetPkg.entry) then
             print("\nWould you like to run " .. targetPkg.entry .. " now? (y/n)")
             local ans = read()
+            
+            -- Delete self before potential long-running entry script
+            local selfPath = shell.getRunningProgram()
+            if fs.exists(selfPath) then 
+                fs.delete(selfPath) 
+                print("Cleanup: Removed installer.")
+            end
+            
             if ans:lower() == "y" then
                 shell.run(targetPkg.entry)
+            else
+                print("Exit. You can start the app via: " .. targetPkg.entry)
             end
+        else
+            -- Delete self if no entry or dry run finished
+            local selfPath = shell.getRunningProgram()
+            if fs.exists(selfPath) then fs.delete(selfPath) end
         end
     end
 end
