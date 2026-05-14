@@ -37,7 +37,7 @@ end
 ---@param crafterGrid CrafterGrid
 ---@return boolean success, string|nil err
 function Chest:transferRecipe(recipe, crafterGrid)
-    local p = self:getPeripheral()
+    local p = self:getNative()
     if not p then return false, "chest_missing" end
 
     -- Find max index in ingredients to know how far to iterate
@@ -66,19 +66,21 @@ function Chest:transferRecipe(recipe, crafterGrid)
             -- Find the item and push it once
             for slot, item in pairs(chestItems) do
                 if ItemMatcher.matches(item, itemName) then
-                    local moved = self:pushItems(crafterName, slot, needed)
-                    if moved == needed then
+                    local ok, moved = pcall(self.pushItems, self, crafterName, slot, needed)
+                    if ok and moved == needed then
                         itemTransferred = true
                         -- Update local list to prevent double-spending the same slot in memory
                         item.count = item.count - 1
                         if item.count <= 0 then chestItems[slot] = nil end
                         break
+                    elseif not ok then
+                        return false, "Network Error to " .. crafterName
                     end
                 end
             end
 
             if not itemTransferred then
-                return false, "Missing items mid-transfer: " .. itemName
+                return false, "Transfer failed to " .. crafterName .. " (Item: " .. itemName .. ")"
             end
         end
     end

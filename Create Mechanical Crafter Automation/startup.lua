@@ -29,16 +29,41 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
 local CrafterSystem = require("CrafterSystem")
 
--- Execution Setup
-local chestName = peripheral.find("minecraft:chest") 
-               or peripheral.find("ironchest:diamond_chest") 
-               or peripheral.find("expandedstorage:netherite_chest")
-               or peripheral.find("barrel")
-               or peripheral.find("ironbarrels:barrel")
-               or "left"
+-- Execution Setup: Smart discovery for the buffer inventory
+local function findBufferChest()
+    -- Prioritize specific modded types
+    local prioritized = {
+        "sophisticatedstorage:barrel",
+        "sophisticatedstorage:chest",
+        "ironbarrels:barrel",
+        "expandedstorage:netherite_chest",
+        "minecraft:chest",
+        "barrel"
+    }
+    
+    for _, typeName in ipairs(prioritized) do
+        local names = { peripheral.find(typeName) }
+        if #names > 0 then
+            return peripheral.getName(names[1])
+        end
+    end
+    
+    -- Fallback: Any inventory that isn't a mechanical crafter
+    local all = peripheral.getNames()
+    for _, name in ipairs(all) do
+        if peripheral.getType(name) ~= "create:mechanical_crafter" and 
+           peripheral.hasType(name, "inventory") then
+            return name
+        end
+    end
+    
+    return "left" -- Absolute fallback
+end
+
+local chestName = findBufferChest()
 
 print("Hardware Check:")
-print("- Buffer Chest: " .. chestName)
+print("- Buffer Inventory: " .. chestName)
 os.sleep(1)
 
 ---@type CrafterSystem

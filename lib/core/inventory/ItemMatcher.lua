@@ -10,12 +10,23 @@ local ItemMatcher = {}
 --- @return boolean
 function ItemMatcher.matches(item, query)
     if not item or not query then return false end
-    if query:sub(1, 1) == "~" then
-        -- Fuzzy match: check if the item name contains the query string (case-sensitive)
-        return item.name:find(query:sub(2), 1, true) ~= nil
+    
+    local name = item.name:lower()
+    local q = query:lower()
+
+    if q:sub(1, 1) == "~" then
+        -- Fuzzy match: check if the item name contains the query string
+        return name:find(q:sub(2), 1, true) ~= nil
     end
-    -- Exact match
-    return item.name == query
+
+    -- Exact match or prefix-agnostic match
+    if name == q then return true end
+    
+    -- Try matching without 'minecraft:' prefix if one is missing
+    local nameNoPrefix = name:match(":(.+)$") or name
+    local qNoPrefix = q:match(":(.+)$") or q
+    
+    return nameNoPrefix == qNoPrefix
 end
 
 --- Counts matching items in an inventory list
