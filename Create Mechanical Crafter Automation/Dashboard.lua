@@ -22,6 +22,7 @@ local string = string
 ---@field crafterCount number
 ---@field suppressDraw boolean
 ---@field missingData table|nil
+---@field chestName string|nil
 local Dashboard = {}
 Dashboard.__index = Dashboard
 
@@ -137,6 +138,7 @@ function Dashboard:draw()
     term.setTextColor(colors.white)
     print("Last Job:    " .. self.lastCraft)
     print("Recipes:     " .. self.recipeCount)
+    print("Buffer:      " .. (self.chestName or "Unknown"))
 
     term.setTextColor(colors.cyan)
     print("-----------------------------------")

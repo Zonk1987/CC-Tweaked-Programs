@@ -30,18 +30,24 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 local CrafterSystem = require("CrafterSystem")
 
 -- Execution Setup
-local chestName = peripheral.find("minecraft:chest")
-               or peripheral.find("ironchest:diamond_chest")
+local chestName = peripheral.find("minecraft:chest") 
+               or peripheral.find("ironchest:diamond_chest") 
                or peripheral.find("expandedstorage:netherite_chest")
+               or peripheral.find("barrel")
+               or peripheral.find("ironbarrels:barrel")
                or "left"
 
 print("Hardware Check:")
 print("- Buffer Chest: " .. chestName)
 os.sleep(1)
 
+---@type CrafterSystem
 local system = CrafterSystem.new({
     chestName = chestName,
     recipeFile = "crafter_recipes.json"
 })
+
+-- Pass chest name to dashboard for display
+system.dashboard.chestName = chestName
 
 system:start()
