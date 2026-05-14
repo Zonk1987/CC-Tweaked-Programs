@@ -41,12 +41,21 @@ local function findBufferChest()
         "barrel"
     }
     
+    local candidates = {}
     for _, typeName in ipairs(prioritized) do
-        local names = { peripheral.find(typeName) }
-        if #names > 0 then
-            return peripheral.getName(names[1])
+        local found = { peripheral.find(typeName) }
+        for _, obj in ipairs(found) do
+            table.insert(candidates, peripheral.getName(obj))
         end
     end
+    
+    -- Sort candidates: prefer network names (with :) over side names
+    for _, name in ipairs(candidates) do
+        if name:find(":") or name:find("_") then
+            return name
+        end
+    end
+    if candidates[1] then return candidates[1] end
     
     -- Fallback: Any inventory that isn't a mechanical crafter
     local all = peripheral.getNames()

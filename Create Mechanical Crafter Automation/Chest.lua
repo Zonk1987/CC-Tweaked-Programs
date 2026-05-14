@@ -66,7 +66,11 @@ function Chest:transferRecipe(recipe, crafterGrid)
             -- Find the item and push it once
             for slot, item in pairs(chestItems) do
                 if ItemMatcher.matches(item, itemName) then
-                    local ok, moved = pcall(self.pushItems, self, crafterName, slot, needed)
+                    -- Use direct call but wrap in pcall for safety
+                    local ok, moved = pcall(function() 
+                        return self:pushItems(crafterName, slot, needed)
+                    end)
+
                     if ok and moved == needed then
                         itemTransferred = true
                         -- Update local list to prevent double-spending the same slot in memory
@@ -75,6 +79,9 @@ function Chest:transferRecipe(recipe, crafterGrid)
                         break
                     elseif not ok then
                         return false, "Network Error to " .. crafterName
+                    elseif ok and moved == 0 then
+                        -- Try to diagnose why it moved 0
+                        return false, "Crafter " .. crafterName .. " rejected item (Full?)"
                     end
                 end
             end
