@@ -1,30 +1,43 @@
 --[[
 ================================================================================
-CC:Tweaked Developer Suite v4.0 [SUPERIOR EDITION]
+CC:Tweaked Developer Suite v4.1 (AGENTS Edition)
 ================================================================================
 Interactive Peripheral Inspection & Item Browsing System
 ================================================================================
-
-DESCRIPTION:
-An all-in-one developer tool for ComputerCraft: Tweaked.
-- Inspect and explore connected peripherals and their methods.
-- Browse inventory contents with real-time detail viewing.
-- Quickly find technical Item Registry Names (required for recipes).
-- Deep-dive into item components, NBT tags, and properties.
-
-INSTALLATION:
-To install on a new computer, use the universal installer:
-pastebin run vYK0cPkU
-
-USAGE:
-Run the script and follow the on-screen menu to select peripherals.
-Use arrow keys to navigate and 'Q' to return or exit.
-================================================================================
 ]]--
 
-local _ENV = setmetatable({}, { __index = _G })
+-- STRICT MODE (SAFE VERSION)
+local _ORIG_ENV = _ENV
+local _ENV = setmetatable({}, {
+    __index = _ORIG_ENV,
+    __newindex = function(t, key, value)
+        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+    end
+})
 
-local toolkit = {
+-- Localize globals
+local term = term
+local colors = colors
+local peripheral = peripheral
+local string = string
+local math = math
+local table = table
+local os = os
+local keys = keys
+local read = read
+local write = write
+local pcall = pcall
+local textutils = textutils
+local ipairs = ipairs
+local pairs = pairs
+local rs = rs
+local fs = fs
+local rednet = rednet
+
+---@class DevToolkit
+---@field useRednet boolean
+---@field modem table|nil
+local DevToolkit = {
     useRednet = false,
     modem = nil
 }
@@ -32,7 +45,7 @@ local toolkit = {
 --- Helper: Clear screen and draw header
 local function header(title)
     term.clear()
-    term.setCursorPos(1,1)
+    term.setCursorPos(1, 1)
     term.setTextColor(colors.yellow)
     print("=== " .. title .. " ===")
     term.setTextColor(colors.white)
@@ -40,25 +53,30 @@ local function header(title)
 end
 
 --- Specialized Item Browser for Inventories
-function toolkit.itemBrowser(peripheralName)
+function DevToolkit.itemBrowser(peripheralName)
     local inv = peripheral.wrap(peripheralName)
+    if not inv or not inv.size then return end
     local size = inv.size()
     local selected = 1
-    
+
     while true do
         header("Browsing: " .. peripheralName)
         print("Use UP/DOWN to scroll, 'Q' to exit\n")
-        
-        -- Get item in current selected slot
+
         local detail = inv.getItemDetail(selected)
-        
-        -- Display Slots
+        local itemList = inv.list()
+
         for i = selected - 2, selected + 2 do
             if i > 0 and i <= size then
-                if i == selected then term.setTextColor(colors.green) write(" > ")
-                else term.setTextColor(colors.gray) write("   ") end
-                
-                local item = inv.list()[i]
+                if i == selected then
+                    term.setTextColor(colors.green)
+                    write(" > ")
+                else
+                    term.setTextColor(colors.gray)
+                    write("   ")
+                end
+
+                local item = itemList[i]
                 if item then
                     print(string.format("Slot %d: %-15s x%d", i, item.name:gsub(".*:", ""), item.count))
                 else
@@ -66,8 +84,7 @@ function toolkit.itemBrowser(peripheralName)
                 end
             end
         end
-        
-        -- Display Detail View (the "Professional Interface")
+
         term.setTextColor(colors.yellow)
         print("\n--- Slot " .. selected .. " Details ---")
         term.setTextColor(colors.white)
@@ -80,7 +97,7 @@ function toolkit.itemBrowser(peripheralName)
         else
             print("No item data available.")
         end
-        
+
         local _, key = os.pullEvent("key")
         if key == keys.up and selected > 1 then selected = selected - 1
         elseif key == keys.down and selected < size then selected = selected + 1
@@ -88,29 +105,33 @@ function toolkit.itemBrowser(peripheralName)
     end
 end
 
---- TOOL 1: Superior Peripheral Inspector
-function toolkit.peripheralInspector()
+--- Superior Peripheral Inspector
+function DevToolkit.peripheralInspector()
     header("Superior Peripheral Inspector")
     local names = peripheral.getNames()
-    for i, n in ipairs(names) do 
-        print(i .. ". " .. n .. " [" .. (peripheral.getType(n) or "unknown") .. "]") 
+    if #names == 0 then
+        print("No peripherals found!")
+        os.sleep(1.5)
+        return
+    end
+
+    for i, n in ipairs(names) do
+        print(i .. ". " .. n .. " [" .. (peripheral.getType(n) or "unknown") .. "]")
     end
     write("\nSelect Device [1-" .. #names .. "]: ")
-    os.sleep(0.1)
     local sel = tonumber(read())
-    
+    os.sleep(0.5)
+
     if sel and names[sel] then
         local pName = names[sel]
         local p = peripheral.wrap(pName)
         local methods = peripheral.getMethods(pName)
         local mIndex = 1
-        
+
         while true do
             header("Inspector: " .. pName)
-            print("Use UP/DOWN to select method, ENTER to execute")
-            print("Press 'B' for Item Browser, 'Q' to exit\n")
-            
-            -- Method List
+            print("UP/DOWN:Select | ENTER:Execute | B:Browser | Q:Exit\n")
+
             for i = mIndex - 3, mIndex + 3 do
                 if i > 0 and i <= #methods then
                     if i == mIndex then term.setTextColor(colors.lime) write(" [*] ")
@@ -118,7 +139,7 @@ function toolkit.peripheralInspector()
                     print(methods[i])
                 end
             end
-            
+
             local _, key = os.pullEvent("key")
             if key == keys.up and mIndex > 1 then mIndex = mIndex - 1
             elseif key == keys.down and mIndex < #methods then mIndex = mIndex + 1
@@ -131,9 +152,10 @@ function toolkit.peripheralInspector()
                 term.setTextColor(colors.white)
                 print("\nPress any key...")
                 os.pullEvent("key")
+                os.sleep(0.5)
             elseif key == keys.b then
                 if peripheral.hasType(pName, "inventory") then
-                    toolkit.itemBrowser(pName)
+                    DevToolkit.itemBrowser(pName)
                 else
                     print("\nThis device is not an inventory!")
                     os.sleep(1)
@@ -143,8 +165,8 @@ function toolkit.peripheralInspector()
     end
 end
 
---- TOOL 2: Event Sniffer
-function toolkit.eventSniffer()
+--- Event Sniffer
+function DevToolkit.eventSniffer()
     header("Event Sniffer (Press 'Q' to Exit)")
     while true do
         local event = { os.pullEvent() }
@@ -152,21 +174,26 @@ function toolkit.eventSniffer()
         term.setTextColor(colors.green)
         write(tostring(event[1]) .. ": ")
         term.setTextColor(colors.white)
-        for i=2, #event do write(tostring(event[i]) .. "  ") end
+        for i = 2, #event do write(tostring(event[i]) .. "  ") end
         print("")
     end
 end
 
---- TOOL 3: Redstone Monitor
-function toolkit.redstoneMonitor()
+--- Redstone Monitor
+function DevToolkit.redstoneMonitor()
     header("Redstone Monitor (Press 'Q' to Exit)")
     while true do
         term.setCursorPos(1, 4)
         for _, side in ipairs(rs.getSides()) do
             local analog = rs.getAnalogueInput(side)
             write(string.format("%-10s: ", side:upper()))
-            if analog > 0 then term.setTextColor(colors.green) write("ACTIVE (" .. analog .. ")  \n")
-            else term.setTextColor(colors.gray) write("INACTIVE      \n") end
+            if analog > 0 then
+                term.setTextColor(colors.green)
+                write("ACTIVE (" .. analog .. ")  \n")
+            else
+                term.setTextColor(colors.gray)
+                write("INACTIVE      \n")
+            end
         end
         local timer = os.startTimer(0.5)
         local ev, p1 = os.pullEvent()
@@ -174,8 +201,8 @@ function toolkit.redstoneMonitor()
     end
 end
 
---- TOOL 4: File Explorer
-function toolkit.fileExplorer()
+--- File Explorer
+function DevToolkit.fileExplorer()
     local path = ""
     while true do
         header("File Explorer: /" .. path)
@@ -184,12 +211,11 @@ function toolkit.fileExplorer()
         print(".. (Back)")
         for _, f in ipairs(list) do
             local full = fs.combine(path, f)
-            if fs.isDir(full) then term.setTextColor(colors.cyan) write("[DIR] ") 
+            if fs.isDir(full) then term.setTextColor(colors.cyan) write("[DIR] ")
             else term.setTextColor(colors.white) write("      ") end
             print(f .. " (" .. fs.getSize(full) .. " bytes)")
         end
         write("\nEnter dir or 'exit': ")
-        os.sleep(0.1)
         local cmd = read()
         if cmd == "exit" then break
         elseif cmd == ".." then path = fs.getDir(path)
@@ -197,10 +223,72 @@ function toolkit.fileExplorer()
     end
 end
 
---- MAIN MENU
-function toolkit.mainMenu()
+--- Network Scanner
+function DevToolkit.networkScanner()
+    header("Network Scanner")
+    if DevToolkit.modem then
+        print("Modem Side: " .. peripheral.getName(DevToolkit.modem))
+        print("Scanning Rednet IDs (1-50)...")
+        local found = 0
+        for i = 1, 50 do
+            if i ~= os.getComputerID() then
+                rednet.send(i, "PING", "ping_test")
+            end
+        end
+
+        local start = os.clock()
+        while os.clock() - start < 2 do
+            local id = rednet.receive("ping_test", 0.5)
+            if id then
+                term.setTextColor(colors.green)
+                print(" [+] Found Computer ID: " .. id)
+                term.setTextColor(colors.white)
+                found = found + 1
+            end
+            write(".")
+        end
+        print("\n\nScan finished.")
+        term.setTextColor(found > 0 and colors.green or colors.yellow)
+        print("Summary: Found " .. found .. " computer(s).")
+        term.setTextColor(colors.white)
+    else
+        term.setTextColor(colors.red)
+        print("Error: No modem found! Enable it with [6].")
+        term.setTextColor(colors.white)
+    end
+    print("\nPress any key to return...")
+    os.sleep(0.1)
+    os.pullEvent("key")
+    os.sleep(0.5)
+end
+
+--- Toggle Rednet
+function DevToolkit.toggleRednet()
+    DevToolkit.useRednet = not DevToolkit.useRednet
+    if DevToolkit.useRednet then
+        DevToolkit.modem = peripheral.find("modem")
+        if DevToolkit.modem then
+            rednet.open(peripheral.getName(DevToolkit.modem))
+            term.setTextColor(colors.green)
+            print("\nRednet enabled on " .. peripheral.getName(DevToolkit.modem))
+        else
+            term.setTextColor(colors.red)
+            print("\nError: No modem found!")
+            DevToolkit.useRednet = false
+        end
+    else
+        rednet.close()
+        term.setTextColor(colors.yellow)
+        print("\nRednet / Modem disabled.")
+    end
+    term.setTextColor(colors.white)
+    os.sleep(1)
+end
+
+--- Main Menu
+function DevToolkit.mainMenu()
     while true do
-        header("Developer Suite v4.0 [SUPERIOR]")
+        header("Developer Suite v4.1 [AGENTS]")
         print("1. Superior Inspector (Methods & Browser)")
         print("2. Event Sniffer (Live OS Debug)")
         print("3. Redstone Analyzer (Live Inputs)")
@@ -210,74 +298,20 @@ function toolkit.mainMenu()
         print("7. Exit")
         write("\nSelection: ")
         local _, key = os.pullEvent("key")
-        if key == keys.one then toolkit.peripheralInspector()
-        elseif key == keys.two then toolkit.eventSniffer()
-        elseif key == keys.three then toolkit.redstoneMonitor()
-        elseif key == keys.four then toolkit.fileExplorer()
-        elseif key == keys.five then
-            header("Network Scanner")
-            if toolkit.modem then
-                print("Modem Side: " .. peripheral.getName(toolkit.modem))
-                print("Scanning Rednet IDs (1-50)...")
-                local found = 0
-                for i=1, 50 do 
-                    if i ~= os.getComputerID() then 
-                        rednet.send(i, "PING", "ping_test") 
-                    end 
-                end
-                
-                local start = os.clock()
-                while os.clock() - start < 2 do
-                    local id = rednet.receive("ping_test", 0.5)
-                    if id then 
-                        term.setTextColor(colors.green)
-                        print(" [+] Found Computer ID: " .. id) 
-                        term.setTextColor(colors.white)
-                        found = found + 1
-                    end
-                    write(".") -- Progress indicator
-                end
-                print("\n\nScan finished.")
-                term.setTextColor(found > 0 and colors.green or colors.yellow)
-                print("Summary: Found " .. found .. " computer(s).")
-                term.setTextColor(colors.white)
-            else 
-                term.setTextColor(colors.red)
-                print("Error: No modem found! Enable it with [6].")
-                term.setTextColor(colors.white)
-            end
-            print("\nPress any key to return...")
+        os.sleep(0.5)
+        if key == keys.one then DevToolkit.peripheralInspector()
+        elseif key == keys.two then DevToolkit.eventSniffer()
+        elseif key == keys.three then DevToolkit.redstoneMonitor()
+        elseif key == keys.four then DevToolkit.fileExplorer()
+        elseif key == keys.five then DevToolkit.networkScanner()
+        elseif key == keys.six then DevToolkit.toggleRednet()
+        elseif key == keys.seven then
             os.sleep(0.1)
-            os.pullEvent("key")
-        elseif key == keys.six then
-            toolkit.useRednet = not toolkit.useRednet
-            term.setCursorPos(1, 15)
-            term.clearLine()
-            if toolkit.useRednet then
-                toolkit.modem = peripheral.find("modem")
-                if toolkit.modem then 
-                    rednet.open(peripheral.getName(toolkit.modem)) 
-                    term.setTextColor(colors.green)
-                    print("Rednet enabled on " .. peripheral.getName(toolkit.modem))
-                else 
-                    term.setTextColor(colors.red)
-                    print("Error: No modem found! Check your hardware.")
-                    toolkit.useRednet = false -- Reset if failed
-                end
-            else 
-                rednet.close() 
-                term.setTextColor(colors.yellow)
-                print("Rednet / Modem disabled.")
-            end
-            term.setTextColor(colors.white)
-            os.sleep(1)
-        elseif key == keys.seven then 
-            os.sleep(0.1) -- Prevent '7' from leaking to terminal
             term.clear()
             term.setCursorPos(1, 1)
-            break 
+            break
         end
     end
 end
 
-toolkit.mainMenu()
+DevToolkit.mainMenu()

@@ -6,11 +6,13 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
+
 -- Localize globals
 local setmetatable = setmetatable
-local print = print
 local term = term
-local peripheral = peripheral
+local colors = colors
+local pairs = pairs
+local string = string
 
 ---@class Dashboard
 ---@field statusMsg string
@@ -25,117 +27,124 @@ Dashboard.__index = Dashboard
 
 --- Creates a new Dashboard instance
 ---@return Dashboard
-function Dashboard:new()
-    local instance = setmetatable({}, self)
-    instance.statusMsg = "Starting System..."
-    instance.errorMsg = ""
-    instance.lastCraft = "-"
-    instance.recipeCount = 0
-    instance.crafterCount = 0
-    instance.suppressDraw = false
-    instance.missingData = nil
-    return instance
+function Dashboard.new()
+    local self = setmetatable({
+        statusMsg = "Starting System...",
+        errorMsg = "",
+        lastCraft = "-",
+        recipeCount = 0,
+        crafterCount = 0,
+        suppressDraw = false,
+        missingData = nil
+    }, Dashboard)
+    return self
 end
 
 --- Sets the active crafter count
----@param count number
 function Dashboard:setCrafterCount(count)
     self.crafterCount = count
 end
 
 --- Sets the recipe count
----@param count number
 function Dashboard:setRecipeCount(count)
     self.recipeCount = count
 end
 
 --- Sets the status message and redraws
----@param msg string
 function Dashboard:setStatus(msg)
     self.statusMsg = msg
     self:draw()
 end
 
 --- Sets the error message and redraws
----@param msg string
 function Dashboard:setError(msg)
     self.errorMsg = msg
     self:draw()
 end
 
 --- Sets the last crafted recipe
----@param recipeName string
 function Dashboard:setLastCraft(recipeName)
     self.lastCraft = recipeName
 end
 
 --- Sets missing items data for display
----@param data table|nil
 function Dashboard:setMissingItems(data)
     self.missingData = data
 end
 
-local function setColor(color)
-    if term.isColor() then
-        term.setTextColor(color)
+--- Internal helper to draw the header
+local function drawHeader()
+    term.setTextColor(colors.cyan)
+    print("===================================")
+    term.setTextColor(colors.yellow)
+    print("    Create Crafter System v1.1")
+    term.setTextColor(colors.cyan)
+    print("===================================")
+end
+
+--- Internal helper to draw the footer area
+function Dashboard:drawFooter()
+    term.setTextColor(colors.cyan)
+    print("-----------------------------------")
+    if self.errorMsg ~= "" then
+        term.setTextColor(colors.red)
+        print("ERROR: " .. self.errorMsg)
+    else
+        term.setTextColor(colors.lightGray)
+        print("[R] Reload  [S] Record  [M] Manage")
     end
 end
 
---- Draws the dashboard to the terminal
+--- Draws the missing items section
+function Dashboard:drawMissingItems()
+    if not self.missingData then return end
+    term.setTextColor(colors.yellow)
+    print("Waiting to craft: " .. self.missingData.recipeName)
+    print("Missing Items:")
+    term.setTextColor(colors.lightGray)
+    for name, count in pairs(self.missingData.items) do
+        print("- " .. count .. "x " .. name)
+    end
+    term.setTextColor(colors.cyan)
+    print("-----------------------------------")
+end
+
+--- Draws the full dashboard UI
 function Dashboard:draw()
     if self.suppressDraw then return end
     local oldColor = term.getTextColor()
     term.clear()
     term.setCursorPos(1, 1)
-    
-    setColor(colors.cyan)
-    print("===================================")
-    print("   Create Crafter System v1.0")
-    print("===================================")
-    
-    setColor(colors.white)
-    print("Calibrated Crafters: " .. self.crafterCount)
-    
+
+    drawHeader()
+
+    term.setTextColor(colors.white)
+    term.write("Calibrated:  ")
+    term.setTextColor(colors.lime)
+    print(self.crafterCount .. " Crafters")
+
+    term.setTextColor(colors.white)
     term.write("Status:      ")
+    local statusColor = colors.white
     if self.statusMsg:find("Crafting") or self.statusMsg:find("Filling") then
-        setColor(colors.lime)
-    elseif self.statusMsg:find("Waiting") then
-        setColor(colors.yellow)
-    else
-        setColor(colors.white)
+        statusColor = colors.lime
+    elseif self.statusMsg:find("Waiting") or self.statusMsg:find("Starting") then
+        statusColor = colors.yellow
     end
+    term.setTextColor(statusColor)
     print(self.statusMsg)
-    setColor(colors.white)
+
+    term.setTextColor(colors.white)
     print("Last Job:    " .. self.lastCraft)
-    if self.recipeCount > 0 then
-        print("Recipes:     " .. self.recipeCount)
-    end
-    
-    setColor(colors.cyan)
+    print("Recipes:     " .. self.recipeCount)
+
+    term.setTextColor(colors.cyan)
     print("-----------------------------------")
 
-    if self.missingData then
-        setColor(colors.yellow)
-        print("Waiting to craft: " .. self.missingData.recipeName)
-        print("Missing Items:")
-        setColor(colors.lightGray)
-        for name, count in pairs(self.missingData.items) do
-            print("- " .. count .. "x " .. name)
-        end
-        setColor(colors.cyan)
-        print("-----------------------------------")
-    end
+    self:drawMissingItems()
+    self:drawFooter()
 
-    if self.errorMsg ~= "" then
-        setColor(colors.red)
-        print("ERROR: " .. self.errorMsg)
-    else
-        setColor(colors.lightGray)
-        print("[Press 'R' to reload | 'S' to record new]")
-    end
-    
-    setColor(oldColor)
+    term.setTextColor(oldColor)
 end
 
 return Dashboard
-

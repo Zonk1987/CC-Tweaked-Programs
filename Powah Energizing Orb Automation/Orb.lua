@@ -7,51 +7,54 @@ local _ENV = setmetatable({}, {
     end
 })
 
--- Localize globals
-local setmetatable = setmetatable
-local peripheral = peripheral
-local pairs = pairs
+local InventoryComponent = require("InventoryComponent")
 
----@class Orb
----@field name string
----@field native any
-local Orb = {}
+---@class Orb : InventoryComponent
+local Orb = setmetatable({}, { __index = InventoryComponent })
 Orb.__index = Orb
 
 --- Creates a new Orb instance
 ---@param name string
 ---@return Orb
-function Orb:new(name)
-    local instance = setmetatable({}, self)
-    instance.name = name
-    instance.native = peripheral.wrap(name)
-    return instance
-end
-
---- Checks if the orb is connected
----@return boolean
-function Orb:isPresent()
-    self.native = peripheral.wrap(self.name)
-    return self.native ~= nil
+function Orb.new(name)
+    local self = InventoryComponent.new(name)
+    ---@cast self Orb
+    return setmetatable(self, Orb)
 end
 
 --- Checks if the orb has items
 ---@return boolean
 function Orb:isEmpty()
-    if not self:isPresent() then return true end
-    local list = self.native.list()
-    for _ in pairs(list) do return false end
+    local items, err = self:list()
+    if not items then return true end
+
+    for _ in pairs(items) do
+        return false
+    end
     return true
 end
 
 --- Recovers items from the orb back to the chest
----@param chestName string
-function Orb:recover(chestName)
-    if not self:isPresent() then return end
-    local list = self.native.list()
-    for slot, _ in pairs(list) do
-        self.native.pushItems(chestName, slot)
+---@param targetName string
+---@return boolean, string|nil
+function Orb:recover(targetName)
+    if not targetName or targetName == "" then
+        return false, "invalid_target"
     end
+
+    local items, err = self:list()
+    if not items then
+        return false, err
+    end
+
+    for slot, _ in pairs(items) do
+        local ok, err = pcall(self.native.pushItems, targetName, slot)
+        if not ok then
+            return false, tostring(err)
+        end
+    end
+
+    return true
 end
 
 return Orb

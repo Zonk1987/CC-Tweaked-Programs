@@ -36,7 +36,8 @@
 
 Run this single command on your ComputerCraft terminal:
 ```bash
-pastebin run vYK0cPkU
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
+install
 ```
 Select **Mekanism Portal Dialer** from the menu. The installer will download all required modules (`PortalSystem`, `ButtonManager`, `startup`) automatically.
 

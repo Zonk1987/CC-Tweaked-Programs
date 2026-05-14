@@ -6,6 +6,7 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
+
 -- Localize globals
 local setmetatable = setmetatable
 local type = type
@@ -15,6 +16,7 @@ local next = next
 local table_insert = table.insert
 local fs = fs
 local textutils = textutils
+local string = string
 
 ---@class RecipeManager
 ---@field filename string
@@ -27,12 +29,13 @@ RecipeManager.__index = RecipeManager
 ---@param filename string
 ---@param dashboard any
 ---@return RecipeManager
-function RecipeManager:new(filename, dashboard)
-    local instance = setmetatable({}, self)
-    instance.filename = filename
-    instance.dashboard = dashboard
-    instance.recipes = {}
-    return instance
+function RecipeManager.new(filename, dashboard)
+    local self = setmetatable({
+        filename = filename,
+        dashboard = dashboard,
+        recipes = {}
+    }, RecipeManager)
+    return self
 end
 
 --- Loads and validates recipes from JSON
@@ -40,24 +43,15 @@ end
 function RecipeManager:load()
     if not fs.exists(self.filename) then
         local file = fs.open(self.filename, "w")
-        local template = [=[
-[
-    {
-        "name": "YOUR RECIPE NAME HERE",
-        "ingredients": {
-            "minecraft:dirt": 1,
-            "modname:itemname": 2
-        }
-    }
-]
-]=]
-        file.write(template)
-        file.close()
-        self.dashboard:setError("Generated " .. self.filename .. "! Please edit.")
+        if file then
+            file.write("[]")
+            file.close()
+        end
         return false
     end
 
     local file = fs.open(self.filename, "r")
+    if not file then return false end
     local content = file.readAll()
     file.close()
 
@@ -70,7 +64,6 @@ function RecipeManager:load()
     local validated = self:validate(rawRecipes)
     if validated then
         self.recipes = validated
-        self.dashboard.errorMsg = ""
         self.dashboard:setRecipeCount(#self.recipes)
         return true
     end
@@ -85,7 +78,7 @@ local function formatJSON(raw)
     for i = 1, #raw do
         local c = raw:sub(i, i)
         if c == '"' and raw:sub(i-1, i-1) ~= "\\" then quoted = not quoted end
-        
+
         if not quoted then
             if c == "{" or c == "[" then
                 indent = indent + 1
@@ -110,27 +103,40 @@ end
 --- Saves current recipes to JSON
 function RecipeManager:save()
     local file = fs.open(self.filename, "w")
+    if not file then return end
     local raw = textutils.serialiseJSON(self.recipes)
     file.write(formatJSON(raw))
     file.close()
-    self.dashboard.errorMsg = ""
     self.dashboard:setRecipeCount(#self.recipes)
 end
 
 --- Adds a recipe to the list and saves it
 ---@param recipe table
 function RecipeManager:addRecipe(recipe)
-    -- Check if recipe with same name already exists
     for i, r in ipairs(self.recipes) do
         if r.name == recipe.name then
-            self.recipes[i] = recipe -- Update
+            self.recipes[i] = recipe
             self:save()
             return
         end
     end
-    
+
     table_insert(self.recipes, recipe)
     self:save()
+end
+
+--- Removes a recipe by its name and saves the list
+---@param name string
+---@return boolean success
+function RecipeManager:removeRecipeByName(name)
+    for i, r in ipairs(self.recipes) do
+        if r.name == name then
+            table.remove(self.recipes, i)
+            self:save()
+            return true
+        end
+    end
+    return false
 end
 
 --- Validates a raw recipe table
@@ -139,7 +145,6 @@ end
 function RecipeManager:validate(rawRecipes)
     local validRecipes = {}
     for i, recipe in ipairs(rawRecipes) do
-        -- Skip the placeholder template
         if recipe.name ~= "YOUR RECIPE NAME HERE" then
             if type(recipe.name) ~= "string" or recipe.name == "" then
                 self.dashboard:setError("Recipe #" .. i .. ": Missing name!")
@@ -153,17 +158,16 @@ function RecipeManager:validate(rawRecipes)
             local totalItems = 0
             for item, count in pairs(recipe.ingredients) do
                 if type(count) ~= "number" or count <= 0 then
-                    self.dashboard:setError("Recipe '" .. recipe.name .. "': Ingredient " .. item .. " has amount <= 0")
+                    self.dashboard:setError("Recipe '" .. recipe.name .. "': Ingredient " .. item .. " invalid amount")
                     return nil
                 end
                 totalItems = totalItems + count
             end
 
             if totalItems > 6 then
-                self.dashboard:setError("Recipe '" .. recipe.name .. "': Too large! Max 6 items!")
+                self.dashboard:setError("Recipe '" .. recipe.name .. "': Too many items (max 6)!")
                 return nil
             end
-
             table_insert(validRecipes, recipe)
         end
     end
@@ -174,7 +178,7 @@ end
 ---@param itemName string
 ---@param chestItems table
 ---@return number
-function RecipeManager:countItem(itemName, chestItems)
+local function countItem(itemName, chestItems)
     local count = 0
     for _, item in pairs(chestItems) do
         if item.name == itemName then
@@ -190,7 +194,7 @@ end
 ---@return boolean
 function RecipeManager:isRecipeComplete(recipe, chestItems)
     for itemName, requiredAmount in pairs(recipe.ingredients) do
-        if self:countItem(itemName, chestItems) < requiredAmount then
+        if countItem(itemName, chestItems) < requiredAmount then
             return false
         end
     end

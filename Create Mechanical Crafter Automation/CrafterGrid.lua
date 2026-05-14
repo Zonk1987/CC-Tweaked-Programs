@@ -6,11 +6,17 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
+
 -- Localize globals
 local setmetatable = setmetatable
 local peripheral = peripheral
-local table_sort = table.sort
 local ipairs = ipairs
+local fs = fs
+local textutils = textutils
+local term = term
+local keys = keys
+local os_pullEvent = os.pullEvent
+local os_sleep = os.sleep
 
 ---@class CrafterGrid
 ---@field crafters table<number, string>
@@ -18,13 +24,15 @@ local ipairs = ipairs
 local CrafterGrid = {}
 CrafterGrid.__index = CrafterGrid
 
---- Creates a new CrafterGrid instance and discovers crafters
+--- Creates a new CrafterGrid instance
 ---@return CrafterGrid
-function CrafterGrid:new()
-    local instance = setmetatable({}, self)
-    instance.cachedPeripherals = {}
-    instance:discoverCrafters()
-    return instance
+function CrafterGrid.new()
+    local self = setmetatable({
+        crafters = {},
+        cachedPeripherals = {}
+    }, CrafterGrid)
+    self:discoverCrafters()
+    return self
 end
 
 --- Runs the interactive setup for assigning crafter slots via modem clicks
@@ -33,63 +41,49 @@ function CrafterGrid:runInteractiveCalibration()
     term.setCursorPos(1, 1)
     print("=== INITIAL SETUP: CRAFTER CALIBRATION ===")
     print("1. Connect all Mechanical Crafters with Wired Modems.")
-    print("2. Make sure all modem red rings are OFF initially.")
-    print("3. Now click the modems ONE BY ONE to turn them on,")
-    print("   in order: left-to-right, top-to-bottom.")
-    print("")
-    print("[Press ENTER when all modems are turned on]")
-    print("-----------------------------------------------------")
+    print("2. Click the modems ONE BY ONE in order:")
+    print("   left-to-right, top-to-bottom.\n")
+    print("[Press ENTER when all modems are activated]")
+    print("------------------------------------------")
 
     self.crafters = {}
-    
     while true do
-        local event, param1 = os.pullEvent()
-        
+        local event, param1 = os_pullEvent()
         if event == "peripheral" then
             if peripheral.getType(param1) == "create:mechanical_crafter" then
-                -- Add to mapping
                 self.crafters[#self.crafters + 1] = param1
                 print("Crafter #" .. #self.crafters .. " connected: " .. param1)
             end
-        elseif event == "key" then
-            if param1 == keys.enter then
-                if #self.crafters > 0 then
-                    break
-                else
-                    print("Error: You must turn on at least one modem!")
-                end
-            end
+        elseif event == "key" and param1 == keys.enter then
+            if #self.crafters > 0 then break end
+            print("Error: Connect at least one crafter!")
         end
     end
 
-    -- Save to JSON
     local file = fs.open("crafter_mapping.json", "w")
-    file.write(textutils.serializeJSON(self.crafters))
-    file.close()
-
-    term.clear()
-    term.setCursorPos(1, 1)
-    print("Calibration saved successfully!")
-    os.sleep(1.5)
+    if file then
+        file.write(textutils.serializeJSON(self.crafters))
+        file.close()
+    end
+    print("\nCalibration saved!")
+    os_sleep(1.5)
 end
 
 --- Discovers and sorts all connected mechanical crafters
 function CrafterGrid:discoverCrafters()
-    -- Try loading calibration mapping first
     if fs.exists("crafter_mapping.json") then
         local file = fs.open("crafter_mapping.json", "r")
-        local content = file.readAll()
-        file.close()
-        
-        local mapping = textutils.unserializeJSON(content)
-        if mapping and #mapping > 0 then
-            self.crafters = mapping
-            self:cachePeripherals()
-            return
+        if file then
+            local mapping = textutils.unserializeJSON(file.readAll())
+            file.close()
+            if mapping and #mapping > 0 then
+                self.crafters = mapping
+                self:cachePeripherals()
+                return
+            end
         end
     end
 
-    -- If no mapping exists, start interactive setup!
     self:runInteractiveCalibration()
     self:cachePeripherals()
 end
@@ -113,11 +107,8 @@ end
 ---@return boolean
 function CrafterGrid:isEmpty()
     for _, p in ipairs(self.cachedPeripherals) do
-        -- getItemDetail is significantly faster than list() for single-slot inventories
-        if p and p.getItemDetail then
-            if p.getItemDetail(1) ~= nil then
-                return false
-            end
+        if p and p.getItemDetail and p.getItemDetail(1) then
+            return false
         end
     end
     return true

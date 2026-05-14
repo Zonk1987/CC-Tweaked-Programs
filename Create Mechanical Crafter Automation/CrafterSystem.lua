@@ -10,13 +10,20 @@ local Dashboard = require("Dashboard")
 local RecipeManager = require("RecipeManager")
 local Chest = require("Chest")
 local CrafterGrid = require("CrafterGrid")
+local ManageRecipes = require("ManageRecipes")
 
 -- Localize globals
 local setmetatable = setmetatable
 local os_sleep = os.sleep
+local os_epoch = os.epoch
 local os_pullEvent = os.pullEvent
 local parallel_waitForAll = parallel.waitForAll
+local redstone = redstone
+local colors = colors
+local keys = keys
 local keys_r = keys.r
+local keys_s = keys.s
+local keys_m = keys.m
 
 ---@class CrafterSystem
 ---@field chest Chest
@@ -24,23 +31,40 @@ local keys_r = keys.r
 ---@field recipeManager RecipeManager
 ---@field crafterGrid CrafterGrid
 ---@field isCrafting boolean
+---@field craftStartTime number
+---@field isRecording boolean
+---@field manageRecipes ManageRecipes
 local CrafterSystem = {}
 CrafterSystem.__index = CrafterSystem
 
 --- Creates the main system
----@param chestName string
----@param recipeFile string
+---@param options table
 ---@return CrafterSystem
-function CrafterSystem:new(chestName, recipeFile)
-    local instance = setmetatable({}, self)
-    instance.chest = Chest:new(chestName)
-    instance.dashboard = Dashboard:new()
-    instance.recipeManager = RecipeManager:new(recipeFile, instance.dashboard)
-    instance.crafterGrid = CrafterGrid:new()
-    instance.isCrafting = false
-    instance.craftStartTime = 0
-    instance.isRecording = false
-    return instance
+function CrafterSystem.new(options)
+    local self = setmetatable({}, CrafterSystem)
+    self.chest = Chest.new(options.chestName)
+    self.dashboard = Dashboard.new()
+    self.recipeManager = RecipeManager.new(options.recipeFile or "crafter_recipes.json", self.dashboard)
+    self.crafterGrid = CrafterGrid.new()
+    self.isCrafting = false
+    self.craftStartTime = 0
+    self.isRecording = false
+    self.manageRecipes = ManageRecipes.new({
+        recipeManager = self.recipeManager,
+        dashboard = self.dashboard
+    })
+    return self
+end
+
+--- Internal helper to pulse redstone on all sides
+local function pulseRedstone()
+    for _, side in ipairs(redstone.getSides()) do
+        redstone.setOutput(side, true)
+    end
+    os_sleep(0.1)
+    for _, side in ipairs(redstone.getSides()) do
+        redstone.setOutput(side, false)
+    end
 end
 
 --- Main process loop logic
@@ -50,7 +74,7 @@ function CrafterSystem:process()
         os_sleep(2)
         return
     end
-    
+
     if self.crafterGrid:getCount() == 0 then
         self.crafterGrid:discoverCrafters()
         if self.crafterGrid:getCount() == 0 then
@@ -60,81 +84,74 @@ function CrafterSystem:process()
         end
     end
 
-    if self.dashboard.errorMsg == "Buffer chest missing!" or self.dashboard.errorMsg == "No Mechanical Crafters found!" then 
-        self.dashboard:setError("") 
+    -- Clear transient errors
+    if self.dashboard.errorMsg == "Buffer chest missing!" or self.dashboard.errorMsg == "No Mechanical Crafters found!" then
+        self.dashboard:setError("")
     end
 
     self.dashboard:setCrafterCount(self.crafterGrid:getCount())
 
-    -- If currently crafting, wait until the crafters are empty
     if self.isCrafting then
-        self.dashboard:setStatus("Crafting in progress...")
-        self.dashboard:setMissingItems(nil)
-        self.dashboard:draw()
-        
-        -- Dynamically wait to save performance instead of spamming
-        os_sleep(1) 
-        
-        if self.crafterGrid:isEmpty() then
-            self.isCrafting = false
-            self.dashboard:setError("")
-            self.dashboard:setStatus("Waiting for items...")
-        else
-            if (os.epoch("utc") - self.craftStartTime) > 30000 then
-                local jammedMsg = self.crafterGrid:getJammedItem()
-                if jammedMsg then
-                    self.dashboard:setError("JAMMED: " .. jammedMsg)
-                else
-                    self.dashboard:setError("JAMMED: Unknown item stuck!")
-                end
-            end
+        self:handleOngoingCraft()
+    else
+        self:handleNewCraft()
+    end
+
+    self.dashboard:draw()
+end
+
+--- Logic for when a craft is currently in progress
+function CrafterSystem:handleOngoingCraft()
+    self.dashboard:setStatus("Crafting in progress...")
+    self.dashboard:setMissingItems(nil)
+    self.dashboard:draw()
+
+    os_sleep(1)
+
+    if self.crafterGrid:isEmpty() then
+        self.isCrafting = false
+        self.dashboard:setError("")
+        self.dashboard:setStatus("Waiting for items...")
+    else
+        -- Jam detection (30 seconds)
+        if (os_epoch("utc") - self.craftStartTime) > 30000 then
+            local jammedMsg = self.crafterGrid:getJammedItem()
+            self.dashboard:setError("JAMMED: " .. (jammedMsg or "Unknown item stuck!"))
         end
+    end
+end
+
+--- Logic for starting a new craft
+function CrafterSystem:handleNewCraft()
+    if not self.crafterGrid:isEmpty() then
+        self.isCrafting = true
+        self.craftStartTime = os_epoch("utc")
         return
     end
 
-    -- If grid is empty, check for new recipes
-    if self.crafterGrid:isEmpty() then
-        local readyRecipe = self.recipeManager:findReadyRecipe(self.chest, self.crafterGrid:getCount())
-        
-        if readyRecipe then
-            self.dashboard:setStatus("Filling Crafters...")
-            self.dashboard:setMissingItems(nil)
-            self.dashboard:draw()
-            local success, err = self.chest:transferRecipe(readyRecipe, self.crafterGrid)
-            
-            if success then
-                self.isCrafting = true
-                self.craftStartTime = os.epoch("utc")
-                self.dashboard:setLastCraft(readyRecipe.name)
-                self.dashboard:setStatus("Crafting " .. readyRecipe.name .. "...")
-                self.dashboard:draw()
-                
-                -- Force redstone pulse on all sides to start recipes that don't fill the entire grid
-                for _, side in ipairs(redstone.getSides()) do
-                    redstone.setOutput(side, true)
-                end
-                os_sleep(0.1)
-                for _, side in ipairs(redstone.getSides()) do
-                    redstone.setOutput(side, false)
-                end
-            else
-                self.dashboard:setError(err or "Transfer Error!")
-                os_sleep(2)
-                self.dashboard:setError("")
-            end
+    local readyRecipe = self.recipeManager:findReadyRecipe(self.chest, self.crafterGrid:getCount())
+    if readyRecipe then
+        self.dashboard:setStatus("Filling Crafters...")
+        self.dashboard:setMissingItems(nil)
+        self.dashboard:draw()
+
+        local success, err = self.chest:transferRecipe(readyRecipe, self.crafterGrid)
+        if success then
+            self.isCrafting = true
+            self.craftStartTime = os_epoch("utc")
+            self.dashboard:setLastCraft(readyRecipe.name)
+            self.dashboard:setStatus("Crafting " .. readyRecipe.name .. "...")
+            pulseRedstone()
         else
-            self.dashboard:setStatus("Waiting for items...")
-            local missing = self.recipeManager:getMissingItems(self.chest, self.crafterGrid:getCount())
-            self.dashboard:setMissingItems(missing)
+            self.dashboard:setError(err or "Transfer Error!")
+            os_sleep(2)
+            self.dashboard:setError("")
         end
     else
-        if not self.isCrafting then
-            self.isCrafting = true
-            self.craftStartTime = os.epoch("utc")
-        end
+        self.dashboard:setStatus("Waiting for items...")
+        local missing = self.recipeManager:getMissingItems(self.chest, self.crafterGrid:getCount())
+        self.dashboard:setMissingItems(missing)
     end
-    
-    self.dashboard:draw()
 end
 
 --- Runs the process continuously
@@ -150,15 +167,17 @@ end
 --- Listens to keyboard events
 function CrafterSystem:keyListener()
     while true do
-        local event, key = os_pullEvent("key")
+        local _, key = os_pullEvent("key")
         if key == keys_r then
             self.dashboard:setStatus("Reloading recipes...")
             self.recipeManager:load(self.crafterGrid:getCount())
             self.crafterGrid:discoverCrafters()
             os_sleep(0.5)
             self.dashboard:setStatus("Waiting for items...")
-        elseif key == keys.s then
+        elseif key == keys_s then
             self:recordNewRecipeFlow()
+        elseif key == keys_m then
+            self.manageRecipes:open()
         end
     end
 end
@@ -167,25 +186,20 @@ end
 function CrafterSystem:recordNewRecipeFlow()
     self.isRecording = true
     self.dashboard.suppressDraw = true
-    
+
     term.clear()
     term.setCursorPos(1, 1)
-    
     if term.isColor() then term.setTextColor(colors.cyan) end
     print("===================================")
     print("      Record New Recipe")
     print("===================================")
-    if term.isColor() then term.setTextColor(colors.white) end
-    
+    term.setTextColor(colors.white)
     print("\n1. Place the items in the physical crafters")
     print("2. Enter the name of your new recipe")
     print("   (Leave blank and press ENTER to cancel)")
-    print("")
-    term.write("Recipe Name: ")
-    
-    -- Sleep briefly to consume the ghost "char" event from pressing 'S'
-    os_sleep(0.1)
-    
+    term.write("\nRecipe Name: ")
+
+    os_sleep(0.1) -- Debounce
     local name = read()
     if name == "" then
         self.isRecording = false
@@ -193,24 +207,22 @@ function CrafterSystem:recordNewRecipeFlow()
         self.dashboard:draw()
         return
     end
-    
+
     self.dashboard.suppressDraw = false
     self.dashboard:setStatus("Recording " .. name .. "...")
     self.dashboard:draw()
-    
+
     local success, err = self.recipeManager:recordRecipe(name, self.crafterGrid)
-    
     if success then
         self.dashboard:setError("Recipe saved successfully!")
         self.recipeManager:load(self.crafterGrid:getCount())
     else
         self.dashboard:setError("Record Error: " .. (err or "Unknown"))
     end
-    
+
     os_sleep(2)
     self.dashboard:setError("")
     self.dashboard:setStatus("Waiting for items...")
-    
     self.isRecording = false
     self.dashboard:draw()
 end
@@ -225,4 +237,3 @@ function CrafterSystem:start()
 end
 
 return CrafterSystem
-

@@ -12,9 +12,9 @@ local InventoryComponent = require("InventoryComponent")
 local setmetatable = setmetatable
 local pairs = pairs
 local ipairs = ipairs
-local next = next
+local tonumber = tonumber
 local os_epoch = os.epoch
-local os_sleep = os.sleep
+local pcall = pcall
 
 ---@class Chest : InventoryComponent
 local Chest = setmetatable({}, { __index = InventoryComponent })
@@ -23,11 +23,10 @@ Chest.__index = Chest
 --- Creates a new Chest
 ---@param name string
 ---@return Chest
-function Chest:new(name)
-    local instance = InventoryComponent:new(name)
-    setmetatable(instance, self)
-    ---@cast instance Chest
-    return instance
+function Chest.new(name)
+    local self = InventoryComponent.new(name)
+    ---@cast self Chest
+    return setmetatable(self, Chest)
 end
 
 --- Transfers recipe ingredients to the crafter grid
@@ -36,9 +35,7 @@ end
 ---@return boolean success, string|nil err
 function Chest:transferRecipe(recipe, crafterGrid)
     local p = self:getPeripheral()
-    if not p then return false end
-
-    local timeoutStart = os_epoch("utc")
+    if not p then return false, "chest_missing" end
 
     -- Find max index in ingredients to know how far to iterate
     local maxIndex = 0
@@ -49,23 +46,25 @@ function Chest:transferRecipe(recipe, crafterGrid)
         end
     end
 
+    local chestItems = self:list()
+
     for index = 1, maxIndex do
         local itemName = recipe.ingredients[index]
         -- Skip empty slots
         if itemName ~= nil and itemName ~= "null" and itemName ~= "" then
             local crafterName = crafterGrid:getCrafterName(index)
             if not crafterName then
-                return false -- missing crafter for this slot
+                return false, "missing_crafter_for_slot:" .. index
             end
-            
+
             local needed = 1
             local itemTransferred = false
-            
+
             -- Find the item and push it once
-            for slot, item in pairs(self:list()) do
+            for slot, item in pairs(chestItems) do
                 local isMatch = false
                 if itemName:sub(1,1) == "~" then
-                    -- Plain text search, ignoring regex magic characters
+                    -- Plain text search
                     isMatch = item.name:find(itemName:sub(2), 1, true) ~= nil
                 else
                     isMatch = (item.name == itemName)
@@ -74,25 +73,25 @@ function Chest:transferRecipe(recipe, crafterGrid)
                 if isMatch then
                     local ok, transferred = pcall(p.pushItems, crafterName, slot, needed)
                     if not ok then
-                        return false, "Crafter " .. crafterName .. " is missing! Recalibrate!"
+                        return false, "Crafter " .. crafterName .. " error!"
                     end
                     if transferred == needed then
                         itemTransferred = true
+                        -- Update local list to prevent double-spending the same slot in memory
+                        item.count = item.count - 1
+                        if item.count <= 0 then chestItems[slot] = nil end
                         break
                     end
                 end
             end
 
-            -- If we couldn't transfer the item (e.g. someone took it out mid-transfer)
-            -- we immediately abort the entire recipe transfer to avoid getting stuck
             if not itemTransferred then
-                return false, "Missing items mid-transfer!"
+                return false, "Missing items mid-transfer: " .. itemName
             end
         end
     end
-    
+
     return true
 end
 
 return Chest
-

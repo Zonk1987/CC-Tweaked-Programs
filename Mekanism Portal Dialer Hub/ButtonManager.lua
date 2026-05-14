@@ -7,6 +7,15 @@ local _ENV = setmetatable({}, {
     end
 })
 
+-- Localize globals
+local peripheral = peripheral
+local colors = colors
+local setmetatable = setmetatable
+local table_insert = table.insert
+local math = math
+local string = string
+local ipairs = ipairs
+
 ---@class ButtonManager
 ---@field mon table Peripheral monitor object
 ---@field buttons table<string, table> Registered buttons
@@ -18,18 +27,18 @@ ButtonManager.__index = ButtonManager
 --- Creates a new ButtonManager instance
 ---@param monitorName string The name of the monitor peripheral
 ---@return ButtonManager
-function ButtonManager:new(monitorName)
+function ButtonManager.new(monitorName)
     local mon = peripheral.wrap(monitorName)
     if not mon then error("Monitor not found: " .. monitorName) end
-    local instance = setmetatable({
+    local self = setmetatable({
         mon = mon,
         buttons = {},
         colorOn = colors.lime,
         colorOff = colors.gray,
         activeKey = nil, -- Persistent selection
         flashKey = nil   -- Temporary highlight (for feedback)
-    }, self)
-    return instance
+    }, ButtonManager)
+    return self
 end
 
 --- Registers a button to the manager (Newest buttons have priority)
@@ -42,12 +51,15 @@ end
 function ButtonManager:add(name, func, xmin, xmax, ymin, ymax, noLabel)
     local isActive = (name == self.activeKey)
     -- Insert at the beginning of the list for highest click priority
-    table.insert(self.buttons, 1, {
+    table_insert(self.buttons, 1, {
         name = name,
-        func = func, 
-        active = isActive, 
-        xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
-        noLabel = noLabel 
+        func = func,
+        active = isActive,
+        xmin = xmin,
+        xmax = xmax,
+        ymin = ymin,
+        ymax = ymax,
+        noLabel = noLabel
     })
 end
 
@@ -78,7 +90,7 @@ function ButtonManager:clearArea(x1, y1, x2, y2)
     local newList = {}
     for _, btn in ipairs(self.buttons) do
         if not (btn.ymin >= y1 and btn.ymax <= y2) then
-            table.insert(newList, btn)
+            table_insert(newList, btn)
         end
     end
     self.buttons = newList

@@ -13,7 +13,6 @@ local term = term
 local colors = colors
 local pairs = pairs
 local string = string
-local math = math
 
 ---@class Dashboard
 ---@field statusMsg string
@@ -21,20 +20,22 @@ local math = math
 ---@field lastCraft string
 ---@field recipeCount number
 ---@field activeJobs table
+---@field suppressDraw boolean
 local Dashboard = {}
 Dashboard.__index = Dashboard
 
 --- Creates a new Dashboard instance
 ---@return Dashboard
-function Dashboard:new()
-    local instance = setmetatable({}, self)
-    instance.statusMsg = "Starting..."
-    instance.errorMsg = ""
-    instance.lastCraft = "None"
-    instance.recipeCount = 0
-    instance.activeJobs = {}
-    instance.suppressDraw = false
-    return instance
+function Dashboard.new()
+    local self = setmetatable({
+        statusMsg = "Starting...",
+        errorMsg = "",
+        lastCraft = "None",
+        recipeCount = 0,
+        activeJobs = {},
+        suppressDraw = false
+    }, Dashboard)
+    return self
 end
 
 --- Updates the current status message
@@ -70,72 +71,71 @@ function Dashboard:updateJobs(jobs)
     self:draw()
 end
 
---- Internal helper for color drawing
-local function setColor(color)
-    term.setTextColor(color)
+--- Draws the header section
+local function drawHeader()
+    term.setTextColor(colors.yellow)
+    print("=== Powah Energizing Automation ===")
+    term.setTextColor(colors.cyan)
+    print("-----------------------------------")
+end
+
+--- Draws the footer section
+function Dashboard:drawFooter()
+    term.setTextColor(colors.cyan)
+    print("-----------------------------------")
+    if self.errorMsg ~= "" then
+        term.setTextColor(colors.red)
+        print("ERROR: " .. self.errorMsg)
+    else
+        term.setTextColor(colors.lightGray)
+        print("[R] Reload  [I] Import AE2")
+    end
 end
 
 --- Draws the full dashboard UI
 function Dashboard:draw()
     if self.suppressDraw then return end
     local oldColor = term.getTextColor()
-    local w, h = term.getSize()
-    
     term.clear()
     term.setCursorPos(1, 1)
-    
-    setColor(colors.yellow)
-    print("=== Powah Energizing Automation ===")
-    setColor(colors.cyan)
-    print("-----------------------------------")
-    
-    setColor(colors.white)
+
+    drawHeader()
+
+    term.setTextColor(colors.white)
     term.write("Status:      ")
-    if self.statusMsg:find("Crafting") or self.statusMsg:find("Filling") or self.statusMsg:find("Processing") then
-        setColor(colors.lime)
+    local statusColor = colors.white
+    if self.statusMsg:find("Crafting") or self.statusMsg:find("Filling") then
+        statusColor = colors.lime
     elseif self.statusMsg:find("Waiting") or self.statusMsg:find("Starting") then
-        setColor(colors.yellow)
-    else
-        setColor(colors.white)
+        statusColor = colors.yellow
     end
+    term.setTextColor(statusColor)
     print(self.statusMsg)
 
-    setColor(colors.white)
+    term.setTextColor(colors.white)
     print("Last Job:    " .. self.lastCraft)
     if self.recipeCount > 0 then
         print("Recipes:     " .. self.recipeCount)
     end
 
-    setColor(colors.cyan)
+    term.setTextColor(colors.cyan)
     print("-----------------------------------")
 
     local jobsFound = false
-    if self.activeJobs then
-        for name, job in pairs(self.activeJobs) do
-            setColor(colors.lime)
-            term.write("-> ")
-            setColor(colors.white)
-            print(job.recipeName .. " (" .. name .. ")")
-            jobsFound = true
-        end
+    for name, job in pairs(self.activeJobs or {}) do
+        term.setTextColor(colors.lime)
+        term.write("-> ")
+        term.setTextColor(colors.white)
+        print(job.recipeName .. " (" .. name .. ")")
+        jobsFound = true
     end
     if not jobsFound then
-        setColor(colors.lightGray)
+        term.setTextColor(colors.lightGray)
         print("No active crafting processes.")
     end
 
-    setColor(colors.cyan)
-    print("-----------------------------------")
-
-    if self.errorMsg ~= "" then
-        setColor(colors.red)
-        print("ERROR: " .. self.errorMsg)
-    else
-        setColor(colors.lightGray)
-        print("[R] Reload  [I] Import AE2")
-    end
-
-    setColor(oldColor)
+    self:drawFooter()
+    term.setTextColor(oldColor)
 end
 
 return Dashboard

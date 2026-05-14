@@ -7,9 +7,10 @@
 ## ✨ Features
 
 - **In-Game Recipe Recording** — Place items in crafters, press `S`, type a name. Done. No JSON editing required.
+- **Visual Recipe Management** — Press `M` to browse all saved recipes, view required ingredients, and delete obsolete patterns.
 - **Interactive Grid Calibration** — Click your Wired Modems in order and the system learns your exact grid layout automatically.
 - **AE2 / RS Blocking Mode Ready** — Point your Pattern Provider into the buffer chest. The system handles one recipe at a time, perfectly.
-- **Smart Jam Detection** — If a craft gets stuck, the dashboard alarms you with the exact crafter slot and item that is blocked.
+- **Smart Jam Detection** — If a craft gets stuck, the dashboard alerts you with the exact crafter slot and item that is blocked.
 - **Fuzzy Item Matching** — Use `~planks` in your recipe to accept any type of planks (or any other item family).
 - **Dynamic Redstone Trigger** — Pulses all sides of the computer after item placement to guarantee the crafting starts.
 - **Live Dashboard** — Color-coded UI showing crafter count, current status, last job, and missing items for incomplete recipes.
@@ -39,9 +40,10 @@
 
 Run this single command on your ComputerCraft terminal:
 ```
-pastebin run vYK0cPkU
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
+install
 ```
-Select **Create Mechanical Crafter Automation** from the menu. The installer downloads all files and reboots automatically.
+Select **Create Mechanical Crafter Automation** from the menu.
 
 ---
 
@@ -67,9 +69,11 @@ Calibration is saved permanently in `crafter_mapping.json`. Delete this file to 
 5. The system scans, saves, and reloads the recipe automatically.
 > *Press Enter without a name to cancel.*
 
-### Auto-Crafting
-- **Manual**: Drop ingredients into the Buffer Chest. The system detects the recipe, places items, and pulses redstone.
-- **Automated (AE2/RS)**: Configure a Pattern Provider in Blocking Mode facing the Buffer Chest. The system processes one craft at a time.
+### Managing Recipes
+1. Press **`M`** on the dashboard.
+2. Browse through the list of saved recipes (Left Pane).
+3. See the required items and counts for the selected recipe (Right Pane).
+4. Press **`X`** to delete a selected recipe or **`Q`** to return.
 
 ### Fuzzy Matching
 Edit `crafter_recipes.json` and prefix an item name with `~` to match any item containing that string:
@@ -84,6 +88,7 @@ Edit `crafter_recipes.json` and prefix an item name with `~` to match any item c
 | Key | Action |
 |---|---|
 | `S` | Start in-game recipe recording |
+| `M` | Open Recipe Management UI |
 | `R` | Hot-reload recipes from `crafter_recipes.json` |
 
 ---

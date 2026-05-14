@@ -12,9 +12,9 @@
 - **Modpack Compatibility** — Filter by "Powah Only" or "All Mods" (Key `F`) to support custom modpack recipes that use the Energizing Orb.
 - **High-Precision Matching** — Deep ID-based ingredient validation with support for **Bulk Processing** (Multiplier logic).
 - **Auto-Recovery** — Automated item retrieval and orb reset if crafting stalls or power fails.
-- **Pretty-JSON Formatting** — `rezepte.json` is automatically formatted with indentations for easy manual editing.
+- **Pretty-JSON Formatting** — `powah_recipes.json` is automatically formatted with indentations for easy manual editing.
 - **Live Dashboard** — Real-time monitoring of job status, power, and throughput across all orbs.
-- **Hot-Reload** — Press `R` to sync changes from `rezepte.json` instantly.
+- **Hot-Reload** — Press `R` to sync changes from `powah_recipes.json` instantly.
 
 ---
 
@@ -32,9 +32,10 @@
 
 ## 🚀 Installation
 
-Run this command on your ComputerCraft terminal:
+Run this single command on your ComputerCraft terminal:
 ```bash
-pastebin run vYK0cPkU
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
+install
 ```
 Select **Powah Energizing Orb Automation** to download the latest modular version.
 
@@ -69,7 +70,7 @@ The easiest way to add recipes is via the **ME Bridge**:
 
 Open `startup` to customize your setup:
 ```lua
-local system = PowahSystem:new("left", "rezepte.json")
+local system = PowahSystem:new("left", "powah_recipes.json")
 ```
 - Change `"left"` to the side where your **Buffer Chest** is located.
 - The system automatically finds the **ME Bridge** and all **Energizing Orbs** on the network.
