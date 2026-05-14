@@ -6,7 +6,7 @@ local _ENV = setmetatable({}, {
         error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
     end
 })
-local InventoryComponent = require("InventoryComponent")
+
 
 -- Localize globals
 local setmetatable = setmetatable
