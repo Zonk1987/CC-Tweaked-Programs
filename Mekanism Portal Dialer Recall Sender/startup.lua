@@ -13,6 +13,11 @@ local _ENV = setmetatable({}, {
     end
 })
 
+local ConfigStore = require("ConfigStore")
+local PeripheralScanner = require("PeripheralScanner")
+local RednetProtocol = require("RednetProtocol")
+local RedstoneController = require("RedstoneController")
+
 -- Localize globals
 local fs = fs
 local peripheral = peripheral
@@ -35,8 +40,11 @@ local read = read
 ---@field target string The name of this portal destination
 ---@field channel number The modem channel used for communication
 
+---@class ConfigStore
+---@field data table
+
 ---@class RecallSender
----@field config RecallConfig
+---@field configStore ConfigStore
 ---@field modem table|nil
 local RecallSender = {}
 RecallSender.__index = RecallSender
@@ -45,36 +53,22 @@ RecallSender.__index = RecallSender
 ---@return RecallSender
 function RecallSender.new()
     local self = setmetatable({
-        config = { target = "Unknown", channel = 99 },
+        configStore = ConfigStore.new("config.json", { target = "Unknown", channel = 99 }),
         modem = nil
     }, RecallSender)
 
-    self:loadConfig()
+    if not fs.exists("config.json") then
+        self:setupWizard()
+    end
+    
     self:initHardware()
     return self
 end
 
---- Load configuration from JSON file
-function RecallSender:loadConfig()
-    if fs.exists("config.json") then
-        local f = fs.open("config.json", "r")
-        if f then
-            local data = f.readAll()
-            f.close()
-            self.config = textutils.unserialiseJSON(data) or self.config
-        end
-    else
-        self:setupWizard()
-    end
-end
-
---- Save configuration to JSON file
-function RecallSender:saveConfig()
-    local f = fs.open("config.json", "w")
-    if f then
-        f.write(textutils.serialiseJSON(self.config))
-        f.close()
-    end
+--- Initial hardware check and setup
+function RecallSender:initHardware()
+    self.modem = PeripheralScanner.find("modem")
+    RednetProtocol.openAuto()
 end
 
 --- Draws the terminal status screen
@@ -86,21 +80,10 @@ function RecallSender:drawTerminalHeader()
     term.setTextColor(colors.gray)
     print("----------------------------------")
     term.setTextColor(colors.white)
-    print("Target:  " .. self.config.target)
-    print("Channel: " .. self.config.channel)
+    print("Target:  " .. self.configStore.data.target)
+    print("Channel: " .. self.configStore.data.channel)
     print("\nStatus:  Waiting for Redstone signal...")
     print("\n[Press 'C' for Configuration]")
-end
-
---- Initial hardware check and setup
-function RecallSender:initHardware()
-    self.modem = peripheral.find("modem")
-    if self.modem then
-        local side = peripheral.getName(self.modem)
-        if not rednet.isOpen(side) then
-            rednet.open(side)
-        end
-    end
 end
 
 --- Interactive setup for first-time use
@@ -111,13 +94,13 @@ function RecallSender:setupWizard()
     term.setTextColor(colors.yellow)
     write("Target Location Name: ")
     term.setTextColor(colors.white)
-    self.config.target = read() or "Unknown"
+    self.configStore.data.target = read() or "Unknown"
 
     write("Communication Channel (default 99): ")
     local chanInput = read()
-    self.config.channel = tonumber(chanInput) or 99
+    self.configStore.data.channel = tonumber(chanInput) or 99
 
-    self:saveConfig()
+    self.configStore:save()
     print("\nSetup complete!")
     os_sleep(1)
 end
@@ -130,8 +113,8 @@ function RecallSender:configMenu()
         term.setTextColor(colors.cyan)
         print("=== Configuration Menu ===")
         term.setTextColor(colors.white)
-        print("1. Target Name       (Current: " .. self.config.target .. ")")
-        print("2. Recall Channel    (Current: " .. self.config.channel .. ")")
+        print("1. Target Name       (Current: " .. self.configStore.data.target .. ")")
+        print("2. Recall Channel    (Current: " .. self.configStore.data.channel .. ")")
         print("3. Save & Exit")
         print("4. Exit without saving")
 
@@ -140,18 +123,18 @@ function RecallSender:configMenu()
             term.setCursorPos(1, 8)
             write("New Target Name: ")
             local input = read()
-            if input ~= "" then self.config.target = input end
+            if input ~= "" then self.configStore.data.target = input end
         elseif key == keys.two then
             term.setCursorPos(1, 8)
             write("New Channel: ")
             local input = read()
-            self.config.channel = tonumber(input) or self.config.channel
+            self.configStore.data.channel = tonumber(input) or self.configStore.data.channel
         elseif key == keys.three then
-            self:saveConfig()
+            self.configStore:save()
             self:drawTerminalHeader()
             return
         elseif key == keys.four then
-            self:loadConfig()
+            self.configStore:load()
             self:drawTerminalHeader()
             return
         end
@@ -163,14 +146,12 @@ function RecallSender:broadcastRecall()
     term.setTextColor(colors.yellow)
     print("\n[!] Signal detected! Sending recall...")
 
-    local msg = { command = "RECALL", target = self.config.target }
-    if self.modem then
-        self.modem.transmit(self.config.channel, self.config.channel, msg)
-        rednet.broadcast(msg)
-    end
+    local payload = { command = "RECALL", target = self.configStore.data.target }
+    RednetProtocol.transmit(self.configStore.data.channel, payload)
+    RednetProtocol.broadcast("mekanism_portal", "RECALL", { target = self.configStore.data.target })
 
-    term.setTextColor(colors.green)
-    print("[!] Success: Target '" .. self.config.target .. "' broadcasted.")
+    term.setTextColor(colors.lime)
+    print("[!] Success: Target '" .. self.configStore.data.target .. "' broadcasted.")
     term.setTextColor(colors.white)
 end
 
@@ -183,12 +164,7 @@ function RecallSender:run()
         local event, p1, p2, p3 = os_pullEvent()
 
         if event == "redstone" then
-            local triggered = false
-            for _, side in ipairs(rs.getSides()) do
-                if rs.getInput(side) then triggered = true break end
-            end
-
-            if triggered then
+            if RedstoneController.anyInput() then
                 self:broadcastRecall()
                 messageTimer = os_startTimer(10)
             end

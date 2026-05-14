@@ -11,6 +11,7 @@ local RecipeManager = require("RecipeManager")
 local Chest = require("Chest")
 local CrafterGrid = require("CrafterGrid")
 local ManageRecipes = require("ManageRecipes")
+local RedstoneController = require("RedstoneController")
 
 -- Localize globals
 local setmetatable = setmetatable
@@ -56,16 +57,6 @@ function CrafterSystem.new(options)
     return self
 end
 
---- Internal helper to pulse redstone on all sides
-local function pulseRedstone()
-    for _, side in ipairs(redstone.getSides()) do
-        redstone.setOutput(side, true)
-    end
-    os_sleep(0.1)
-    for _, side in ipairs(redstone.getSides()) do
-        redstone.setOutput(side, false)
-    end
-end
 
 --- Main process loop logic
 function CrafterSystem:process()
@@ -141,7 +132,7 @@ function CrafterSystem:handleNewCraft()
             self.craftStartTime = os_epoch("utc")
             self.dashboard:setLastCraft(readyRecipe.name)
             self.dashboard:setStatus("Crafting " .. readyRecipe.name .. "...")
-            pulseRedstone()
+            RedstoneController.pulseAll()
         else
             self.dashboard:setError(err or "Transfer Error!")
             os_sleep(2)

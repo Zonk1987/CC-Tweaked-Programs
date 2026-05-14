@@ -7,17 +7,17 @@ local _ENV = setmetatable({}, {
     end
 })
 
-local InventoryComponent = require("InventoryComponent")
+local InventoryAdapter = require("InventoryAdapter")
 
----@class Orb : InventoryComponent
-local Orb = setmetatable({}, { __index = InventoryComponent })
+---@class Orb : InventoryAdapter
+local Orb = setmetatable({}, { __index = InventoryAdapter })
 Orb.__index = Orb
 
 --- Creates a new Orb instance
 ---@param name string
 ---@return Orb
 function Orb.new(name)
-    local self = InventoryComponent.new(name)
+    local self = InventoryAdapter.new(name)
     ---@cast self Orb
     return setmetatable(self, Orb)
 end

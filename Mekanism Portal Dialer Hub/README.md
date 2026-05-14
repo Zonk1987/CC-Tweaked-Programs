@@ -34,12 +34,12 @@
 
 ## 🚀 Installation
 
-Run this single command on your ComputerCraft terminal:
+Run this command on your ComputerCraft terminal:
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
-install
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
+install.lua
 ```
-Select **Mekanism Portal Dialer** from the menu. The installer will download all required modules (`PortalSystem`, `ButtonManager`, `startup`) automatically.
+Select **Mekanism Portal Dialer Hub** from the menu. The installer will automatically resolve all core dependencies (`HubSystem`, `Dashboard`, `ButtonGrid`).
 
 ---
 

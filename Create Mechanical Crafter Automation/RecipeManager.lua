@@ -8,24 +8,12 @@ local _ENV = setmetatable({}, {
 })
 
 -- Localize globals
-local setmetatable = setmetatable
-local type = type
-local ipairs = ipairs
-local pairs = pairs
-local next = next
-local table_insert = table.insert
-local fs = fs
-local textutils = textutils
-local math = math
-local string = string
-local tonumber = tonumber
-local peripheral = peripheral
+local RecipeStore = require("RecipeStore")
+local ItemMatcher = require("ItemMatcher")
 
----@class RecipeManager
----@field filename string
+---@class RecipeManager : RecipeStore
 ---@field dashboard Dashboard
----@field recipes table[]
-local RecipeManager = {}
+local RecipeManager = setmetatable({}, { __index = RecipeStore })
 RecipeManager.__index = RecipeManager
 
 --- Creates a new RecipeManager instance
@@ -33,12 +21,10 @@ RecipeManager.__index = RecipeManager
 ---@param dashboard Dashboard
 ---@return RecipeManager
 function RecipeManager.new(filename, dashboard)
-    local self = setmetatable({
-        filename = filename,
-        dashboard = dashboard,
-        recipes = {}
-    }, RecipeManager)
-    return self
+    local self = RecipeStore.new(filename)
+    ---@cast self RecipeManager
+    self.dashboard = dashboard
+    return setmetatable(self, RecipeManager)
 end
 
 --- Internal helper to generate an example recipe if file doesn't exist
@@ -84,23 +70,17 @@ end
 ---@param crafterCount number|nil
 ---@return boolean success
 function RecipeManager:load(crafterCount)
-    if not fs.exists(self.filename) then
-        self:generateExample(crafterCount)
+    local ok, err = RecipeStore.load(self)
+    if not ok then
+        if not fs.exists(self.filename) then
+            self:generateExample(crafterCount)
+            return false
+        end
+        self.dashboard:setError("Load Error: " .. (err or "Unknown"))
         return false
     end
 
-    local file = fs.open(self.filename, "r")
-    if not file then return false end
-    local content = file.readAll()
-    file.close()
-
-    local rawRecipes = textutils.unserializeJSON(content)
-    if not rawRecipes then
-        self.dashboard:setError("Syntax Error in " .. self.filename .. "!")
-        return false
-    end
-
-    local validated = self:validate(rawRecipes)
+    local validated = self:validate(self.recipes)
     if validated then
         self.recipes = validated
         self.dashboard:setRecipeCount(#self.recipes)
@@ -164,17 +144,6 @@ function RecipeManager:removeRecipeByName(name)
     return false
 end
 
---- Helper: Counts a specific item in the chest
-local function countItem(itemName, chestItems)
-    local count = 0
-    for _, item in pairs(chestItems) do
-        local isMatch = (itemName:sub(1, 1) == "~") 
-            and (item.name:find(itemName:sub(2), 1, true) ~= nil) 
-            or (item.name == itemName)
-        if isMatch then count = count + item.count end
-    end
-    return count
-end
 
 --- Checks if all ingredients for a recipe are present
 function RecipeManager:isRecipeComplete(recipe, chestItems, crafterCount)
@@ -190,7 +159,7 @@ function RecipeManager:isRecipeComplete(recipe, chestItems, crafterCount)
 
     if maxIndex > crafterCount then return false end
     for itemName, requiredAmount in pairs(neededAmounts) do
-        if countItem(itemName, chestItems) < requiredAmount then return false end
+        if ItemMatcher.count(itemName, chestItems) < requiredAmount then return false end
     end
     return true
 end
@@ -224,7 +193,7 @@ function RecipeManager:getMissingItems(chest, crafterCount)
 
         if maxIdx <= crafterCount then
             for itemName, _ in pairs(tempNeeded) do
-                matchCount = matchCount + countItem(itemName, chestItems)
+                matchCount = matchCount + ItemMatcher.count(itemName, chestItems)
             end
             if matchCount > highestMatchCount then
                 highestMatchCount, bestRecipe, bestNeeded = matchCount, recipe, tempNeeded
@@ -235,7 +204,7 @@ function RecipeManager:getMissingItems(chest, crafterCount)
     if not bestRecipe or highestMatchCount == 0 then return nil end
     local missing = {}
     for itemName, req in pairs(bestNeeded) do
-        local inChest = countItem(itemName, chestItems)
+        local inChest = ItemMatcher.count(itemName, chestItems)
         if inChest < req then missing[itemName] = req - inChest end
     end
 

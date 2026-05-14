@@ -15,6 +15,8 @@ local _ENV = setmetatable({}, {
     end
 })
 
+local RednetProtocol = require("RednetProtocol")
+
 -- Localize globals
 local term = term
 local colors = colors
@@ -225,14 +227,13 @@ end
 
 --- Network Scanner
 function DevToolkit.networkScanner()
-    header("Network Scanner")
-    if DevToolkit.modem then
-        print("Modem Side: " .. peripheral.getName(DevToolkit.modem))
+    if RednetProtocol.isOpen() then
+        print("Modem Side: " .. (peripheral.find("modem") and peripheral.getName(peripheral.find("modem")) or "unknown"))
         print("Scanning Rednet IDs (1-50)...")
         local found = 0
         for i = 1, 50 do
             if i ~= os.getComputerID() then
-                rednet.send(i, "PING", "ping_test")
+                RednetProtocol.send(i, "PING", { data = "ping_test" }, "ping_test")
             end
         end
 
@@ -264,20 +265,17 @@ end
 
 --- Toggle Rednet
 function DevToolkit.toggleRednet()
-    DevToolkit.useRednet = not DevToolkit.useRednet
-    if DevToolkit.useRednet then
-        DevToolkit.modem = peripheral.find("modem")
-        if DevToolkit.modem then
-            rednet.open(peripheral.getName(DevToolkit.modem))
+    if not RednetProtocol.isOpen() then
+        local side = RednetProtocol.openAuto()
+        if side then
             term.setTextColor(colors.green)
-            print("\nRednet enabled on " .. peripheral.getName(DevToolkit.modem))
+            print("\nRednet enabled on " .. side)
         else
             term.setTextColor(colors.red)
             print("\nError: No modem found!")
-            DevToolkit.useRednet = false
         end
     else
-        rednet.close()
+        RednetProtocol.closeAll()
         term.setTextColor(colors.yellow)
         print("\nRednet / Modem disabled.")
     end

@@ -7,7 +7,7 @@ local _ENV = setmetatable({}, {
     end
 })
 local UUIDService = require("UUIDService")
-local PortalUI = require("PortalUI")
+local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
 local PeripheralScanner = require("PeripheralScanner")
 local RednetProtocol = require("RednetProtocol")
@@ -51,7 +51,7 @@ local rednet = rednet
 ---@field testModeCount number
 ---@field maxButtons number
 
----@class PortalSystem
+---@class HubSystem
 ---@field tp table The teleporter peripheral
 ---@field bm ButtonGrid The button manager instance
 ---@field configStore ConfigStore System configuration
@@ -64,13 +64,13 @@ local rednet = rednet
 ---@field portalColors table<string, string>
 ---@field uuidService UUIDService
 ---@field lastError string|nil
-local PortalSystem = {}
-PortalSystem.__index = PortalSystem
+local HubSystem = {}
+HubSystem.__index = HubSystem
 
---- Creates a new PortalSystem instance
+--- Creates a new HubSystem instance
 ---@param options table
----@return PortalSystem
-function PortalSystem.new(options)
+---@return HubSystem
+function HubSystem.new(options)
     local tp = PeripheralScanner.wrap(options.tpSide)
     if not tp then error("Teleporter not found: " .. options.tpSide) end
 
@@ -117,7 +117,7 @@ function PortalSystem.new(options)
             DARK_GRAY = colors.gray,
             BLACK = colors.black
         }
-    }, PortalSystem)
+    }, HubSystem)
 
     RednetProtocol.openAuto()
     return self
@@ -125,11 +125,11 @@ end
 
 
 --- Draws the static frame and layout elements
-function PortalSystem:drawTerminalHeader()
+function HubSystem:drawTerminalHeader()
     term.clear()
     term.setCursorPos(1, 1)
     term.setTextColor(colors.cyan)
-    print("Mekanism Portal Dialer v2.1")
+    print("Mekanism Portal Hub v2.2")
     term.setTextColor(colors.gray)
     print("---------------------------")
     term.setTextColor(colors.white)
@@ -145,7 +145,7 @@ function PortalSystem:drawTerminalHeader()
 end
 
 --- Interactive terminal configuration menu
-function PortalSystem:configMenu()
+function HubSystem:configMenu()
     while true do
         term.clear()
         term.setCursorPos(1, 1)
@@ -163,13 +163,13 @@ function PortalSystem:configMenu()
             write("New Recall Channel: ")
             local input = read()
             self.configStore.data.recallChannel = tonumber(input) or self.configStore.data.recallChannel
-            os.sleep(0.5)
+            os_sleep(0.5)
         elseif key == keys.two then
             term.setCursorPos(1, 8)
             write("New Test Mode Count: ")
             local input = read()
             self.configStore.data.testModeCount = tonumber(input) or self.configStore.data.testModeCount
-            os.sleep(0.5)
+            os_sleep(0.5)
         elseif key == keys.three then
             self.configStore:save()
             self:drawTerminalHeader()
@@ -186,7 +186,7 @@ end
 
 
 --- Picks the next color for a portal
-function PortalSystem:getNextColor(portalName)
+function HubSystem:getNextColor(portalName)
     local fixed = self.colorStore.data[portalName]
     if fixed then return fixed end
 
@@ -198,7 +198,7 @@ function PortalSystem:getNextColor(portalName)
 end
 
 --- Refreshes the list of frequencies from the teleporter
-function PortalSystem:refresh()
+function HubSystem:refresh()
     if self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0 then
         self.frequencies = {}
         for i = 1, self.configStore.data.testModeCount do
@@ -224,7 +224,7 @@ function PortalSystem:refresh()
 end
 
 --- Draws the static frame and layout elements
-function PortalSystem:draw()
+function HubSystem:draw()
     self:refresh()
     self.bm:resetButtons()
 
@@ -313,7 +313,7 @@ function PortalSystem:draw()
 end
 
 --- Draws the dynamic portal list
-function PortalSystem:drawContent()
+function HubSystem:drawContent()
     local w, h = self.bm.mon.getSize()
     local cols, rows = self.configStore.data.gridColumns or 4, self.configStore.data.gridRows or 4
     local startX, endX, gapX = 3, w - 2, 2
@@ -367,7 +367,7 @@ function PortalSystem:drawContent()
 end
 
 --- Dials a portal
-function PortalSystem:dial(portalName)
+function HubSystem:dial(portalName)
     local color = self:getNextColor(portalName)
     self.manualActive = portalName
     self.bm:setActive(portalName)
@@ -389,7 +389,7 @@ function PortalSystem:dial(portalName)
 end
 
 --- Draws a color selection overlay
-function PortalSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
+function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
     local w, h = self.bm.mon.getSize()
     local boxW, boxH = 38, 25
     if not isRedraw then self.activeOverlay = { name = portalName, x = offsetX, y = offsetY } end
@@ -401,7 +401,7 @@ function PortalSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
 
     self.bm:resetButtons()
     self.bm:add("OVERLAY_SHIELD", function() end, 1, w, 1, h, true)
-    PortalUI.drawOverlayFrame(self.bm, x1, y1, x2, y2)
+    Dashboard.drawOverlayFrame(self.bm, x1, y1, x2, y2)
 
     self.bm.mon.setTextColor(colors.white)
     self.bm.mon.setBackgroundColor(colors.gray)
@@ -411,7 +411,7 @@ function PortalSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
     for i, colorName in ipairs(self.mekColors) do
         local bx = x1 + 4 + ((i - 1) % 4) * 8
         local by = y1 + 3 + math.floor((i - 1) / 4) * 4
-        PortalUI.drawColorSwatchFrame(self.bm, bx, by, bx + 5, by + 1)
+        Dashboard.drawColorSwatchFrame(self.bm, bx, by, bx + 5, by + 1)
         self.bm:drawBox(bx, by, bx + 5, by + 1, self.ccMap[colorName])
         self.bm:add("SET_COL_" .. colorName, function()
             self.colorStore.data[portalName] = colorName
@@ -422,14 +422,14 @@ function PortalSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
     end
 
     local buttonY = y1 + boxH - 3
-    PortalUI.drawSmallButtonFrame(self.bm, x1 + 3, buttonY, x1 + 13, buttonY + 2)
+    Dashboard.drawSmallButtonFrame(self.bm, x1 + 3, buttonY, x1 + 13, buttonY + 2)
     self.bm:add("RESET_BTN", function()
         self.colorStore.data[portalName] = nil; self.colorStore:save()
         self.activeOverlay = nil; os_sleep(0.1); self:draw()
     end, x1 + 4, x1 + 13, buttonY, buttonY + 1, true)
     self.bm.mon.setCursorPos(x1 + 5, buttonY + 1); self.bm.mon.write(" RANDOM ")
 
-    PortalUI.drawSmallButtonFrame(self.bm, x2 - 13, buttonY, x2 - 3, buttonY + 2)
+    Dashboard.drawSmallButtonFrame(self.bm, x2 - 13, buttonY, x2 - 3, buttonY + 2)
     self.bm:add("BACK_BTN", function()
         self.activeOverlay = nil; self:draw()
     end, x2 - 12, x2 - 4, buttonY, buttonY + 1, true)
@@ -439,10 +439,10 @@ end
 
 --- Draws the status display (target frequency and system state)
 ---@param force? boolean If true, ignore overlay state
-function PortalSystem:drawStatus(force)
+function HubSystem:drawStatus(force)
     if self.activeOverlay and not force then return end
     local name, owner, statusStr = "NOT CONNECTED", "", "Ready"
-    if self.config.testModeCount and self.config.testModeCount > 0 then
+    if self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0 then
         name, owner, statusStr = self.testSelectedFrequency or "NONE", "DevUser", "TEST-MODE"
     else
         local ok, f = pcall(self.tp.getFrequency)
@@ -465,7 +465,7 @@ function PortalSystem:drawStatus(force)
 
     -- Draw Frame around status
     local w, h = self.bm.mon.getSize()
-    PortalUI.drawOverlayFrame(self.bm, 3, 5, w - 2, 8)
+    Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 2, 8)
 
     self.bm.mon.setCursorPos(5, 6)
     self.bm.mon.setTextColor(colors.white)
@@ -486,7 +486,7 @@ function PortalSystem:drawStatus(force)
 end
 
 --- Main runtime loop
-function PortalSystem:run()
+function HubSystem:run()
     local side = RednetProtocol.openAuto()
     if side then
         peripheral.call(side, "open", self.configStore.data.recallChannel or 99)
@@ -516,4 +516,4 @@ function PortalSystem:run()
     end
 end
 
-return PortalSystem
+return HubSystem

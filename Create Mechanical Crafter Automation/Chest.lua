@@ -16,15 +16,18 @@ local tonumber = tonumber
 local os_epoch = os.epoch
 local pcall = pcall
 
----@class Chest : InventoryComponent
-local Chest = setmetatable({}, { __index = InventoryComponent })
+local InventoryAdapter = require("InventoryAdapter")
+local ItemMatcher = require("ItemMatcher")
+
+---@class Chest : InventoryAdapter
+local Chest = setmetatable({}, { __index = InventoryAdapter })
 Chest.__index = Chest
 
 --- Creates a new Chest
 ---@param name string
 ---@return Chest
 function Chest.new(name)
-    local self = InventoryComponent.new(name)
+    local self = InventoryAdapter.new(name)
     ---@cast self Chest
     return setmetatable(self, Chest)
 end
@@ -62,20 +65,9 @@ function Chest:transferRecipe(recipe, crafterGrid)
 
             -- Find the item and push it once
             for slot, item in pairs(chestItems) do
-                local isMatch = false
-                if itemName:sub(1,1) == "~" then
-                    -- Plain text search
-                    isMatch = item.name:find(itemName:sub(2), 1, true) ~= nil
-                else
-                    isMatch = (item.name == itemName)
-                end
-
-                if isMatch then
-                    local ok, transferred = pcall(p.pushItems, crafterName, slot, needed)
-                    if not ok then
-                        return false, "Crafter " .. crafterName .. " error!"
-                    end
-                    if transferred == needed then
+                if ItemMatcher.matches(item, itemName) then
+                    local moved = self:pushItems(crafterName, slot, needed)
+                    if moved == needed then
                         itemTransferred = true
                         -- Update local list to prevent double-spending the same slot in memory
                         item.count = item.count - 1
