@@ -7,7 +7,7 @@ It redirects to the new root-level manifest-driven installer.
 ================================================================================
 ]]--
 
-local ROOT_INSTALLER_URL = "https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua"
+local ROOT_INSTALLER_URL = "https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua"
 local TEMP_PATH = "install_new.lua"
 
 print("Redirecting to the new manifest-driven installer...")

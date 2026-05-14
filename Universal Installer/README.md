@@ -8,7 +8,7 @@
 Run this single command on any ComputerCraft terminal to launch the installer:
 
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/Universal%20Installer/install.lua
 install
 ```
 
