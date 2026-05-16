@@ -200,6 +200,7 @@ function DevToolkit.redstoneMonitor()
         term.setCursorPos(1, 4)
         for _, side in ipairs(rs.getSides()) do
             local analog = rs.getAnalogueInput(side)
+            term.setTextColor(colors.white)
             write(string.format("%-10s: ", side:upper()))
             if analog > 0 then
                 term.setTextColor(colors.green)
@@ -215,25 +216,102 @@ function DevToolkit.redstoneMonitor()
     end
 end
 
---- File Explorer
+--- File Explorer (Interactive Version)
 function DevToolkit.fileExplorer()
     local path = ""
+    local selected = 1
+    local w, h = term.getSize()
+
     while true do
         header("File Explorer: /" .. path)
         local list = fs.list(path)
-        table.sort(list)
-        print(".. (Back)")
-        for _, f in ipairs(list) do
+        table.sort(list, function(a, b)
+            local aDir = fs.isDir(fs.combine(path, a))
+            local bDir = fs.isDir(fs.combine(path, b))
+            if aDir ~= bDir then return aDir end
+            return a:lower() < b:lower()
+        end)
+        
+        -- Add ".." to the top if not in root
+        if path ~= "" then table.insert(list, 1, "..") end
+
+        local maxLines = h - 5
+        local offset = (selected > maxLines / 2) and (selected - math.floor(maxLines / 2)) or 0
+        offset = math.min(offset, math.max(0, #list - maxLines))
+
+        for i = 1, maxLines do
+            local idx = i + offset
+            if idx > #list then break end
+            
+            term.setCursorPos(1, i + 3)
+            local f = list[idx]
             local full = fs.combine(path, f)
-            if fs.isDir(full) then term.setTextColor(colors.cyan) write("[DIR] ")
-            else term.setTextColor(colors.white) write("      ") end
-            print(f .. " (" .. fs.getSize(full) .. " bytes)")
+            local isDir = fs.isDir(full)
+            
+            if idx == selected then
+                term.setTextColor(colors.lime)
+                write("> ")
+            else
+                term.setTextColor(colors.gray)
+                write("  ")
+            end
+
+            if f == ".." then
+                term.setTextColor(colors.yellow)
+                write("[ BACK ]")
+            elseif isDir then
+                term.setTextColor(colors.cyan)
+                write("\164 " .. f) -- Folder icon char
+            else
+                term.setTextColor(colors.white)
+                write("  " .. f)
+            end
+
+            -- File Size
+            if not isDir and f ~= ".." then
+                local size = fs.getSize(full)
+                local sizeStr = size .. " B"
+                if size > 1024 then sizeStr = string.format("%.1f KB", size/1024) end
+                
+                term.setCursorPos(w - #sizeStr, i + 3)
+                term.setTextColor(colors.gray)
+                write(sizeStr)
+            end
         end
-        write("\nEnter dir or 'exit': ")
-        local cmd = read()
-        if cmd == "exit" then break
-        elseif cmd == ".." then path = fs.getDir(path)
-        elseif fs.isDir(fs.combine(path, cmd)) then path = fs.combine(path, cmd) end
+
+        term.setCursorPos(1, h)
+        term.setTextColor(colors.gray)
+        write("Enter:View | E:Edit | Q:Exit")
+
+        local _, key = os.pullEvent("key")
+        if key == keys.up and selected > 1 then selected = selected - 1
+        elseif key == keys.down and selected < #list then selected = selected + 1
+        elseif key == keys.enter then
+            local f = list[selected]
+            local full = fs.combine(path, f)
+            if f == ".." then
+                path = fs.getDir(path)
+                selected = 1
+            elseif fs.isDir(full) then
+                path = full
+                selected = 1
+            else
+                -- Open file in VIEW mode
+                term.clear()
+                shell.run("view", full)
+            end
+        elseif key == keys.e then
+            local f = list[selected]
+            local full = fs.combine(path, f)
+            if f ~= ".." and not fs.isDir(full) then
+                -- Open file in EDIT mode
+                term.clear()
+                shell.run("edit", full)
+            end
+        elseif key == keys.backspace then
+            path = fs.getDir(path)
+            selected = 1
+        elseif key == keys.q then break end
     end
 end
 
