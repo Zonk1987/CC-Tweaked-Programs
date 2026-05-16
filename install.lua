@@ -58,6 +58,14 @@ local function loadManifest()
     return manifest
 end
 
+--- Helper: Check if a path is a safe relative path (no absolute, no traversal)
+local function isSafeRelativePath(path)
+    return type(path) == "string"
+        and path ~= ""
+        and path:sub(1, 1) ~= "/"
+        and not path:find("%.%.")
+end
+
 --- Validate the manifest structure (for --validate flag)
 local function validateManifest(manifest)
     print("Validating manifest...")
@@ -68,10 +76,11 @@ local function validateManifest(manifest)
         if type(pkg.dependencies) ~= "table" then table.insert(errors, id .. ": Missing dependencies table") end
         
         for _, file in ipairs(pkg.files or {}) do
-            if not file.source or file.source == "" then table.insert(errors, id .. ": Empty source path") end
-            if not file.target or file.target == "" then table.insert(errors, id .. ": Empty target path") end
-            if file.target and (file.target:sub(1,1) == "/" or file.target:find("%.%.")) then
-                table.insert(errors, id .. ": Illegal target path: " .. file.target)
+            if not isSafeRelativePath(file.source) then 
+                table.insert(errors, id .. ": Illegal or empty source path: " .. tostring(file.source)) 
+            end
+            if not isSafeRelativePath(file.target) then 
+                table.insert(errors, id .. ": Illegal or empty target path: " .. tostring(file.target)) 
             end
         end
         

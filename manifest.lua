@@ -4,7 +4,9 @@
 
 return {
     packages = {
-        -- CORE PACKAGES (HIDDEN)
+        ------------------------------------------------------------------------
+        -- CORE PACKAGES (Shared Libraries)
+        ------------------------------------------------------------------------
         ["core.base"] = {
             name = "Core Base",
             description = "Fundamental utilities (Config, Logger).",
@@ -70,7 +72,9 @@ return {
             },
         },
 
-        -- APPLICATIONS
+        ------------------------------------------------------------------------
+        -- APPLICATION PACKAGES (User Programs)
+        ------------------------------------------------------------------------
         ["create_crafter"] = {
             name = "Create Mechanical Crafter Automation",
             description = "Fully automated grid crafting for the Create mod with in-game recording.",
@@ -126,6 +130,10 @@ return {
                 { source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua", target = "startup.lua" },
             },
         },
+
+        ------------------------------------------------------------------------
+        -- META & DEVELOPER PACKAGES (Tools)
+        ------------------------------------------------------------------------
         ["developer_suite"] = {
             name = "CC Developer Suite",
             description = "Advanced hardware inspection and diagnostic toolkit.",
