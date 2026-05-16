@@ -53,6 +53,17 @@ function RecipeManager:addRecipe(recipe)
     self.dashboard:setRecipeCount(#self.recipes)
 end
 
+--- Removes a recipe by name and updates the dashboard
+---@param name string
+---@return boolean success
+function RecipeManager:removeRecipeByName(name)
+    local found = self:remove(name)
+    if found then
+        self.dashboard:setRecipeCount(#self.recipes)
+    end
+    return found
+end
+
 --- Validates a raw recipe table
 ---@param rawRecipes table[]
 ---@return table[]|nil

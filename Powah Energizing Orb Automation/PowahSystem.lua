@@ -30,6 +30,7 @@ local keys_i = keys.i
 ---@field recipeManager RecipeManager
 ---@field activeJobs table<string, table>
 ---@field meBridge any|nil
+---@field aeScanner any|nil
 local PowahSystem = {}
 PowahSystem.__index = PowahSystem
 
@@ -43,6 +44,7 @@ function PowahSystem.new(options)
     self.recipeManager = RecipeManager.new(options.recipeFile or "powah_recipes.json", self.dashboard)
     self.activeJobs = {}
     self.meBridge = options.meBridgeName and peripheral.wrap(options.meBridgeName) or nil
+    self.aeScanner = options.aeScannerName and peripheral.wrap(options.aeScannerName) or nil
     return self
 end
 
@@ -153,6 +155,7 @@ function PowahSystem:keyListener()
         elseif key == keys_i then
             local menu = ImportMenu.new({
                 meBridge = self.meBridge,
+                aeScanner = self.aeScanner,
                 recipeManager = self.recipeManager,
                 dashboard = self.dashboard
             })

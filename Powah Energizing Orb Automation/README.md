@@ -7,14 +7,11 @@
 ## ✨ Features
 
 - **Multi-Orb Support** — Automatically discovers all connected Energizing Orbs and crafts in parallel.
-- **AE2 ME Bridge Integration** — Direct connection to your AE2 network to read and import patterns.
-- **Intelligent Recipe Importer** — Press `I` to browse and import AE2 patterns directly into the system. No more manual typing of item IDs!
-- **Modpack Compatibility** — Filter by "Powah Only" or "All Mods" (Key `F`) to support custom modpack recipes that use the Energizing Orb.
-- **High-Precision Matching** — Deep ID-based ingredient validation with support for **Bulk Processing** (Multiplier logic).
-- **Auto-Recovery** — Automated item retrieval and orb reset if crafting stalls or power fails.
-- **Pretty-JSON Formatting** — `powah_recipes.json` is automatically formatted with indentations for easy manual editing.
-- **Live Dashboard** — Real-time monitoring of job status, power, and throughput across all orbs.
-- **Hot-Reload** — Press `R` to sync changes from `powah_recipes.json` instantly.
+- **Direct Provider Access (Optional)** — Full support for the **`ae2communicate`** mod. This allows you to access **Named Pattern Providers** directly, eliminating the need to search through large networks.
+- **ME Bridge Integration** — Standard fallback via Advanced Peripherals' `meBridge` to read all system recipes if the optional mod is not used.
+- **Precision & Intelligence** — Automatic handling of multipliers and exact ID-based ingredient validation during import.
+- **Modpack Compatibility** — Toggle between "Powah Only" or "All Mods" (Key `M`) to support recipes from any mod using the Energizing Orb.
+- **Auto-Recovery** — Automated item retrieval and orb reset in case of crafting stalls or power failures.
 
 ---
 
@@ -22,36 +19,40 @@
 
 ![Ingame Setup](images/setup.png)
 
-1. **Advanced Computer** — Required for the colored high-resolution dashboard.
-2. **Buffer Chest** — Place a chest adjacent to the computer (default: `"left"`). This acts as the intake for AE2 Patterns.
+1. **Advanced Computer** — Required for the high-resolution colored dashboard.
+2. **Buffer Chest** — Connect any chest (e.g., Diamond Chest) adjacent to the computer or via the network.
 3. **Energizing Orbs** — Connect all Orbs via **Networking Cables** and **Wired Modems**.
-4. **ME Bridge (Optional)** — Connect an **ME Bridge** (from Advanced Peripherals) to the network to enable AE2 Import features.
-5. **Logistics** — Use an Import Bus (AE2) on the Orbs to extract finished products. Set the Pattern Provider to **Blocking Mode** facing the Buffer Chest.
+4. **Optional Quality-of-Life Feature (ae2communicate):**
+   - Install the **`ae2communicate`** mod.
+   - Place a **Wired Modem** directly on an **AE2 Interface** (this will then be recognized as an `ae2_scanner`).
+   - Name your Pattern Providers in your AE2 system (e.g., "Powah Orb").
+   - **Benefit:** You can select this provider directly in the Import Menu and instantly see all Powah recipes without searching!
+5. **Standard Import (ME Bridge):** If `ae2communicate` is not used, an **ME Bridge** is required for recipe imports.
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & Usage
 
-Run this single command on your ComputerCraft terminal:
-```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/Universal%20Installer/install.lua
-install
-```
-Select **Powah Energizing Orb Automation** to download the latest modular version.
+1. Run the installer and select **Powah Automation**.
+2. The system auto-detects your peripherals on startup.
+3. **Important**: Set your AE2 Pattern Providers to **"Blocking Mode"** and point them at the Buffer Chest.
 
 ---
 
 ## 📖 AE2 Recipe Import
 
-The easiest way to add recipes is via the **ME Bridge**:
-1. Create a **Processing Pattern** in AE2 (e.g., 1x Nether Star + 2x Redstone Block = 16x Nitro Crystal).
-2. Put the pattern into any ME Pattern Provider in your network.
-3. Open the Dashboard on the Computer and press **`I`**.
-4. Find your recipe in the list.
-   - 🟢 **Green Bullet**: Already imported and matches exactly.
-   - 🔴 **Red Bullet**: Not yet in `rezepte.json`.
-5. Press **`ENTER`** to import. The system handles all multipliers and technical IDs automatically!
-6. (Optional) Press **`F`** to toggle between Powah recipes and all other mods.
+The system features a smart import menu (Key **`I`**):
+
+### Scenario A: With AE2 Scanner
+1. Press **`I`**.
+2. Select the **Named Pattern Provider** you want to import from.
+3. Browse the recipes and press **`ENTER`** to import.
+
+### Scenario B: Standard ME Bridge
+1. Press **`I`**.
+2. Browse all available patterns in the network.
+3. Use **`M`** to toggle between **Powah Only** and **All Mods**.
+4. Press **`ENTER`** to import.
 
 ---
 
@@ -59,21 +60,24 @@ The easiest way to add recipes is via the **ME Bridge**:
 
 | Key | Action |
 |:---:|---|
-| **`R`** | **Reload** `rezepte.json` without restarting |
+| **`R`** | **Reload** recipes without restarting |
 | **`I`** | **Import Menu** (Browse and add AE2 Patterns) |
-| **`F`** | **Filter Toggle** (Inside Import Menu: Powah vs. All Mods) |
+| **`M`** | **Mod Toggle** (Inside Import Menu: Powah vs. All) |
+| **`B`** | **Back** (Inside Import Menu: Go back to Provider selection) |
+| **`X`** | **Delete** (Remove an imported recipe from the system) |
 | **`Q`** | **Exit** menus or the main script |
 
 ---
 
 ## ⚙️ Configuration
 
-Open `startup` to customize your setup:
+The system is designed to work out-of-the-box. If you need manual adjustments, check `startup.lua`:
 ```lua
-local system = PowahSystem:new("left", "powah_recipes.json")
+local system = PowahSystem.new({
+    chestName = "left", -- Or use auto-detection
+    recipeFile = "powah_recipes.json"
+})
 ```
-- Change `"left"` to the side where your **Buffer Chest** is located.
-- The system automatically finds the **ME Bridge** and all **Energizing Orbs** on the network.
 
 ---
 
@@ -81,10 +85,10 @@ local system = PowahSystem:new("left", "powah_recipes.json")
 
 | Error | Cause & Fix |
 |---|---|
-| `No ME Bridge found!` | Check if the ME Bridge is connected via cable and the modem is active. |
-| `Transfer Error!` | The Orb is full or the item was pulled before the transfer finished. |
-| `Timeout in Orb...` | No power or crafting process took longer than 60s. Items are returned to the chest. |
-| `Red Bullets in Import` | This is normal! It means the AE2 pattern isn't in your `rezepte.json` yet. Just press ENTER to fix it. |
+| `No ME Bridge found!` | Check cables and modem status. |
+| `AE Scanner: None` | Normal if you don't have the mod. Classic mode will be used. |
+| `Timeout in Orb...` | Crafting took >60s. Items returned to chest. Check power! |
+| `Duplicate Name` | You are trying to import a recipe that already exists. |
 
 ---
 *Developed with ❤️ for Advanced Agentic Coding.*

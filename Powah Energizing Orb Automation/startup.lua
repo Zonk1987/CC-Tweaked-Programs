@@ -51,19 +51,29 @@ local chestName = peripheral.find("minecraft:chest")
                or peripheral.find("expandedstorage:netherite_chest") 
                or "left"
 
--- Robust ME Bridge detection
+-- Robust ME Bridge & Scanner detection
 local meBridge = peripheral.find("meBridge") or peripheral.find("me_bridge")
 local meBridgeName = meBridge and peripheral.getName(meBridge)
 
+local aeScanner = peripheral.find("ae2_scanner")
+local aeScannerName = aeScanner and peripheral.getName(aeScanner)
+
 print("Hardware Check:")
-print("- Chest:     " .. chestName)
-print("- ME Bridge: " .. (meBridgeName or "Not found"))
+print("- Chest:      " .. chestName)
+print("- ME Bridge:  " .. (meBridgeName or "Not found"))
+print("- AE Scanner: " .. (aeScannerName or "None detected"))
+if aeScannerName then
+    local pType = peripheral.getType(aeScannerName)
+    print("  -> Found at: " .. aeScannerName)
+    print("  -> Type:     " .. (pType or "unknown"))
+end
 os.sleep(1)
 
 local system = PowahSystem.new({
     chestName = chestName,
     recipeFile = "powah_recipes.json",
-    meBridgeName = meBridgeName
+    meBridgeName = meBridgeName,
+    aeScannerName = aeScannerName
 })
 
 system:start()
