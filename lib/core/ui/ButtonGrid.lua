@@ -112,18 +112,49 @@ function ButtonGrid:drawButton(btn)
     end
 end
 
---- Low-level box drawing helper
+--- Specialized frame for buttons with mirrored edge styling
 function ButtonGrid:drawButtonBox(x1, y1, x2, y2, color)
+    -- Graphics chars
+    local h, v = string.char(140), string.char(149)
+
+    -- Horizontal
+    local hLine = string.rep(h, x2 - x1 + 1)
+    self.mon.setTextColor(color); self.mon.setBackgroundColor(colors.black)
+    self.mon.setCursorPos(x1, y1); self.mon.write(hLine)
+    self.mon.setCursorPos(x1, y2); self.mon.write(hLine)
+
+    -- Vertical (Mirrored logic)
+    for y = y1 + 1, y2 - 1 do
+        self.mon.setTextColor(color); self.mon.setBackgroundColor(colors.black)
+        self.mon.setCursorPos(x1, y); self.mon.write(v)
+        self.mon.setTextColor(colors.black); self.mon.setBackgroundColor(color)
+        self.mon.setCursorPos(x2, y); self.mon.write(v)
+    end
+
+    -- Corners (Button-specific bridge blocks)
+    self.mon.setTextColor(color); self.mon.setBackgroundColor(colors.black)
+    self.mon.setCursorPos(x1, y1); self.mon.write(string.char(156)) -- TL
+    self.mon.setTextColor(colors.black); self.mon.setBackgroundColor(color)
+    self.mon.setCursorPos(x2, y1); self.mon.write(string.char(147)) -- TR (Bridge)
+    self.mon.setTextColor(color); self.mon.setBackgroundColor(colors.black)
+    self.mon.setCursorPos(x1, y2); self.mon.write(string.char(141)) -- BL
+    self.mon.setCursorPos(x2, y2); self.mon.write(string.char(142)) -- BR (Bridge Mirror)
+end
+
+--- Draws a solid filled box (area fill)
+function ButtonGrid:drawBox(x1, y1, x2, y2, color)
+    color = color or colors.black
     self.mon.setBackgroundColor(color)
     for y = y1, y2 do
         self.mon.setCursorPos(x1, y)
         self.mon.write(string.rep(" ", x2 - x1 + 1))
     end
+    self.mon.setBackgroundColor(colors.black)
 end
 
---- Simple box filler without button logic
-function ButtonGrid:drawBox(x1, y1, x2, y2, color)
-    self:drawButtonBox(x1, y1, x2, y2, color)
+--- Alias for drawBox
+function ButtonGrid:drawFilledBox(x1, y1, x2, y2, color)
+    self:drawBox(x1, y1, x2, y2, color)
 end
 
 --- Draws a single horizontal fine line

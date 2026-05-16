@@ -5,6 +5,14 @@
 local ButtonManager = {}
 ButtonManager.__index = ButtonManager
 
+---@class ButtonManager
+---@field mon table Peripheral monitor object
+---@field buttons table<string, table> Registered buttons
+---@field colorOn number Color for active state
+---@field colorOff number Color for inactive state
+---@field activeKey string|nil Persistent selection
+---@field flashKey string|nil Temporary highlight
+
 --- Creates a new ButtonManager instance
 --- @param monitorName string The name of the monitor peripheral
 --- @return ButtonManager

@@ -32,11 +32,26 @@ local ButtonGrid = require("ButtonGrid")
 local PeripheralScanner = require("PeripheralScanner")
 
 -- Hardware Discovery
-local _, monitorName = PeripheralScanner.find("monitor")
-local _, tpName = PeripheralScanner.find("mekanism:teleporter")
+local function findHardware()
+    local monitor = peripheral.find("monitor")
+    local teleporter = peripheral.find("mekanism:teleporter") 
+                    or peripheral.find("teleporter")
+                    or peripheral.find("mekanismteleporter")
+    
+    local monitorName = monitor and peripheral.getName(monitor)
+    local tpName = teleporter and peripheral.getName(teleporter)
+    
+    print("Hardware Scan:")
+    print("- Monitor:    " .. (monitorName or "MISSING"))
+    print("- Teleporter: " .. (tpName or "MISSING"))
+    
+    return monitorName, tpName
+end
+
+local monitorName, tpName = findHardware()
 
 if not monitorName or not tpName then
-    error("Critical Hardware Missing: Monitor or Teleporter not found!")
+    error("Critical Hardware Missing! Check Modems & Connections.")
 end
 
 -- Initialization

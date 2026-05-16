@@ -123,7 +123,6 @@ function HubSystem.new(options)
     return self
 end
 
-
 --- Draws the static frame and layout elements
 function HubSystem:drawTerminalHeader()
     term.clear()
@@ -183,7 +182,6 @@ function HubSystem:configMenu()
         end
     end
 end
-
 
 --- Picks the next color for a portal
 function HubSystem:getNextColor(portalName)
@@ -268,7 +266,16 @@ function HubSystem:draw()
     if self.currentPage > 1 then
         local isPrevFlash = (self.bm.flashKey == "PREV")
         local prevCol = isPrevFlash and colors.lime or colors.gray
-        self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol)
+        local prevBG = isPrevFlash and colors.lime or colors.gray
+
+        -- Manual Fill
+        self.bm.mon.setBackgroundColor(prevBG)
+        for row = navY, h - 1 do
+            self.bm.mon.setCursorPos(3, row)
+            self.bm.mon.write(string.rep(" ", 13))
+        end
+
+        self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol, prevBG)
         self.bm:add("PREV", function()
             self.bm:setFlash("PREV")
             self.currentPage = self.currentPage - 1
@@ -282,7 +289,16 @@ function HubSystem:draw()
     local mid = math.floor(w / 2)
     local isRefreshFlash = (self.bm.flashKey == "REFRESH")
     local refreshCol = isRefreshFlash and colors.lime or colors.gray
-    self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol)
+    local refreshBG = isRefreshFlash and colors.lime or colors.gray
+
+    -- Manual Fill
+    self.bm.mon.setBackgroundColor(refreshBG)
+    for row = navY, h - 1 do
+        self.bm.mon.setCursorPos(mid - 7, row)
+        self.bm.mon.write(string.rep(" ", 15))
+    end
+
+    self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol, refreshBG)
     self.bm:add("REFRESH", function()
         self.bm:setFlash("REFRESH")
         self:draw()
@@ -294,7 +310,16 @@ function HubSystem:draw()
     if self.currentPage < self.totalPages then
         local isNextFlash = (self.bm.flashKey == "NEXT")
         local nextCol = isNextFlash and colors.lime or colors.gray
-        self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol)
+        local nextBG = isNextFlash and colors.lime or colors.gray
+
+        -- Manual Fill
+        self.bm.mon.setBackgroundColor(nextBG)
+        for row = navY, h - 1 do
+            self.bm.mon.setCursorPos(w - 14, row)
+            self.bm.mon.write(string.rep(" ", 13))
+        end
+
+        self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol, nextBG)
         self.bm:add("NEXT", function()
             self.bm:setFlash("NEXT")
             self.currentPage = self.currentPage + 1
@@ -329,17 +354,16 @@ function HubSystem:drawContent()
 
     for i = start, finish do
         local rel = i - start
-        local x = startX + (rel % cols) * (buttonWidth + gapX)
-        local y = 10 + math.floor(rel / cols) * spacingY
+        local bx = startX + (rel % cols) * (buttonWidth + gapX)
+        local by = 10 + math.floor(rel / cols) * spacingY
         local f = self.frequencies[i]
 
         local bColor = self.isEditMode and colors.orange or colors.gray
-        self.bm:drawButtonBox(x, y, x + buttonWidth - 1, y + 4, bColor)
-
         local isSelected = (self.bm.activeKey == f.key or self.bm.flashKey == f.key)
         local bgColor = isSelected and self.bm.colorOn or colors.gray
-        self.bm:drawBox(x + 1, y + 1, x + buttonWidth - 2, y + 3, bgColor)
+        local fgColor = isSelected and colors.black or colors.white
 
+        -- Register button for click handling
         self.bm:add(f.key, function()
             if self.isEditMode then
                 os_sleep(0.2)
@@ -347,23 +371,48 @@ function HubSystem:drawContent()
             else
                 self:dial(f.key)
             end
-        end, x + 1, x + buttonWidth - 2, y + 1, y + 3, true)
+        end, bx + 1, bx + buttonWidth - 2, by + 1, by + 3, true)
 
-        local textX = x + math.floor((buttonWidth - #f.key) / 2)
-        local fixedCol = self.colorStore.data[f.key]
+        -- 1. Fill the entire button area manually with the background color
         self.bm.mon.setBackgroundColor(bgColor)
+        for row = by, by + 4 do
+            self.bm.mon.setCursorPos(bx, row)
+            self.bm.mon.write(string.rep(" ", buttonWidth))
+        end
+
+        -- 2. Draw the frame on top
+        self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor, bgColor)
+
+        -- Draw Label AFTER boxes
+        local label = f.key
+        if #label > buttonWidth - 2 then label = label:sub(1, buttonWidth - 4) .. ".." end
+        local tx = bx + math.floor((buttonWidth - #label) / 2)
+        local ty = by + 2
+
+        self.bm.mon.setTextColor(fgColor)
+        self.bm.mon.setBackgroundColor(bgColor)
+        self.bm.mon.setCursorPos(tx, ty)
+        self.bm.mon.write(label)
+
+        -- Fixed Color Indicator
+        local fixedCol = self.colorStore.data[f.key]
         if fixedCol and self.isEditMode then
             local pCol = self.ccMap[fixedCol] or colors.white
-            self.bm.mon.setCursorPos(textX - 2, y + 2)
-            self.bm.mon.setTextColor(pCol)
-            self.bm.mon.setBackgroundColor(pCol)
-            self.bm.mon.write(string.char(149))
-            self.bm.mon.setBackgroundColor(bgColor)
+            -- Draw a 2-pixel wide accent stripe with a half-width separator
+            for row = by + 1, by + 3 do
+                -- The Color (2 pixels wide)
+                self.bm.mon.setCursorPos(bx + 1, row)
+                self.bm.mon.setBackgroundColor(pCol)
+                self.bm.mon.write("  ") 
+                
+                -- The "Half-Width" Separator
+                self.bm.mon.setCursorPos(bx + 3, row)
+                self.bm.mon.setBackgroundColor(bgColor) -- Match button background
+                self.bm.mon.setTextColor(colors.black)  -- Black thin line
+                self.bm.mon.write(string.char(149)) 
+            end
         end
-        self.bm.mon.setTextColor(colors.white)
-        self.bm.mon.setCursorPos(textX, y + 2); self.bm.mon.write(f.key)
     end
-    self.bm:draw()
 end
 
 --- Dials a portal
@@ -391,50 +440,79 @@ end
 --- Draws a color selection overlay
 function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
     local w, h = self.bm.mon.getSize()
-    local boxW, boxH = 38, 25
-    if not isRedraw then self.activeOverlay = { name = portalName, x = offsetX, y = offsetY } end
-    offsetX = offsetX or math.floor((w - boxW) / 2)
-    offsetY = offsetY or math.floor((h - boxH) / 2)
-    local x1 = math.max(2, math.min(offsetX, w - boxW - 1))
-    local y1 = math.max(2, math.min(offsetY, h - boxH - 1))
-    local x2, y2 = x1 + boxW, y1 + boxH
+    local boxW, boxH = 39, 26
+    
+    -- Position Logic with Safety Margin (protects monitor borders)
+    local curX = offsetX or (self.activeOverlay and self.activeOverlay.x) or math.floor((w - boxW) / 2)
+    local curY = offsetY or (self.activeOverlay and self.activeOverlay.y) or math.floor((h - boxH) / 2)
+    
+    -- Keep at least 3 pixels away from edges to protect the main orange border
+    local x1 = math.max(3, math.min(curX, w - boxW - 2))
+    local y1 = math.max(4, math.min(curY, h - boxH - 2))
+    
+    if not isRedraw then self.activeOverlay = { name = portalName, x = x1, y = y1 } end
+
+    -- Create an isolated sub-window for the overlay
+    local win = window.create(self.buffer, x1, y1, boxW, boxH, true)
+    win.setBackgroundColor(colors.gray)
+    win.clear()
+
+    local oldMon = self.bm.mon
+    self.bm.mon = win -- Redirect button manager to sub-window
 
     self.bm:resetButtons()
+    -- Overlay Shield still on main buffer to block background clicks
     self.bm:add("OVERLAY_SHIELD", function() end, 1, w, 1, h, true)
-    Dashboard.drawOverlayFrame(self.bm, x1, y1, x2, y2)
 
-    self.bm.mon.setTextColor(colors.white)
-    self.bm.mon.setBackgroundColor(colors.gray)
+    -- Draw frame (coordinates now relative to 'win', so 1,1 to boxW, boxH)
+    Dashboard.drawOverlayFrame(self.bm, 1, 1, boxW, boxH)
+
+    -- Window Title with Move Action
+    win.setTextColor(colors.white)
+    win.setBackgroundColor(colors.gray)
     local title = "COLOR: " .. portalName
-    self.bm.mon.setCursorPos(x1 + math.floor((boxW - #title) / 2), y1 + 1); self.bm.mon.write(title)
+    if self.isMovingOverlay then title = "[ CLICK NEW POSITION ]" end
+    if #title > boxW - 4 then title = title:sub(1, boxW - 6) .. ".." end
+    win.setCursorPos(math.floor((boxW - #title) / 2) + 1, 2); win.write(title)
+    
+    -- Register title as a "Move" button
+    self.bm:add("MOVE_WINDOW", function()
+        self.isMovingOverlay = true
+        self:draw()
+    end, x1, x1 + boxW - 1, y1, y1 + 2, true)
 
     for i, colorName in ipairs(self.mekColors) do
-        local bx = x1 + 4 + ((i - 1) % 4) * 8
-        local by = y1 + 3 + math.floor((i - 1) / 4) * 4
-        Dashboard.drawColorSwatchFrame(self.bm, bx, by, bx + 5, by + 1)
-        self.bm:drawBox(bx, by, bx + 5, by + 1, self.ccMap[colorName])
+        local bx = 4 + ((i - 1) % 4) * 9
+        local by = 4 + math.floor((i - 1) / 4) * 4
+        local swatchColor = self.ccMap[colorName] or colors.white
+        self.bm:drawBox(bx, by, bx + 5, by + 1, swatchColor)
+        Dashboard.drawColorSwatchFrame(self.bm, bx, by, bx + 5, by + 1, swatchColor)
+
+        -- Button coordinates MUST be absolute for the ButtonManager's click detection
         self.bm:add("SET_COL_" .. colorName, function()
             self.colorStore.data[portalName] = colorName
             self.colorStore:save()
             self.activeOverlay = nil
+            self.bm.mon = oldMon
             os_sleep(0.1); self:draw()
-        end, bx, bx + 5, by, by + 1, true)
+        end, x1 + bx - 1, x1 + bx + 4, y1 + by - 1, y1 + by)
     end
 
-    local buttonY = y1 + boxH - 3
-    Dashboard.drawSmallButtonFrame(self.bm, x1 + 3, buttonY, x1 + 13, buttonY + 2)
+    local buttonY = boxH - 2
+    Dashboard.drawSmallButtonFrame(self.bm, 3, buttonY - 1, 12, buttonY + 1)
     self.bm:add("RESET_BTN", function()
         self.colorStore.data[portalName] = nil; self.colorStore:save()
-        self.activeOverlay = nil; os_sleep(0.1); self:draw()
-    end, x1 + 4, x1 + 13, buttonY, buttonY + 1, true)
-    self.bm.mon.setCursorPos(x1 + 5, buttonY + 1); self.bm.mon.write(" RANDOM ")
+        self.activeOverlay = nil; self.bm.mon = oldMon; os_sleep(0.1); self:draw()
+    end, x1 + 2, x1 + 11, y1 + buttonY - 2, y1 + buttonY)
+    win.setCursorPos(4, buttonY); win.write(" RANDOM ")
 
-    Dashboard.drawSmallButtonFrame(self.bm, x2 - 13, buttonY, x2 - 3, buttonY + 2)
+    Dashboard.drawSmallButtonFrame(self.bm, boxW - 12, buttonY - 1, boxW - 3, buttonY + 1)
     self.bm:add("BACK_BTN", function()
-        self.activeOverlay = nil; self:draw()
-    end, x2 - 12, x2 - 4, buttonY, buttonY + 1, true)
-    self.bm.mon.setCursorPos(x2 - 10, buttonY + 1); self.bm.mon.write(" BACK ")
-    self.bm:draw()
+        self.activeOverlay = nil; self.bm.mon = oldMon; self:draw()
+    end, x1 + boxW - 13, x1 + boxW - 4, y1 + buttonY - 2, y1 + buttonY)
+    win.setCursorPos(boxW - 10, buttonY); win.write(" BACK ")
+
+    self.bm.mon = oldMon -- Restore main monitor for safety
 end
 
 --- Draws the status display (target frequency and system state)
@@ -462,17 +540,28 @@ function HubSystem:drawStatus(force)
         self.bm.activeKey = name
     end
 
-
-    -- Draw Frame around status
+    -- Draw Frame around status (Kept safe from edges)
     local w, h = self.bm.mon.getSize()
-    Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 2, 8)
+    Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 3, 8)
 
-    self.bm.mon.setCursorPos(5, 6)
-    self.bm.mon.setTextColor(colors.white)
+    -- Explicitly fill the ENTIRE interior with gray
+    self.bm:drawBox(4, 6, w - 4, 7, colors.gray)
+
     self.bm.mon.setBackgroundColor(colors.gray)
-    self.bm.mon.write(string.format("TARGET: %-30s", name .. (owner ~= "" and " (" .. owner .. ")" or "")))
-    self.bm.mon.setCursorPos(5, 7)
-    self.bm.mon.write(string.format("SYSTEM: %-30s", self.lastError or statusStr))
+    self.bm.mon.setTextColor(colors.white)
+
+    local innerW = w - 7 -- From col 4 to w-4
+    local targetText = " TARGET: " .. name .. (owner ~= "" and " (" .. owner .. ")" or "")
+    local systemText = " SYSTEM: " .. (self.lastError or statusStr)
+    
+    -- Manual padding to fill the entire inner width
+    local targetLine = targetText .. string.rep(" ", math.max(0, innerW - #targetText))
+    local systemLine = systemText .. string.rep(" ", math.max(0, innerW - #systemText))
+
+    self.bm.mon.setCursorPos(4, 6)
+    self.bm.mon.write(targetLine:sub(1, innerW))
+    self.bm.mon.setCursorPos(4, 7)
+    self.bm.mon.write(systemLine:sub(1, innerW))
 
     local isOverlayOpen = false
     for _, btn in ipairs(self.bm.buttons) do
@@ -481,6 +570,7 @@ function HubSystem:drawStatus(force)
             break
         end
     end
+    
     if not isOverlayOpen then self:drawContent() end
     if self.buffer then self.buffer.setVisible(true) end
 end
@@ -495,15 +585,26 @@ function HubSystem:run()
     while true do
         local ev, side, x, y, message = os_pullEvent()
         if ev == "monitor_touch" and not self.isBusy then
-            self.isBusy = true; self.bm:checkClick(x, y); self:drawStatus()
-            local t = os_startTimer(0.5)
-            while true do
-                local e = { os_pullEvent() }
-                if e[1] == "timer" and e[2] == t then break end
+            if self.isMovingOverlay then
+                -- Move Mode Logic
+                self.isMovingOverlay = false
+                if self.activeOverlay then
+                    self.activeOverlay.x = x - math.floor(39 / 2) -- Center on click
+                    self.activeOverlay.y = y - 1 -- Header offset
+                end
+                self:draw()
+            else
+                -- Standard Click Logic
+                self.isBusy = true; self.bm:checkClick(x, y); self:drawStatus()
+                local t = os_startTimer(0.5)
+                while true do
+                    local e = { os_pullEvent() }
+                    if e[1] == "timer" and e[2] == t then break end
+                end
+                self.bm.flashKey = nil
+                self:draw()
+                self.isBusy = false
             end
-            self.bm.flashKey = nil
-            self:draw()
-            self.isBusy = false
         elseif ev == "modem_message" and y == (self.configStore.data.recallChannel or 99) then
             if type(message) == "table" and message.command == "RECALL" then
                 self.tp.setFrequency(message.target); self.bm:setActive(message.target); self:drawStatus()

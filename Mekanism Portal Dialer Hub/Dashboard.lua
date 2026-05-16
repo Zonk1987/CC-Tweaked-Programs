@@ -62,7 +62,10 @@ function Dashboard.drawOverlayFrame(bm, x1, y1, x2, y2)
 end
 
 --- Draws a specialized frame for color swatches
-function Dashboard.drawColorSwatchFrame(bm, x1, y1, x2, y2)
+function Dashboard.drawColorSwatchFrame(bm, x1, y1, x2, y2, color)
+    -- Fill with the actual color first
+    bm:drawBox(x1, y1, x2, y2, color)
+
     local frameFG = colors.lightGray
     local frameBG = colors.gray
 
