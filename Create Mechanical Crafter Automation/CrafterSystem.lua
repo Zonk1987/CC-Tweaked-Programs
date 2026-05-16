@@ -207,6 +207,8 @@ function CrafterSystem:recordNewRecipeFlow()
     if success then
         self.dashboard:setError("Recipe saved successfully!")
         self.recipeManager:load(self.crafterGrid:getCount())
+        -- Start crafting the recorded recipe immediately
+        RedstoneController.pulseAll()
     else
         self.dashboard:setError("Record Error: " .. (err or "Unknown"))
     end

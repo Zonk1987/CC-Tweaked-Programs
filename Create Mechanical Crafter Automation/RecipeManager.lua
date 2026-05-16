@@ -139,6 +139,7 @@ function RecipeManager:removeRecipeByName(name)
         if r.name == name then
             table.remove(self.recipes, i)
             self:save()
+            self.dashboard:setRecipeCount(#self.recipes)
             return true
         end
     end
@@ -244,11 +245,22 @@ function RecipeManager:recordRecipe(name, crafterGrid)
     if file then file.close() end
 
     local found = false
-    for _, r in ipairs(raw) do if r.name == name then r.keys, r.pattern, found = keys, pattern, true break end end
+    for i = #raw, 1, -1 do
+        local r = raw[i]
+        if r.name == name then
+            r.keys, r.pattern, found = keys, pattern, true
+        elseif r.name == "Crushing Wheel (Example)" then
+            table.remove(raw, i)
+        end
+    end
+
     if not found then table_insert(raw, { name = name, keys = keys, pattern = pattern }) end
 
     local outFile = fs.open(self.filename, "w")
     if outFile then outFile.write(textutils.serializeJSON(raw)) outFile.close() end
+    
+    -- Reload into memory to sync state
+    self:load()
     return true
 end
 
