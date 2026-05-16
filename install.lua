@@ -7,7 +7,12 @@ local _ENV = setmetatable({}, {
     end
 })
 
-local REPO_URL = "https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/"
+local OWNER = "Zonk1987"
+local REPO = "CC-Tweaked-Programs"
+local BRANCH = "main"
+
+local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
+
 local MANIFEST_NAME = "manifest.lua"
 
 local args = { ... }
