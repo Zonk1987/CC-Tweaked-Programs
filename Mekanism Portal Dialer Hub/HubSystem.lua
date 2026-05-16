@@ -160,12 +160,14 @@ function HubSystem:configMenu()
         if key == keys.one then
             term.setCursorPos(1, 8)
             write("New Recall Channel: ")
+            os_sleep(0.1) -- Clear event buffer
             local input = read()
             self.configStore.data.recallChannel = tonumber(input) or self.configStore.data.recallChannel
             os_sleep(0.5)
         elseif key == keys.two then
             term.setCursorPos(1, 8)
             write("New Test Mode Count: ")
+            os_sleep(0.1) -- Clear event buffer
             local input = read()
             self.configStore.data.testModeCount = tonumber(input) or self.configStore.data.testModeCount
             os_sleep(0.5)
