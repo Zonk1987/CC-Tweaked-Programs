@@ -9,7 +9,7 @@ A collection of professional-grade automation scripts for Minecraft **CC:Tweaked
 Run this command on an **Advanced Computer**:
 
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 install.lua
 ```
 
