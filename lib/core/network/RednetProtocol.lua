@@ -48,7 +48,7 @@ end
 function RednetProtocol.broadcast(protocol, msgType, data)
     local payload = {
         protocol = protocol,
-        type = msgType,
+        command = msgType,
         timestamp = os.epoch("utc")
     }
     for k, v in pairs(data) do payload[k] = v end

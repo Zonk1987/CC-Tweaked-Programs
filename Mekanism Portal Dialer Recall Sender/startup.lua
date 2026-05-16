@@ -79,21 +79,65 @@ end
 
 --- Initial hardware check and setup
 function RecallSender:initHardware()
-    self.modem = PeripheralScanner.find("modem")
-    RednetProtocol.openAuto()
+    local modem, side = PeripheralScanner.find("modem")
+    self.modem = modem
+    self.modemSide = side
+    
+    -- Search for Teleporter (Flexible name: just "teleporter")
+    self.tp = PeripheralScanner.find("teleporter")
+    
+    term.setTextColor(colors.yellow)
+    if side then
+        print("Main Modem: " .. side)
+        RednetProtocol.openAuto()
+    end
+    
+    if self.tp then
+        term.setTextColor(colors.lime)
+        print("Teleporter: Connected!")
+    else
+        term.setTextColor(colors.red)
+        print("Teleporter: NOT FOUND!")
+    end
+    
+    term.setTextColor(colors.white)
+    os_sleep(1)
+end
+
+--- Refreshes the teleporter status
+function RecallSender:refreshStatus()
+    if self.tp then
+        local ok, status = pcall(self.tp.getStatus)
+        if ok then
+            -- Capitalize first letter
+            self.tpStatus = status:sub(1,1):upper() .. status:sub(2)
+        else
+            self.tpStatus = "Error reading status"
+        end
+    else
+        self.tpStatus = "Remote Hub only"
+    end
 end
 
 --- Draws the terminal status screen
 function RecallSender:drawTerminalHeader()
+    self:refreshStatus()
     term.clear()
     term.setCursorPos(1, 1)
     term.setTextColor(colors.cyan)
-    print("Mekanism Portal Recall Sender v2.1")
+    print("Mekanism Portal Recall Sender v2.2")
     term.setTextColor(colors.gray)
     print("----------------------------------")
     term.setTextColor(colors.white)
     print("Target:  " .. self.configStore.data.target)
     print("Channel: " .. self.configStore.data.channel)
+    print("Modem:   " .. (self.modemSide or "None"))
+    
+    -- Display Teleporter Status
+    term.setTextColor(self.tpStatus == "Ready" and colors.lime or colors.yellow)
+    print("Portal:  " .. self.tpStatus)
+    
+    term.setTextColor(colors.white)
     print("\nStatus:  Waiting for Redstone signal...")
     print("\n[Press 'C' for Configuration]")
 end
@@ -171,6 +215,7 @@ end
 function RecallSender:run()
     self:drawTerminalHeader()
     local messageTimer = nil
+    local refreshTimer = os_startTimer(2) -- Auto-refresh every 2s
 
     while true do
         local event, p1, p2, p3 = os_pullEvent()
@@ -178,11 +223,16 @@ function RecallSender:run()
         if event == "redstone" then
             if RedstoneController.anyInput() then
                 self:broadcastRecall()
-                messageTimer = os_startTimer(10)
+                messageTimer = os_startTimer(5) -- Return to header after 5s
             end
 
-        elseif event == "timer" and p1 == messageTimer then
-            self:drawTerminalHeader()
+        elseif event == "timer" then
+            if p1 == messageTimer then
+                self:drawTerminalHeader()
+            elseif p1 == refreshTimer then
+                self:drawTerminalHeader()
+                refreshTimer = os_startTimer(2) -- Restart refresh
+            end
 
         elseif event == "key" and p1 == keys.c then
             self:configMenu()

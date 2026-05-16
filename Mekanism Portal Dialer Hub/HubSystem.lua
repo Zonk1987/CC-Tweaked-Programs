@@ -134,6 +134,7 @@ function HubSystem:drawTerminalHeader()
     term.setTextColor(colors.white)
     print("Monitor:    " .. (self.monName or "Unknown"))
     print("Teleporter: " .. (self.tpName or "Unknown"))
+    print("Modem:      " .. (self.modemSide or "Searching..."))
     print("\n[Press 'C' on Computer for Configuration]")
 
     if self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0 then
@@ -218,9 +219,14 @@ function HubSystem:refresh()
         end
     end
 
-    local max = self.configStore.data.maxButtons or 24
+    local max = self.configStore.data.maxButtons or 16
     self.totalPages = math.ceil(#self.frequencies / max)
     if self.totalPages < 1 then self.totalPages = 1 end
+
+    -- Reset to page 1 if current page is now out of bounds
+    if self.currentPage > self.totalPages then
+        self.currentPage = 1
+    end
 end
 
 --- Draws the static frame and layout elements
@@ -427,6 +433,15 @@ function HubSystem:dial(portalName)
     self.buffer.setVisible(true)
 
     if not (self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0) then
+        -- Determine if frequency is public/private
+        local isPublic = true
+        for _, f in ipairs(self.frequencies or {}) do
+            if f.key == portalName then
+                isPublic = f.public
+                break
+            end
+        end
+
         self.tp.setFrequency(portalName)
         os_sleep(0.3)
         pcall(self.tp.setFrequencyColor, color)
@@ -580,6 +595,8 @@ end
 --- Main runtime loop
 function HubSystem:run()
     local side = RednetProtocol.openAuto()
+    self.modemSide = side or "None"
+    
     if side then
         peripheral.call(side, "open", self.configStore.data.recallChannel or 99)
     end
@@ -607,12 +624,18 @@ function HubSystem:run()
                 self:draw()
                 self.isBusy = false
             end
-        elseif ev == "modem_message" and y == (self.configStore.data.recallChannel or 99) then
-            if type(message) == "table" and message.command == "RECALL" then
-                self.tp.setFrequency(message.target); self.bm:setActive(message.target); self:drawStatus()
+        elseif ev == "modem_message" then
+            local channel, msg = x, message
+            if channel == (self.configStore.data.recallChannel or 99) then
+                if type(msg) == "table" and msg.command == "RECALL" then
+                    self:dial(msg.target)
+                end
             end
-        elseif ev == "rednet_message" and type(y) == "table" and y.command == "RECALL" then
-            self.tp.setFrequency(y.target); self.bm:setActive(y.target); self:drawStatus()
+        elseif ev == "rednet_message" then
+            local msg = x
+            if type(msg) == "table" and msg.command == "RECALL" then
+                self:dial(msg.target)
+            end
         elseif ev == "key" and side == keys.c then
             self:configMenu()
         end
