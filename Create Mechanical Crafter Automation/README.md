@@ -1,4 +1,4 @@
-# Create Mechanical Crafter Automation (CC:Tweaked)
+# Create Mechanical Crafter Automation 🛠️
 
 > Fully automated, production-ready ComputerCraft system for the **Mechanical Crafters** from the **Create** mod. Designed for seamless integration with AE2 / Refined Storage in **Blocking Mode**.
 
@@ -7,13 +7,12 @@
 ## ✨ Features
 
 - **In-Game Recipe Recording** — Place items in crafters, press `S`, type a name. Done. No JSON editing required.
-- **Visual Recipe Management** — Press `M` to browse all saved recipes, view required ingredients, and delete obsolete patterns.
-- **Interactive Grid Calibration** — Click your Wired Modems in order and the system learns your exact grid layout automatically.
-- **AE2 / RS Blocking Mode Ready** — Point your Pattern Provider into the buffer chest. The system handles one recipe at a time, perfectly.
-- **Smart Jam Detection** — If a craft gets stuck, the dashboard alerts you with the exact crafter slot and item that is blocked.
-- **Fuzzy Item Matching** — Use `~planks` in your recipe to accept any type of planks (or any other item family).
-- **Dynamic Redstone Trigger** — Pulses all sides of the computer after item placement to guarantee the crafting starts.
-- **Live Dashboard** — Color-coded UI showing crafter count, current status, last job, and missing items for incomplete recipes.
+- **Visual Recipe Management** — Press `M` to browse all saved recipes, view required ingredients, and manage patterns.
+- **Interactive Grid Calibration** — Automatic detection of your exact grid layout via sequential modem activation.
+- **AE2 / RS Blocking Mode Ready** — Optimized for buffer chest integration with guaranteed single-craft processing.
+- **Smart Jam Detection** — Real-time alerts showing the exact crafter slot and item causing a bottleneck.
+- **Fuzzy Item Matching** — Advanced pattern matching (e.g., `~planks`) for modded material flexibility.
+- **Live Dashboard** — Color-coded high-performance UI showing grid status, job history, and missing ingredients.
 
 ---
 

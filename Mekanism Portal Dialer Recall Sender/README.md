@@ -6,11 +6,12 @@
 
 ## ✨ Features
 
+- **Hardware Diagnostics** — Scans all attached peripherals at startup and provides clear feedback on Modem and Teleporter presence.
+- **Live Portal Status** — Real-time monitoring of the portal's state (e.g., "Ready", "No Power") directly on the sender's screen.
+- **Heartbeat Auto-Refresh** — Automatically updates the status every 2 seconds to keep the display synchronized with the Hub.
 - **Interactive Setup** — No code editing required. The script asks for the target location on the first run.
-- **Config Menu (Hotkeys)** — Press `C` on the computer terminal to change the destination name or communication channel at any time.
-- **Visual Feedback** — Provides clear success messages on the terminal when a recall signal is sent.
-- **Smart Hardware Detection** — Automatically finds and configures wireless modems and rednet.
-- **Dual-Path Protocol** — Sends commands via both standard Modem API and Rednet for maximum compatibility.
+- **Config Menu (Hotkeys)** — Press `C` on the computer terminal to change the destination name or channel.
+- **Dual-Path Protocol** — Sends commands via both standard Modem API and Rednet for maximum reliability.
 
 ---
 

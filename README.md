@@ -1,35 +1,29 @@
-# Zonk's CC:Tweaked Automation Suite
+# Zonk's CC:Tweaked Automation Suite 🚀
 
-A collection of professional-grade automation scripts for Minecraft **CC:Tweaked**, featuring a modular **Feature-Core** architecture and a robust manifest-driven installer.
+A collection of professional-grade automation scripts for Minecraft **CC:Tweaked**, featuring a modular **Feature-Core** architecture, premium UI aesthetics, and a robust manifest-driven installer.
 
 ---
 
 ## 🚀 Installation
 
-The suite uses a unified installer. Run this command on an **Advanced Computer**:
+Run this command on an **Advanced Computer**:
 
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
 install.lua
 ```
 
-### Usage Modes
-- **Interactive**: Simply run `install` to open the package menu.
-- **Specific Package**: `install <package_id>` (e.g., `install powah_orb`).
-- **Dry Run**: `install --dry-run <package_id>` to see what will be installed without downloading.
-- **Validate**: `install --validate` to check the manifest integrity.
-
 ---
 
 ## 📦 Available Packages
 
-| ID | Name | Description |
-|:---|:---|:---|
-| `create_crafter` | **Create Mechanical Crafter** | Grid crafting automation with recording & calibration. |
-| `powah_orb` | **Powah Energizing Orb** | Parallel crafting with ME Bridge & auto-recovery. |
-| `mekanism_portal_hub` | **Mekanism Portal Hub** | Premium touch-screen dialer with visual editor. |
-| `mekanism_recall_sender`| **Mekanism Portal Recaller** | Remote wireless trigger for the Portal Hub. |
-| `developer_suite` | **CC Developer Suite** | Hardware inspector, event sniffer, and diagnostics. |
+| ID | Name | Description | Key Features |
+|:---|:---|:---|:---|
+| `mekanism_portal_hub` | **Portal Dialer Hub** | Premium touch-screen dialer. | Moveable UI, Accent Stripes, Page-Reset. |
+| `mekanism_recall_sender`| **Portal Recall Sender** | Remote wireless trigger. | Hardware diagnostics, Live status monitoring. |
+| `create_crafter` | **Mechanical Crafter** | Grid crafting automation. | Recording & Calibration, Multi-step recipes. |
+| `powah_orb` | **Energizing Orb** | Parallel crafting automation. | ME Bridge integration, Auto-recovery. |
+| `developer_suite` | **CC Developer Suite** | Diagnostic toolkit. | Event sniffer, Peripheral inspector. |
 
 ---
 

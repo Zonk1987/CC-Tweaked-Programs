@@ -7,12 +7,12 @@
 ## ✨ Features
 
 - **Double-Buffered Rendering** — Zero-flicker UI updates using a custom window-based buffer system.
-- **Dynamic Portal Grid** — Automatically discovers all public and private frequencies from your teleporter.
-- **Smart Pagination** — Effortlessly navigate through hundreds of portals with automatic page calculation.
+- **Moveable Overlay Windows** — Drag the color selection menu anywhere on the screen for optimal visibility.
+- **Accent Stripe Indicators** — High-contrast vertical bars on buttons show assigned colors with black shadow-borders for visibility on any background.
+- **Dynamic Portal Grid** — Automatically discovers all frequencies with smart pagination and automatic **Page-Reset** on list changes.
 - **Real-Time Status Monitoring** — Live feedback on portal status, target frequency, and owner (with Mojang UUID resolution).
-- **Edit Mode & Color Customization** — Assign specific colors to frequencies or use the random color cycle for a dynamic look.
+- **Edit Mode & Color Customization** — Assign specific colors to frequencies or use the random color cycle.
 - **Remote Recall Support** — Integrated Modem and Rednet API for remote portal activation (via Recaller script).
-- **Glassmorphism UI Design** — Modern, semi-transparent modal windows for a premium visual experience.
 
 ---
 

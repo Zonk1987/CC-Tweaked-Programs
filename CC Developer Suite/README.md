@@ -1,14 +1,15 @@
-# CC Developer Suite (v4.1 Superior Edition)
+# CC Developer Suite 🛠️🔬
 
-> The definitive toolset for **CC:Tweaked** power users. This version introduces the Superior Inspector, enabling deep hardware analysis and interactive item browsing.
+> The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 
 ---
 
 ## 🚀 Installation
+
 Run this command on your computer:
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/Universal%20Installer/install.lua
-install
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+install.lua
 ```
 Select **CC Developer Suite** from the menu.
 
