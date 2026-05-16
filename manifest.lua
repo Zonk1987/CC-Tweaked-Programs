@@ -84,7 +84,6 @@ return {
                 { source = "Create%20Mechanical%20Crafter%20Automation/Dashboard.lua", target = "Dashboard.lua" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/Chest.lua", target = "Chest.lua" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/CrafterGrid.lua", target = "CrafterGrid.lua" },
-                { source = "Create%20Mechanical%20Crafter%20Automation/record.lua", target = "record.lua" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/ManageRecipes.lua", target = "ManageRecipes.lua" },
             },
         },
