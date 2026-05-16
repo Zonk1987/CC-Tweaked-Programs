@@ -8,7 +8,7 @@
 
 Run this command on your computer:
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 install.lua
 ```
 Select **CC Developer Suite** from the menu.
