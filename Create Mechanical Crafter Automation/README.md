@@ -11,7 +11,6 @@
 - **Interactive Grid Calibration** — Automatic detection of your exact grid layout via sequential modem activation.
 - **AE2 / RS Blocking Mode Ready** — Optimized for buffer chest integration with guaranteed single-craft processing.
 - **Smart Jam Detection** — Real-time alerts showing the exact crafter slot and item causing a bottleneck.
-- **Fuzzy Item Matching** — Advanced pattern matching (e.g., `~planks`) for modded material flexibility.
 - **Live Dashboard** — Color-coded high-performance UI showing grid status, job history, and missing ingredients.
 
 ---
@@ -20,75 +19,53 @@
 
 ![Ingame Setup](images/setup.png)
 
-1. **Computer** — Place an **Advanced Computer** (required for colored display).
-2. **Crafter Grid** — Build your Mechanical Crafter array (e.g. 3×3, 5×5, 9×9).
-3. **Networking**
+1. **Advanced Computer** — Required for the colored high-resolution dashboard.
+2. **Crafter Grid** — Build your array (e.g., 3×3, 5×5, 9×9).
+3. **Networking (Crucial Step):**
    - Attach a **Wired Modem** to **every single** Mechanical Crafter.
    - Connect all modems to the Computer with **Networking Cables**.
-   - Right-click every modem until the **red ring** lights up. **⚠️ IMPORTANT:** You MUST activate the modems in **reading order** (top-left → top-right, then row by row) so the system understands your grid layout.
-4. **Buffer Chest / Barrel**
-   - Place a Chest or Barrel **adjacent** to the Computer.
-   - Attach a **Wired Modem** to it and connect it to the same cable network.
-   - ⚠️ Do **not** connect it as a bare side-inventory without a modem.
-5. **Redstone Trigger** — Connect Redstone Dust or a Create Redstone Link from **any side** of the Computer to at least one Mechanical Crafter.
-6. **AE2 / RS (Optional)** — Place an ME Pattern Provider or RS Crafter facing the Buffer Chest. Enable **Blocking Mode**.
+   - Right-click modems until the **red ring** lights up.
+   - **⚠️ IMPORTANT:** You MUST activate the modems in **reading order** (top-left → top-right, then row by row) during calibration.
+4. **Buffer Chest** — Connect a chest (e.g., Diamond Chest) adjacent to the Computer via a Wired Modem.
+5. **Redstone Trigger** — Connect a Redstone signal from **any side** of the Computer to the Crafters.
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & Usage
 
-Run this single command on your ComputerCraft terminal:
-```
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/Universal%20Installer/install.lua
-install
-```
-Select **Create Mechanical Crafter Automation** from the menu.
-
----
-
-## ⚙️ First Start & Calibration
-
-On the **very first start**, the dashboard will prompt you to calibrate your grid:
-
-1. Walk to your Mechanical Crafter array.
-2. Right-click the Wired Modems **in reading order**: top-left → top-right, row by row, ending at the bottom-right.
-3. Return to the computer and press **Enter**.
-
-Calibration is saved permanently in `crafter_mapping.json`. Delete this file to recalibrate.
+1. Run the installer and select **Create Mechanical Crafter Automation**.
+2. **Calibration**: On the first start, follow the on-screen prompts to right-click modems in order. This maps the physical grid to the software.
+3. **Blocking Mode**: Set your AE2 Pattern Provider to **"Blocking Mode"** facing the Buffer Chest.
 
 ---
 
 ## 📖 How to Use
 
 ### Recording a New Recipe
-1. Ensure the dashboard shows `Waiting for items...`
-2. Manually place your ingredients into the physical Mechanical Crafters.
-3. Press **`S`** on the computer terminal.
-4. Type a name for the recipe and press **Enter**.
-5. The system scans, saves, and reloads the recipe automatically.
-> *Press Enter without a name to cancel.*
+1. Place ingredients manually into the physical Mechanical Crafters.
+2. Press **`S`** on the dashboard.
+3. Type a name and press **ENTER**. The system scans the grid and saves it instantly!
 
 ### Managing Recipes
-1. Press **`M`** on the dashboard.
-2. Browse through the list of saved recipes (Left Pane).
-3. See the required items and counts for the selected recipe (Right Pane).
-4. Press **`X`** to delete a selected recipe or **`Q`** to return.
-
-### Fuzzy Matching
-Edit `crafter_recipes.json` and prefix an item name with `~` to match any item containing that string:
-```json
-"keys": { "A": "~planks" }
-```
+1. Press **`M`** on the dashboard to open the Manager.
+2. Browse recipes, view ingredients, and press **`X`** to delete old patterns.
 
 ---
 
 ## ⌨️ Hotkeys
 
 | Key | Action |
-|---|---|
-| `S` | Start in-game recipe recording |
-| `M` | Open Recipe Management UI |
-| `R` | Hot-reload recipes from `crafter_recipes.json` |
+|:---:|---|
+| **`S`** | **Scan/Record** new recipe from the grid |
+| **`M`** | **Manage** saved recipes and view patterns |
+| **`R`** | **Reload** recipes from `crafter_recipes.json` |
+| **`Q`** | **Exit** menus or the main script |
+
+---
+
+## ⚙️ Configuration
+
+The system is designed to work out-of-the-box. Calibration data is stored in `crafter_mapping.json`. Delete this file to trigger a new calibration.
 
 ---
 
@@ -96,6 +73,10 @@ Edit `crafter_recipes.json` and prefix an item name with `~` to match any item c
 
 | Error | Cause & Fix |
 |---|---|
-| `No buffer inventory found!` | The chest has no modem, or the modem is turned off. |
-| `Transfer Error! Crafter is missing!` | A crafter was replaced. Delete `crafter_mapping.json` and recalibrate. |
-| `JAMMED: Crafter #X has ...` | Crafting did not finish. Check redstone connection. Remove items manually to reset. |
+| `Buffer chest missing!` | Modem on the chest is off or disconnected. |
+| `No Mechanical Crafters!` | No modems found. Check cables and red rings! |
+| `JAMMED: Slot #X` | Crafting did not finish. Check redstone pulse and power. |
+| `Pattern Mismatch` | Wrong items in grid or mapping file is corrupt. Recalibrate! |
+
+---
+*Developed with ❤️ for Advanced Agentic Coding.*
