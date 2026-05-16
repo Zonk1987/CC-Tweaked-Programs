@@ -28,7 +28,7 @@
 
 Run this command on your remote computer:
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/Universal%20Installer/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
 install
 ```
 Select **Mekanism Portal Recaller** from the menu.
