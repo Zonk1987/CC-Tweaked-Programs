@@ -38,7 +38,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: auto-bump version and file sizes [skip ci]"
-          branch: chore/auto-bump-${{ github.run_number }}
+          branch: chore/auto-bump
           delete-branch: true
           title: "chore: auto-bump version and file sizes (run #${{ github.run_number }})"
           body: |
