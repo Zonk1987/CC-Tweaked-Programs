@@ -1,0 +1,75 @@
+name: Create GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 1.3)"
+        required: true
+        type: string
+      prerelease:
+        description: "Mark as pre-release?"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history needed for changelog generation
+
+      - name: Read version.txt as base
+        id: version
+        run: echo "base=$(cat version.txt)" >> $GITHUB_OUTPUT
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Get all commits since the last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+
+          # Categorize commits
+          FEATURES=$(echo "$COMMITS" | grep -iE "^- (feat|add)" || echo "")
+          FIXES=$(echo "$COMMITS" | grep -iE "^- (fix|bug)" || echo "")
+          CHORES=$(echo "$COMMITS" | grep -iE "^- (chore|refactor|style|ci)" || echo "")
+          OTHER=$(echo "$COMMITS" | grep -ivE "^- (feat|add|fix|bug|chore|refactor|style|ci)" || echo "")
+
+          # Build changelog
+          CHANGELOG=""
+          [ -n "$FEATURES" ] && CHANGELOG="${CHANGELOG}### ✨ Features\n${FEATURES}\n\n"
+          [ -n "$FIXES" ]    && CHANGELOG="${CHANGELOG}### 🐛 Bug Fixes\n${FIXES}\n\n"
+          [ -n "$CHORES" ]   && CHANGELOG="${CHANGELOG}### 🔧 Maintenance\n${CHORES}\n\n"
+          [ -n "$OTHER" ]    && CHANGELOG="${CHANGELOG}### 📝 Other\n${OTHER}\n\n"
+
+          # Write to file (handles multiline for GitHub Actions)
+          printf "%b" "$CHANGELOG" > changelog.md
+          echo "Changelog generated."
+          cat changelog.md
+
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ inputs.version }}"
+          name: "CC:Tweaked Programs v${{ inputs.version }}"
+          body_path: changelog.md
+          prerelease: ${{ inputs.prerelease }}
+          generate_release_notes: false
