@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-CC:Tweaked Developer Suite v1.0.002-main
+CC:Tweaked Developer Suite v1.0.004-main
 ================================================================================
 Interactive Peripheral Inspection & Item Browsing System
 ================================================================================
@@ -376,7 +376,7 @@ end
 --- Main Menu
 function DevToolkit.mainMenu()
     while true do
-        header("Developer Suite v{{VERSION}}")
+        header("Developer Suite v1.0.004-main")
         print("1. Superior Inspector (Methods & Browser)")
         print("2. Event Sniffer (Live OS Debug)")
         print("3. Redstone Analyzer (Live Inputs)")
