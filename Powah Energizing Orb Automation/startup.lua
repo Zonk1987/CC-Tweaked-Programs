@@ -46,10 +46,10 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 local PowahSystem = require("PowahSystem")
 
 -- Execution Setup
-local chestName = peripheral.find("minecraft:chest") 
-               or peripheral.find("ironchest:diamond_chest") 
-               or peripheral.find("expandedstorage:netherite_chest") 
-               or "left"
+local chestPeripheral = peripheral.find("minecraft:chest") 
+                     or peripheral.find("ironchest:diamond_chest") 
+                     or peripheral.find("expandedstorage:netherite_chest")
+local chestName = chestPeripheral and peripheral.getName(chestPeripheral) or "left"
 
 -- Robust ME Bridge & Scanner detection
 local meBridge = peripheral.find("meBridge") or peripheral.find("me_bridge")

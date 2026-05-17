@@ -35,7 +35,7 @@
 
 1. Download the install.lua file from the repo
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
 2. Run the install.lua file
 ```bash
@@ -82,8 +82,10 @@ The system features a smart import menu (Key **`I`**):
 The system is designed to work out-of-the-box. If you need manual adjustments, check `startup.lua`:
 ```lua
 local system = PowahSystem.new({
-    chestName = "left", -- Or use auto-detection
-    recipeFile = "powah_recipes.json"
+    chestName = "left", -- Or use auto-detection variable
+    recipeFile = "powah_recipes.json",
+    meBridgeName = "right", -- Optional: ME Bridge peripheral name
+    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
 })
 ```
 

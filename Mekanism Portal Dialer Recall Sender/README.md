@@ -18,7 +18,7 @@
 ## 🛠️ Hardware Setup
 
 1. **Pocket Computer or Small Computer** — Place a computer at your remote destination (e.g., Moon Base, Mining Outpost).
-2. **Wireless Modem** — Attach a wireless modem to the computer.
+2. **Modem (Wireless or Wired)** — Attach a wireless modem (ideal for remote locations) or a wired modem to the computer.
 3. **Redstone Trigger** — Connect a Button, Pressure Plate, or any redstone source to any side of the computer.
    - When the redstone signal turns **ON**, the computer sends the recall command to your main base.
 
@@ -28,7 +28,7 @@
 
 1. Download the install.lua file from the repo
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
 2. Run the install.lua file
 ```bash
