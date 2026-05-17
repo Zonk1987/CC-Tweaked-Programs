@@ -67,9 +67,10 @@ The installer automatically resolves dependencies recursively. For example, inst
 ## ⚖️ Safety & Rules
 
 All code in this repository is governed by **[AGENTS.md](./AGENTS.md)**.
-- **Strict Mode**: Every script uses a strict environment to prevent accidental globals.
+- **Strict Mode**: Application scripts and entry files use a strict environment to prevent accidental globals (core libraries currently bypass this to reduce localization boilerplate).
 - **No Deletion**: The installer never deletes existing user files (except for cleaning up its own temporary files like `manifest.lua` and `install.lua` after completion, or replacing older versions during an update).
 - **No Auto-Reboot**: The installer asks before running entry files and never reboots the system without permission.
+- **Single App Policy**: Only **one** application is supported per Advanced Computer. Installing multiple apps on the same computer will cause file collisions and overwrite critical files like `startup.lua` or `Dashboard.lua`.
 
 ---
 
@@ -77,7 +78,7 @@ All code in this repository is governed by **[AGENTS.md](./AGENTS.md)**.
 Developed by **Antigravity** as part of the Advanced Agentic Coding initiative. 
 If you encounter issues:
 1. Ensure you are using an **Advanced Computer**.
-2. Run `install --validate` to check for manifest errors.
+2. Run `install.lua --validate` to check for manifest errors.
 3. Check the `README.md` within each application's folder for hardware-specific setup.
 
 **[LICENSE](./LICENSE)**: MIT
