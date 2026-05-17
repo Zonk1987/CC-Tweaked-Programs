@@ -1,0 +1,87 @@
+name: Bug Report
+description: Report a problem with the installer or one of the automation programs
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        Please fill in as much detail as possible to help us investigate quickly.
+
+  - type: dropdown
+    id: affected-package
+    attributes:
+      label: Affected Package
+      description: Which program or component is affected?
+      options:
+        - Installer (install.lua)
+        - Powah Energizing Orb Automation
+        - Create Mechanical Crafter Automation
+        - Mekanism Portal Dialer Hub
+        - Mekanism Portal Dialer Recall Sender
+        - CC Developer Suite
+        - Core Library (lib/core)
+        - Other / Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: "Example: The installer crashes with 'attempt to index a nil value' when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Run `install.lua`
+        2. Select package `powah_orb`
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      placeholder: "The installer should download all files and report OK."
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware Setup
+      description: List the peripherals connected to your computer (modem, monitors, inventories, etc.)
+      placeholder: |
+        - Advanced Computer
+        - 1x Wired Modem
+        - 2x Chest (minecraft:chest)
+        - 1x Energizing Orb (powah:energizing_orb)
+
+  - type: input
+    id: cc-version
+    attributes:
+      label: CC:Tweaked Version
+      placeholder: "e.g. CC: Tweaked 1.21.1-1.114.5"
+    validations:
+      required: true
+
+  - type: input
+    id: mc-version
+    attributes:
+      label: Minecraft Version
+      placeholder: "e.g. 1.21.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Output / Logs
+      description: Paste any error messages from the terminal here.
+      render: shell

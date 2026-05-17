@@ -1,0 +1,59 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "[FEAT] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+        Please describe your idea as clearly as possible.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the project is this for?
+      options:
+        - New Application / Automation
+        - Installer Improvement
+        - Core Library
+        - CI/CD Pipeline
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the problem or limitation you're experiencing.
+      placeholder: "I always have to manually ... and it would be great if..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this to work?
+      placeholder: "Add a --force flag to the installer that bypasses the CACHED check and always re-downloads."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any other approaches you've thought about?
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked that this feature doesn't already exist
+          required: true
+        - label: This feature fits within the CC:Tweaked ecosystem
+          required: true

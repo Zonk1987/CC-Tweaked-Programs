@@ -1,0 +1,45 @@
+# PR Labeler Configuration
+# Automatically labels Pull Requests based on which files were changed.
+# Docs: https://github.com/actions/labeler
+
+# --- Infrastructure ---
+"ci/cd":
+  - changed-files:
+    - any-glob-to-any-file: ".github/**"
+
+"installer":
+  - changed-files:
+    - any-glob-to-any-file:
+      - "install.lua"
+      - "manifest.lua"
+      - "version.txt"
+
+"documentation":
+  - changed-files:
+    - any-glob-to-any-file: "**/*.md"
+
+# --- Core Library ---
+"core":
+  - changed-files:
+    - any-glob-to-any-file: "lib/core/**"
+
+# --- Applications ---
+"powah":
+  - changed-files:
+    - any-glob-to-any-file: "Powah Energizing Orb Automation/**"
+
+"create":
+  - changed-files:
+    - any-glob-to-any-file: "Create Mechanical Crafter Automation/**"
+
+"mekanism-hub":
+  - changed-files:
+    - any-glob-to-any-file: "Mekanism Portal Dialer Hub/**"
+
+"mekanism-recall":
+  - changed-files:
+    - any-glob-to-any-file: "Mekanism Portal Dialer Recall Sender/**"
+
+"developer-suite":
+  - changed-files:
+    - any-glob-to-any-file: "CC Developer Suite/**"
