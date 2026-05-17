@@ -82,10 +82,10 @@ return {
             entry = "startup.lua",
             dependencies = { "core.redstone", "core.inventory", "core.recipes" },
             files = {
-                { source = "Create%20Mechanical%20Crafter%20Automation/startup.lua", target = "startup.lua", sizeBytes = 2640, hash = "f0f808dc2ea706212042c39859d31ec693766051f45b4d84765b0812d82c7f7d" },
+                { source = "Create%20Mechanical%20Crafter%20Automation/startup.lua", target = "startup.lua", sizeBytes = 2640, hash = "9547b1df9449bc3f3745d7b40f6e52f6a23e1a349a3594b916f1d7c6141e66b9" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/CrafterSystem.lua", target = "CrafterSystem.lua", sizeBytes = 7207, hash = "6022225c7ddf67e8b5cb12b0a4969e0f55c2ab262a9b58fbfda4841872b10e6d" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/RecipeManager.lua", target = "RecipeManager.lua", sizeBytes = 9381, hash = "f42c613d8c9b6b7a178d89a034b50763eb36fbba7648ecc539c155e7d5f9a379" },
-                { source = "Create%20Mechanical%20Crafter%20Automation/Dashboard.lua", target = "Dashboard.lua", sizeBytes = 4098, hash = "3ba1d8bfbafbb9980192a34872e81f5c4545c304f438359110dab2e9864133f6" },
+                { source = "Create%20Mechanical%20Crafter%20Automation/Dashboard.lua", target = "Dashboard.lua", sizeBytes = 4098, hash = "30a695045fed97f4eebce7d6908a67441a35b46f099656b28232bdc7e4215b2f" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/Chest.lua", target = "Chest.lua", sizeBytes = 3185, hash = "1182e469be949e81f02b8fd65c54eba0d81be5a6e2b5eae2cfbe6b18e7c1706c" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/CrafterGrid.lua", target = "CrafterGrid.lua", sizeBytes = 4057, hash = "e167f7350742a82b6a56e5cc7d4f817d5617f1e41f46d0cc24b3ef2d0c6e71bb" },
                 { source = "Create%20Mechanical%20Crafter%20Automation/ManageRecipes.lua", target = "ManageRecipes.lua", sizeBytes = 7263, hash = "c721b3f18826f249b574c012f2f473cfb903933b9646f90d603b20143c469fec" },
@@ -98,7 +98,7 @@ return {
             entry = "startup.lua",
             dependencies = { "core.inventory", "core.recipes" },
             files = {
-                { source = "Powah%20Energizing%20Orb%20Automation/startup.lua", target = "startup.lua", sizeBytes = 2800, hash = "2d07120b20912975081af54d88339ece82a1f49b49fba718073118e624d42b3b" },
+                { source = "Powah%20Energizing%20Orb%20Automation/startup.lua", target = "startup.lua", sizeBytes = 2800, hash = "855a279aa97d8702312dc43b5a4d2a6691fb174d258f7e46c5d83e41f3112101" },
                 { source = "Powah%20Energizing%20Orb%20Automation/PowahSystem.lua", target = "PowahSystem.lua", sizeBytes = 5907, hash = "c96e5482a950cb73b54e897a8ee0cb7988a36d11e2594300c1b40f22c5fbebcd" },
                 { source = "Powah%20Energizing%20Orb%20Automation/RecipeManager.lua", target = "RecipeManager.lua", sizeBytes = 4018, hash = "8ea71b70d9c254aae259beb4a1bc7541f66f91a91c3af53f4553e6829e7580a6" },
                 { source = "Powah%20Energizing%20Orb%20Automation/Dashboard.lua", target = "Dashboard.lua", sizeBytes = 3597, hash = "0f507a9705367ba04a670104afad2c95c264073291d857f25f1baca500e600e9" },
@@ -114,8 +114,8 @@ return {
             entry = "startup.lua",
             dependencies = { "core.base", "core.peripherals", "core.network", "core.ui" },
             files = {
-                { source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua", target = "startup.lua", sizeBytes = 2190, hash = "9521cab6fb7f8e59ffdb46897ad2875de055bcef1594d6b2c3c1af61d4991018" },
-                { source = "Mekanism%20Portal%20Dialer%20Hub/HubSystem.lua", target = "HubSystem.lua", sizeBytes = 23534, hash = "68a111a1f0c6f785d8ed61f406c70498feb4b5ceee198f418e90512534f05d84" },
+                { source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua", target = "startup.lua", sizeBytes = 2190, hash = "2a0f468eb166c22799d0efe12ed87ad41f783e8f8b908e1a7c269c49a5c0ac81" },
+                { source = "Mekanism%20Portal%20Dialer%20Hub/HubSystem.lua", target = "HubSystem.lua", sizeBytes = 23534, hash = "07ffe3f49314eeaff2530cc4a5de3a5391fa7e48040faef9c3896d228954edd7" },
                 { source = "Mekanism%20Portal%20Dialer%20Hub/UUIDService.lua", target = "UUIDService.lua", sizeBytes = 2358, hash = "d2af8b45d9d0257f2e20468a150795256fbbe17d0f2842951b531dd0d82a5c1d" },
                 { source = "Mekanism%20Portal%20Dialer%20Hub/Dashboard.lua", target = "Dashboard.lua", sizeBytes = 4429, hash = "4dc6c56bbc3bc8d16ac946fc2adadb20fe6043deaacb4733f939f61bfaa65c12" },
             },
@@ -127,7 +127,7 @@ return {
             entry = "startup.lua",
             dependencies = { "core.base", "core.peripherals", "core.network", "core.redstone" },
             files = {
-                { source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua", target = "startup.lua", sizeBytes = 7253, hash = "97392491ff7651b7f255b2a2193bf7ce9eecc54a98b9b66433cc11473b658171" },
+                { source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua", target = "startup.lua", sizeBytes = 7253, hash = "da6f02301dcdf5e65413724a9c444896095dd9d26eee406ecad6b3713c2617e0" },
             },
         },
 
@@ -141,7 +141,7 @@ return {
             entry = "startup.lua",
             dependencies = { "core.network" },
             files = {
-                { source = "CC%20Developer%20Suite/startup.lua", target = "startup.lua", sizeBytes = 13257, hash = "1b2078cf19bd185d051934e61ece813b14da8aafec4d9be6451031ebe0c66590" },
+                { source = "CC%20Developer%20Suite/startup.lua", target = "startup.lua", sizeBytes = 13257, hash = "2783a712ef493c450cab598781d1d296205b5309bbe04b04654d3bda68e93087" },
             },
         },
     },
