@@ -1,7 +1,9 @@
 import os
 import re
 import sys
+import urllib.parse
 import subprocess
+import hashlib
 
 def main():
     version_file = "version.txt"
@@ -98,14 +100,28 @@ def main():
                     src = m.group(1)
                     # Clean up Windows backslashes if running locally
                     src = src.replace('\\', '/')
-                    if os.path.exists(src):
-                        size = os.path.getsize(src)
-                        # Remove existing sizeBytes if it's already there
+                    
+                    # The manifest contains URL-encoded paths (e.g. %20 for spaces)
+                    local_path = urllib.parse.unquote(src)
+                    
+                    if os.path.exists(local_path):
+                        size = os.path.getsize(local_path)
+                        
+                        # Calculate SHA256 hash
+                        sha256_hash = hashlib.sha256()
+                        with open(local_path, "rb") as bf:
+                            for byte_block in iter(lambda: bf.read(4096), b""):
+                                sha256_hash.update(byte_block)
+                        file_hash = sha256_hash.hexdigest()
+                        
+                        # Remove existing sizeBytes and hash if they exist
                         line = re.sub(r',\s*sizeBytes\s*=\s*\d+', '', line)
-                        # Inject new sizeBytes right before the closing brace
-                        line = line.replace(' }', f', sizeBytes = {size} }}')
+                        line = re.sub(r',\s*hash\s*=\s*"[^"]+"', '', line)
+                        
+                        # Inject new sizeBytes and hash right before the closing brace
+                        line = line.replace(' }', f', sizeBytes = {size}, hash = "{file_hash}" }}')
                     else:
-                        print(f"Warning: Manifest source file not found: {src}")
+                        print(f"Warning: Manifest source file not found: {local_path}")
             new_lines.append(line)
             
         with open(manifest_path, "w", encoding="utf-8") as f:

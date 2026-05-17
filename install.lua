@@ -87,6 +87,12 @@ local function validateManifest(manifest)
             if not isSafeRelativePath(file.target) then 
                 table.insert(errors, id .. ": Illegal or empty target path: " .. tostring(file.target)) 
             end
+            if file.sizeBytes ~= nil and (type(file.sizeBytes) ~= "number" or file.sizeBytes < 0) then
+                table.insert(errors, id .. ": Invalid sizeBytes (must be >= 0): " .. tostring(file.source))
+            end
+            if file.hash ~= nil and (type(file.hash) ~= "string" or #file.hash ~= 64) then
+                table.insert(errors, id .. ": Invalid SHA256 hash format: " .. tostring(file.source))
+            end
         end
         
         for _, dep in ipairs(pkg.dependencies or {}) do

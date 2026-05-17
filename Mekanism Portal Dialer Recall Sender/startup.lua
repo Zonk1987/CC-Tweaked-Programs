@@ -32,18 +32,12 @@ local RedstoneController = require("RedstoneController")
 
 -- Localize globals
 local fs = fs
-
-
 local term = term
 local colors = colors
 local keys = keys
 local os_sleep = os.sleep
 local os_pullEvent = os.pullEvent
 local os_startTimer = os.startTimer
-
-
-
-
 local tonumber = tonumber
 local write = write
 local read = read
