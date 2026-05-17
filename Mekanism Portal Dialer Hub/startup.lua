@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Mekanism Portal Hub (V2.2 AGENTS Edition)
+Mekanism Portal Hub v{{VERSION}}
 ================================================================================
 Standardized Hub System for Interdimensional Portals.
 ================================================================================
@@ -55,20 +55,22 @@ if not monitorName or not tpName then
 end
 
 -- Initialization
+local systemConfig = {
+    monitorSide = monitorName,
+    tpSide = tpName,
+    gridColumns = 4,
+    gridRows = 4,
+    recallChannel = 99,
+    maxButtons = 24
+}
+
 local bm = ButtonGrid.new(monitorName)
-bm.mon.setTextScale(0.5)
+bm.mon.setTextScale(0.5) -- Locked at 0.5: Changing this breaks the line/char UI rendering
 
 local system = HubSystem.new({
     bm = bm,
     tpSide = tpName,
-    config = {
-        monitorSide = monitorName,
-        tpSide = tpName,
-        gridColumns = 4,
-        gridRows = 4,
-        recallChannel = 99,
-        maxButtons = 24
-    }
+    config = systemConfig
 })
 
 system:run()

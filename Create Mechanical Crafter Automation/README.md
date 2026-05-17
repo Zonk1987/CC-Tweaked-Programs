@@ -67,7 +67,7 @@ install.lua
 | **`S`** | **Scan/Record** new recipe from the grid |
 | **`M`** | **Manage** saved recipes and view patterns |
 | **`R`** | **Reload** recipes from `crafter_recipes.json` |
-| **`Q`** | **Exit** menus or the main script |
+| **`Q`** | **Quit** (Exit the active menu and return to the Dashboard) |
 
 ---
 

@@ -51,7 +51,6 @@ Select **Mekanism Portal Dialer Hub** from the menu. The installer will automati
 Open `startup` on the computer to customize the system behavior:
 
 - `gridColumns` / `gridRows`: Adjust the number of buttons per page.
-- `textScale`: Change the UI size for different monitor dimensions.
 - `recallChannel`: Set the modem channel for remote portal requests (default: 99).
 
 ---

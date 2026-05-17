@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Powah Energizing Orb Automation (V5.2 AGENTS Edition)
+Powah Energizing Orb Automation v{{VERSION}}
 ================================================================================
 
 DESCRIPTION:

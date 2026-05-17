@@ -7,8 +7,8 @@
 ## ✨ Features
 
 - **Multi-Orb Support** — Automatically discovers all connected Energizing Orbs and crafts in parallel.
-- **Direct Provider Access (Optional)** — Full support for the **`ae2communicate`** mod. This allows you to access **Named Pattern Providers** directly, eliminating the need to search through large networks.
-- **ME Bridge Integration** — Standard fallback via Advanced Peripherals' `meBridge` to read all system recipes if the optional mod is not used.
+- **ME Bridge Integration (Required)** — Uses Advanced Peripherals' `meBridge` to read detailed AE2 pattern data (inputs, outputs, quantities).
+- **Direct Provider Access (Optional)** — Full support for the **`ae2communicate`** mod. When paired with the ME Bridge, it allows you to filter recipes by **Named Pattern Providers**, eliminating the need to search through large networks.
 - **Precision & Intelligence** — Automatic handling of multipliers and exact ID-based ingredient validation during import.
 - **Modpack Compatibility** — Toggle between "Powah Only" or "All Mods" (Key `M`) to support recipes from any mod using the Energizing Orb.
 - **Auto-Recovery** — Automated item retrieval and orb reset in case of crafting stalls or power failures.
@@ -22,12 +22,12 @@
 1. **Advanced Computer** — Required for the high-resolution colored dashboard.
 2. **Buffer Chest** — Connect any chest (e.g., Diamond Chest) adjacent to the computer or via the network.
 3. **Energizing Orbs** — Connect all Orbs via **Networking Cables** and **Wired Modems**.
-4. **Optional Quality-of-Life Feature (ae2communicate):**
+4. **ME Bridge (Required):** Connect an **ME Bridge** to the network to allow the system to read detailed pattern data.
+5. **Optional Quality-of-Life Feature (ae2communicate):**
    - Install the **`ae2communicate`** mod.
-   - Place a **Wired Modem** directly on an **AE2 Interface** (this will then be recognized as an `ae2_scanner`).
+   - Place a **Wired Modem** directly on an **AE2 Interface** (recognized as an `ae2_scanner`).
    - Name your Pattern Providers in your AE2 system (e.g., "Powah Orb").
-   - **Benefit:** You can select this provider directly in the Import Menu and instantly see all Powah recipes without searching!
-5. **Standard Import (ME Bridge):** If `ae2communicate` is not used, an **ME Bridge** is required for recipe imports.
+   - **Benefit:** Filters the ME Bridge data to only show patterns from this specific provider!
 
 ---
 
@@ -51,12 +51,12 @@ install.lua
 
 The system features a smart import menu (Key **`I`**):
 
-### Scenario A: With AE2 Scanner
+### Scenario A: With Optional AE2 Scanner
 1. Press **`I`**.
 2. Select the **Named Pattern Provider** you want to import from.
-3. Browse the recipes and press **`ENTER`** to import.
+3. Browse the filtered recipes and press **`ENTER`** to import.
 
-### Scenario B: Standard ME Bridge
+### Scenario B: Standard (ME Bridge Only)
 1. Press **`I`**.
 2. Browse all available patterns in the network.
 3. Use **`M`** to toggle between **Powah Only** and **All Mods**.
@@ -73,7 +73,7 @@ The system features a smart import menu (Key **`I`**):
 | **`M`** | **Mod Toggle** (Inside Import Menu: Powah vs. All) |
 | **`B`** | **Back** (Inside Import Menu: Go back to Provider selection) |
 | **`X`** | **Delete** (Remove an imported recipe from the system) |
-| **`Q`** | **Exit** menus or the main script |
+| **`Q`** | **Quit** (Exit the Import Menu and return to the Dashboard) |
 
 ---
 

@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Create Mechanical Crafter Automation (V2.1 AGENTS Edition)
+Create Mechanical Crafter Automation v{{VERSION}}
 ================================================================================
 Automates Mechanical Crafter grids from the 'Create' mod.
 ================================================================================

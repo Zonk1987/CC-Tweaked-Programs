@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-CC:Tweaked Developer Suite v4.1 (AGENTS Edition)
+CC:Tweaked Developer Suite v{{VERSION}}
 ================================================================================
 Interactive Peripheral Inspection & Item Browsing System
 ================================================================================
