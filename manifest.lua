@@ -13,7 +13,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/base/ConfigStore.lua", target = "lib/core/base/ConfigStore.lua" },
+                { source = "lib/core/base/ConfigStore.lua", target = "lib/core/base/ConfigStore.lua", sizeBytes = 1880 },
             },
         },
         ["core.peripherals"] = {
@@ -22,7 +22,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/peripherals/PeripheralScanner.lua", target = "lib/core/peripherals/PeripheralScanner.lua" },
+                { source = "lib/core/peripherals/PeripheralScanner.lua", target = "lib/core/peripherals/PeripheralScanner.lua", sizeBytes = 1374 },
             },
         },
         ["core.network"] = {
@@ -31,7 +31,7 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/network/RednetProtocol.lua", target = "lib/core/network/RednetProtocol.lua" },
+                { source = "lib/core/network/RednetProtocol.lua", target = "lib/core/network/RednetProtocol.lua", sizeBytes = 2300 },
             },
         },
         ["core.redstone"] = {
@@ -40,7 +40,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/redstone/RedstoneController.lua", target = "lib/core/redstone/RedstoneController.lua" },
+                { source = "lib/core/redstone/RedstoneController.lua", target = "lib/core/redstone/RedstoneController.lua", sizeBytes = 1874 },
             },
         },
         ["core.ui"] = {
@@ -49,7 +49,7 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/ui/ButtonGrid.lua", target = "lib/core/ui/ButtonGrid.lua" },
+                { source = "lib/core/ui/ButtonGrid.lua", target = "lib/core/ui/ButtonGrid.lua", sizeBytes = 7724 },
             },
         },
         ["core.inventory"] = {
@@ -58,8 +58,8 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/inventory/InventoryAdapter.lua", target = "lib/core/inventory/InventoryAdapter.lua" },
-                { source = "lib/core/inventory/ItemMatcher.lua", target = "lib/core/inventory/ItemMatcher.lua" },
+                { source = "lib/core/inventory/InventoryAdapter.lua", target = "lib/core/inventory/InventoryAdapter.lua", sizeBytes = 2947 },
+                { source = "lib/core/inventory/ItemMatcher.lua", target = "lib/core/inventory/ItemMatcher.lua", sizeBytes = 1977 },
             },
         },
         ["core.recipes"] = {
@@ -68,7 +68,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/recipes/RecipeStore.lua", target = "lib/core/recipes/RecipeStore.lua" },
+                { source = "lib/core/recipes/RecipeStore.lua", target = "lib/core/recipes/RecipeStore.lua", sizeBytes = 2150 },
             },
         },
 
