@@ -526,7 +526,8 @@ end
 ---@param force? boolean If true, ignore overlay state
 function HubSystem:drawStatus(force)
     if self.activeOverlay and not force then return end
-    local name, owner, statusStr = "NOT CONNECTED", "", ""
+    local name, owner = "NOT CONNECTED", ""
+    local statusStr
     if self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0 then
         name, owner, statusStr = self.testSelectedFrequency or "NONE", "DevUser", "TEST-MODE"
     else
@@ -592,7 +593,7 @@ function HubSystem:run()
     end
     self:drawTerminalHeader(); self:draw()
     while true do
-        local ev, evSide, x, y, message = os_pullEvent()
+        local ev, _, x, y, message = os_pullEvent()
         if ev == "monitor_touch" and not self.isBusy then
             if self.isMovingOverlay then
                 -- Move Mode Logic
