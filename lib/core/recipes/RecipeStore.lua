@@ -33,8 +33,9 @@ function RecipeStore:load()
     if not file then return false, "file_open_failed" end
     local content = file.readAll()
     file.close()
+    if not content then return false, "file_read_failed" end
 
-    local data = textutils.unserializeJSON(content)
+    local data = textutils.unserializeJSON(content, {})
     if type(data) ~= "table" then return false, "invalid_json_format" end
     
     self.recipes = data

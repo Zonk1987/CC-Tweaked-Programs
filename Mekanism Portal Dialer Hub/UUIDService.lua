@@ -39,8 +39,10 @@ function UUIDService:load()
         if f then
             local data = f.readAll()
             f.close()
-            local decoded = textutils.unserialiseJSON(data)
-            if decoded then self.cache = decoded end
+            if data then
+                local decoded = textutils.unserialiseJSON(data, {})
+                if decoded then self.cache = decoded end
+            end
         end
     end
 end
@@ -72,7 +74,7 @@ function UUIDService:resolve(uuid)
         response.close()
 
         if code == 200 and data and #data > 0 then
-            local decoded = textutils.unserialiseJSON(data)
+            local decoded = textutils.unserialiseJSON(data, {})
             if decoded and decoded.name then
                 self.cache[uuid] = decoded.name
                 self:save()

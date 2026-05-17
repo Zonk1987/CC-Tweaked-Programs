@@ -167,6 +167,9 @@ function RecipeManager:isRecipeComplete(recipe, chestItems, crafterCount)
 end
 
 --- Finds the first recipe whose ingredients are completely met
+---@param chest any
+---@param crafterCount number
+---@return table|nil
 function RecipeManager:findReadyRecipe(chest, crafterCount)
     local chestItems = chest:list()
     if not chestItems or not next(chestItems) then return nil end
@@ -177,6 +180,9 @@ function RecipeManager:findReadyRecipe(chest, crafterCount)
 end
 
 --- Calculates missing items for the best matching recipe
+---@param chest any
+---@param crafterCount number
+---@return table|nil
 function RecipeManager:getMissingItems(chest, crafterCount)
     if #self.recipes == 0 then return nil end
     local chestItems = chest:list()
@@ -225,6 +231,7 @@ function RecipeManager:recordRecipe(name, crafterGrid)
 
     for i = 1, count do
         local p = peripheral.wrap(crafterGrid:getCrafterName(i))
+        ---@cast p any
         local item = p and p.getItemDetail(1)
         local char = "0"
         if item then
@@ -241,7 +248,8 @@ function RecipeManager:recordRecipe(name, crafterGrid)
 
     if itemsFound == 0 then return false, "Crafters empty!" end
     local file = fs.open(self.filename, "r")
-    local raw = textutils.unserializeJSON(file and file.readAll() or "[]") or {}
+    local content = file and file.readAll() or "[]"
+    local raw = textutils.unserializeJSON(content, {}) or {}
     if file then file.close() end
 
     local found = false
@@ -262,6 +270,11 @@ function RecipeManager:recordRecipe(name, crafterGrid)
     -- Reload into memory to sync state
     self:load()
     return true
+end
+
+--- Saves current recipes to the file (delegated to RecipeStore)
+function RecipeManager:save()
+    RecipeStore.save(self)
 end
 
 return RecipeManager

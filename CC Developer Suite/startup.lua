@@ -69,7 +69,9 @@ end
 --- Specialized Item Browser for Inventories
 function DevToolkit.itemBrowser(peripheralName)
     local inv = peripheral.wrap(peripheralName)
-    if not inv or not inv.size then return end
+    if not inv then return end
+    ---@cast inv any
+    if not inv.size then return end
     local size = inv.size()
     local selected = 1
 
@@ -140,6 +142,8 @@ function DevToolkit.peripheralInspector()
         local pName = names[sel]
         local p = peripheral.wrap(pName)
         local methods = peripheral.getMethods(pName)
+        if not p or not methods then return end
+        ---@cast p any
         local mIndex = 1
 
         while true do
@@ -162,7 +166,7 @@ function DevToolkit.peripheralInspector()
                 print("Result:")
                 local ok, res = pcall(p[methods[mIndex]])
                 term.setTextColor(ok and colors.green or colors.red)
-                print(textutils.serialize(res))
+                print(textutils.serialize(res, { compact = false, allow_repetitions = false }))
                 term.setTextColor(colors.white)
                 print("\nPress any key...")
                 os.pullEvent("key")
@@ -198,7 +202,9 @@ function DevToolkit.redstoneMonitor()
     header("Redstone Monitor (Press 'Q' to Exit)")
     while true do
         term.setCursorPos(1, 4)
-        for _, side in ipairs(rs.getSides()) do
+        local sides = rs.getSides()
+        ---@cast sides any
+        for _, side in ipairs(sides) do
             local analog = rs.getAnalogueInput(side)
             term.setTextColor(colors.white)
             write(string.format("%-10s: ", side:upper()))

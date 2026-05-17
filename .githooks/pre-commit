@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit
+# Runs luacheck on all staged .lua files before every commit.
+# Install once with: git config core.hooksPath .githooks
+
+set -e
+
+# Collect staged .lua files (only modified/added, not deleted)
+STAGED=$(git diff --cached --name-only --diff-filter=d | grep '\.lua$' || true)
+
+if [ -z "$STAGED" ]; then
+    exit 0
+fi
+
+echo "🔍 Running luacheck on staged Lua files..."
+
+if ! command -v luacheck &> /dev/null; then
+    echo "⚠️  luacheck not found — skipping pre-commit check."
+    echo "   Install with: luarocks install luacheck"
+    exit 0
+fi
+
+# Run luacheck on staged files only
+luacheck $STAGED
+
+echo "✅ luacheck passed — committing."

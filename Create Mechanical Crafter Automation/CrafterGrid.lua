@@ -74,12 +74,15 @@ function CrafterGrid:discoverCrafters()
     if fs.exists("crafter_mapping.json") then
         local file = fs.open("crafter_mapping.json", "r")
         if file then
-            local mapping = textutils.unserializeJSON(file.readAll())
+            local content = file.readAll()
             file.close()
-            if mapping and #mapping > 0 then
-                self.crafters = mapping
-                self:cachePeripherals()
-                return
+            if content then
+                local mapping = textutils.unserializeJSON(content, {})
+                if mapping and #mapping > 0 then
+                    self.crafters = mapping
+                    self:cachePeripherals()
+                    return
+                end
             end
         end
     end

@@ -1,14 +1,26 @@
 {
-  "runtime.version": "Lua 5.2",
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "Lua 5.1",
+  "workspace.library": [
+    ".stubs/cc-tweaked"
+  ],
+  "workspace.ignoreDir": [
+    ".agents",
+    ".git",
+    ".luarocks",
+    ".stubs"
+  ],
   "diagnostics.globals": [
     "term", "colors", "colours", "keys", "http", "fs", "shell",
-    "peripheral", "redstone", "parallel", "textutils", "read",
-    "sleep", "write", "printError"
+    "peripheral", "rednet", "redstone", "parallel", "textutils",
+    "read", "sleep", "write", "printError", "window", "multishell",
+    "os", "rs", "bit32", "_ENV"
   ],
   "diagnostics.disable": [
     "duplicate-set-field",
-    "duplicate-doc-field",
-    "undefined-field",
-    "undefined-doc-class"
-  ]
+    "duplicate-doc-field"
+  ],
+  "hint.enable": true,
+  "hint.paramName": "All",
+  "completion.showWord": "Disable"
 }

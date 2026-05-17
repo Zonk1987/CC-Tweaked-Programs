@@ -48,10 +48,16 @@ local function loadManifest()
     end
     
     local file = fs.open(MANIFEST_NAME, "r")
+    if not file then return nil, "Could not open manifest file" end
     local content = file.readAll()
     file.close()
     
-    local fn, err = load(content, "manifest", "t", {})
+    if not content then return nil, "Manifest file is empty" end
+    
+    -- loadstring is the Lua 5.1 compatible equivalent of load(chunk, name)
+    -- The sandbox env ({}) is set on the returned function via setfenv.
+    local fn, err = loadstring(content, "manifest")
+    if fn then setfenv(fn, {}) end
     if not fn then return nil, "Manifest parse error: " .. err end
     
     local ok, manifest = pcall(fn)
@@ -265,7 +271,7 @@ local function install(packageId, manifest, isDryRun)
                 print("Cleanup: Removed installer.")
             end
             
-            if ans:lower() == "y" then
+            if ans and ans:lower() == "y" then
                 shell.run(targetPkg.entry)
             else
                 print("Exit. You can start the app via: " .. targetPkg.entry)
