@@ -17,7 +17,7 @@ These scripts run inside the **ComputerCraft / CC:Tweaked** Lua sandbox within M
 
 - Read and write local files on the in-game computer (`fs` API)
 - Access peripheral devices connected via Wired Modems
-- Make outbound HTTP requests to **GitHub's API** and **Pastebin** (installer only)
+- Make outbound HTTP requests to **raw.githubusercontent.com** (installer only)
 
 **Out of scope:** These scripts have no access to your real file system, operating system, network credentials, or any data outside the Minecraft / CC:Tweaked sandbox.
 
@@ -43,6 +43,6 @@ You can expect an acknowledgement within **72 hours** and a fix or response with
 
 ## Security Best Practices for Users
 
-- Always review scripts before running them with `pastebin run` or `wget run`.
-- The installer (`pastebin run vYK0cPkU`) only fetches files from this repository via the GitHub API. No other domains are contacted.
+- Always review scripts before downloading and running them.
+- The installer (`install.lua`) only fetches files from this repository via `raw.githubusercontent.com`. No other domains are contacted.
 - HTTP access in CC:Tweaked can be restricted per-server in `computercraft-common.toml` if needed.

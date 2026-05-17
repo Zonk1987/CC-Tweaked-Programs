@@ -26,10 +26,13 @@
 
 ## 🚀 Installation
 
-Run this command on your remote computer:
+1. Download the install.lua file from the repo
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/Universal%20Installer/install.lua
-install
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+```
+2. Run the install.lua file
+```bash
+install.lua
 ```
 Select **Mekanism Portal Recaller** from the menu.
 

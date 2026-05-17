@@ -33,9 +33,17 @@
 
 ## 🚀 Installation & Usage
 
-1. Run the installer and select **Create Mechanical Crafter Automation**.
-2. **Calibration**: On the first start, follow the on-screen prompts to right-click modems in order. This maps the physical grid to the software.
-3. **Blocking Mode**: Set your AE2 Pattern Provider to **"Blocking Mode"** facing the Buffer Chest.
+1. Download the install.lua file from the repo
+```bash
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+```
+2. Run the install.lua file
+```bash
+install.lua
+```
+3. Select **Create Mechanical Crafter Automation**.
+4. **Calibration**: On the first start, follow the on-screen prompts to right-click modems in order. This maps the physical grid to the software.
+5. **Blocking Mode**: Set your AE2 Pattern Provider to **"Blocking Mode"** facing the Buffer Chest.
 
 ---
 

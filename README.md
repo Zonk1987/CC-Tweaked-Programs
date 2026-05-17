@@ -8,8 +8,12 @@ A collection of professional-grade automation scripts for Minecraft **CC:Tweaked
 
 Run this command on an **Advanced Computer**:
 
+1. Download the install.lua file from the repo
 ```bash
-wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+```
+2. Run the install.lua file
+```bash
 install.lua
 ```
 
@@ -42,7 +46,7 @@ Generic utilities are extracted into hidden core packages to reduce duplication:
 - **`core.recipes`**: JSON-backed recipe storage (`RecipeStore`).
 
 ### **Dependency Resolution**
-The installer automatically resolves dependencies recursively. For example, installing `create_crafter` will automatically pull the required `core.inventory` and `core.redstone` modules. All files are placed in a flat structure at the root for simple `require()` calls.
+The installer automatically resolves dependencies recursively. For example, installing `create_crafter` will automatically pull the required `core.inventory` and `core.redstone` modules. Application files are placed in the root directory, while core libraries are maintained in the `lib/core/` hierarchy (accessible via adjusted package paths in the `startup.lua`).
 
 ---
 
@@ -64,7 +68,7 @@ The installer automatically resolves dependencies recursively. For example, inst
 
 All code in this repository is governed by **[AGENTS.md](./AGENTS.md)**.
 - **Strict Mode**: Every script uses a strict environment to prevent accidental globals.
-- **No Deletion**: The installer never deletes existing user files (except when explicitly replacing older versions during an update).
+- **No Deletion**: The installer never deletes existing user files (except for cleaning up its own temporary files like `manifest.lua` and `install.lua` after completion, or replacing older versions during an update).
 - **No Auto-Reboot**: The installer asks before running entry files and never reboots the system without permission.
 
 ---
@@ -76,4 +80,4 @@ If you encounter issues:
 2. Run `install --validate` to check for manifest errors.
 3. Check the `README.md` within each application's folder for hardware-specific setup.
 
-**LICENSE**: MIT
+**[LICENSE](./LICENSE)**: MIT

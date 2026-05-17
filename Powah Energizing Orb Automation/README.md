@@ -33,9 +33,17 @@
 
 ## 🚀 Installation & Usage
 
-1. Run the installer and select **Powah Automation**.
-2. The system auto-detects your peripherals on startup.
-3. **Important**: Set your AE2 Pattern Providers to **"Blocking Mode"** and point them at the Buffer Chest.
+1. Download the install.lua file from the repo
+```bash
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/dev/install.lua
+```
+2. Run the install.lua file
+```bash
+install.lua
+```
+3. Select **Powah Automation** from the menu.
+4. The system auto-detects your peripherals on startup.
+5. **Important**: Set your AE2 Pattern Providers to **"Blocking Mode"** and point them at the Buffer Chest.
 
 ---
 
