@@ -32,11 +32,24 @@ local keys = keys
 
 ---@class ConfigStore
 ---@field data table
+---@field save fun(self: ConfigStore)
+---@field load fun(self: ConfigStore)
 
 ---@class ButtonGrid
 ---@field mon table
 ---@field activeKey string|nil
 ---@field flashKey string|nil
+---@field colorOn number
+---@field buttons table
+---@field setActive fun(self: ButtonGrid, key: string|nil)
+---@field resetButtons fun(self: ButtonGrid)
+---@field drawFineBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
+---@field drawHorizontalLine fun(self: ButtonGrid, x1: number, x2: number, y: number, color: number)
+---@field add fun(self: ButtonGrid, name: string, callback: fun(), x1: number, x2: number, y1: number, y2: number, drawOnAdd?: boolean)
+---@field setFlash fun(self: ButtonGrid, key: string)
+---@field drawButtonBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, frameColor: number, bgColor: number)
+---@field drawBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
+---@field checkClick fun(self: ButtonGrid, x: number, y: number)
 
 ---@class PortalConfig
 ---@field monitorSide string
@@ -52,6 +65,7 @@ local keys = keys
 ---@field tp table The teleporter peripheral
 ---@field bm ButtonGrid The button manager instance
 ---@field configStore ConfigStore System configuration
+---@field colorStore ConfigStore Color configuration
 ---@field frequencies table List of available frequencies
 ---@field currentPage number Currently displayed page
 ---@field totalPages number Total number of pages
@@ -61,6 +75,15 @@ local keys = keys
 ---@field portalColors table<string, string>
 ---@field uuidService UUIDService
 ---@field lastError string|nil
+---@field monName string|nil
+---@field tpName string|nil
+---@field mekColors string[]
+---@field ccMap table<string, number>
+---@field manualActive string|nil
+---@field isMovingOverlay boolean
+---@field activeOverlay table|nil
+---@field testSelectedFrequency string|nil
+---@field buffer table|nil
 local HubSystem = {}
 HubSystem.__index = HubSystem
 

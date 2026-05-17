@@ -60,6 +60,7 @@ end
 --- @param payload table Data to send
 function RednetProtocol.transmit(channel, payload)
     local modem = peripheral.find("modem")
+    ---@cast modem any
     if modem then
         modem.transmit(channel, os.getComputerID(), payload)
         return true

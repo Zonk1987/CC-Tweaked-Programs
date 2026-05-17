@@ -18,7 +18,7 @@ local setmetatable = setmetatable
 local os_sleep = os.sleep
 local os_epoch = os.epoch
 local os_pullEvent = os.pullEvent
-local parallel_waitForAll = parallel.waitForAll
+local parallel_waitForAll = (parallel --[[@as any]]).waitForAll
 
 local colors = colors
 local keys = keys

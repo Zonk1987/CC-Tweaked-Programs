@@ -59,4 +59,32 @@ function Chest:transferRecipe(recipe, orbName)
     return true
 end
 
+--- Checks if the peripheral is connected and valid (delegated to InventoryAdapter)
+---@return boolean
+function Chest:isPresent()
+    return InventoryAdapter.isPresent(self)
+end
+
+--- Returns the native peripheral object (delegated to InventoryAdapter)
+---@return any
+function Chest:getNative()
+    return InventoryAdapter.getNative(self)
+end
+
+--- Lists items in the inventory (delegated to InventoryAdapter)
+---@return table<number, table>|nil items, string|nil err
+function Chest:list()
+    return InventoryAdapter.list(self)
+end
+
+--- Pushes items to another inventory (delegated to InventoryAdapter)
+---@param toName string
+---@param fromSlot number
+---@param count number|nil
+---@param toSlot number|nil
+---@return number|nil
+function Chest:pushItems(toName, fromSlot, count, toSlot)
+    return InventoryAdapter.pushItems(self, toName, fromSlot, count, toSlot)
+end
+
 return Chest

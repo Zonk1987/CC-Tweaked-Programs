@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 std = "lua51"
 
 read_globals = {

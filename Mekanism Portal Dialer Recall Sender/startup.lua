@@ -48,6 +48,8 @@ local read = read
 
 ---@class ConfigStore
 ---@field data table
+---@field save fun(self: ConfigStore)
+---@field load fun(self: ConfigStore)
 
 ---@class RecallSender
 ---@field configStore ConfigStore

@@ -20,7 +20,7 @@ local pairs = pairs
 local os_sleep = os.sleep
 local os_epoch = os.epoch
 local os_pullEvent = os.pullEvent
-local parallel_waitForAll = parallel.waitForAll
+local parallel_waitForAll = (parallel --[[@as any]]).waitForAll
 local keys_r = keys.r
 local keys_i = keys.i
 

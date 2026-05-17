@@ -8,11 +8,13 @@ local RedstoneController = {}
 --- @param duration number|nil Pulse duration in seconds (default: 0.1)
 function RedstoneController.pulseAll(duration)
     duration = duration or 0.1
-    for _, side in ipairs(redstone.getSides()) do
+    local sides = redstone.getSides()
+    ---@cast sides any
+    for _, side in ipairs(sides) do
         redstone.setOutput(side, true)
     end
     os.sleep(duration)
-    for _, side in ipairs(redstone.getSides()) do
+    for _, side in ipairs(sides) do
         redstone.setOutput(side, false)
     end
 end
@@ -36,7 +38,9 @@ function RedstoneController.waitForSignal(timeout)
     while true do
         local event, p1 = os.pullEvent()
         if event == "redstone" then
-            for _, side in ipairs(redstone.getSides()) do
+            local sides = redstone.getSides()
+            ---@cast sides any
+            for _, side in ipairs(sides) do
                 if redstone.getInput(side) then
                     return side
                 end
@@ -50,7 +54,9 @@ end
 --- Checks if any side has a redstone input
 --- @return boolean
 function RedstoneController.anyInput()
-    for _, side in ipairs(redstone.getSides()) do
+    local sides = redstone.getSides()
+    ---@cast sides any
+    for _, side in ipairs(sides) do
         if redstone.getInput(side) then return true end
     end
     return false

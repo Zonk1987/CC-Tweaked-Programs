@@ -114,7 +114,7 @@ function RecipeManager:isRecipeComplete(recipe, chestItems)
 end
 
 --- Finds the first recipe whose ingredients are completely met
----@param chest Chest
+---@param chest any
 ---@return table|nil
 function RecipeManager:findReadyRecipe(chest)
     local chestItems = chest:list()
@@ -126,6 +126,16 @@ function RecipeManager:findReadyRecipe(chest)
         end
     end
     return nil
+end
+
+--- Adds a recipe (delegated to RecipeStore)
+function RecipeManager:add(recipe)
+    RecipeStore.add(self, recipe)
+end
+
+--- Removes a recipe by name (delegated to RecipeStore)
+function RecipeManager:remove(name)
+    return RecipeStore.remove(self, name)
 end
 
 return RecipeManager
