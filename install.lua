@@ -120,7 +120,7 @@ local function resolve(manifest, packageId, resolvedPkgs, filesToDownload)
     
     -- Add files
     for _, file in ipairs(pkg.files or {}) do
-        filesToDownload[file.target] = file.source
+        filesToDownload[file.target] = { source = file.source, sizeBytes = file.sizeBytes }
     end
     
     return filesToDownload, pkg
@@ -141,23 +141,52 @@ local function install(packageId, manifest, isDryRun)
     for _ in pairs(result) do total = total + 1 end
 
     local current = 0
-    for target, source in pairs(result) do
+    for target, fileData in pairs(result) do
         current = current + 1
+        local source = fileData.source
+        local expectedSize = fileData.sizeBytes
+
         if isDryRun then
             print(string.format("  [%d/%d] [PLAN] %s -> %s", current, total, source, target))
         else
             term.setTextColor(colors.gray)
-            write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
-            local success, err = downloadFile(REPO_URL .. source, target)
-            if success then
-                term.setTextColor(colors.lime)
-                print("OK")
+            
+            local skipDownload = false
+            if expectedSize and fs.exists(target) then
+                if fs.getSize(target) == expectedSize then
+                    skipDownload = true
+                end
+            end
+
+            if skipDownload then
+                write(string.format("  [%d/%d] Checking %s... ", current, total, target))
+                term.setTextColor(colors.blue)
+                print("UP TO DATE")
             else
-                term.setTextColor(colors.red)
-                print("FAILED")
-                print("    Error: " .. err)
-                term.setTextColor(colors.white)
-                return
+                write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
+                local success, err = downloadFile(REPO_URL .. source, target)
+                if success then
+                    -- Integrity verification
+                    if expectedSize and fs.exists(target) then
+                        local actualSize = fs.getSize(target)
+                        if actualSize ~= expectedSize then
+                            term.setTextColor(colors.orange)
+                            print(string.format("WARN (%dB != %dB)", actualSize, expectedSize))
+                        else
+                            term.setTextColor(colors.lime)
+                            print("OK")
+                        end
+                    else
+                        term.setTextColor(colors.lime)
+                        print("OK")
+                    end
+                else
+                    term.setTextColor(colors.red)
+                    print("FAILED")
+                    print("    Error: " .. err)
+                    term.setTextColor(colors.white)
+                    return
+                end
             end
         end
     end
