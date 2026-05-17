@@ -90,8 +90,8 @@ local function validateManifest(manifest)
             if file.sizeBytes ~= nil and (type(file.sizeBytes) ~= "number" or file.sizeBytes < 0) then
                 table.insert(errors, id .. ": Invalid sizeBytes (must be >= 0): " .. tostring(file.source))
             end
-            if file.hash ~= nil and (type(file.hash) ~= "string" or #file.hash ~= 64) then
-                table.insert(errors, id .. ": Invalid SHA256 hash format: " .. tostring(file.source))
+            if file.hash ~= nil and (type(file.hash) ~= "string" or #file.hash ~= 64 or file.hash:find("[^0-9a-fA-F]")) then
+                table.insert(errors, id .. ": Invalid SHA256 hash (must be 64 hex chars): " .. tostring(file.source))
             end
         end
         
@@ -126,10 +126,37 @@ local function resolve(manifest, packageId, resolvedPkgs, filesToDownload)
     
     -- Add files
     for _, file in ipairs(pkg.files or {}) do
-        filesToDownload[file.target] = { source = file.source, sizeBytes = file.sizeBytes }
+        filesToDownload[file.target] = { source = file.source, sizeBytes = file.sizeBytes, hash = file.hash }
     end
     
     return filesToDownload, pkg
+end
+
+--- Load the version-fingerprint cache (maps installed file paths to their manifest hash).
+--- Purpose: detect whether a file's manifest version has changed since the last install,
+--- allowing "UP TO DATE" skips without re-downloading. This is NOT a cryptographic
+--- download verifier — transport integrity is guaranteed by HTTPS.
+local function loadInstallState()
+    local stateFile = ".install_state.json"
+    if fs.exists(stateFile) then
+        local f = fs.open(stateFile, "r")
+        if f then
+            local data = f.readAll(); f.close()
+            local ok, state = pcall(textutils.unserialiseJSON, data)
+            if ok and type(state) == "table" then return state end
+        end
+    end
+    return {}
+end
+
+--- Save the version-fingerprint cache
+local function saveInstallState(state)
+    local stateFile = ".install_state.json"
+    local f = fs.open(stateFile, "w")
+    if f then
+        f.write(textutils.serialiseJSON(state))
+        f.close()
+    end
 end
 
 --- Perform the installation
@@ -146,11 +173,13 @@ local function install(packageId, manifest, isDryRun)
     local total = 0
     for _ in pairs(result) do total = total + 1 end
 
+    local installState = loadInstallState()
     local current = 0
     for target, fileData in pairs(result) do
         current = current + 1
-        local source = fileData.source
+        local source    = fileData.source
         local expectedSize = fileData.sizeBytes
+        local expectedHash = fileData.hash
 
         if isDryRun then
             print(string.format("  [%d/%d] [PLAN] %s -> %s", current, total, source, target))
@@ -158,10 +187,14 @@ local function install(packageId, manifest, isDryRun)
             term.setTextColor(colors.gray)
             
             local skipDownload = false
-            if expectedSize and fs.exists(target) then
-                if fs.getSize(target) == expectedSize then
-                    skipDownload = true
-                end
+
+            -- Version-fingerprint check: compare the manifest hash (= the version ID written
+            -- by CI at build time) against the hash stored locally after the last install.
+            -- If they match, this exact version is already on disk — skip the download.
+            -- NOTE: We do not recompute SHA256 locally (no native CC:Tweaked API; a pure-Lua
+            -- implementation would be too slow). Transport integrity is covered by HTTPS.
+            if expectedHash and installState[target] == expectedHash then
+                skipDownload = true
             end
 
             if skipDownload then
@@ -172,12 +205,18 @@ local function install(packageId, manifest, isDryRun)
                 write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
                 local success, err = downloadFile(REPO_URL .. source, target)
                 if success then
-                    -- Integrity verification
+                    -- NOTE: SHA256 cannot be computed locally in CC Lua (no native API, pure-Lua
+                    -- implementation would freeze the computer). Trust model instead:
+                    --   1. HTTPS guarantees the download was not tampered in transit.
+                    --   2. sizeBytes is a fast sanity check for truncated/incomplete downloads.
+                    --   3. hash is stored in state so the *next* run can skip correctly.
+                    local downloadOk = true
                     if expectedSize and fs.exists(target) then
                         local actualSize = fs.getSize(target)
                         if actualSize ~= expectedSize then
                             term.setTextColor(colors.orange)
-                            print(string.format("WARN (%dB != %dB)", actualSize, expectedSize))
+                            print(string.format("WARN: truncated? (%dB != expected %dB)", actualSize, expectedSize))
+                            downloadOk = false
                         else
                             term.setTextColor(colors.lime)
                             print("OK")
@@ -185,6 +224,14 @@ local function install(packageId, manifest, isDryRun)
                     else
                         term.setTextColor(colors.lime)
                         print("OK")
+                    end
+                    -- Store the manifest hash as the version fingerprint for this file.
+                    -- On the next install run, this allows skipping the download if the
+                    -- manifest version hasn't changed. Only saved when size check passes
+                    -- to avoid marking a truncated download as valid.
+                    if expectedHash and downloadOk then
+                        installState[target] = expectedHash
+                        saveInstallState(installState)
                     end
                 else
                     term.setTextColor(colors.red)
