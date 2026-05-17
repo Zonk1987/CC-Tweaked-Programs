@@ -58,7 +58,7 @@ return {
             hidden = true,
             dependencies = { "core.peripherals" },
             files = {
-                { source = "lib/core/inventory/InventoryAdapter.lua", target = "lib/core/inventory/InventoryAdapter.lua", sizeBytes = 2947 },
+                { source = "lib/core/inventory/InventoryAdapter.lua", target = "lib/core/inventory/InventoryAdapter.lua", sizeBytes = 2850 },
                 { source = "lib/core/inventory/ItemMatcher.lua", target = "lib/core/inventory/ItemMatcher.lua", sizeBytes = 1977 },
             },
         },
@@ -68,7 +68,7 @@ return {
             hidden = true,
             dependencies = {},
             files = {
-                { source = "lib/core/recipes/RecipeStore.lua", target = "lib/core/recipes/RecipeStore.lua", sizeBytes = 2150 },
+                { source = "lib/core/recipes/RecipeStore.lua", target = "lib/core/recipes/RecipeStore.lua", sizeBytes = 2134 },
             },
         },
 
