@@ -376,7 +376,7 @@ end
 --- Main Menu
 function DevToolkit.mainMenu()
     while true do
-        header("Developer Suite v4.1 [AGENTS]")
+        header("Developer Suite v{{VERSION}}")
         print("1. Superior Inspector (Methods & Browser)")
         print("2. Event Sniffer (Live OS Debug)")
         print("3. Redstone Analyzer (Live Inputs)")

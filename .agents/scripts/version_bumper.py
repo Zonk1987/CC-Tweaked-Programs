@@ -64,16 +64,21 @@ def main():
                         break
             
             if needs_bump:
-                path = os.path.join(root, "startup.lua")
-                with open(path, "r", encoding="utf-8") as f:
-                    content = f.read()
-                
-                # Replace the placeholder or any already injected version
-                content = re.sub(r'v\{\{VERSION\}\}', full_version, content)
-                content = re.sub(r'v\d+\.\d+\.\d+-(main|dev)', full_version, content)
+                # Scan all .lua files in this app directory for version placeholders
+                for app_root, app_dirs, app_files in os.walk(app_dir):
+                    for file in app_files:
+                        if file.endswith(".lua"):
+                            path = os.path.join(app_root, file)
+                            with open(path, "r", encoding="utf-8") as f:
+                                content = f.read()
+                            
+                            # Only write if a placeholder or an old version string exists
+                            if "v{{VERSION}}" in content or re.search(r'v\d+\.\d+\.\d+-(main|dev)', content):
+                                content = re.sub(r'v\{\{VERSION\}\}', full_version, content)
+                                content = re.sub(r'v\d+\.\d+\.\d+-(main|dev)', full_version, content)
 
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(content)
+                                with open(path, "w", encoding="utf-8") as f:
+                                    f.write(content)
                 print(f"BUMPED version for: {app_dir}")
             else:
                 print(f"SKIPPED version bump for: {app_dir} (No changes)")

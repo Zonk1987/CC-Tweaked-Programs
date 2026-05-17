@@ -64,10 +64,10 @@ install.lua
 
 | Key | Action |
 |:---:|---|
-| **`S`** | **Scan/Record** new recipe from the grid |
+| **`S`** | **Scan/Record** new recipe from the grid *(Cancel by pressing ENTER with empty name)* |
 | **`M`** | **Manage** saved recipes and view patterns |
 | **`R`** | **Reload** recipes from `crafter_recipes.json` |
-| **`Q`** | **Quit** (Exit the active menu and return to the Dashboard) |
+| **`Q`** | **Quit** (Exit the Recipe Manager menu and return to the Dashboard) |
 
 ---
 

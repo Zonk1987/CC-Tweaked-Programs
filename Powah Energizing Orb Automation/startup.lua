@@ -7,7 +7,7 @@ DESCRIPTION:
 This system fully automates the Powah Energizing Orb crafting process.
 It features a high-performance modular architecture with deep AE2 integration.
 
-REFACTOR (V5.2):
+CHANGELOG:
 - Compliant with AGENTS.md rules.
 - Modular UI handling (ImportMenu).
 - Improved peripheral validation.
@@ -16,7 +16,7 @@ HARDWARE SETUP:
 1. Place an Advanced Computer.
 2. Connect a Chest/Buffer next to it (e.g., "left"). This receives AE2 items.
 3. Connect Powah Energizing Orbs via Cables and Wired Modems.
-4. (Optional) Connect an ME Bridge for the automated import menu.
+4. (Required) Connect an ME Bridge for the automated pattern import menu.
 5. Set your AE2 Pattern Provider to "Blocking Mode" facing the Buffer Chest.
 ================================================================================
 ]]--

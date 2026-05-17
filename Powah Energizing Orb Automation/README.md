@@ -70,7 +70,7 @@ The system features a smart import menu (Key **`I`**):
 |:---:|---|
 | **`R`** | **Reload** recipes without restarting |
 | **`I`** | **Import Menu** (Browse and add AE2 Patterns) |
-| **`M`** | **Mod Toggle** (Inside Import Menu: Powah vs. All) |
+| **`M`** | **Mod Toggle** (Inside Import Menu: Powah vs. All. *Only available if the 'ae2communicate' mod is NOT used*) |
 | **`B`** | **Back** (Inside Import Menu: Go back to Provider selection) |
 | **`X`** | **Delete** (Remove an imported recipe from the system) |
 | **`Q`** | **Quit** (Exit the Import Menu and return to the Dashboard) |
@@ -84,7 +84,7 @@ The system is designed to work out-of-the-box. If you need manual adjustments, c
 local system = PowahSystem.new({
     chestName = "left", -- Or use auto-detection variable
     recipeFile = "powah_recipes.json",
-    meBridgeName = "right", -- Optional: ME Bridge peripheral name
+    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
     aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
 })
 ```
