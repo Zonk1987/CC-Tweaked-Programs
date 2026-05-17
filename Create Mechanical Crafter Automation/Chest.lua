@@ -11,9 +11,9 @@ local _ENV = setmetatable({}, {
 -- Localize globals
 local setmetatable = setmetatable
 local pairs = pairs
-local ipairs = ipairs
+
 local tonumber = tonumber
-local os_epoch = os.epoch
+
 local pcall = pcall
 
 local InventoryAdapter = require("InventoryAdapter")

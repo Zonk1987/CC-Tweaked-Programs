@@ -10,7 +10,7 @@ local _ENV = setmetatable({}, {
 -- Localize globals
 local colors = colors
 local string = string
-local math = math
+
 
 ---@class Dashboard
 local Dashboard = {}

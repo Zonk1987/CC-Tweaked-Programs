@@ -8,7 +8,7 @@ RecipeStore.__index = RecipeStore
 ---@class RecipeStore
 ---@field filename string Path to the JSON file
 ---@field recipes table[] Loaded recipes
-local Store = {}
+
 
 --- Creates a new RecipeStore instance
 --- @param filename string

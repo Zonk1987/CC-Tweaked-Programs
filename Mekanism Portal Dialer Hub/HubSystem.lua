@@ -11,13 +11,11 @@ local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
 local PeripheralScanner = require("PeripheralScanner")
 local RednetProtocol = require("RednetProtocol")
-local ButtonGrid = require("ButtonGrid")
+
 
 -- Localize globals
 local peripheral = peripheral
 local colors = colors
-local fs = fs
-local textutils = textutils
 local term = term
 local os_sleep = os.sleep
 local os_pullEvent = os.pullEvent
@@ -26,12 +24,11 @@ local math = math
 local table_insert = table.insert
 local table_sort = table.sort
 local ipairs = ipairs
-local pairs = pairs
 local pcall = pcall
 local string = string
 local window = window
 local keys = keys
-local rednet = rednet
+
 
 ---@class ConfigStore
 ---@field data table
@@ -347,7 +344,7 @@ end
 
 --- Draws the dynamic portal list
 function HubSystem:drawContent()
-    local w, h = self.bm.mon.getSize()
+    local w = self.bm.mon.getSize()
     local cols, rows = self.configStore.data.gridColumns or 4, self.configStore.data.gridRows or 4
     local startX, endX, gapX = 3, w - 2, 2
     local totalWidth = endX - startX + 1
@@ -355,7 +352,7 @@ function HubSystem:drawContent()
     local gridWidth = (cols * buttonWidth) + ((cols - 1) * gapX)
     startX = startX + math.floor((totalWidth - gridWidth) / 2)
 
-    local buttonHeight, spacingY = 5, 6
+    local spacingY = 6
     local max = cols * rows
     local start = (self.currentPage - 1) * max + 1
     local finish = math.min(start + max - 1, #self.frequencies)
@@ -433,14 +430,7 @@ function HubSystem:dial(portalName)
     self.buffer.setVisible(true)
 
     if not (self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0) then
-        -- Determine if frequency is public/private
-        local isPublic = true
-        for _, f in ipairs(self.frequencies or {}) do
-            if f.key == portalName then
-                isPublic = f.public
-                break
-            end
-        end
+
 
         self.tp.setFrequency(portalName)
         os_sleep(0.3)
@@ -536,7 +526,7 @@ end
 ---@param force? boolean If true, ignore overlay state
 function HubSystem:drawStatus(force)
     if self.activeOverlay and not force then return end
-    local name, owner, statusStr = "NOT CONNECTED", "", "Ready"
+    local name, owner, statusStr = "NOT CONNECTED", "", ""
     if self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0 then
         name, owner, statusStr = self.testSelectedFrequency or "NONE", "DevUser", "TEST-MODE"
     else
@@ -558,7 +548,7 @@ function HubSystem:drawStatus(force)
     end
 
     -- Draw Frame around status (Kept safe from edges)
-    local w, h = self.bm.mon.getSize()
+    local w = self.bm.mon.getSize()
     Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 3, 8)
 
     -- Explicitly fill the ENTIRE interior with gray
@@ -602,7 +592,7 @@ function HubSystem:run()
     end
     self:drawTerminalHeader(); self:draw()
     while true do
-        local ev, side, x, y, message = os_pullEvent()
+        local ev, evSide, x, y, message = os_pullEvent()
         if ev == "monitor_touch" and not self.isBusy then
             if self.isMovingOverlay then
                 -- Move Mode Logic

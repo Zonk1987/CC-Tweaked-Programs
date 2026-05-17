@@ -32,18 +32,18 @@ local RedstoneController = require("RedstoneController")
 
 -- Localize globals
 local fs = fs
-local peripheral = peripheral
-local rednet = rednet
+
+
 local term = term
 local colors = colors
 local keys = keys
 local os_sleep = os.sleep
 local os_pullEvent = os.pullEvent
 local os_startTimer = os.startTimer
-local rs = rs
-local textutils = textutils
-local string = string
-local ipairs = ipairs
+
+
+
+
 local tonumber = tonumber
 local write = write
 local read = read
@@ -218,7 +218,7 @@ function RecallSender:run()
     local refreshTimer = os_startTimer(2) -- Auto-refresh every 2s
 
     while true do
-        local event, p1, p2, p3 = os_pullEvent()
+        local event, p1 = os_pullEvent()
 
         if event == "redstone" then
             if RedstoneController.anyInput() then

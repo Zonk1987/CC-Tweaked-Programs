@@ -8,7 +8,7 @@ InventoryAdapter.__index = InventoryAdapter
 ---@class InventoryAdapter
 ---@field name string The peripheral name
 ---@field native table|nil The wrapped peripheral object
-local Inventory = {} -- Using a shorter internal name for clarity
+
 
 --- Creates a new InventoryAdapter
 --- @param name string The peripheral name (e.g. "minecraft:chest_0")
@@ -60,8 +60,7 @@ end
 function InventoryAdapter:isEmpty()
     local items = self:list()
     if not items then return true end
-    for _ in pairs(items) do return false end
-    return true
+    return next(items) == nil
 end
 
 --- Pulls items from another inventory

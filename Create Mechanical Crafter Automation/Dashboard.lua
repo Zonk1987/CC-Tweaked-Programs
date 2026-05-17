@@ -12,7 +12,7 @@ local setmetatable = setmetatable
 local term = term
 local colors = colors
 local pairs = pairs
-local string = string
+
 
 ---@class Dashboard
 ---@field statusMsg string

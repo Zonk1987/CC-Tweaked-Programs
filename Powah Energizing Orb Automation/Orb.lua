@@ -25,13 +25,10 @@ end
 --- Checks if the orb has items
 ---@return boolean
 function Orb:isEmpty()
-    local items, err = self:list()
+    local items = self:list()
     if not items then return true end
 
-    for _ in pairs(items) do
-        return false
-    end
-    return true
+    return next(items) == nil
 end
 
 --- Recovers items from the orb back to the chest
@@ -48,9 +45,9 @@ function Orb:recover(targetName)
     end
 
     for slot, _ in pairs(items) do
-        local ok, err = pcall(self.native.pushItems, targetName, slot)
+        local ok, pushErr = pcall(self.native.pushItems, targetName, slot)
         if not ok then
-            return false, tostring(err)
+            return false, tostring(pushErr)
         end
     end
 

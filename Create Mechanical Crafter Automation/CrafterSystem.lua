@@ -19,7 +19,7 @@ local os_sleep = os.sleep
 local os_epoch = os.epoch
 local os_pullEvent = os.pullEvent
 local parallel_waitForAll = parallel.waitForAll
-local redstone = redstone
+
 local colors = colors
 local keys = keys
 local keys_r = keys.r

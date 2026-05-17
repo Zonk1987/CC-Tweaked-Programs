@@ -29,7 +29,7 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
 local HubSystem = require("HubSystem")
 local ButtonGrid = require("ButtonGrid")
-local PeripheralScanner = require("PeripheralScanner")
+
 
 -- Hardware Discovery
 local function findHardware()

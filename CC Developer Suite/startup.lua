@@ -210,7 +210,7 @@ function DevToolkit.redstoneMonitor()
                 write("INACTIVE      \n")
             end
         end
-        local timer = os.startTimer(0.5)
+        os.startTimer(0.1)
         local ev, p1 = os.pullEvent()
         if ev == "key" and p1 == keys.q then break end
     end

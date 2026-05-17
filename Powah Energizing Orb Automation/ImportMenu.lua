@@ -20,7 +20,7 @@ local pairs = pairs
 local keys = keys
 local keys_up = keys.up
 local keys_down = keys.down
-local keys_f = keys.f
+
 local keys_enter = keys.enter
 local keys_q = keys.q
 local keys_x = keys.x
@@ -145,7 +145,7 @@ function ImportMenu:open()
                 end
             end
 
-            local shouldShow = false
+            local shouldShow
             if providerFilter then
                 shouldShow = isMatched
             else
@@ -192,7 +192,6 @@ function ImportMenu:open()
                 elseif key == keys_enter then
                     providerFilter = providers[selected].name
                     self.selectedProvider = providerFilter
-                    selected = 1
                     break
                 elseif key == keys_q then
                     self.dashboard.suppressDraw = false
@@ -209,8 +208,8 @@ function ImportMenu:open()
         return false, "no_patterns_found"
     end
 
-    local selected = 1
-    local w, h = term.getSize()
+    selected = 1
+    w, h = term.getSize()
 
     while true do
         term.clear()

@@ -12,7 +12,7 @@ local http = http
 local fs = fs
 local textutils = textutils
 local pcall = pcall
-local string = string
+
 
 ---@class UUIDService
 ---@field cache table<string, string>
