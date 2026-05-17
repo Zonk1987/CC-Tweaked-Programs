@@ -78,7 +78,7 @@ local function drawHeader()
     term.setTextColor(colors.cyan)
     print("===================================")
     term.setTextColor(colors.yellow)
-    print("    Create Crafter System v1.0.004-main")
+    print("    Create Crafter System v1.0.007-main")
     term.setTextColor(colors.cyan)
     print("===================================")
 end
