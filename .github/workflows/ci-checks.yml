@@ -1,6 +1,7 @@
 name: CI Quality Checks
 
 on:
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
   push:
     branches:
       - main
