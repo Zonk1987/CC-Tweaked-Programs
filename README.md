@@ -69,6 +69,7 @@ The installer automatically resolves dependencies recursively. For example, inst
 All code in this repository is governed by **[AGENTS.md](./AGENTS.md)**.
 - **Strict Mode**: Application scripts and entry files use a strict environment to prevent accidental globals (core libraries currently bypass this to reduce localization boilerplate).
 - **No Deletion**: The installer never deletes existing user files (except for cleaning up its own temporary files like `manifest.lua` and `install.lua` after completion, or replacing older versions during an update).
+- **Install State Cache**: The installer creates a hidden file `.install_state.json` to remember which file versions have been installed. This speeds up future runs by skipping files that haven't changed (shown as `CACHED`). It is safe to delete this file at any time — the next install will simply re-download everything.
 - **No Auto-Reboot**: The installer asks before running entry files and never reboots the system without permission.
 - **Single App Policy**: Only **one** application is supported per Advanced Computer. Installing multiple apps on the same computer will cause file collisions and overwrite critical files like `startup.lua` or `Dashboard.lua`.
 

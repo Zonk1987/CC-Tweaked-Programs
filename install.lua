@@ -142,7 +142,7 @@ local function loadInstallState()
         local f = fs.open(stateFile, "r")
         if f then
             local data = f.readAll(); f.close()
-            local ok, state = pcall(textutils.unserialiseJSON, data)
+            local ok, state = pcall(textutils.unserializeJSON, data)
             if ok and type(state) == "table" then return state end
         end
     end
@@ -154,7 +154,7 @@ local function saveInstallState(state)
     local stateFile = ".install_state.json"
     local f = fs.open(stateFile, "w")
     if f then
-        f.write(textutils.serialiseJSON(state))
+        f.write(textutils.serializeJSON(state))
         f.close()
     end
 end
@@ -191,16 +191,20 @@ local function install(packageId, manifest, isDryRun)
             -- Version-fingerprint check: compare the manifest hash (= the version ID written
             -- by CI at build time) against the hash stored locally after the last install.
             -- If they match, this exact version is already on disk — skip the download.
+            -- Also verifies the file physically exists and the size is a quick sanity check.
             -- NOTE: We do not recompute SHA256 locally (no native CC:Tweaked API; a pure-Lua
             -- implementation would be too slow). Transport integrity is covered by HTTPS.
-            if expectedHash and installState[target] == expectedHash then
+            if expectedHash
+               and fs.exists(target)
+               and installState[target] == expectedHash
+               and (not expectedSize or fs.getSize(target) == expectedSize) then
                 skipDownload = true
             end
 
             if skipDownload then
-                write(string.format("  [%d/%d] Checking %s... ", current, total, target))
+                write(string.format("  [%d/%d] Skipping %s... ", current, total, target))
                 term.setTextColor(colors.blue)
-                print("UP TO DATE")
+                print("CACHED")
             else
                 write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
                 local success, err = downloadFile(REPO_URL .. source, target)
@@ -210,26 +214,23 @@ local function install(packageId, manifest, isDryRun)
                     --   1. HTTPS guarantees the download was not tampered in transit.
                     --   2. sizeBytes is a fast sanity check for truncated/incomplete downloads.
                     --   3. hash is stored in state so the *next* run can skip correctly.
-                    local downloadOk = true
                     if expectedSize and fs.exists(target) then
                         local actualSize = fs.getSize(target)
                         if actualSize ~= expectedSize then
-                            term.setTextColor(colors.orange)
-                            print(string.format("WARN: truncated? (%dB != expected %dB)", actualSize, expectedSize))
-                            downloadOk = false
-                        else
-                            term.setTextColor(colors.lime)
-                            print("OK")
+                            -- Delete the corrupted/truncated file to prevent a broken partial install.
+                            fs.delete(target)
+                            term.setTextColor(colors.red)
+                            print(string.format("FAILED (size mismatch: got %dB, expected %dB — file removed)", actualSize, expectedSize))
+                            term.setTextColor(colors.white)
+                            return
                         end
-                    else
-                        term.setTextColor(colors.lime)
-                        print("OK")
                     end
+                    term.setTextColor(colors.lime)
+                    print("OK")
                     -- Store the manifest hash as the version fingerprint for this file.
                     -- On the next install run, this allows skipping the download if the
-                    -- manifest version hasn't changed. Only saved when size check passes
-                    -- to avoid marking a truncated download as valid.
-                    if expectedHash and downloadOk then
+                    -- manifest version hasn't changed.
+                    if expectedHash then
                         installState[target] = expectedHash
                         saveInstallState(installState)
                     end
