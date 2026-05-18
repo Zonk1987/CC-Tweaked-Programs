@@ -303,7 +303,7 @@ jobs:
 
       - name: Create Pull Request with changes
         id: create-pr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: auto-bump version and file sizes [skip ci]"
