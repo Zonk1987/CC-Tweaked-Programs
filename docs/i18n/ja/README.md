@@ -46,11 +46,11 @@ install.lua
 
 | ID | 名前 | 説明 | 主な特長 |
 |:---|:---|:---|:---|
-| 「mekanism_portal_hub」 | **ポータル ダイヤラ ハブ** | プレミアムタッチスクリーンダイヤラー。 | 移動可能な UI、アクセントストライプ、ページリセット。 |
-| `mekanism_recall_sender` | **ポータル リコール送信者** | リモートワイヤレストリガー。 | ハードウェア診断、ライブステータス監視。 |
-| `create_crafter` | **メカニカルクラフター** | グリッド作成の自動化。 | 記録とキャリブレーション、マルチステップレシピ。 |
-| `ポワオーブ` | **活力を与えるオーブ** | 並行クラフトの自動化。 | ME ブリッジの統合、自動回復。 |
-| 「開発者スイート」 | **CC 開発者スイート** | 診断ツールキット。 | イベントスニファー、ペリフェラルインスペクター。 |
+| 「mekanism_portal_hub」 | [**ポータル ダイヤラー ハブ**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/ja/README.md) | プレミアムタッチスクリーンダイヤラー。 | 移動可能な UI、アクセントストライプ、ページリセット。 |
+| `mekanism_recall_sender` | [**ポータル リコール送信者**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/ja/README.md) | リモートワイヤレストリガー。 | ハードウェア診断、ライブステータス監視。 |
+| `create_crafter` | [**Mechanical Crafter**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/ja/README.md) | グリッド作成の自動化。 | 記録とキャリブレーション、マルチステップレシピ。 |
+| `ポワオーブ` | [**エネルギーを与えるオーブ**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/ja/README.md) | 並行クラフトの自動化。 | ME ブリッジの統合、自動回復。 |
+| 「開発者スイート」 | [**CC 開発者スイート**](../../../CC%20Developer%20Suite/docs/i18n/ja/README.md) | 診断ツールキット。 | イベントスニファー、ペリフェラルインスペクター。 |
 
 ---
 

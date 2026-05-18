@@ -46,11 +46,11 @@ install.lua
 
 | IDENTIFICACIÓN | Nombre | Descripción | Características clave |
 |:---|:---|:---|:---|
-| `mekanismo_portal_hub` | **Centro de marcador del portal** | Marcador de pantalla táctil premium. | Interfaz de usuario móvil, rayas decorativas, restablecimiento de página. |
-| `mekanism_recall_sender` | **Remitente de recuperación del portal** | Disparador inalámbrico remoto. | Diagnóstico de hardware, monitoreo del estado en vivo. |
-| `crea_crafter` | **Artesano mecánico** | Automatización de elaboración de cuadrículas. | Grabación y calibración, recetas de varios pasos. |
-| `powah_orb` | **Orbe energizante** | Automatización de elaboración paralela. | Integración de ME Bridge, recuperación automática. |
-| `suite_desarrollador` | **Suite para desarrolladores CC** | Kit de herramientas de diagnóstico. | Rastreador de eventos, inspector de periféricos. |
+| `mekanismo_portal_hub` | [**Centro de marcador del portal**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/es/README.md) | Marcador de pantalla táctil premium. | Interfaz de usuario móvil, rayas decorativas, restablecimiento de página. |
+| `mekanism_recall_sender` | [**Remitente de recuperación del portal**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/es/README.md) | Disparador inalámbrico remoto. | Diagnóstico de hardware, monitoreo del estado en vivo. |
+| `crea_crafter` | [**Mechanical Crafter**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/es/README.md) | Automatización de elaboración de cuadrículas. | Grabación y calibración, recetas de varios pasos. |
+| `powah_orb` | [**Orbe energizante**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/es/README.md) | Automatización de elaboración paralela. | Integración de ME Bridge, recuperación automática. |
+| `suite_desarrollador` | [**CC Developer Suite**](../../../CC%20Developer%20Suite/docs/i18n/es/README.md) | Kit de herramientas de diagnóstico. | Rastreador de eventos, inspector de periféricos. |
 
 ---
 

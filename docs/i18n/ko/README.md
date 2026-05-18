@@ -46,11 +46,11 @@ install.lua
 
 | ID | 이름 | 설명 | 주요 특징 |
 |:---|:---|:---|:---|
-| `메카니즘_포털_허브` | **포털 다이얼러 허브** | 프리미엄 터치스크린 다이얼러. | 이동식 UI, 악센트 줄무늬, 페이지 재설정. |
-| `mekanism_recall_sender` | **포털 리콜 발신자** | 원격 무선 트리거. | 하드웨어 진단, 실시간 상태 모니터링. |
-| `create_crafter` | **기계 제작자** | 그리드 제작 자동화. | 기록 및 교정, 다단계 레시피. |
-| `포와_구` | **에너자이징 오브** | 병렬 제작 자동화. | ME Bridge 통합, 자동 복구. |
-| `developer_suite` | **CC 개발자 제품군** | 진단 툴킷. | 이벤트 스니퍼, 주변 장치 검사자. |
+| `메카니즘_포털_허브` | [**포털 다이얼러 허브**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/ko/README.md) | 프리미엄 터치스크린 다이얼러. | 이동식 UI, 악센트 줄무늬, 페이지 재설정. |
+| `mekanism_recall_sender` | [**포털 리콜 발신자**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/ko/README.md) | 원격 무선 트리거. | 하드웨어 진단, 실시간 상태 모니터링. |
+| `create_crafter` | [**기계 제작가**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/ko/README.md) | 그리드 제작 자동화. | 기록 및 교정, 다단계 레시피. |
+| `포와_구` | [**에너자이징 오브**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/ko/README.md) | 병렬 제작 자동화. | ME Bridge 통합, 자동 복구. |
+| `developer_suite` | [**CC 개발자 제품군**](../../../CC%20Developer%20Suite/docs/i18n/ko/README.md) | 진단 툴킷. | 이벤트 스니퍼, 주변 장치 검사자. |
 
 ---
 

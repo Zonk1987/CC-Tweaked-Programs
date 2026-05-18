@@ -46,11 +46,11 @@ install.lua
 
 | IDENTIFIANT | Nom | Description | Principales fonctionnalités |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | ** Hub de numérotation de portail ** | Numéroteur à écran tactile haut de gamme. | Interface utilisateur mobile, bandes d'accentuation, réinitialisation de page. |
-| `mekanism_recall_sender` | **Expéditeur de rappel de portail** | Déclencheur sans fil à distance. | Diagnostics matériels, surveillance de l'état en direct. |
-| `create_crafter` | **Artisan mécanique** | Automatisation de la création de grilles. | Enregistrement et calibrage, recettes en plusieurs étapes. |
-| `powah_orb` | **Orbe énergisant** | Automatisation de la fabrication parallèle. | Intégration ME Bridge, récupération automatique. |
-| `developer_suite` | **Suite pour développeurs CC** | Boîte à outils de diagnostic. | Renifleur d'événements, inspecteur de périphériques. |
+| `mekanism_portal_hub` | [**Portal Dialer Hub**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/fr/README.md) | Numéroteur à écran tactile haut de gamme. | Interface utilisateur mobile, bandes d'accentuation, réinitialisation de page. |
+| `mekanism_recall_sender` | [**Expéditeur de rappel de portail**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/fr/README.md) | Déclencheur sans fil à distance. | Diagnostics matériels, surveillance de l'état en direct. |
+| `create_crafter` | [**Artisan mécanique**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/fr/README.md) | Automatisation de la création de grilles. | Enregistrement et calibrage, recettes en plusieurs étapes. |
+| `powah_orb` | [**Orbe énergisant**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/fr/README.md) | Automatisation de la fabrication parallèle. | Intégration ME Bridge, récupération automatique. |
+| `developer_suite` | [**Suite de développement CC**](../../../CC%20Developer%20Suite/docs/i18n/fr/README.md) | Boîte à outils de diagnostic. | Renifleur d'événements, inspecteur de périphériques. |
 
 ---
 

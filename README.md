@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # Zonk's CC:Tweaked Automation Suite 🚀
 
@@ -40,11 +40,11 @@ install.lua
 
 | ID | Name | Description | Key Features |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **Portal Dialer Hub** | Premium touch-screen dialer. | Moveable UI, Accent Stripes, Page-Reset. |
-| `mekanism_recall_sender`| **Portal Recall Sender** | Remote wireless trigger. | Hardware diagnostics, Live status monitoring. |
-| `create_crafter` | **Mechanical Crafter** | Grid crafting automation. | Recording & Calibration, Multi-step recipes. |
-| `powah_orb` | **Energizing Orb** | Parallel crafting automation. | ME Bridge integration, Auto-recovery. |
-| `developer_suite` | **CC Developer Suite** | Diagnostic toolkit. | Event sniffer, Peripheral inspector. |
+| `mekanism_portal_hub` | [**Portal Dialer Hub**](./Mekanism%20Portal%20Dialer%20Hub/README.md) | Premium touch-screen dialer. | Moveable UI, Accent Stripes, Page-Reset. |
+| `mekanism_recall_sender`| [**Portal Recall Sender**](./Mekanism%20Portal%20Dialer%20Recall%20Sender/README.md) | Remote wireless trigger. | Hardware diagnostics, Live status monitoring. |
+| `create_crafter` | [**Mechanical Crafter**](./Create%20Mechanical%20Crafter%20Automation/README.md) | Grid crafting automation. | Recording & Calibration, Multi-step recipes. |
+| `powah_orb` | [**Energizing Orb**](./Powah%20Energizing%20Orb%20Automation/README.md) | Parallel crafting automation. | ME Bridge integration, Auto-recovery. |
+| `developer_suite` | [**CC Developer Suite**](./CC%20Developer%20Suite/README.md) | Diagnostic toolkit. | Event sniffer, Peripheral inspector. |
 
 ---
 

@@ -46,11 +46,11 @@ install.lua
 
 | ID | 姓名 | 描述 | 主要特点 |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **门户拨号器中心** | 高级触摸屏拨号器。 | 可移动的用户界面、强调条纹、页面重置。 |
-| `mekanism_recall_sender` | **门户召回发送者** | 远程无线触发。 | 硬件诊断、实时状态监控。 |
-| `创建工匠` | **机械工匠** | 网格制作自动化。 | 记录和校准，多步骤食谱。 |
-| `powah_orb` | **能量宝珠** | 并行制作自动化。 | ME Bridge 集成，自动恢复。 |
-| `开发者套件` | **CC 开发套件** | 诊断工具包。 | 事件嗅探器，外设检查器。 |
+| `mekanism_portal_hub` | [**门户拨号器中心**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/zh-CN/README.md) | 高级触摸屏拨号器。 | 可移动的用户界面、强调条纹、页面重置。 |
+| `mekanism_recall_sender` | [**门户召回发件人**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/zh-CN/README.md) | 远程无线触发。 | 硬件诊断、实时状态监控。 |
+| `创建工匠` | [**机械工匠**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/zh-CN/README.md) | 网格制作自动化。 | 记录和校准，多步骤食谱。 |
+| `powah_orb` | [**能量球**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/zh-CN/README.md) | 并行制作自动化。 | ME Bridge 集成，自动恢复。 |
+| `开发者套件` | [**CC 开发套件**](../../../CC%20Developer%20Suite/docs/i18n/zh-CN/README.md) | 诊断工具包。 | 事件嗅探器，外设检查器。 |
 
 ---
 

@@ -390,6 +390,14 @@ if (Test-Path $rootReadmePath) {
             return $m.Value
         })
         
+        # Dynamically adjust project relative links in the root README table to point to the translated project READMEs
+        # Matches (./PROJECT_NAME/README.md) and changes to (../../../PROJECT_NAME/docs/i18n/LANG/README.md)
+        $translatedContent = [regex]::Replace($translatedContent, '\(\./([^/]+)/README\.md\)', {
+            param($m)
+            $proj = $m.Groups[1].Value
+            return "(../../../$proj/docs/i18n/$lang/README.md)"
+        })
+        
         $disclaimer = Get-Disclaimer -Lang $lang -EngPath '../../../README.md'
         
         $fullFile = $disclaimer + $langSelector + "`r`n`r`n" + $translatedContent

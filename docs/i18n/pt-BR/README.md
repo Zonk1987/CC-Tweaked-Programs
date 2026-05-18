@@ -46,11 +46,11 @@ install.lua
 
 | EU IA | Nome | Descrição | Principais recursos |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **Hub de discagem do portal** | Discador com tela de toque premium. | UI móvel, listras de destaque, redefinição de página. |
-| `mekanism_recall_sender` | **Remetente de recall do portal** | Gatilho remoto sem fio. | Diagnóstico de hardware, monitoramento de status ao vivo. |
-| `criar_crafter` | **Artesanato Mecânico** | Automação de elaboração de grade. | Gravação e calibração, receitas em várias etapas. |
-| `powah_orb` | **Orbe Energizante** | Automação de elaboração paralela. | Integração ME Bridge, recuperação automática. |
-| `developer_suite` | **Suite de desenvolvedores CC** | Kit de ferramentas de diagnóstico. | Sniffer de eventos, inspetor de periféricos. |
+| `mekanism_portal_hub` | [**Hub do discador do portal**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/pt-BR/README.md) | Discador com tela de toque premium. | UI móvel, listras de destaque, redefinição de página. |
+| `mekanism_recall_sender` | [**Remetente de recuperação do portal**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/pt-BR/README.md) | Gatilho remoto sem fio. | Diagnóstico de hardware, monitoramento de status ao vivo. |
+| `criar_crafter` | [**Artesanato Mecânico**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/pt-BR/README.md) | Automação de elaboração de grade. | Gravação e calibração, receitas em várias etapas. |
+| `powah_orb` | [**Orbe Energizante**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/pt-BR/README.md) | Automação de elaboração paralela. | Integração ME Bridge, recuperação automática. |
+| `developer_suite` | [**CC Developer Suite**](../../../CC%20Developer%20Suite/docs/i18n/pt-BR/README.md) | Kit de ferramentas de diagnóstico. | Sniffer de eventos, inspetor de periféricos. |
 
 ---
 

@@ -46,11 +46,11 @@ install.lua
 
 | AUSWEIS | Name | Beschreibung | Hauptmerkmale |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **Portal Dialer Hub** | Premium-Touchscreen-Wählgerät. | Bewegliche Benutzeroberfläche, Akzentstreifen, Seitenzurücksetzung. |
-| `mekanism_recall_sender` | **Portal-Rückruf-Absender** | Drahtloser Fernauslöser. | Hardware-Diagnose, Live-Statusüberwachung. |
-| `create_crafter` | **Mechanischer Handwerker** | Automatisierung des Grid-Craftings. | Aufzeichnung und Kalibrierung, mehrstufige Rezepte. |
-| `powah_orb` | **Energetisierende Kugel** | Parallele Herstellungsautomatisierung. | ME Bridge-Integration, automatische Wiederherstellung. |
-| „developer_suite“. | **CC Developer Suite** | Diagnose-Toolkit. | Ereignisschnüffler, Peripherieinspektor. |
+| `mekanism_portal_hub` | [**Portal Dialer Hub**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/de/README.md) | Premium-Touchscreen-Wählgerät. | Bewegliche Benutzeroberfläche, Akzentstreifen, Seitenzurücksetzung. |
+| `mekanism_recall_sender` | [**Portal Recall Sender**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/de/README.md) | Drahtloser Fernauslöser. | Hardware-Diagnose, Live-Statusüberwachung. |
+| `create_crafter` | [**Mechanical Crafter**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/de/README.md) | Automatisierung des Grid-Craftings. | Aufzeichnung und Kalibrierung, mehrstufige Rezepte. |
+| `powah_orb` | [**Energizing Orb**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/de/README.md) | Parallele Herstellungsautomatisierung. | ME Bridge-Integration, automatische Wiederherstellung. |
+| „developer_suite“. | [**CC Developer Suite**](../../../CC%20Developer%20Suite/docs/i18n/de/README.md) | Diagnose-Toolkit. | Ereignisschnüffler, Peripherieinspektor. |
 
 ---
 
