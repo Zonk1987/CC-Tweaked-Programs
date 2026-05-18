@@ -12,7 +12,7 @@
 
 ---
 
-## âœ¨ Características
+## ✨ Características
 
 - **Representación con doble búfer**: actualizaciones de la interfaz de usuario sin parpadeo mediante un sistema de búfer personalizado basado en ventanas.
 - **Ventanas superpuestas móviles**: arrastre el menú de selección de color a cualquier lugar de la pantalla para obtener una visibilidad óptima.
@@ -24,7 +24,7 @@
 
 ---
 
-## ðŸ› ï¸ Configuración de hardware
+## 🛠️ Configuración de hardware
 
 ![Ingame Setup](../../assets/images/hub-setup.png)
 
@@ -41,7 +41,7 @@
 
 ---
 
-## ðŸš€ Instalación
+## 🚀 Instalación
 
 1. Descargue el archivo install.lua del repositorio.
 ```bash
@@ -55,7 +55,7 @@ Seleccione **Mekanism Portal Dialer Hub** en el menú. El instalador descargará
 
 ---
 
-## âš™ï¸ Configuración
+## ⚙️ Configuración
 
 Abra `inicio` en la computadora para personalizar el comportamiento del sistema:
 
@@ -64,7 +64,7 @@ Abra `inicio` en la computadora para personalizar el comportamiento del sistema:
 
 ---
 
-## âŒ¨ï¸ Controles y modos
+## ⌨️ Controles y modos
 
 ### **Modo de marcador (predeterminado)**
 - **Toca un portal**: cambia instantáneamente la frecuencia del teletransportador. El botón permanecerá resaltado hasta que el hardware confirme el cambio.
@@ -93,4 +93,5 @@ Alternativamente, puede utilizar el script dedicado **Mekanism Portal Recaller**
 
 ## ðŸ“ Créditos
 Desarrollado como parte de la iniciativa **Advanced Agentic Coding** para la automatización profesional de Minecraft.
+
 

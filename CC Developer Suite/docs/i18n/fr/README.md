@@ -5,14 +5,14 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC Developer Suite ðŸ› ï¸ðŸ”¬
+# Suite Développeur CC 🛠️ðŸ”¬
 
 > L'ensemble d'outils définitif pour les utilisateurs expérimentés et les développeurs de **CC:Tweaked**. Analyse approfondie du matériel, navigation interactive entre les éléments et surveillance des événements en temps réel dans un seul package professionnel.
 
 
 ---
 
-## ðŸš€Installation
+## 🚀Installation
 
 Exécutez cette commande sur votre ordinateur :
 
@@ -28,7 +28,7 @@ Sélectionnez **CC Developer Suite** dans le menu.
 
 ---
 
-## ðŸ› ï¸ Outils en vedette
+## 🛠️ Outils en vedette
 
 ### 1. Inspecteur périphérique supérieur
 Remplace l'ancien scanner. Sélectionnez n’importe quel appareil pour ouvrir une liste de commandes interactive.
@@ -53,7 +53,7 @@ Un navigateur d'annuaire visuel. Parcourez les dossiers, affichez la taille des 
 
 ---
 
-## âš™ï¸ Connectivité et navigation
+## ⚙️ Connectivité et navigation
 - **Hotkey 'Q'** : revient au menu précédent ou quitte l'outil.
 - **Bascule réseau** : activez/désactivez la prise en charge de Rednet et du modem à partir du menu principal.
 - **Input Guard (NOUVEAU)** : délai intégré de 0,5 s après les entrées pour éviter les double-clics accidentels lors de la navigation dans les menus.
@@ -62,4 +62,6 @@ Un navigateur d'annuaire visuel. Parcourez les dossiers, affichez la taille des 
 
 ## ðŸ« Crédits
 Développé dans le cadre de l'initiative **Advanced Agentic Coding** pour l'automatisation professionnelle de Minecraft.
+
+
 

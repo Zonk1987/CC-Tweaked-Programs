@@ -12,7 +12,7 @@
 
 ---
 
-## âœ¨ Recursos
+## ✨ Recursos
 
 - **Renderização com buffer duplo** — Atualizações da interface do usuário sem cintilação usando um sistema de buffer personalizado baseado em janela.
 - **Janelas de sobreposição móveis** — Arraste o menu de seleção de cores para qualquer lugar da tela para obter visibilidade ideal.
@@ -20,11 +20,11 @@
 - **Dynamic Portal Grid** — Descobre automaticamente todas as frequências com paginação inteligente e **Redefinição de página** automática nas alterações da lista.
 - **Monitoramento de status em tempo real** — Feedback ao vivo sobre o status do portal, frequência alvo e proprietário (com resolução Mojang UUID).
 - **Modo de edição e personalização de cores** — Atribua cores específicas a frequências ou use o ciclo de cores aleatório.
-- **Suporte para Rechamada Remota** — Modem integrado e API Rednet para ativação remota do portal (via script Recaller).
+- **Suporte para Recall Remoto** — Modem integrado e API Rednet para ativação remota do portal (via script Recaller).
 
 ---
 
-## ðŸ› ï¸ Configuração de hardware
+## 🛠️ Configuração de hardware
 
 ![Ingame Setup](../../assets/images/hub-setup.png)
 
@@ -41,7 +41,7 @@
 
 ---
 
-## ðŸš€ Instalação
+## 🚀 Instalação
 
 1. Baixe o arquivo install.lua do repositório
 ```bash
@@ -55,7 +55,7 @@ Selecione **Mekanism Portal Dialer Hub** no menu. O instalador baixará automati
 
 ---
 
-## Configuração
+## ⚙️ Configuração
 
 Abra `startup` no computador para personalizar o comportamento do sistema:
 
@@ -64,10 +64,10 @@ Abra `startup` no computador para personalizar o comportamento do sistema:
 
 ---
 
-## âŒ¨ï¸ Controles e modos
+## ⌨️ Controles e modos
 
 ### **Modo discador (padrão)**
-- **Toque em um Portal** — Mude instantaneamente a frequência do teletransportador. O botão permanecerá destacado até que o hardware confirme a mudança.
+- **Toque em um Portal** — Mude instantaneamente a frequência do teletransportador. O botão permanecerá destacado até que o hardware confirme a alteração.
 - **Próximo/Anterior** — Alterne entre as páginas se você tiver muitas frequências.
 
 ### **Modo de edição (ícone de configurações)**
@@ -93,4 +93,5 @@ Alternativamente, você pode usar o script dedicado **Mekanism Portal Recaller**
 
 ## ðŸ“ Créditos
 Desenvolvido como parte da iniciativa **Advanced Agentic Coding** para automação profissional do Minecraft.
+
 

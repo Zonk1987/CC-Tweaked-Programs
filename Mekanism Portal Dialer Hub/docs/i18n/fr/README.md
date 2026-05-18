@@ -12,24 +12,24 @@
 
 ---
 
-## âœ¨ Caractéristiques
+## ✨ Caractéristiques
 
-- **Rendu à double tampon** – Mises à jour de l'interface utilisateur sans scintillement à l'aide d'un système de tampon personnalisé basé sur une fenêtre.
-- **Fenêtres superposées mobiles** – Faites glisser le menu de sélection des couleurs n'importe où sur l'écran pour une visibilité optimale.
-- **Indicateurs de rayures d'accentuation** : les barres verticales à contraste élevé sur les boutons affichent les couleurs attribuées avec des bordures ombrées noires pour une visibilité sur n'importe quel arrière-plan.
+- **Rendu à double tampon** — Mises à jour de l'interface utilisateur sans scintillement à l'aide d'un système de tampon personnalisé basé sur une fenêtre.
+- **Fenêtres de superposition mobiles** — Faites glisser le menu de sélection des couleurs n'importe où sur l'écran pour une visibilité optimale.
+- **Indicateurs de rayures d'accentuation** — Les barres verticales à contraste élevé sur les boutons affichent les couleurs attribuées avec des bordures ombrées noires pour une visibilité sur n'importe quel arrière-plan.
 - **Grille de portail dynamique** – Découvre automatiquement toutes les fréquences avec une pagination intelligente et une **Réinitialisation de page** automatique lors des modifications de liste.
-- **Surveillance de l'état en temps réel** – Commentaires en direct sur l'état du portail, la fréquence cible et le propriétaire (avec résolution Mojang UUID).
-- **Mode d'édition et personnalisation des couleurs** – Attribuez des couleurs spécifiques à des fréquences ou utilisez le cycle de couleurs aléatoire.
-- **Support de rappel à distance** – Modem intégré et API Rednet pour l'activation du portail à distance (via le script Recaller).
+- **Surveillance de l'état en temps réel** — Commentaires en direct sur l'état du portail, la fréquence cible et le propriétaire (avec résolution Mojang UUID).
+- **Mode d'édition et personnalisation des couleurs** — Attribuez des couleurs spécifiques à des fréquences ou utilisez le cycle de couleurs aléatoire.
+- **Prise en charge du rappel à distance** — Modem intégré et API Rednet pour l'activation du portail à distance (via le script Recaller).
 
 ---
 
-## ðŸ› ï¸ Configuration du matériel
+## 🛠️ Configuration matérielle
 
 ![Ingame Setup](../../assets/images/hub-setup.png)
 
 
-1. **Ordinateur avancé** – Requis pour les graphiques haute résolution et le double tampon.
+1. **Ordinateur avancé** — Requis pour les graphiques haute résolution et le double tampon.
 2. **Moniteur avancé**
 - Taille recommandée : **blocs 4x3** pour la meilleure disposition des boutons.
 - Connectez-vous via des **modems filaires** et des câbles réseau.
@@ -41,7 +41,7 @@
 
 ---
 
-## ðŸš€Installation
+## 🚀Installation
 
 1. Téléchargez le fichier install.lua depuis le dépôt
 ```bash
@@ -55,7 +55,7 @@ Sélectionnez **Mekanism Portal Dialer Hub** dans le menu. Le programme d'instal
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️Configuration
 
 Ouvrez le « démarrage » sur l'ordinateur pour personnaliser le comportement du système :
 
@@ -64,11 +64,11 @@ Ouvrez le « démarrage » sur l'ordinateur pour personnaliser le comportement
 
 ---
 
-## âŒ¨ï¸ Commandes et modes
+## ⌨️ Commandes et modes
 
 ### **Mode de numérotation (par défaut)**
-- **Appuyez sur un portail** – Changez instantanément la fréquence du téléporteur. Le bouton restera en surbrillance jusqu'à ce que le matériel confirme le changement.
-- **Suivant/Précédent** – Basculez entre les pages si vous avez plusieurs fréquences.
+- **Appuyez sur un portail** — Changez instantanément la fréquence du téléporteur. Le bouton restera en surbrillance jusqu'à ce que le matériel confirme le changement.
+- **Suivant/Précédent** — Basculez entre les pages si vous avez plusieurs fréquences.
 
 ### **Mode édition (icône Paramètres)**
 1. Appuyez sur l'icône **Â¤** dans le coin supérieur droit pour accéder au mode édition.
@@ -93,4 +93,5 @@ Vous pouvez également utiliser le script dédié **Mekanism Portal Recaller** s
 
 ## ðŸ« Crédits
 Développé dans le cadre de l'initiative **Advanced Agentic Coding** pour l'automatisation professionnelle de Minecraft.
+
 

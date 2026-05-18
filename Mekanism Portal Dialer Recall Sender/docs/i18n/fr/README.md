@@ -12,27 +12,27 @@
 
 ---
 
-## âœ¨ Caractéristiques
+## ✨ Caractéristiques
 
-- **Diagnostics matériels** – Analyse tous les périphériques connectés au démarrage et fournit des informations claires sur la présence du modem et du téléporteur.
-- **État du portail en direct (facultatif)** – Surveillance en temps réel de l'état du portail local (par exemple, « Prêt », « Pas d'alimentation ») si un bloc téléporteur local est physiquement connecté (sinon, la valeur par défaut est « Hub distant uniquement »).
-- **Heartbeat Auto-Refresh** – Met automatiquement à jour l'état toutes les 2 secondes pour maintenir l'affichage synchronisé avec le Hub.
-- **Configuration interactive** – Aucune modification de code requise. Le script demande l'emplacement cible lors de la première exécution.
-- **Menu de configuration (touches de raccourci)** – Appuyez sur « C » sur le terminal de l'ordinateur pour modifier le nom ou la chaîne de destination.
-- **Protocole Dual-Path** – Envoie des commandes via l'API du modem standard et Rednet pour une fiabilité maximale.
+- **Diagnostics matériels** — Analyse tous les périphériques connectés au démarrage et fournit des informations claires sur la présence du modem et du téléporteur.
+- **État du portail en direct (facultatif)** — Surveillance en temps réel de l'état du portail local (par exemple, "Prêt", "Pas d'alimentation") si un bloc téléporteur local est physiquement connecté (sinon, la valeur par défaut est "Hub distant uniquement").
+- **Heartbeat Auto-Refresh** — Met automatiquement à jour l'état toutes les 2 secondes pour maintenir l'affichage synchronisé avec le Hub.
+- **Configuration interactive** — Aucune modification de code requise. Le script demande l'emplacement cible lors de la première exécution.
+- **Menu de configuration (raccourcis clavier)** — Appuyez sur « C » sur le terminal de l'ordinateur pour modifier le nom ou la chaîne de destination.
+- **Protocole Dual-Path** — Envoie des commandes via l'API du modem standard et Rednet pour une fiabilité maximale.
 
 ---
 
-## ðŸ› ï¸ Configuration du matériel
+## 🛠️ Configuration matérielle
 
-1. **Ordinateur de poche ou petit ordinateur** – Placez un ordinateur sur votre destination distante (par exemple, base lunaire, avant-poste minier).
-2. **Modem (sans fil ou filaire)** – Connectez un modem sans fil (idéal pour les emplacements distants) ou un modem filaire à l'ordinateur.
-3. **Redstone Trigger** – Connectez un bouton, une plaque de pression ou toute autre source de Redstone à n'importe quel côté de l'ordinateur.
+1. **Ordinateur de poche ou petit ordinateur** — Placez un ordinateur à votre destination distante (par exemple, base lunaire, avant-poste minier).
+2. **Modem (sans fil ou filaire)** — Connectez un modem sans fil (idéal pour les emplacements distants) ou un modem filaire à l'ordinateur.
+3. **Redstone Trigger** — Connectez un bouton, une plaque de pression ou toute autre source de Redstone à n'importe quel côté de l'ordinateur.
 - Lorsque le signal Redstone s'allume **ON**, l'ordinateur envoie la commande de rappel à votre base principale.
 
 ---
 
-## ðŸš€Installation
+## 🚀Installation
 
 1. Téléchargez le fichier install.lua depuis le dépôt
 ```bash
@@ -46,7 +46,7 @@ Sélectionnez **Mekanism Portal Recaller** dans le menu.
 
 ---
 
-## âš™ï¸ Utilisation
+## ⚙️ Utilisation
 
 1. **Première exécution** : L'ordinateur vous demandera un **Nom de la cible**. Entrez le *nom exact* de la fréquence telle qu'elle apparaît dans votre portail principal (par exemple, « Base principale »).
 2. **Fonctionnement normal** : L'écran affichera "En attente du signal Redstone...".
@@ -68,4 +68,5 @@ L'expéditeur diffuse une table JSON sur le canal configuré (par défaut : 99)�
 
 ## ðŸ« Crédits
 Développé pour l'automatisation professionnelle de Minecraft.
+
 

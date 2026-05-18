@@ -5,42 +5,42 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Créer une automatisation d'artisanat mécanique ðŸ› ï¸
+# Créer une automatisation d'artisanat mécanique 🛠️
 
 > Système ComputerCraft entièrement automatisé et prêt pour la production pour les **artisans mécaniques** du mod **Create**. Conçu pour une intégration transparente avec AE2 / Refined Storage en **Mode blocage**.
 
 
 ---
 
-## âœ¨ Caractéristiques
+## ✨ Caractéristiques
 
-- **Enregistrement de recettes dans le jeu** – Placez les objets dans les artisans, appuyez sur "S", saisissez un nom. Terminé. Aucune modification JSON requise.
-- **Gestion visuelle des recettes** – Appuyez sur « M » pour parcourir toutes les recettes enregistrées, afficher les ingrédients requis et gérer les modèles.
-- **Calibrage interactif du réseau** – Détection automatique de la disposition exacte de votre réseau via l'activation séquentielle du modem.
-- **Mode de blocage AE2/RS prêt** – Optimisé pour l'intégration du coffre tampon avec un traitement garanti pour un seul métier.
-- **Détection intelligente des bourrages** – Alertes en temps réel indiquant l'emplacement exact de l'artisan et l'objet à l'origine d'un goulot d'étranglement.
-- **Tableau de bord en direct** : interface utilisateur hautes performances à code couleur affichant l'état de la grille, l'historique des tâches et les ingrédients manquants.
+- **Enregistrement de recettes en jeu** — Placez les objets dans les artisans, appuyez sur « S », saisissez un nom. Fait. Aucune édition JSON requise.
+- **Gestion visuelle des recettes** — Appuyez sur « M » pour parcourir toutes les recettes enregistrées, afficher les ingrédients requis et gérer les modèles.
+- **Calibrage interactif du réseau** — Détection automatique de la disposition exacte de votre réseau via l'activation séquentielle du modem.
+- **Mode de blocage AE2 / RS prêt** — Optimisé pour l'intégration du coffre tampon avec un traitement garanti pour un seul métier.
+- **Détection intelligente des bourrages** — Alertes en temps réel indiquant l'emplacement exact de l'artisan et l'objet à l'origine d'un goulot d'étranglement.
+- **Tableau de bord en direct** : interface utilisateur hautes performances à code couleur affichant l'état de la grille, l'historique des tâches et les ingrédients manquants.
 
 ---
 
-## ðŸ› ï¸ Configuration du matériel
+## 🛠️ Configuration matérielle
 
 ![Ingame Setup](../../assets/images/crafter-setup.png)
 
 
-1. **Ordinateur avancé** – Requis pour le tableau de bord coloré haute résolution.
-2. **Crafter Grid** – Construisez votre tableau (par exemple, 3×3, 5×5, 9×9).
+1. **Ordinateur avancé** — Requis pour le tableau de bord coloré haute résolution.
+2. **Crafter Grid** — Construisez votre tableau (par exemple, 3×3, 5×5, 9×9).
 3. **Mise en réseau (étape cruciale) :**
 - Connectez un **Modem filaire** à **chaque** Mechanical Crafter.
 - Connectez tous les modems à l'ordinateur avec des **câbles réseau**.
 - Cliquez avec le bouton droit sur les modems jusqu'à ce que l'**anneau rouge** s'allume.
 - **âš ï¸ IMPORTANT :** Vous DEVEZ activer les modems dans **ordre de lecture** (en haut à gauche – en haut à droite, puis ligne par ligne) pendant l'étalonnage.
-4. **Buffer Chest** – Connectez un coffre (par exemple, Diamond Chest) adjacent à l'ordinateur via un modem filaire.
-5. **Redstone Trigger** – Connectez un signal Redstone de **n'importe quel côté** de l'ordinateur aux Crafters.
+4. **Buffer Chest** — Connectez un coffre (par exemple, Diamond Chest) adjacent à l'ordinateur via un modem filaire.
+5. **Redstone Trigger** — Connectez un signal Redstone de **n'importe quel côté** de l'ordinateur aux Crafters.
 
 ---
 
-## ðŸš€ Installation et utilisation
+## 🚀 Installation et utilisation
 
 1. Téléchargez le fichier install.lua depuis le dépôt
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ"– Comment utiliser
+## 📖 Comment utiliser
 
 ### Enregistrer une nouvelle recette
 1. Placez les ingrédients manuellement dans les artisans mécaniques physiques.
@@ -69,7 +69,7 @@ install.lua
 
 ---
 
-## âŒ¨ï¸ Raccourcis clavier
+## ⌨️ Raccourcis clavier
 
 | Clé | Action |
 |:---:|---|
@@ -80,13 +80,13 @@ install.lua
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️Configuration
 
 Le système est conçu pour fonctionner immédiatement. Les données d'étalonnage sont stockées dans `crafter_mapping.json`. Supprimez ce fichier pour déclencher un nouvel étalonnage.
 
 ---
 
-## ðŸ›‘ Dépannage
+## 🛑 Dépannage
 
 | Erreur | Cause et solution |
 |---|---|
@@ -96,6 +96,8 @@ Le système est conçu pour fonctionner immédiatement. Les données d'étalonna
 | « Incompatibilité de modèle » | Des éléments incorrects dans la grille ou dans le fichier de mappage sont corrompus. Recalibrez ! |
 
 ---
-*Développé avec â¤ï¸ pour Advanced Agentic Coding.*
+*Développé avec ❤️ pour Advanced Agentic Coding.*
+
+
 
 

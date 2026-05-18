@@ -12,7 +12,7 @@
 
 ---
 
-## âœ¨ Recursos
+## ✨ Recursos
 
 - **Diagnóstico de hardware** — Verifica todos os periféricos conectados na inicialização e fornece feedback claro sobre a presença do modem e do teletransportador.
 - **Status do portal ao vivo (opcional)** — Monitoramento em tempo real do estado do portal local (por exemplo, "Pronto", "Sem energia") se um bloco Teletransportador local estiver fisicamente conectado (caso contrário, o padrão é "Apenas hub remoto").
@@ -23,7 +23,7 @@
 
 ---
 
-## ðŸ› ï¸ Configuração de hardware
+## 🛠️ Configuração de hardware
 
 1. **Computador de bolso ou computador pequeno** — Coloque um computador em seu destino remoto (por exemplo, Base Lunar, Posto Avançado de Mineração).
 2. **Modem (sem fio ou com fio)** — Conecte um modem sem fio (ideal para locais remotos) ou um modem com fio ao computador.
@@ -32,7 +32,7 @@
 
 ---
 
-## ðŸš€ Instalação
+## 🚀 Instalação
 
 1. Baixe o arquivo install.lua do repositório
 ```bash
@@ -46,7 +46,7 @@ Selecione **Recaller do Portal Mekanism** no menu.
 
 ---
 
-## Uso
+## ⚙️ Uso
 
 1. **Primeira execução**: O computador solicitará um **Nome de destino**. Insira o *nome exato* da frequência conforme aparece em seu Portal Hub principal (por exemplo, "Base Principal").
 2. **Operação normal**: A tela mostrará "Aguardando sinal Redstone...".
@@ -68,4 +68,5 @@ O remetente transmite uma tabela JSON no canal configurado (padrão: 99):
 
 ## ðŸ“ Créditos
 Desenvolvido para automação profissional do Minecraft.
+
 

@@ -12,18 +12,18 @@
 
 ---
 
-## âœ¨ Funktionen
+## ✨ Funktionen
 
 - **Hardware-Diagnose** – Scannt alle angeschlossenen Peripheriegeräte beim Start und gibt klares Feedback zur Anwesenheit von Modem und Teleporter.
 - **Live-Portalstatus (optional)** – Echtzeitüberwachung des Status des lokalen Portals (z. B. „Bereit“, „Kein Strom“), wenn ein lokaler Teleporter-Block physisch angeschlossen ist (ansonsten ist die Standardeinstellung „Nur Remote-Hub“).
-- **Heartbeat Auto-Refresh** – Aktualisiert den Status automatisch alle 2 Sekunden, um die Anzeige mit dem Hub synchron zu halten.
-- **Interaktive Einrichtung** – Keine Codebearbeitung erforderlich. Das Skript fragt bei der ersten Ausführung nach dem Zielspeicherort.
+- **Heartbeat Auto-Refresh** – Aktualisiert den Status automatisch alle 2 Sekunden, um die Anzeige mit dem Hub synchronisiert zu halten.
+- **Interaktive Einrichtung** – Keine Codebearbeitung erforderlich. Das Skript fragt beim ersten Durchlauf nach dem Zielort.
 - **Konfigurationsmenü (Hotkeys)** – Drücken Sie „C“ am Computerterminal, um den Zielnamen oder Kanal zu ändern.
 - **Dual-Path-Protokoll** – Sendet Befehle sowohl über die Standard-Modem-API als auch über Rednet für maximale Zuverlässigkeit.
 
 ---
 
-## ðŸ› ï¸ Hardware-Setup
+## 🛠️ Hardware-Setup
 
 1. **Taschencomputer oder kleiner Computer** – Platzieren Sie einen Computer an Ihrem entfernten Ziel (z. B. Mondbasis, Bergbau-Außenposten).
 2. **Modem (kabellos oder kabelgebunden)** – Schließen Sie ein kabelloses Modem (ideal für abgelegene Standorte) oder ein kabelgebundenes Modem an den Computer an.
@@ -32,7 +32,7 @@
 
 ---
 
-## ðŸš€ Installation
+## 🚀 Installation
 
 1. Laden Sie die Datei install.lua aus dem Repo herunter
 ```bash
@@ -46,7 +46,7 @@ Wählen Sie **Mekanism Portal Recaller** aus dem Menü.
 
 ---
 
-## âš™ï¸ Verwendung
+## ⚙️ Nutzung
 
 1. **Erster Start**: Der Computer fragt Sie nach einem **Zielnamen**. Geben Sie den *genauen Namen* der Frequenz ein, wie er in Ihrem Hauptportal-Hub angezeigt wird (z. B. „Hauptbasis“).
 2. **Normaler Betrieb**: Auf dem Bildschirm wird „Warten auf Redstone-Signal…“ angezeigt.
@@ -68,4 +68,5 @@ Der Absender sendet eine JSON-Tabelle auf dem konfigurierten Kanal (Standard: 99
 
 ## ðŸ“ Credits
 Entwickelt für die professionelle Minecraft-Automatisierung.
+
 

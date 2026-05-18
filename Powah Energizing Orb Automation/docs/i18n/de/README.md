@@ -12,25 +12,25 @@
 
 ---
 
-## âœ¨ Funktionen
+## ✨ Funktionen
 
-- **Multi-Orb-Unterstützung** – Erkennt automatisch alle angeschlossenen Energizing Orbs und Handwerke parallel.
+- **Multi-Orb-Unterstützung** – Erkennt automatisch alle angeschlossenen Energizing Orbs und bastelt parallel.
 - **ME Bridge-Integration (erforderlich)** – Verwendet „meBridge“ von Advanced Peripherals, um detaillierte AE2-Musterdaten (Eingänge, Ausgänge, Mengen) zu lesen.
-- **Direkter Anbieterzugriff (optional)** – Volle Unterstützung für den Mod **`ae2communicate**. In Verbindung mit der ME Bridge ermöglicht es Ihnen, Rezepte nach **Named Pattern Providers** zu filtern, sodass Sie nicht mehr in großen Netzwerken suchen müssen.
+- **Direkter Anbieterzugriff (optional)** – Volle Unterstützung für den Mod **`ae2communicate**. In Verbindung mit der ME Bridge können Sie Rezepte nach **Benannten Musteranbietern** filtern, sodass Sie nicht mehr in großen Netzwerken suchen müssen.
 - **Präzision und Intelligenz** – Automatische Handhabung von Multiplikatoren und exakte ID-basierte Zutatenvalidierung während des Imports.
 - **Modpack-Kompatibilität** – Wechseln Sie zwischen „Nur Powah“ oder „Alle Mods“ (Taste „M“), um Rezepte von jedem Mod zu unterstützen, der die Energizing Orb verwendet.
 - **Automatische Wiederherstellung** – Automatisiertes Abrufen von Gegenständen und Zurücksetzen der Kugeln im Falle von Herstellungsstörungen oder Stromausfällen.
 
 ---
 
-## ðŸ› ï¸ Hardware-Setup
+## 🛠️ Hardware-Setup
 
 ![Ingame Setup](../../assets/images/orb-setup.png)
 
 
 1. **Advanced Computer** – Erforderlich für das hochauflösende farbige Dashboard.
 2. **Puffertruhe** – Verbinden Sie eine beliebige Truhe (z. B. Diamond Chest) neben dem Computer oder über das Netzwerk.
-3. **Energie spendende Orbs** – Verbinden Sie alle Orbs über **Netzwerkkabel** und **kabelgebundene Modems**.
+3. **Energizing Orbs** – Verbinden Sie alle Orbs über **Netzwerkkabel** und **kabelgebundene Modems**.
 4. **ME Bridge (erforderlich):** Schließen Sie eine **ME Bridge** an das Netzwerk an, damit das System detaillierte Musterdaten lesen kann.
 5. **Optionale Lebensqualitätsfunktion (ae2communicate):**
 - Installieren Sie den Mod **`ae2communicate**.
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Installation und Nutzung
+## 🚀 Installation und Nutzung
 
 1. Laden Sie die Datei install.lua aus dem Repo herunter
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– AE2-Rezeptimport
+## 📖 AE2-Rezeptimport
 
 Das System verfügt über ein intelligentes Importmenü (Taste **`I`**):
 
@@ -73,7 +73,7 @@ Das System verfügt über ein intelligentes Importmenü (Taste **`I`**):
 
 ---
 
-## âŒ¨ï¸ Hotkeys
+## ⌨️ Hotkeys
 
 | Schlüssel | Aktion |
 |:---:|---|
@@ -86,7 +86,7 @@ Das System verfügt über ein intelligentes Importmenü (Taste **`I`**):
 
 ---
 
-## âš™ï¸ Konfiguration
+## ⚙️ Konfiguration
 
 Das System ist so konzipiert, dass es sofort einsatzbereit ist. Wenn Sie manuelle Anpassungen benötigen, überprüfen Sie „startup.lua“:
 ```lua
@@ -100,7 +100,7 @@ local system = PowahSystem.new({
 
 ---
 
-## ðŸ›‘ Fehlerbehebung
+## 🛑 Fehlerbehebung
 
 | Fehler | Ursache und Behebung |
 |---|---|
@@ -110,5 +110,6 @@ local system = PowahSystem.new({
 | „Doppelter Name“. | Sie versuchen, ein bereits vorhandenes Rezept zu importieren. |
 
 ---
-*Entwickelt mit â¤ï¸ für Advanced Agentic Coding.*
+*Entwickelt mit ❤️ für Advanced Agentic Coding.*
+
 

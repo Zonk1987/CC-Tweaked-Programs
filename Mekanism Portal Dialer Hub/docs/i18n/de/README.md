@@ -12,7 +12,7 @@
 
 ---
 
-## âœ¨ Funktionen
+## ✨ Funktionen
 
 - **Doppelt gepuffertes Rendering** – Aktualisierungen der Benutzeroberfläche ohne Flimmern mithilfe eines benutzerdefinierten fensterbasierten Puffersystems.
 - **Bewegliche Overlay-Fenster** – Ziehen Sie das Farbauswahlmenü für optimale Sichtbarkeit an eine beliebige Stelle auf dem Bildschirm.
@@ -20,11 +20,11 @@
 - **Dynamisches Portalraster** – Erkennt automatisch alle Frequenzen mit intelligenter Paginierung und automatischem **Seiten-Reset** bei Listenänderungen.
 - **Echtzeit-Statusüberwachung** – Live-Feedback zu Portalstatus, Zielfrequenz und Besitzer (mit Mojang-UUID-Auflösung).
 - **Bearbeitungsmodus und Farbanpassung** – Weisen Sie Frequenzen bestimmte Farben zu oder verwenden Sie den zufälligen Farbzyklus.
-- **Remote-Recall-Unterstützung** – Integriertes Modem und Rednet-API für die Remote-Portalaktivierung (über Recaller-Skript).
+- **Remote-Recall-Unterstützung** – Integrierte Modem- und Rednet-API für die Remote-Portalaktivierung (über Recaller-Skript).
 
 ---
 
-## ðŸ› ï¸ Hardware-Setup
+## 🛠️ Hardware-Setup
 
 ![Ingame Setup](../../assets/images/hub-setup.png)
 
@@ -41,7 +41,7 @@
 
 ---
 
-## ðŸš€ Installation
+## 🚀 Installation
 
 1. Laden Sie die Datei install.lua aus dem Repo herunter
 ```bash
@@ -55,7 +55,7 @@ Wählen Sie **Mekanism Portal Dialer Hub** aus dem Menü. Das Installationsprogr
 
 ---
 
-## âš™ï¸ Konfiguration
+## ⚙️ Konfiguration
 
 Öffnen Sie „Startup“ auf dem Computer, um das Systemverhalten anzupassen:
 
@@ -64,7 +64,7 @@ Wählen Sie **Mekanism Portal Dialer Hub** aus dem Menü. Das Installationsprogr
 
 ---
 
-## âŒ¨ï¸ Steuerelemente und Modi
+## ⌨️ Steuerung und Modi
 
 ### **Wählmodus (Standard)**
 - **Tippen Sie auf ein Portal** – Wechseln Sie sofort die Teleporterfrequenz. Die Schaltfläche bleibt hervorgehoben, bis die Hardware die Änderung bestätigt.
@@ -93,4 +93,5 @@ Alternativ können Sie das spezielle **Mekanism Portal Recaller**-Skript auf ein
 
 ## ðŸ“ Credits
 Entwickelt im Rahmen der **Advanced Agentic Coding**-Initiative für die professionelle Minecraft-Automatisierung.
+
 

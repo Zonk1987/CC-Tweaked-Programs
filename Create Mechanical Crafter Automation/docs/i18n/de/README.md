@@ -5,30 +5,30 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Erstellen Sie eine mechanische Crafter-Automatisierung ðŸ› ï¸
+# Erstellen Sie eine mechanische Crafter-Automatisierung 🛠️
 
 > Vollautomatisches, produktionsbereites ComputerCraft-System für die **Mechanical Crafters** aus der **Create**-Mod. Entwickelt für die nahtlose Integration mit AE2 / Refined Storage im **Blockierungsmodus**.
 
 
 ---
 
-## âœ¨ Funktionen
+## ✨ Funktionen
 
-- **Rezeptaufzeichnung im Spiel** – Gegenstände in Handwerker platzieren, „S“ drücken, einen Namen eingeben. Fertig. Keine JSON-Bearbeitung erforderlich.
+- **Rezeptaufzeichnung im Spiel** – Platziere Gegenstände in Handwerkern, drücke „S“ und gib einen Namen ein. Erledigt. Keine JSON-Bearbeitung erforderlich.
 - **Visuelle Rezeptverwaltung** – Drücken Sie „M“, um alle gespeicherten Rezepte zu durchsuchen, erforderliche Zutaten anzuzeigen und Muster zu verwalten.
 - **Interaktive Netzkalibrierung** – Automatische Erkennung Ihres genauen Netzlayouts durch sequentielle Modemaktivierung.
-- **Bereit für den AE2-/RS-Blockierungsmodus** – Optimiert für die Integration von Puffertruhen mit garantierter Einzelfertigung.
+- **Bereit für den AE2-/RS-Blockierungsmodus** – Optimiert für die Integration von Puffertruhen mit garantierter Einzelfertigungsverarbeitung.
 - **Intelligente Stauerkennung** – Echtzeitwarnungen, die den genauen Handwerkerplatz und den Artikel anzeigen, der einen Engpass verursacht.
 - **Live-Dashboard** – Farbcodierte Hochleistungs-Benutzeroberfläche, die den Rasterstatus, den Auftragsverlauf und fehlende Zutaten anzeigt.
 
 ---
 
-## ðŸ› ï¸ Hardware-Setup
+## 🛠️ Hardware-Setup
 
 ![Ingame Setup](../../assets/images/crafter-setup.png)
 
 
-1. **Advanced Computer** – Erforderlich für das farbige, hochauflösende Dashboard.
+1. **Advanced Computer** – Erforderlich für das farbige hochauflösende Dashboard.
 2. **Crafter Grid** – Erstellen Sie Ihr Array (z. B. 3×3, 5×5, 9×9).
 3. **Networking (entscheidender Schritt):**
 - Schließen Sie ein **kabelgebundenes Modem** an **jeden einzelnen** Mechanical Crafter an.
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Installation und Nutzung
+## 🚀 Installation und Nutzung
 
 1. Laden Sie die Datei install.lua aus dem Repo herunter
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– Verwendung
+## 📖 Verwendung
 
 ### Aufzeichnen eines neuen Rezepts
 1. Geben Sie die Zutaten manuell in die physischen mechanischen Handwerker.
@@ -69,7 +69,7 @@ install.lua
 
 ---
 
-## âŒ¨ï¸ Hotkeys
+## ⌨️ Hotkeys
 
 | Schlüssel | Aktion |
 |:---:|---|
@@ -80,13 +80,13 @@ install.lua
 
 ---
 
-## âš™ï¸ Konfiguration
+## ⚙️ Konfiguration
 
 Das System ist so konzipiert, dass es sofort einsatzbereit ist. Kalibrierungsdaten werden in „crafter_mapping.json“ gespeichert. Löschen Sie diese Datei, um eine neue Kalibrierung auszulösen.
 
 ---
 
-## ðŸ›‘ Fehlerbehebung
+## 🛑 Fehlerbehebung
 
 | Fehler | Ursache und Behebung |
 |---|---|
@@ -96,6 +96,8 @@ Das System ist so konzipiert, dass es sofort einsatzbereit ist. Kalibrierungsdat
 | „Musterkonflikt“. | Falsche Elemente im Raster oder in der Zuordnungsdatei sind beschädigt. Neu kalibrieren! |
 
 ---
-*Entwickelt mit â¤ï¸ für Advanced Agentic Coding.*
+*Entwickelt mit ❤️ für Advanced Agentic Coding.*
+
+
 
 

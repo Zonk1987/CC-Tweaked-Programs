@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # Zonk's CC:Tweaked Automation Suite 🚀
 
@@ -100,4 +100,6 @@ If you encounter issues:
 3. Check the `README.md` within each application's folder for hardware-specific setup.
 
 **[LICENSE](./LICENSE)**: MIT
+
+
 

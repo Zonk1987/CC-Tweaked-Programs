@@ -6,24 +6,24 @@
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
-- **Double-Buffered Rendering** â€” Zero-flicker UI updates using a custom window-based buffer system.
-- **Moveable Overlay Windows** â€” Drag the color selection menu anywhere on the screen for optimal visibility.
-- **Accent Stripe Indicators** â€” High-contrast vertical bars on buttons show assigned colors with black shadow-borders for visibility on any background.
-- **Dynamic Portal Grid** â€” Automatically discovers all frequencies with smart pagination and automatic **Page-Reset** on list changes.
-- **Real-Time Status Monitoring** â€” Live feedback on portal status, target frequency, and owner (with Mojang UUID resolution).
-- **Edit Mode & Color Customization** â€” Assign specific colors to frequencies or use the random color cycle.
-- **Remote Recall Support** â€” Integrated Modem and Rednet API for remote portal activation (via Recaller script).
+- **Double-Buffered Rendering** — Zero-flicker UI updates using a custom window-based buffer system.
+- **Moveable Overlay Windows** — Drag the color selection menu anywhere on the screen for optimal visibility.
+- **Accent Stripe Indicators** — High-contrast vertical bars on buttons show assigned colors with black shadow-borders for visibility on any background.
+- **Dynamic Portal Grid** — Automatically discovers all frequencies with smart pagination and automatic **Page-Reset** on list changes.
+- **Real-Time Status Monitoring** — Live feedback on portal status, target frequency, and owner (with Mojang UUID resolution).
+- **Edit Mode & Color Customization** — Assign specific colors to frequencies or use the random color cycle.
+- **Remote Recall Support** — Integrated Modem and Rednet API for remote portal activation (via Recaller script).
 
 ---
 
-## ðŸ› ï¸ Hardware Setup
+## 🛠️ Hardware Setup
 
 ![Ingame Setup](docs/assets/images/hub-setup.png)
 
 
-1. **Advanced Computer** â€” Required for high-resolution graphics and double-buffering.
+1. **Advanced Computer** — Required for high-resolution graphics and double-buffering.
 2. **Advanced Monitor**
    - Recommended size: **4x3 blocks** for the best button layout.
    - Connect via **Wired Modems** and Networking Cables.
@@ -35,7 +35,7 @@
 
 ---
 
-## ðŸš€ Installation
+## 🚀 Installation
 
 1. Download the install.lua file from the repo
 ```bash
@@ -49,7 +49,7 @@ Select **Mekanism Portal Dialer Hub** from the menu. The installer will automati
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️ Configuration
 
 Open `startup` on the computer to customize the system behavior:
 
@@ -58,11 +58,11 @@ Open `startup` on the computer to customize the system behavior:
 
 ---
 
-## âŒ¨ï¸ Controls & Modes
+## ⌨️ Controls & Modes
 
 ### **Dialer Mode (Default)**
-- **Tap a Portal** â€” Instantly switch the teleporter frequency. The button will remain highlighted until the hardware confirms the change.
-- **Next/Prev** â€” Switch between pages if you have many frequencies.
+- **Tap a Portal** — Instantly switch the teleporter frequency. The button will remain highlighted until the hardware confirms the change.
+- **Next/Prev** — Switch between pages if you have many frequencies.
 
 ### **Edit Mode (Settings Icon)**
 1. Tap the **Â¤** icon in the top right corner to enter Edit Mode.
@@ -87,3 +87,5 @@ Alternatively, you can use the dedicated **Mekanism Portal Recaller** script on 
 
 ## ðŸ“ Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
+
+

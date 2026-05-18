@@ -6,25 +6,25 @@
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
-- **Multi-Orb Support** â€” Automatically discovers all connected Energizing Orbs and crafts in parallel.
-- **ME Bridge Integration (Required)** â€” Uses Advanced Peripherals' `meBridge` to read detailed AE2 pattern data (inputs, outputs, quantities).
-- **Direct Provider Access (Optional)** â€” Full support for the **`ae2communicate`** mod. When paired with the ME Bridge, it allows you to filter recipes by **Named Pattern Providers**, eliminating the need to search through large networks.
-- **Precision & Intelligence** â€” Automatic handling of multipliers and exact ID-based ingredient validation during import.
-- **Modpack Compatibility** â€” Toggle between "Powah Only" or "All Mods" (Key `M`) to support recipes from any mod using the Energizing Orb.
-- **Auto-Recovery** â€” Automated item retrieval and orb reset in case of crafting stalls or power failures.
+- **Multi-Orb Support** — Automatically discovers all connected Energizing Orbs and crafts in parallel.
+- **ME Bridge Integration (Required)** — Uses Advanced Peripherals' `meBridge` to read detailed AE2 pattern data (inputs, outputs, quantities).
+- **Direct Provider Access (Optional)** — Full support for the **`ae2communicate`** mod. When paired with the ME Bridge, it allows you to filter recipes by **Named Pattern Providers**, eliminating the need to search through large networks.
+- **Precision & Intelligence** — Automatic handling of multipliers and exact ID-based ingredient validation during import.
+- **Modpack Compatibility** — Toggle between "Powah Only" or "All Mods" (Key `M`) to support recipes from any mod using the Energizing Orb.
+- **Auto-Recovery** — Automated item retrieval and orb reset in case of crafting stalls or power failures.
 
 ---
 
-## ðŸ› ï¸ Hardware Setup
+## 🛠️ Hardware Setup
 
 ![Ingame Setup](docs/assets/images/orb-setup.png)
 
 
-1. **Advanced Computer** â€” Required for the high-resolution colored dashboard.
-2. **Buffer Chest** â€” Connect any chest (e.g., Diamond Chest) adjacent to the computer or via the network.
-3. **Energizing Orbs** â€” Connect all Orbs via **Networking Cables** and **Wired Modems**.
+1. **Advanced Computer** — Required for the high-resolution colored dashboard.
+2. **Buffer Chest** — Connect any chest (e.g., Diamond Chest) adjacent to the computer or via the network.
+3. **Energizing Orbs** — Connect all Orbs via **Networking Cables** and **Wired Modems**.
 4. **ME Bridge (Required):** Connect an **ME Bridge** to the network to allow the system to read detailed pattern data.
 5. **Optional Quality-of-Life Feature (ae2communicate):**
    - Install the **`ae2communicate`** mod.
@@ -34,7 +34,7 @@
 
 ---
 
-## ðŸš€ Installation & Usage
+## 🚀 Installation & Usage
 
 1. Download the install.lua file from the repo
 ```bash
@@ -50,7 +50,7 @@ install.lua
 
 ---
 
-## ðŸ“– AE2 Recipe Import
+## 📖 AE2 Recipe Import
 
 The system features a smart import menu (Key **`I`**):
 
@@ -67,7 +67,7 @@ The system features a smart import menu (Key **`I`**):
 
 ---
 
-## âŒ¨ï¸ Hotkeys
+## ⌨️ Hotkeys
 
 | Key | Action |
 |:---:|---|
@@ -80,7 +80,7 @@ The system features a smart import menu (Key **`I`**):
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️ Configuration
 
 The system is designed to work out-of-the-box. If you need manual adjustments, check `startup.lua`:
 ```lua
@@ -94,7 +94,7 @@ local system = PowahSystem.new({
 
 ---
 
-## ðŸ›‘ Troubleshooting
+## 🛑 Troubleshooting
 
 | Error | Cause & Fix |
 |---|---|
@@ -104,4 +104,6 @@ local system = PowahSystem.new({
 | `Duplicate Name` | You are trying to import a recipe that already exists. |
 
 ---
-*Developed with â¤ï¸ for Advanced Agentic Coding.*
+*Developed with ❤️ for Advanced Agentic Coding.*
+
+

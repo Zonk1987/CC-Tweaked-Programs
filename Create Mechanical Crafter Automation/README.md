@@ -1,4 +1,4 @@
-﻿# Create Mechanical Crafter Automation ðŸ› ï¸
+﻿# Create Mechanical Crafter Automation 🛠️
 
 > Fully automated, production-ready ComputerCraft system for the **Mechanical Crafters** from the **Create** mod. Designed for seamless integration with AE2 / Refined Storage in **Blocking Mode**.
 
@@ -6,35 +6,35 @@
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
-- **In-Game Recipe Recording** â€” Place items in crafters, press `S`, type a name. Done. No JSON editing required.
-- **Visual Recipe Management** â€” Press `M` to browse all saved recipes, view required ingredients, and manage patterns.
-- **Interactive Grid Calibration** â€” Automatic detection of your exact grid layout via sequential modem activation.
-- **AE2 / RS Blocking Mode Ready** â€” Optimized for buffer chest integration with guaranteed single-craft processing.
-- **Smart Jam Detection** â€” Real-time alerts showing the exact crafter slot and item causing a bottleneck.
-- **Live Dashboard** â€” Color-coded high-performance UI showing grid status, job history, and missing ingredients.
+- **In-Game Recipe Recording** — Place items in crafters, press `S`, type a name. Done. No JSON editing required.
+- **Visual Recipe Management** — Press `M` to browse all saved recipes, view required ingredients, and manage patterns.
+- **Interactive Grid Calibration** — Automatic detection of your exact grid layout via sequential modem activation.
+- **AE2 / RS Blocking Mode Ready** — Optimized for buffer chest integration with guaranteed single-craft processing.
+- **Smart Jam Detection** — Real-time alerts showing the exact crafter slot and item causing a bottleneck.
+- **Live Dashboard** — Color-coded high-performance UI showing grid status, job history, and missing ingredients.
 
 ---
 
-## ðŸ› ï¸ Hardware Setup
+## 🛠️ Hardware Setup
 
 ![Ingame Setup](docs/assets/images/crafter-setup.png)
 
 
-1. **Advanced Computer** â€” Required for the colored high-resolution dashboard.
-2. **Crafter Grid** â€” Build your array (e.g., 3Ã—3, 5Ã—5, 9Ã—9).
+1. **Advanced Computer** — Required for the colored high-resolution dashboard.
+2. **Crafter Grid** — Build your array (e.g., 3Ã—3, 5Ã—5, 9Ã—9).
 3. **Networking (Crucial Step):**
    - Attach a **Wired Modem** to **every single** Mechanical Crafter.
    - Connect all modems to the Computer with **Networking Cables**.
    - Right-click modems until the **red ring** lights up.
    - **âš ï¸ IMPORTANT:** You MUST activate the modems in **reading order** (top-left â†’ top-right, then row by row) during calibration.
-4. **Buffer Chest** â€” Connect a chest (e.g., Diamond Chest) adjacent to the Computer via a Wired Modem.
-5. **Redstone Trigger** â€” Connect a Redstone signal from **any side** of the Computer to the Crafters.
+4. **Buffer Chest** — Connect a chest (e.g., Diamond Chest) adjacent to the Computer via a Wired Modem.
+5. **Redstone Trigger** — Connect a Redstone signal from **any side** of the Computer to the Crafters.
 
 ---
 
-## ðŸš€ Installation & Usage
+## 🚀 Installation & Usage
 
 1. Download the install.lua file from the repo
 ```bash
@@ -50,7 +50,7 @@ install.lua
 
 ---
 
-## ðŸ“– How to Use
+## 📖 How to Use
 
 ### Recording a New Recipe
 1. Place ingredients manually into the physical Mechanical Crafters.
@@ -63,7 +63,7 @@ install.lua
 
 ---
 
-## âŒ¨ï¸ Hotkeys
+## ⌨️ Hotkeys
 
 | Key | Action |
 |:---:|---|
@@ -74,13 +74,13 @@ install.lua
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️ Configuration
 
 The system is designed to work out-of-the-box. Calibration data is stored in `crafter_mapping.json`. Delete this file to trigger a new calibration.
 
 ---
 
-## ðŸ›‘ Troubleshooting
+## 🛑 Troubleshooting
 
 | Error | Cause & Fix |
 |---|---|
@@ -90,5 +90,8 @@ The system is designed to work out-of-the-box. Calibration data is stored in `cr
 | `Pattern Mismatch` | Wrong items in grid or mapping file is corrupt. Recalibrate! |
 
 ---
-*Developed with â¤ï¸ for Advanced Agentic Coding.*
+*Developed with ❤️ for Advanced Agentic Coding.*
+
+
+
 

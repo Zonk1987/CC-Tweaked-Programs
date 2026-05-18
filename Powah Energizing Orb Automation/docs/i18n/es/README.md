@@ -12,24 +12,24 @@
 
 ---
 
-## âœ¨ Características
+## ✨ Características
 
-- **Compatibilidad con múltiples orbes**: descubre automáticamente todos los orbes energizantes y artesanías conectados en paralelo.
-- **Integración de ME Bridge (obligatoria)**: utiliza "meBridge" de periféricos avanzados para leer datos detallados del patrón AE2 (entradas, salidas, cantidades).
-- **Acceso directo de proveedor (opcional)**: compatibilidad total con el mod **`ae2communicate`**. Cuando se combina con ME Bridge, le permite filtrar recetas por **Proveedores de patrones con nombre**, lo que elimina la necesidad de buscar en redes grandes.
+- **Compatibilidad con múltiples orbes**: descubre automáticamente todos los orbes energizantes y naves conectados en paralelo.
+- **Integración de ME Bridge (obligatoria)**: utiliza `meBridge` de periféricos avanzados para leer datos detallados del patrón AE2 (entradas, salidas, cantidades).
+- **Acceso directo de proveedor (opcional)**: soporte completo para el mod **`ae2communicate`**. Cuando se combina con ME Bridge, le permite filtrar recetas por **Proveedores de patrones nombrados**, eliminando la necesidad de buscar en redes grandes.
 - **Precisión e inteligencia**: manejo automático de multiplicadores y validación exacta de ingredientes basada en la identificación durante la importación.
 - **Compatibilidad de Modpack**: alterna entre "Solo Powah" o "Todos los mods" (tecla `M`) para admitir recetas de cualquier mod que use Energizing Orb.
 - **Recuperación automática**: recuperación automática de objetos y reinicio de orbes en caso de problemas de elaboración o cortes de energía.
 
 ---
 
-## ðŸ› ï¸ Configuración de hardware
+## 🛠️ Configuración de hardware
 
 ![Ingame Setup](../../assets/images/orb-setup.png)
 
 
 1. **Computadora avanzada**: necesaria para el tablero en color de alta resolución.
-2. **Buffer Chest**: conecta cualquier cofre (por ejemplo, Diamond Chest) adyacente a la computadora o a través de la red.
+2. **Buffer Chest**: conecte cualquier cofre (por ejemplo, Diamond Chest) adyacente a la computadora o a través de la red.
 3. **Orbes energizantes**: conecta todos los orbes mediante **cables de red** y **módems con cable**.
 4. **Puente ME (obligatorio):** Conecte un **Puente ME** a la red para permitir que el sistema lea datos de patrones detallados.
 5. **Función opcional de calidad de vida (ae2communicate):**
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Instalación y uso
+## 🚀 Instalación y uso
 
 1. Descargue el archivo install.lua del repositorio.
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– Importación de recetas AE2
+## 📖 Importación de recetas AE2
 
 El sistema cuenta con un menú de importación inteligente (Tecla **`I`**):
 
@@ -73,7 +73,7 @@ El sistema cuenta con un menú de importación inteligente (Tecla **`I`**):
 
 ---
 
-## âŒ¨ï¸ teclas de acceso rápido
+## ⌨️ Teclas de acceso rápido
 
 | Llave | Acción |
 |:---:|---|
@@ -86,7 +86,7 @@ El sistema cuenta con un menú de importación inteligente (Tecla **`I`**):
 
 ---
 
-## âš™ï¸ Configuración
+## ⚙️ Configuración
 
 El sistema está diseñado para funcionar desde el primer momento. Si necesita ajustes manuales, consulte `startup.lua`:
 ```lua
@@ -100,7 +100,7 @@ local system = PowahSystem.new({
 
 ---
 
-## ðŸ›‘ Solución de problemas
+## 🛑 Solución de problemas
 
 | Error | Causa y solución |
 |---|---|
@@ -110,5 +110,6 @@ local system = PowahSystem.new({
 | `Nombre duplicado` | Estás intentando importar una receta que ya existe. |
 
 ---
-*Desarrollado con â¤ï¸ para codificación agente avanzada.*
+*Desarrollado con ❤️ para codificación agente avanzada.*
+
 

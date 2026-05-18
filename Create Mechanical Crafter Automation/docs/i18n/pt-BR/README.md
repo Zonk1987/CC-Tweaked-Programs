@@ -5,25 +5,25 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Criar Automação Mecânica Crafter ðŸ› ï¸
+# Crie Automação Mecânica Crafter 🛠️
 
 > Sistema ComputerCraft totalmente automatizado e pronto para produção para os **Mechanical Crafters** do mod **Create**. Projetado para integração perfeita com AE2/Armazenamento Refinado no **Modo de Bloqueio**.
 
 
 ---
 
-## âœ¨ Recursos
+## ✨ Recursos
 
-- **Gravação de receitas no jogo** — Coloque os itens nos artesãos, pressione `S` e digite um nome. Pronto. Não é necessária edição JSON.
+- **Gravação de receitas no jogo** — Coloque os itens nos artesãos, pressione `S` e digite um nome. Feito. Nenhuma edição JSON é necessária.
 - **Gerenciamento visual de receitas** — Pressione `M` para navegar por todas as receitas salvas, visualizar os ingredientes necessários e gerenciar padrões.
 - **Calibração de rede interativa** — Detecção automática do layout exato da sua rede por meio da ativação sequencial do modem.
 - **AE2 / RS Blocking Mode Ready** — Otimizado para integração de buffer chest com processamento garantido de uma única nave.
-- **Detecção Inteligente de Atolamento** — Alertas em tempo real mostrando o slot exato do criador e o item que está causando o gargalo.
-- **Painel ao vivo** — UI de alto desempenho com código de cores que mostra o status da grade, o histórico do trabalho e os ingredientes faltantes.
+- **Detecção inteligente de congestionamento** — Alertas em tempo real mostrando o slot exato do criador e o item que está causando o gargalo.
+- **Painel ao vivo** — UI de alto desempenho codificada por cores que mostra o status da grade, o histórico do trabalho e os ingredientes faltantes.
 
 ---
 
-## ðŸ› ï¸ Configuração de hardware
+## 🛠️ Configuração de hardware
 
 ![Ingame Setup](../../assets/images/crafter-setup.png)
 
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Instalação e uso
+## 🚀 Instalação e uso
 
 1. Baixe o arquivo install.lua do repositório
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– Como usar
+## 📖 Como usar
 
 ### Gravando uma nova receita
 1. Coloque os ingredientes manualmente nos Artesãos Mecânicos físicos.
@@ -69,7 +69,7 @@ install.lua
 
 ---
 
-## ÂŒ¨ï¸ Teclas de atalho
+## ⌨️ Teclas de atalho
 
 | Chave | Ação |
 |:---:|---|
@@ -80,13 +80,13 @@ install.lua
 
 ---
 
-## Configuração
+## ⚙️ Configuração
 
 O sistema foi projetado para funcionar imediatamente. Os dados de calibração são armazenados em `crafter_mapping.json`. Exclua este arquivo para acionar uma nova calibração.
 
 ---
 
-## ðŸ›‘ Solução de problemas
+## 🛑 Solução de problemas
 
 | Erro | Causa e correção |
 |---|---|
@@ -96,6 +96,8 @@ O sistema foi projetado para funcionar imediatamente. Os dados de calibração s
 | `Incompatibilidade de padrão` | Itens errados na grade ou arquivo de mapeamento estão corrompidos. Recalibre! |
 
 ---
-*Desenvolvido com â¤ï¸ para Advanced Agentic Coding.*
+*Desenvolvido com ❤️ para codificação Agentic avançada.*
+
+
 
 

@@ -1,4 +1,4 @@
-﻿# CC Developer Suite ðŸ› ï¸ðŸ”¬
+﻿# CC Developer Suite 🛠️ðŸ”¬
 
 > The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 
@@ -6,7 +6,7 @@
 
 ---
 
-## ðŸš€ Installation
+## 🚀 Installation
 
 Run this command on your computer:
 
@@ -22,7 +22,7 @@ Select **CC Developer Suite** from the menu.
 
 ---
 
-## ðŸ› ï¸ Featured Tools
+## 🛠️ Featured Tools
 
 ### 1. Superior Peripheral Inspector
 Replaces the old scanner. Select any device to open an interactive command list.
@@ -47,7 +47,7 @@ A visual directory navigator. Browse folders, view file sizes, and manage your s
 
 ---
 
-## âš™ï¸ Connectivity & Navigation
+## ⚙️ Connectivity & Navigation
 - **Hotkey 'Q'**: Returns to the previous menu or exits the tool.
 - **Network Toggle**: Enable/Disable Rednet and Modem support from the main menu.
 - **Input Guard (NEW)**: Integrated 0.5s delays after inputs to prevent accidental double-clicks when navigating menus.
@@ -56,3 +56,6 @@ A visual directory navigator. Browse folders, view file sizes, and manage your s
 
 ## ðŸ“ Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
+
+
+

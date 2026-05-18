@@ -5,14 +5,14 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC Developer Suite ðŸ› ï¸ðŸ“¬
+# CC Developer Suite 🛠️ðŸ“¬
 
 > Das ultimative Toolset für **CC:Tweaked**-Power-User und Entwickler. Umfassende Hardware-Analyse, interaktives Durchsuchen von Elementen und Echtzeit-Ereignisüberwachung in einem professionellen Paket.
 
 
 ---
 
-## ðŸš€ Installation
+## 🚀 Installation
 
 Führen Sie diesen Befehl auf Ihrem Computer aus:
 
@@ -28,7 +28,7 @@ Wählen Sie im Menü **CC Developer Suite** aus.
 
 ---
 
-## ðŸ› ï¸ Empfohlene Tools
+## 🛠️ Empfohlene Tools
 
 ### 1. Überlegener Peripherieinspektor
 Ersetzt den alten Scanner. Wählen Sie ein beliebiges Gerät aus, um eine interaktive Befehlsliste zu öffnen.
@@ -53,7 +53,7 @@ Ein visueller Verzeichnisnavigator. Durchsuchen Sie Ordner, zeigen Sie Dateigrö
 
 ---
 
-## âš™ï¸ Konnektivität und Navigation
+## ⚙️ Konnektivität und Navigation
 - **Hotkey „Q“**: Kehrt zum vorherigen Menü zurück oder beendet das Tool.
 - **Netzwerk umschalten**: Rednet- und Modem-Unterstützung über das Hauptmenü aktivieren/deaktivieren.
 - **Eingabeschutz (NEU)**: Integrierte Verzögerungen von 0,5 Sekunden nach Eingaben, um versehentliche Doppelklicks beim Navigieren in Menüs zu verhindern.
@@ -62,4 +62,6 @@ Ein visueller Verzeichnisnavigator. Durchsuchen Sie Ordner, zeigen Sie Dateigrö
 
 ## ðŸ“ Credits
 Entwickelt im Rahmen der **Advanced Agentic Coding**-Initiative für die professionelle Minecraft-Automatisierung.
+
+
 

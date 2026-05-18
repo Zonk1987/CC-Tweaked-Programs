@@ -5,14 +5,14 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Pacote de desenvolvedores CC ðŸ› ï¸ðŸ”¬
+# Suíte de desenvolvedor CC 🛠️ðŸ”¬
 
 > O conjunto de ferramentas definitivo para usuários avançados e desenvolvedores do **CC:Tweaked**. Análise profunda de hardware, navegação interativa de itens e monitoramento de eventos em tempo real em um pacote profissional.
 
 
 ---
 
-## ðŸš€ Instalação
+## 🚀 Instalação
 
 Execute este comando no seu computador:
 
@@ -28,7 +28,7 @@ Selecione **CC Developer Suite** no menu.
 
 ---
 
-## ðŸ› ï¸ Ferramentas em destaque
+## 🛠️ Ferramentas em destaque
 
 ### 1. Inspetor Periférico Superior
 Substitui o scanner antigo. Selecione qualquer dispositivo para abrir uma lista de comandos interativa.
@@ -53,7 +53,7 @@ Um navegador de diretório visual. Navegue por pastas, visualize tamanhos de arq
 
 ---
 
-## âš™ï¸ Conectividade e Navegação
+## ⚙️ Conectividade e navegação
 - **Atalho 'Q'**: Retorna ao menu anterior ou sai da ferramenta.
 - **Alternância de rede**: Habilite/desabilite o suporte Rednet e Modem no menu principal.
 - **Input Guard (NOVO)**: atrasos integrados de 0,5s após as entradas para evitar cliques duplos acidentais ao navegar nos menus.
@@ -62,4 +62,6 @@ Um navegador de diretório visual. Navegue por pastas, visualize tamanhos de arq
 
 ## ðŸ“ Créditos
 Desenvolvido como parte da iniciativa **Advanced Agentic Coding** para automação profissional do Minecraft.
+
+
 

@@ -12,25 +12,25 @@
 
 ---
 
-## âœ¨ Caractéristiques
+## ✨ Caractéristiques
 
-- **Prise en charge multi-orbes** – Découvre automatiquement tous les orbes énergisants et objets artisanaux connectés en parallèle.
-- **Intégration ME Bridge (obligatoire)** – Utilise « meBridge » d'Advanced Peripherals pour lire les données détaillées du modèle AE2 (entrées, sorties, quantités).
-- **Accès direct au fournisseur (facultatif)** – Prise en charge complète du mod **`ae2communicate`**. Lorsqu'il est associé au ME Bridge, il vous permet de filtrer les recettes par **Fournisseurs de modèles nommés**, éliminant ainsi le besoin de rechercher sur de grands réseaux.
-- **Précision et intelligence** – Gestion automatique des multiplicateurs et validation exacte des ingrédients basée sur l'identification lors de l'importation.
-- **Compatibilité Modpack** – Basculez entre « Powah uniquement » ou « Tous les mods » (touche « M ») pour prendre en charge les recettes de n'importe quel mod utilisant l'orbe énergisant.
-- **Récupération automatique** – Récupération automatisée des objets et réinitialisation des orbes en cas de blocage de fabrication ou de panne de courant.
+- **Prise en charge multi-orbes** — Détecte automatiquement tous les orbes énergisants et objets artisanaux connectés en parallèle.
+- **Intégration ME Bridge (obligatoire)** — Utilise « meBridge » d'Advanced Peripherals pour lire les données détaillées du modèle AE2 (entrées, sorties, quantités).
+- **Accès direct au fournisseur (facultatif)** — Prise en charge complète du mod **`ae2communicate`**. Lorsqu'il est associé au ME Bridge, il vous permet de filtrer les recettes par **fournisseurs de modèles nommés**, éliminant ainsi le besoin de rechercher sur de grands réseaux.
+- **Précision et intelligence** — Gestion automatique des multiplicateurs et validation exacte des ingrédients basée sur l'identification lors de l'importation.
+- **Compatibilité Modpack** — Basculez entre « Powah uniquement » ou « Tous les mods » (touche « M ») pour prendre en charge les recettes de n'importe quel mod utilisant l'Orbe énergisant.
+- **Récupération automatique** — Récupération automatisée des objets et réinitialisation des orbes en cas de blocage de fabrication ou de panne de courant.
 
 ---
 
-## ðŸ› ï¸ Configuration du matériel
+## 🛠️ Configuration matérielle
 
 ![Ingame Setup](../../assets/images/orb-setup.png)
 
 
-1. **Ordinateur avancé** – Requis pour le tableau de bord couleur haute résolution.
-2. **Buffer Chest** – Connectez n'importe quel coffre (par exemple, Diamond Chest) adjacent à l'ordinateur ou via le réseau.
-3. **Orbes énergisants** – Connectez tous les orbes via des **câbles réseau** et des **modems filaires**.
+1. **Ordinateur avancé** — Requis pour le tableau de bord couleur haute résolution.
+2. **Buffer Chest** — Connectez n'importe quel coffre (par exemple, Diamond Chest) adjacent à l'ordinateur ou via le réseau.
+3. **Orbes énergisants** — Connectez tous les orbes via des **câbles réseau** et des **modems filaires**.
 4. **ME Bridge (obligatoire) :** Connectez un **ME Bridge** au réseau pour permettre au système de lire les données de modèle détaillées.
 5. **Fonctionnalité de qualité de vie en option (ae2communicate) :**
 - Installez le module **`ae2communicate`**.
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Installation et utilisation
+## 🚀 Installation et utilisation
 
 1. Téléchargez le fichier install.lua depuis le dépôt
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– Importation de recettes AE2
+## 📖 Importation de recettes AE2
 
 Le système dispose d'un menu d'importation intelligent (Touche **`I`**) :
 
@@ -73,7 +73,7 @@ Le système dispose d'un menu d'importation intelligent (Touche **`I`**) :
 
 ---
 
-## âŒ¨ï¸ Raccourcis clavier
+## ⌨️ Raccourcis clavier
 
 | Clé | Action |
 |:---:|---|
@@ -86,7 +86,7 @@ Le système dispose d'un menu d'importation intelligent (Touche **`I`**) :
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️Configuration
 
 Le système est conçu pour fonctionner immédiatement. Si vous avez besoin d'ajustements manuels, vérifiez `startup.lua` :
 ```lua
@@ -100,7 +100,7 @@ local system = PowahSystem.new({
 
 ---
 
-## ðŸ›‘ Dépannage
+## 🛑 Dépannage
 
 | Erreur | Cause et solution |
 |---|---|
@@ -110,5 +110,6 @@ local system = PowahSystem.new({
 | `Nom en double` | Vous essayez d'importer une recette qui existe déjà. |
 
 ---
-*Développé avec â¤ï¸ pour Advanced Agentic Coding.*
+*Développé avec ❤️ pour Advanced Agentic Coding.*
+
 

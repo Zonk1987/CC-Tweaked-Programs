@@ -73,6 +73,50 @@ $imageMappings = @{
 
 $global:translationCache = @{}
 
+function Get-CleanedContent {
+    param (
+        [string]$Content
+    )
+    if ([string]::IsNullOrEmpty($Content)) { return $Content }
+    
+    $cleaned = $Content
+    
+    # 1. Sparkles: âœ¨ -> ✨ (U+2728)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2\u0153\u00a8', [string][char]0x2728)
+    
+    # 2. Em-dash: â€” -> — (U+2014)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2\u20ac\u201d', [string][char]0x2014)
+    
+    # 3. Wrench/Hammer: ðŸ› ï¸ -> 🛠️ (U+1F6E0 + U+FE0F)
+    $cleaned = [regex]::Replace($cleaned, '\u00f0\u0178\u203a\s*\u00ef\u00b8.', "$([char]0xD83D)$([char]0xDEE0)$([char]0xFE0F)")
+    
+    # 4. Rocket: ðŸš€ -> 🚀 (U+1F680)
+    $cleaned = [regex]::Replace($cleaned, '\u00f0\u0178\u0161\u20ac', "$([char]0xD83D)$([char]0xDE80)")
+    
+    # 5. Checkmark: âœ“ -> ✓ (U+2713)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2\u0153[\u201c\u201d\u201e\u201f\"\u0093]', [string][char]0x2713)
+    
+    # 6. Package: ðŸ“¦ -> 📦 (U+1F4E6)
+    $cleaned = [regex]::Replace($cleaned, '\u00f0\u0178\u201c\u00a6', "$([char]0xD83D)$([char]0xDCE6)")
+    
+    # 7. Keyboard: âŒ¨ï¸ -> ⌨️ (U+2328 + U+FE0F)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2\u0152\u00a8\u00ef\u00b8.', "$([char]0x2328)$([char]0xFE0F)")
+    
+    # 8. Gear: âš™ï¸ -> ⚙️ (U+2699 + U+FE0F)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2\u0161\u2122\u00ef\u00b8.', "$([char]0x2699)$([char]0xFE0F)")
+    
+    # 9. Heart: â ¤ï¸ or â¤ï¸ -> ❤️ (U+2764 + U+FE0F)
+    $cleaned = [regex]::Replace($cleaned, '\u00e2.\u00a4(\u00ef\u00b8.)?', "$([char]0x2764)$([char]0xFE0F)")
+    
+    # 10. Open Book: ðŸ“– -> 📖 (U+1F4D6)
+    $cleaned = [regex]::Replace($cleaned, '\u00f0\u0178\u201c\u2013', "$([char]0xD83D)$([char]0xDCD6)")
+    
+    # 11. Stop Sign: ðŸ›‘ -> 🛑 (U+1F6F1)
+    $cleaned = [regex]::Replace($cleaned, '\u00f0\u0178\u203a\u2018', "$([char]0xD83D)$([char]0xDED1)")
+    
+    return $cleaned
+}
+
 function Invoke-TranslateText {
     param (
         [string]$Text,
@@ -271,6 +315,10 @@ foreach ($project in $projects) {
     # Read the original English README
     $engContent = Get-Content -Path $engReadmePath -Raw -Encoding utf8
     
+    # Dynamically clean any corrupted ANSI/UTF-8 character sequences
+    $engContent = Get-CleanedContent -Content $engContent
+    Set-Content -Path $engReadmePath -Value $engContent -Encoding utf8
+    
     # Add language selector to the English README if not present (ASCII-safe check)
     if ($engContent -notlike "*Languages:** *") {
         $index = $engContent.IndexOf("---")
@@ -342,6 +390,10 @@ $rootReadmePath = Join-Path $basePath "README.md"
 
 if (Test-Path $rootReadmePath) {
     $rootContent = Get-Content -Path $rootReadmePath -Raw -Encoding utf8
+    
+    # Dynamically clean any corrupted ANSI/UTF-8 character sequences
+    $rootContent = Get-CleanedContent -Content $rootContent
+    Set-Content -Path $rootReadmePath -Value $rootContent -Encoding utf8
     
     # Add language selector to the English Root README if not present (ASCII-safe check)
     if ($rootContent -notlike "*Languages:** *") {

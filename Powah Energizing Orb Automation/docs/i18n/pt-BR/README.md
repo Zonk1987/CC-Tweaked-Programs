@@ -12,18 +12,18 @@
 
 ---
 
-## âœ¨ Recursos
+## ✨ Recursos
 
 - **Suporte Multi-Orb** — Descobre automaticamente todos os Orbs Energizantes e artesanatos conectados em paralelo.
-- **Integração ME Bridge (Obrigatório)** — Usa `meBridge` de Periféricos Avançados para ler dados detalhados do padrão AE2 (entradas, saídas, quantidades).
+- **Integração ME Bridge (obrigatória)** — Usa `meBridge` de periféricos avançados para ler dados detalhados do padrão AE2 (entradas, saídas, quantidades).
 - **Acesso direto ao provedor (opcional)** — Suporte completo para o mod **`ae2communicate`**. Quando emparelhado com o ME Bridge, ele permite filtrar receitas por **Provedores de padrões nomeados**, eliminando a necessidade de pesquisar em grandes redes.
-- **Precisão e Inteligência** — Manuseio automático de multiplicadores e validação exata de ingredientes com base em ID durante a importação.
+- **Precisão e Inteligência** — Manuseio automático de multiplicadores e validação exata de ingredientes baseada em ID durante a importação.
 - **Compatibilidade com Modpack** — Alterne entre "Somente Powah" ou "Todos os Mods" (Tecla `M`) para suportar receitas de qualquer mod usando o Energizing Orb.
-- **Recuperação Automática** — Recuperação automatizada de itens e redefinição de orbe em caso de travamento de fabricação ou falhas de energia.
+- **Recuperação automática** — Recuperação automatizada de itens e redefinição de orbe em caso de travamento de fabricação ou falta de energia.
 
 ---
 
-## ðŸ› ï¸ Configuração de hardware
+## 🛠️ Configuração de hardware
 
 ![Ingame Setup](../../assets/images/orb-setup.png)
 
@@ -40,7 +40,7 @@
 
 ---
 
-## ðŸš€ Instalação e uso
+## 🚀 Instalação e uso
 
 1. Baixe o arquivo install.lua do repositório
 ```bash
@@ -56,7 +56,7 @@ install.lua
 
 ---
 
-## ðŸ“– Importação de receita AE2
+## 📖 Importação de receita AE2
 
 O sistema possui um menu de importação inteligente (Tecla **`I`**):
 
@@ -73,7 +73,7 @@ O sistema possui um menu de importação inteligente (Tecla **`I`**):
 
 ---
 
-## ÂŒ¨ï¸ Teclas de atalho
+## ⌨️ Teclas de atalho
 
 | Chave | Ação |
 |:---:|---|
@@ -86,7 +86,7 @@ O sistema possui um menu de importação inteligente (Tecla **`I`**):
 
 ---
 
-## Configuração
+## ⚙️ Configuração
 
 O sistema foi projetado para funcionar imediatamente. Se precisar de ajustes manuais, verifique `startup.lua`:
 ```lua
@@ -100,7 +100,7 @@ local system = PowahSystem.new({
 
 ---
 
-## ðŸ›‘ Solução de problemas
+## 🛑 Solução de problemas
 
 | Erro | Causa e correção |
 |---|---|
@@ -110,5 +110,6 @@ local system = PowahSystem.new({
 | `Nome duplicado` | Você está tentando importar uma receita que já existe. |
 
 ---
-*Desenvolvido com â¤ï¸ para Advanced Agentic Coding.*
+*Desenvolvido com ❤️ para codificação Agentic avançada.*
+
 
