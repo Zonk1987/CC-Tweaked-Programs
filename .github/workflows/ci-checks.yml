@@ -1,7 +1,6 @@
 name: CI Quality Checks
 
 on:
-  workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
   push:
     branches:
       - main
@@ -9,47 +8,266 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint:
-    name: luacheck
+  lua-quality:
+    name: Lua Quality Checks
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-      
-      - name: Setup Lua
-        uses: leafo/gh-actions-lua@v13
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Lua 5.1
+        uses: leafo/gh-actions-lua@v10
         with:
           luaVersion: "5.1"
-          
-      - name: Setup Luarocks
-        uses: leafo/gh-actions-luarocks@v4
-        
-      - name: Lua Syntax Check (luac -p)
-        run: |
-          echo "Checking Lua syntax for all project files..."
-          find . -name "*.lua" \
-            -not -path "./.git/*" \
-            -not -path "./.luarocks/*" \
-            -not -path "./.*" \
-            | sort | while read f; do
-              luac -p "$f" || exit 1
-            done
-          echo "All files passed syntax check."
 
-      - name: Install Luacheck
-        run: luarocks install luacheck
-        
-      - name: Run Luacheck
-        run: luacheck .
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v4
+
+      - name: Install Lua tools
+        run: |
+          luarocks install luacheck
+
+      - name: Show Lua version
+        run: |
+          lua -v
+          luacheck --version
+
+      - name: Lua syntax check (luac -p)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r -d '' file; do
+            echo "Checking syntax: $file"
+            luac -p "$file"
+          done < <(find . -type f -name "*.lua" -not -path "*/.git/*" -not -path "*/.luarocks/*" -not -path "*/.agents/*" -not -path "*/.github/*" -print0)
+
+      - name: Validate manifest structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          lua <<'LUA'
+          local manifest = assert(loadfile("manifest.lua"))()
+
+          assert(type(manifest) == "table", "manifest must return a table")
+          assert(type(manifest.packages) == "table", "manifest.packages must be a table")
+
+          local function is_safe_relative_path(path)
+            return type(path) == "string"
+              and path ~= ""
+              and path:sub(1, 1) ~= "/"
+              and not path:find("%.%.")
+          end
+
+          local function is_sha256(value)
+            return type(value) == "string"
+              and #value == 64
+              and not value:find("[^0-9a-fA-F]")
+          end
+
+          local errors = {}
+
+          for id, pkg in pairs(manifest.packages) do
+            if type(id) ~= "string" or id == "" then
+              table.insert(errors, "Package id must be a non-empty string")
+            end
+
+            if type(pkg.name) ~= "string" or pkg.name == "" then
+              table.insert(errors, id .. ": missing or invalid name")
+            end
+
+            if type(pkg.description) ~= "string" or pkg.description == "" then
+              table.insert(errors, id .. ": missing or invalid description")
+            end
+
+            if type(pkg.dependencies) ~= "table" then
+              table.insert(errors, id .. ": dependencies must be a table")
+            end
+
+            if type(pkg.files) ~= "table" then
+              table.insert(errors, id .. ": files must be a table")
+            end
+
+            for _, dep in ipairs(pkg.dependencies or {}) do
+              if not manifest.packages[dep] then
+                table.insert(errors, id .. ": unknown dependency '" .. tostring(dep) .. "'")
+              end
+            end
+
+            for _, file in ipairs(pkg.files or {}) do
+              if not is_safe_relative_path(file.source) then
+                table.insert(errors, id .. ": invalid source path '" .. tostring(file.source) .. "'")
+              end
+
+              if not is_safe_relative_path(file.target) then
+                table.insert(errors, id .. ": invalid target path '" .. tostring(file.target) .. "'")
+              end
+
+              if type(file.sizeBytes) ~= "number" or file.sizeBytes < 0 then
+                table.insert(errors, id .. ": invalid sizeBytes for '" .. tostring(file.source) .. "'")
+              end
+
+              if not is_sha256(file.hash) then
+                table.insert(errors, id .. ": invalid SHA256 hash for '" .. tostring(file.source) .. "'")
+              end
+            end
+          end
+
+          if #errors > 0 then
+            for _, err in ipairs(errors) do
+              io.stderr:write("ERROR: " .. err .. "\n")
+            end
+            os.exit(1)
+          end
+
+          print("Manifest structure OK")
+          LUA
+
+      - name: Check manifest source files exist
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          lua <<'LUA'
+          local manifest = assert(loadfile("manifest.lua"))()
+          local errors = {}
+
+          local function url_decode_path(path)
+            return (path:gsub("%%20", " "))
+          end
+
+          for id, pkg in pairs(manifest.packages) do
+            for _, file in ipairs(pkg.files or {}) do
+              local source = url_decode_path(file.source)
+              local f = io.open(source, "rb")
+
+              if not f then
+                table.insert(errors, id .. ": source file does not exist: " .. source)
+              else
+                f:close()
+              end
+            end
+          end
+
+          if #errors > 0 then
+            for _, err in ipairs(errors) do
+              io.stderr:write("ERROR: " .. err .. "\n")
+            end
+            os.exit(1)
+          end
+
+          print("All manifest source files exist")
+          LUA
+
+      - name: Check manifest sizeBytes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          lua <<'LUA'
+          local manifest = assert(loadfile("manifest.lua"))()
+          local errors = {}
+
+          local function url_decode_path(path)
+            return (path:gsub("%%20", " "))
+          end
+
+          local function file_size(path)
+            local f = assert(io.open(path, "rb"))
+            local size = f:seek("end")
+            f:close()
+            return size
+          end
+
+          for id, pkg in pairs(manifest.packages) do
+            for _, file in ipairs(pkg.files or {}) do
+              local source = url_decode_path(file.source)
+              local f = io.open(source, "rb")
+
+              if f then
+                f:close()
+                local actual = file_size(source)
+
+                if actual ~= file.sizeBytes then
+                  table.insert(
+                    errors,
+                    string.format(
+                      "%s: sizeBytes mismatch for %s: manifest=%s actual=%s",
+                      id,
+                      source,
+                      tostring(file.sizeBytes),
+                      tostring(actual)
+                    )
+                  )
+                end
+              end
+            end
+          end
+
+          if #errors > 0 then
+            for _, err in ipairs(errors) do
+              io.stderr:write("ERROR: " .. err .. "\n")
+            end
+            os.exit(1)
+          end
+
+          print("Manifest sizeBytes OK")
+          LUA
+
+      - name: Check manifest SHA256 hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          lua <<'LUA'
+          local manifest = assert(loadfile("manifest.lua"))()
+          local list = assert(io.open(".manifest-hash-check.txt", "w"))
+
+          local function url_decode_path(path)
+            return (path:gsub("%%20", " "))
+          end
+
+          for _, pkg in pairs(manifest.packages) do
+            for _, file in ipairs(pkg.files or {}) do
+              local source = url_decode_path(file.source)
+              list:write(file.hash .. "  " .. source .. "\n")
+            end
+          end
+
+          list:close()
+          LUA
+
+          sha256sum --check .manifest-hash-check.txt
+
+      - name: Luacheck (using local .luacheckrc)
+        run: |
+          luacheck .
+
+      - name: StyLua formatting check
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
 
   check-markdown:
     name: Lychee (Markdown Links)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       
       - name: Check Links
         uses: lycheeverse/lychee-action@v2
