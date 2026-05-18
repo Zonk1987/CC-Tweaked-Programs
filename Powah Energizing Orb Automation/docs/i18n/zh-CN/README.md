@@ -1,0 +1,114 @@
+﻿> [!WARNING]
+> 🇿🇳 **zh-CN / Chinese (Simplified)**
+> 
+> 注意：本自述文件由人工智能助手（反重力）自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原文 [README.md](../../../README.md).
+
+🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
+
+# Powah Energizing Orb Automation（CC：调整）
+
+> 适用于 **Powah** 模组的 **Energizing Orbs** 的全自动、可生产的 ComputerCraft 系统。支持并行处理、高级 AE2 集成和智能 modpack 兼容性。
+
+
+---
+
+## ◈ 特点
+
+- **多球体支持** – 自动发现所有并行连接的能量球体和工艺。
+- **ME Bridge 集成（必需）** – 使用高级外设的“meBridge”读取详细的 AE2 模式数据（输入、输出、数量）。
+- **直接提供者访问（可选）** – 完全支持 **`ae2communicate`** 模组。与 ME Bridge 配对时，它允许您通过 **命名模式提供者** 过滤食谱，无需通过大型网络进行搜索。
+- **精确与智能** – 在导入过程中自动处理乘数和基于 ID 的精确成分验证。
+- **模组包兼容性** – 在“仅 Powah”或“所有模组”（按键“M”）之间切换，以支持使用能量球的任何模组的配方。
+- **自动恢复** - 在制作停止或电源故障的情况下自动恢复物品和重置球体。
+
+---
+
+## 硬件设置
+
+![Ingame Setup](../../assets/images/orb-setup.png)
+
+
+1. **高级计算机** — 高分辨率彩色仪表板所需。
+2. **缓冲宝箱** – 连接计算机附近或通过网络连接的任何宝箱（例如钻石宝箱）。
+3. **激励球体** – 通过**网络电缆**和**有线调制解调器**连接所有球体。
+4. **ME Bridge（必需）：** 将 **ME Bridge** 连接到网络，以允许系统读取详细的模式数据。
+5. **可选的生活质量功能 (ae2communicate)：**
+- 安装 **`ae2communicate`** 模组。
+- 将 **有线调制解调器** 直接放置在 **AE2 接口**（识别为“ae2_scanner”）上。
+- 在 AE2 系统中命名您的模式提供者（例如“Powah Orb”）。
+- **好处：** 过滤 ME Bridge 数据以仅显示来自该特定提供商的模式！
+
+---
+
+## 安装与使用
+
+1.从repo下载install.lua文件
+```bash
+wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
+```
+2.运行install.lua文件
+```bash
+install.lua
+```
+3. 从菜单中选择 **Powah Automation**。
+4. 系统启动时自动检测您的外围设备。
+5. **重要**：将 AE2 模式提供程序设置为 **“阻止模式”** 并将它们指向缓冲区箱。
+
+---
+
+## ðŸ“– AE2 配方导入
+
+该系统具有智能导入菜单（按键**`I`**）：
+
+### 场景 A：使用可选的 AE2 扫描仪
+1. 按**`我`**。
+2. 选择您要从中导入的**命名模式提供程序**。
+3. 浏览过滤后的菜谱，然后按 **`ENTER`** 导入。
+
+### 场景 B：标准（仅限 ME Bridge）
+1. 按**`我`**。
+2. 浏览网络中所有可用的模式。
+3. 使用 **`M`** 在 **仅限 Powah** 和 **所有 Mods** 之间切换。
+4. 按 **`ENTER`** 导入。
+
+---
+
+## Ø 热键
+
+| 钥匙 | 行动 |
+|:---:|---|
+| **`R** | **重新加载**食谱，无需重新启动 |
+| **`我`** | **导入菜单**（浏览并添加 AE2 图案） |
+| **`M`** | **模组切换**（导入菜单内：Powah 与全部。*仅在未使用“ae2communicate”模组时可用*） |
+| **`B** | **返回**（在导入菜单内：返回到提供商选择） |
+| **`X`** | **删除**（从系统中删除导入的配方） |
+| **`问`** | **退出**（退出导入菜单并返回仪表板） |
+
+---
+
+## Ø 配置
+
+该系统设计为开箱即用。如果需要手动调整，请检查“startup.lua”：
+```lua
+local system = PowahSystem.new({
+    chestName = "left", -- Or use auto-detection variable
+    recipeFile = "powah_recipes.json",
+    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
+    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
+})
+```
+
+---
+
+## 故障排除
+
+| 错误 | 原因与修复 |
+|---|---|
+| “没有找到 ME 桥！” | 检查电缆和调制解调器状态。 |
+| `AE 扫描仪：无` | 没有mod的话正常。将使用经典模式。 |
+| “Orb 超时...” | 制作时间超过 60 秒。物品返回箱子。检查电源！ |
+| `重复名称` | 您正在尝试导入已存在的食谱。 |
+
+---
+*与 â¤ï¸ 一起开发，用于高级代理编码。*
+

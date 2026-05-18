@@ -1,10 +1,12 @@
-# CC Developer Suite 🛠️🔬
+﻿# CC Developer Suite ðŸ› ï¸ðŸ”¬
 
 > The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 
+🌐 **Languages:** [English](README.md) | [Deutsch](docs/i18n/de/README.md) | [Español](docs/i18n/es/README.md) | [Français](docs/i18n/fr/README.md) | [Português (Brasil)](docs/i18n/pt-BR/README.md) | [日本語](docs/i18n/ja/README.md) | [한국어](docs/i18n/ko/README.md) | [Русский](docs/i18n/ru/README.md) | [简体中文](docs/i18n/zh-CN/README.md)
+
 ---
 
-## 🚀 Installation
+## ðŸš€ Installation
 
 Run this command on your computer:
 
@@ -20,7 +22,7 @@ Select **CC Developer Suite** from the menu.
 
 ---
 
-## 🛠️ Featured Tools
+## ðŸ› ï¸ Featured Tools
 
 ### 1. Superior Peripheral Inspector
 Replaces the old scanner. Select any device to open an interactive command list.
@@ -45,12 +47,12 @@ A visual directory navigator. Browse folders, view file sizes, and manage your s
 
 ---
 
-## ⚙️ Connectivity & Navigation
+## âš™ï¸ Connectivity & Navigation
 - **Hotkey 'Q'**: Returns to the previous menu or exits the tool.
 - **Network Toggle**: Enable/Disable Rednet and Modem support from the main menu.
 - **Input Guard (NEW)**: Integrated 0.5s delays after inputs to prevent accidental double-clicks when navigating menus.
 
 ---
 
-## 📝 Credits
+## ðŸ“ Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
