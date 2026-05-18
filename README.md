@@ -50,20 +50,6 @@ The installer automatically resolves dependencies recursively. For example, inst
 
 ---
 
-## 🛠️ Developer Setup (First Time)
-
-After cloning the repository, run the setup script once:
-
-```powershell
-.\setup.ps1
-```
-
-This will automatically:
-- **Install CC:Tweaked type stubs** → full autocomplete and type hints for all CC APIs in VS Code (requires [Lua extension](https://marketplace.visualstudio.com/items?itemName=sumneko.lua))
-- **Configure git hooks** → `luacheck` runs automatically before every commit
-
----
-
 ## 🛠️ Development Guidelines
 
 ### **Adding a New App**
