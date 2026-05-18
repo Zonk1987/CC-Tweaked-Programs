@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC 开发者套件🛠️ðŸ”Ø
+# CC 开发者套件🛠️🔬
 
 > 面向 **CC:Tweaked** 高级用户和开发人员的权威工具集。深度硬件分析、交互式项目浏览和实时事件监控集于一个专业软件包中。
 
@@ -60,8 +60,10 @@ install.lua
 
 ---
 
-## ð“ 制作人员
+## 📝 制作人员
 作为专业 Minecraft 自动化**高级代理编码**计划的一部分而开发。
+
+
 
 
 

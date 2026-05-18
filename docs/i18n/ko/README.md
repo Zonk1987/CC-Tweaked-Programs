@@ -9,7 +9,7 @@
 
 # Zonk의 CC:Tweaked 자동화 제품군 🚀
 
-![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
+![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality%20Checks)
 ![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
 ![Last Commit](https://img.shields.io/github/last-commit/Zonk1987/CC-Tweaked-Programs/main?style=for-the-badge)
 ![Top Language](https://img.shields.io/github/languages/top/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
@@ -106,6 +106,8 @@ Advanced Agentic Coding 이니셔티브의 일부로 **Antgravity**에서 개발
 3. 하드웨어별 설정을 보려면 각 응용 프로그램 폴더 내의 'README.md'를 확인하세요.
 
 **[라이센스](../../../LICENSE)**: MIT
+
+
 
 
 

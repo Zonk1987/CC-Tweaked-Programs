@@ -49,7 +49,7 @@ Select **Mekanism Portal Recaller** from the menu.
 
 ---
 
-## ðŸ“¡ Technical Details
+## 📝 Technical Details
 The sender broadcasts a JSON table on the configured channel (default: 99):
 ```json
 {
@@ -60,7 +60,9 @@ The sender broadcasts a JSON table on the configured channel (default: 99):
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Developed for professional Minecraft automation.
+
+
 
 

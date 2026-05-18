@@ -72,7 +72,7 @@ Open `startup` on the computer to customize the system behavior:
 
 ---
 
-## ðŸ“¡ Remote Recall API
+## 📝 Remote Recall API
 
 The system listens for modem messages on the configured `recallChannel`. To trigger a portal remotely, send a table with the following structure:
 ```lua
@@ -85,7 +85,9 @@ Alternatively, you can use the dedicated **Mekanism Portal Recaller** script on 
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
+
+
 
 

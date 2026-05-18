@@ -78,7 +78,7 @@ Abra `startup` no computador para personalizar o comportamento do sistema:
 
 ---
 
-## ðŸ“¡ API de recuperação remota
+## 📝 API de recuperação remota
 
 O sistema escuta mensagens de modem no `recallChannel` configurado. Para acionar um portal remotamente, envie uma tabela com a seguinte estrutura:
 ```lua
@@ -91,7 +91,9 @@ Alternativamente, você pode usar o script dedicado **Mekanism Portal Recaller**
 
 ---
 
-## ðŸ“ Créditos
+## 📝 Créditos
 Desenvolvido como parte da iniciativa **Advanced Agentic Coding** para automação profissional do Minecraft.
+
+
 
 

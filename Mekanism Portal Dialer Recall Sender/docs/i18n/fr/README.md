@@ -55,7 +55,7 @@ Sélectionnez **Mekanism Portal Recaller** dans le menu.
 
 ---
 
-## ðŸ«¡ Détails techniques
+## 📝 Détails techniques
 L'expéditeur diffuse une table JSON sur le canal configuré (par défaut : 99) :
 ```json
 {
@@ -66,7 +66,9 @@ L'expéditeur diffuse une table JSON sur le canal configuré (par défaut : 99)�
 
 ---
 
-## ðŸ« Crédits
+## 📝 Crédits
 Développé pour l'automatisation professionnelle de Minecraft.
+
+
 
 

@@ -78,7 +78,7 @@ Wählen Sie **Mekanism Portal Dialer Hub** aus dem Menü. Das Installationsprogr
 
 ---
 
-## ðŸ“¡ Remote Recall API
+## 📝 Remote-Recall-API
 
 Das System wartet auf Modemnachrichten auf dem konfigurierten „recallChannel“. Um ein Portal aus der Ferne auszulösen, senden Sie eine Tabelle mit der folgenden Struktur:
 ```lua
@@ -91,7 +91,9 @@ Alternativ können Sie das spezielle **Mekanism Portal Recaller**-Skript auf ein
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Entwickelt im Rahmen der **Advanced Agentic Coding**-Initiative für die professionelle Minecraft-Automatisierung.
+
+
 
 

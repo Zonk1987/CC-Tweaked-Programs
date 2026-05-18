@@ -55,7 +55,7 @@ Wählen Sie **Mekanism Portal Recaller** aus dem Menü.
 
 ---
 
-## ðŸ“¡ Technische Details
+## 📝 Technische Details
 Der Absender sendet eine JSON-Tabelle auf dem konfigurierten Kanal (Standard: 99):
 ```json
 {
@@ -66,7 +66,9 @@ Der Absender sendet eine JSON-Tabelle auf dem konfigurierten Kanal (Standard: 99
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Entwickelt für die professionelle Minecraft-Automatisierung.
+
+
 
 

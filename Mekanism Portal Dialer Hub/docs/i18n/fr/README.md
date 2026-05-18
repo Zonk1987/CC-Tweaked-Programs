@@ -78,7 +78,7 @@ Ouvrez le « démarrage » sur l'ordinateur pour personnaliser le comportement
 
 ---
 
-## ðŸ«¡ API de rappel à distance
+## 📝 API de rappel à distance
 
 Le système écoute les messages du modem sur le « recallChannel » configuré. Pour déclencher un portail à distance, envoyez une table avec la structure suivante :
 ```lua
@@ -91,7 +91,9 @@ Vous pouvez également utiliser le script dédié **Mekanism Portal Recaller** s
 
 ---
 
-## ðŸ« Crédits
+## 📝 Crédits
 Développé dans le cadre de l'initiative **Advanced Agentic Coding** pour l'automatisation professionnelle de Minecraft.
+
+
 
 

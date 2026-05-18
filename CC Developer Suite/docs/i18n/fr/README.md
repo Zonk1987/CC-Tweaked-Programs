@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Suite Développeur CC 🛠️ðŸ”¬
+# Suite Développeur CC 🛠️🔬
 
 > L'ensemble d'outils définitif pour les utilisateurs expérimentés et les développeurs de **CC:Tweaked**. Analyse approfondie du matériel, navigation interactive entre les éléments et surveillance des événements en temps réel dans un seul package professionnel.
 
@@ -60,8 +60,10 @@ Un navigateur d'annuaire visuel. Parcourez les dossiers, affichez la taille des 
 
 ---
 
-## ðŸ« Crédits
+## 📝 Crédits
 Développé dans le cadre de l'initiative **Advanced Agentic Coding** pour l'automatisation professionnelle de Minecraft.
+
+
 
 
 

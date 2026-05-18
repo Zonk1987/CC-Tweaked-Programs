@@ -1,4 +1,4 @@
-﻿# CC Developer Suite 🛠️ðŸ”¬
+﻿# CC Developer Suite 🛠️🔬
 
 > The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 
@@ -54,8 +54,10 @@ A visual directory navigator. Browse folders, view file sizes, and manage your s
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
+
+
 
 
 

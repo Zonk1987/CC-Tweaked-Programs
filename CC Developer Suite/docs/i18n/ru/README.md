@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC Developer Suite 🛠️ðŸ”¬
+# Пакет разработчика CC 🛠️🔬
 
 > Полный набор инструментов для опытных пользователей и разработчиков **CC:Tweaked**. Глубокий анализ оборудования, интерактивный просмотр элементов и мониторинг событий в реальном времени в одном профессиональном пакете.
 
@@ -60,8 +60,10 @@ install.lua
 
 ---
 
-## ðŸ“ Кредиты
+## 📝 Кредиты
 Разработано в рамках инициативы **Advanced Agentic Coding** для профессиональной автоматизации Minecraft.
+
+
 
 
 

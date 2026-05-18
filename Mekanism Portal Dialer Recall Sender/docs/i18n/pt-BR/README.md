@@ -55,7 +55,7 @@ Selecione **Recaller do Portal Mekanism** no menu.
 
 ---
 
-## ðŸ“¡ Detalhes Técnicos
+## 📝 Detalhes Técnicos
 O remetente transmite uma tabela JSON no canal configurado (padrão: 99):
 ```json
 {
@@ -66,7 +66,9 @@ O remetente transmite uma tabela JSON no canal configurado (padrão: 99):
 
 ---
 
-## ðŸ“ Créditos
+## 📝 Créditos
 Desenvolvido para automação profissional do Minecraft.
+
+
 
 

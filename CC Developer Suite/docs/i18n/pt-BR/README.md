@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Suíte de desenvolvedor CC 🛠️ðŸ”¬
+# Suíte de desenvolvedor CC 🛠️🔬
 
 > O conjunto de ferramentas definitivo para usuários avançados e desenvolvedores do **CC:Tweaked**. Análise profunda de hardware, navegação interativa de itens e monitoramento de eventos em tempo real em um pacote profissional.
 
@@ -60,8 +60,10 @@ Um navegador de diretório visual. Navegue por pastas, visualize tamanhos de arq
 
 ---
 
-## ðŸ“ Créditos
+## 📝 Créditos
 Desenvolvido como parte da iniciativa **Advanced Agentic Coding** para automação profissional do Minecraft.
+
+
 
 
 

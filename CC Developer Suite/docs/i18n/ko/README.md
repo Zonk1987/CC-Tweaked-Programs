@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC 개발자 제품군 🛠️ðŸ”¬
+# CC 개발자 스위트 🛠️🔬
 
 > **CC:Tweaked** 고급 사용자 및 개발자를 위한 최종 도구 세트입니다. 하나의 전문 패키지에 심층적인 하드웨어 분석, 대화형 항목 탐색 및 실시간 이벤트 모니터링이 포함되어 있습니다.
 
@@ -60,8 +60,10 @@ install.lua
 
 ---
 
-## ðŸ“ 크레딧
+## 📝 크레딧
 전문적인 Minecraft 자동화를 위한 **Advanced Agentic Coding** 이니셔티브의 일부로 개발되었습니다.
+
+
 
 
 

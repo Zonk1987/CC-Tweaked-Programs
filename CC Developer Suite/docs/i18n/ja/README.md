@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC 開発者スイート 🛠️ðŸ」
+# CC 開発者スイート 🛠️🔬
 
 > **CC:Tweaked** パワー ユーザーおよび開発者向けの決定版ツールセット。ハードウェアの詳細な分析、インタラクティブなアイテムの閲覧、リアルタイムのイベント監視が 1 つのプロフェッショナルなパッケージにまとめられています。
 
@@ -60,8 +60,10 @@ install.lua
 
 ---
 
-## ðŸ“ クレジット
+## 📝 クレジット
 プロフェッショナルな Minecraft 自動化のための **Advanced Agenticcoding** イニシアチブの一環として開発されました。
+
+
 
 
 

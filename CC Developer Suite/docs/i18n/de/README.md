@@ -5,7 +5,7 @@
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# CC Developer Suite 🛠️ðŸ“¬
+# CC Developer Suite 🛠️🔬
 
 > Das ultimative Toolset für **CC:Tweaked**-Power-User und Entwickler. Umfassende Hardware-Analyse, interaktives Durchsuchen von Elementen und Echtzeit-Ereignisüberwachung in einem professionellen Paket.
 
@@ -60,8 +60,10 @@ Ein visueller Verzeichnisnavigator. Durchsuchen Sie Ordner, zeigen Sie Dateigrö
 
 ---
 
-## ðŸ“ Credits
+## 📝 Credits
 Entwickelt im Rahmen der **Advanced Agentic Coding**-Initiative für die professionelle Minecraft-Automatisierung.
+
+
 
 
 

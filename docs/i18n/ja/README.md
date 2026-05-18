@@ -9,7 +9,7 @@
 
 # Zonk の CC:調整されたオートメーション スイート 🚀
 
-![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
+![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality%20Checks)
 ![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
 ![Last Commit](https://img.shields.io/github/last-commit/Zonk1987/CC-Tweaked-Programs/main?style=for-the-badge)
 ![Top Language](https://img.shields.io/github/languages/top/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
@@ -106,6 +106,8 @@ Advanced Agenticcoding イニシアチブの一環として **Antigravity** に�
 3. ハードウェア固有のセットアップについては、各アプリケーションのフォルダー内の「README.md」を確認してください。
 
 **[ライセンス](../../../LICENSE)**: MIT
+
+
 
 
 

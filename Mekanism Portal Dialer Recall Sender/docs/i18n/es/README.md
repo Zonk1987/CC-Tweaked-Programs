@@ -55,7 +55,7 @@ Seleccione **Recuperador del portal de mecanismo** en el menú.
 
 ---
 
-## ðŸ“¡ Detalles técnicos
+## 📝 Detalles técnicos
 El remitente transmite una tabla JSON en el canal configurado (predeterminado: 99):
 ```json
 {
@@ -66,7 +66,9 @@ El remitente transmite una tabla JSON en el canal configurado (predeterminado: 9
 
 ---
 
-## ðŸ“ Créditos
+## 📝 Créditos
 Desarrollado para la automatización profesional de Minecraft.
+
+
 
 

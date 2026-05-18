@@ -78,7 +78,7 @@ install.lua
 
 ---
 
-## ðŸ“¡ 원격 리콜 API
+## 📝 원격 리콜 API
 
 시스템은 구성된 `recallChannel`에서 모뎀 메시지를 수신합니다. 포털을 원격으로 트리거하려면 다음 구조의 테이블을 보내세요.
 ```lua
@@ -91,7 +91,9 @@ install.lua
 
 ---
 
-## ðŸ“ 크레딧
+## 📝 크레딧
 전문적인 Minecraft 자동화를 위한 **Advanced Agentic Coding** 이니셔티브의 일부로 개발되었습니다.
+
+
 
 
