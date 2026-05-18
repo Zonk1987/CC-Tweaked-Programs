@@ -6,6 +6,23 @@ if ([string]::IsNullOrEmpty($basePath)) {
     $basePath = Get-Location
 }
 
+$logPath = Join-Path $basePath "migrate_and_translate_log.txt"
+
+# Clear or create the log file with a clean header
+Set-Content -Path $logPath -Value "=== CC:Tweaked Documentation Migration & Native Translation Tool Log ===" -Encoding utf8
+
+function Log-Message {
+    param (
+        [string]$Message,
+        [string]$ForegroundColor = "White"
+    )
+    # Output to console with color
+    Write-Host $Message -ForegroundColor $ForegroundColor
+    
+    # Output to log file
+    Add-Content -Path $logPath -Value $Message -Encoding utf8
+}
+
 $projects = @(
     "CC Developer Suite",
     "Create Mechanical Crafter Automation",
@@ -18,11 +35,11 @@ $languages = @("de", "es", "fr", "pt-BR", "zh-CN", "ja", "ko", "ru")
 
 # Metadata for flags and languages using Unicode surrogate pair character codes to remain 100% plain-ASCII
 $langMetadata = @{
-    "de" = @{ "flag" = "$([char]0xD83C)$([char]0xDDE9)$([char]0xD83C)$([char]0xDDEE)"; "name" = "de / Deutsch" }
+    "de" = @{ "flag" = "$([char]0xD83C)$([char]0xDDE9)$([char]0xD83C)$([char]0xDDEA)"; "name" = "de / Deutsch" }
     "es" = @{ "flag" = "$([char]0xD83C)$([char]0xDDEA)$([char]0xD83C)$([char]0xDDF8)"; "name" = "es / Espanol" }
     "fr" = @{ "flag" = "$([char]0xD83C)$([char]0xDDEB)$([char]0xD83C)$([char]0xDDF7)"; "name" = "fr / Francais" }
     "pt-BR" = @{ "flag" = "$([char]0xD83C)$([char]0xDDE7)$([char]0xD83C)$([char]0xDDF7)"; "name" = "pt-BR / Portugues (Brasil)" }
-    "zh-CN" = @{ "flag" = "$([char]0xD83C)$([char]0xDDFF)$([char]0xD83C)$([char]0xDDF3)"; "name" = "zh-CN / Chinese (Simplified)" }
+    "zh-CN" = @{ "flag" = "$([char]0xD83C)$([char]0xDDE8)$([char]0xD83C)$([char]0xDDF3)"; "name" = "zh-CN / Chinese (Simplified)" }
     "ja" = @{ "flag" = "$([char]0xD83C)$([char]0xDDEF)$([char]0xD83C)$([char]0xDDF5)"; "name" = "ja / Japanese" }
     "ko" = @{ "flag" = "$([char]0xD83C)$([char]0xDDF0)$([char]0xD83C)$([char]0xDDF7)"; "name" = "ko / Korean" }
     "ru" = @{ "flag" = "$([char]0xD83C)$([char]0xDDF7)$([char]0xD83C)$([char]0xDDFA)"; "name" = "ru / Russian" }
@@ -54,12 +71,19 @@ $imageMappings = @{
     "Powah Energizing Orb Automation" = @{ "orig" = "images/setup.png"; "new" = "orb-setup.png" }
 }
 
+$global:translationCache = @{}
+
 function Invoke-TranslateText {
     param (
         [string]$Text,
         [string]$TargetLang
     )
     if ([string]::IsNullOrWhiteSpace($Text)) { return $Text }
+    
+    $cacheKey = "$TargetLang|$Text"
+    if ($global:translationCache.Contains($cacheKey)) {
+        return $global:translationCache[$cacheKey]
+    }
     
     $gLang = $TargetLang
     if ($TargetLang -eq "pt-BR") { $gLang = "pt" }
@@ -75,9 +99,29 @@ function Invoke-TranslateText {
         foreach ($segment in $response[0]) {
             $translated += $segment[0]
         }
+        
+        # Save to cache
+        $global:translationCache[$cacheKey] = $translated
+        
+        # Tiny delay to be polite to the API and prevent rate limits
+        Start-Sleep -Milliseconds 50
+        
         return $translated
     } catch {
-        return $Text # Fallback to original text on failure
+        # Rate limit retry logic
+        Log-Message "  [!] Rate limit or API warning. Cooling down and retrying in 2 seconds..." -ForegroundColor Yellow
+        Start-Sleep -Seconds 2
+        try {
+            $response = Invoke-RestMethod -Uri $url -Method Get -TimeoutSec 10
+            $translated = ""
+            foreach ($segment in $response[0]) {
+                $translated += $segment[0]
+            }
+            $global:translationCache[$cacheKey] = $translated
+            return $translated
+        } catch {
+            return $Text # Fallback to original text on failure
+        }
     }
 }
 
@@ -170,7 +214,7 @@ function Invoke-TranslateMarkdown {
 }
 
 
-Write-Host "=== CC:Tweaked Documentation Migration & Native Translation Tool ===" -ForegroundColor Green
+Log-Message "=== CC:Tweaked Documentation Migration & Native Translation Tool ===" -ForegroundColor Green
 
 # Escape characters for globe and accented/non-ASCII language names to keep file 100% plain-ASCII
 $globe = "$([char]0xD83C)$([char]0xDF10)"
@@ -189,12 +233,12 @@ $langSelector = "$globe **Languages:** [English](../../../README.md) | [Deutsch]
 
 # 1. Process all project directories
 foreach ($project in $projects) {
-    Write-Host "`n[*] Processing Project: $project" -ForegroundColor Cyan
+    Log-Message "`n[*] Processing Project: $project" -ForegroundColor Cyan
     $projectPath = Join-Path $basePath $project
     $engReadmePath = Join-Path $projectPath "README.md"
     
     if (!(Test-Path $engReadmePath)) {
-        Write-Host "  [!] English README.md not found. Skipping." -ForegroundColor Yellow
+        Log-Message "  [!] English README.md not found. Skipping." -ForegroundColor Yellow
         continue
     }
     
@@ -210,7 +254,7 @@ foreach ($project in $projects) {
                 New-Item -ItemType Directory -Path $targetImgDir -Force | Out-Null
             }
             Copy-Item -Path $origImgPath -Destination $targetImgPath -Force
-            Write-Host "  [->] Copied setup.png -> docs/assets/images/$($mapping.new)" -ForegroundColor Green
+            Log-Message "  [->] Copied setup.png -> docs/assets/images/$($mapping.new)" -ForegroundColor Green
             
             # Clean up old images folder if empty
             $oldImgDir = Split-Path $origImgPath -Parent
@@ -218,14 +262,14 @@ foreach ($project in $projects) {
                 $files = Get-ChildItem -Path $oldImgDir
                 if ($files.Count -eq 0) {
                     Remove-Item -Path $oldImgDir -Force
-                    Write-Host "  [-] Cleaned up empty original images directory" -ForegroundColor Gray
+                    Log-Message "  [-] Cleaned up empty original images directory" -ForegroundColor Gray
                 }
             }
         }
     }
     
     # Read the original English README
-    $engContent = Get-Content -Path $engReadmePath -Raw
+    $engContent = Get-Content -Path $engReadmePath -Raw -Encoding utf8
     
     # Add language selector to the English README if not present (ASCII-safe check)
     if ($engContent -notlike "*Languages:** *") {
@@ -233,7 +277,7 @@ foreach ($project in $projects) {
         if ($index -ne -1) {
             $engContent = $engContent.Substring(0, $index) + $engSelector + "`r`n`r`n" + $engContent.Substring($index)
             Set-Content -Path $engReadmePath -Value $engContent -Encoding utf8
-            Write-Host "  [+] Added language selector to English README" -ForegroundColor Green
+            Log-Message "  [+] Added language selector to English README" -ForegroundColor Green
         }
     }
     
@@ -252,7 +296,7 @@ foreach ($project in $projects) {
     
     # B. Translate and write READMEs for all target languages
     foreach ($lang in $languages) {
-        Write-Host "  [+] Translating to $lang..." -ForegroundColor Gray
+        Log-Message "  [+] Translating to $lang..." -ForegroundColor Gray
         $langDir = Join-Path $projectPath "docs\i18n\$lang"
         if (!(Test-Path $langDir)) {
             New-Item -ItemType Directory -Path $langDir -Force | Out-Null
@@ -260,6 +304,12 @@ foreach ($project in $projects) {
         
         # Translate the content (without the English selector line)
         $translatedContent = Invoke-TranslateMarkdown -Content $contentToTranslate -TargetLang $lang
+        
+        # Adjust relative root-level links to point to the correct depth (3 levels up)
+        $translatedContent = $translatedContent -replace '\(\./AGENTS\.md\)', '(../../../AGENTS.md)'
+        $translatedContent = $translatedContent -replace '\(AGENTS\.md\)', '(../../../AGENTS.md)'
+        $translatedContent = $translatedContent -replace '\(\./LICENSE\)', '(../../../LICENSE)'
+        $translatedContent = $translatedContent -replace '\(LICENSE\)', '(../../../LICENSE)'
         
         # Prepend the disclaimer warning
         $disclaimer = Get-Disclaimer -Lang $lang -EngPath '../../../README.md'
@@ -273,16 +323,16 @@ foreach ($project in $projects) {
         $fullFile = $disclaimer + $langSelector + "`r`n`r`n" + $translatedContent
         $targetReadme = Join-Path $langDir "README.md"
         Set-Content -Path $targetReadme -Value $fullFile -Encoding utf8
-        Write-Host "    [✓] Wrote docs/i18n/$lang/README.md" -ForegroundColor Green
+        Log-Message "    [OK] Wrote docs/i18n/$lang/README.md" -ForegroundColor Green
     }
 }
 
 # 2. Process the repository root README.md
-Write-Host "`n[*] Processing Repository Root" -ForegroundColor Cyan
+Log-Message "`n[*] Processing Repository Root" -ForegroundColor Cyan
 $rootReadmePath = Join-Path $basePath "README.md"
 
 if (Test-Path $rootReadmePath) {
-    $rootContent = Get-Content -Path $rootReadmePath -Raw
+    $rootContent = Get-Content -Path $rootReadmePath -Raw -Encoding utf8
     
     # Add language selector to the English Root README if not present (ASCII-safe check)
     if ($rootContent -notlike "*Languages:** *") {
@@ -290,7 +340,7 @@ if (Test-Path $rootReadmePath) {
         if ($index -ne -1) {
             $rootContent = $rootContent.Substring(0, $index) + $engSelector + "`r`n`r`n" + $rootContent.Substring($index)
             Set-Content -Path $rootReadmePath -Value $rootContent -Encoding utf8
-            Write-Host "  [+] Added language selector to Root English README" -ForegroundColor Green
+            Log-Message "  [+] Added language selector to Root English README" -ForegroundColor Green
         }
     }
     
@@ -308,21 +358,28 @@ if (Test-Path $rootReadmePath) {
     }
     
     foreach ($lang in $languages) {
-        Write-Host "  [+] Translating Root to $lang..." -ForegroundColor Gray
+        Log-Message "  [+] Translating Root to $lang..." -ForegroundColor Gray
         $langDir = Join-Path $basePath "docs\i18n\$lang"
         if (!(Test-Path $langDir)) {
             New-Item -ItemType Directory -Path $langDir -Force | Out-Null
         }
         
         $translatedContent = Invoke-TranslateMarkdown -Content $rootContentToTranslate -TargetLang $lang
+        
+        # Adjust relative root-level links to point to the correct depth (3 levels up)
+        $translatedContent = $translatedContent -replace '\(\./AGENTS\.md\)', '(../../../AGENTS.md)'
+        $translatedContent = $translatedContent -replace '\(AGENTS\.md\)', '(../../../AGENTS.md)'
+        $translatedContent = $translatedContent -replace '\(\./LICENSE\)', '(../../../LICENSE)'
+        $translatedContent = $translatedContent -replace '\(LICENSE\)', '(../../../LICENSE)'
+        
         $disclaimer = Get-Disclaimer -Lang $lang -EngPath '../../../README.md'
         
         $fullFile = $disclaimer + $langSelector + "`r`n`r`n" + $translatedContent
         $targetReadme = Join-Path $langDir "README.md"
         Set-Content -Path $targetReadme -Value $fullFile -Encoding utf8
-        Write-Host "    [✓] Wrote docs/i18n/$lang/README.md" -ForegroundColor Green
+        Log-Message "    [OK] Wrote docs/i18n/$lang/README.md" -ForegroundColor Green
     }
 }
 
-Write-Host "`n=== All assets migrated and all README files translated successfully! ===" -ForegroundColor Green
+Log-Message "`n=== All assets migrated and all README files translated successfully! ===" -ForegroundColor Green
 

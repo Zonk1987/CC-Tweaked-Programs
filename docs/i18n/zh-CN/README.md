@@ -1,11 +1,13 @@
-> [!WARNING]
-> 🇨🇳 **zh-CN / 简体中文**
+﻿> [!WARNING]
+> 🇨🇳 **zh-CN / Chinese (Simplified)**
 > 
-> ⚠️ **注意**：本 README 由 AI 助手 (Antigravity) 自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原版 [README.md](../../../README.md)。
+> 注意：本自述文件由人工智能助手（反重力）自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原文 [README.md](../../../README.md).
 
-<div align="center">
+🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Zonk 的 CC:Tweaked 自动化套件 🚀
+<div对齐=“中心”>
+
+# Zonk 的 CC：调整的自动化套件 🚀
 
 ![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
 ![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
@@ -20,87 +22,89 @@
 
 </div>
 
-一套适用于我的世界 **CC:Tweaked** 模组的专业级自动化脚本合集，采用模块化的 **Feature-Core** 架构、高颜值的高级 UI 界面以及健壮的清单驱动安装器。
+Minecraft **CC:Tweaked** 的专业级自动化脚本集合，具有模块化 **功能核心** 架构、高级 UI 美观性和强大的清单驱动安装程序。
+
 
 ---
 
-## 🚀 安装方法
+## 🚀 安装
 
-在 **高级电脑 (Advanced Computer)** 上运行以下命令：
+在 **高级计算机** 上运行此命令：
 
-1. 从仓库下载 `install.lua` 文件：
+1.从repo下载install.lua文件
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
-2. 运行 `install.lua` 文件：
+2.运行install.lua文件
 ```bash
 install.lua
 ```
 
 ---
 
-## 📦 可用软件包
+## 📦 可用套餐
 
-| ID | 名称 | 描述 | 核心特性 |
+| ID | 姓名 | 描述 | 主要特点 |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **传送门拨号中心** | 触屏式高级传送门拨号器。 | 可移动的 UI、侧边指示条、自动重置页面。 |
-| `mekanism_recall_sender`| **传送门召回发送器** | 远程无线触发器。 | 硬件故障诊断、实时状态监测。 |
-| `create_crafter` | **机械动力自动合成** | 网格自动合成系统。 | 游戏内配方录制与校准、支持多步合成。 |
-| `powah_orb` | **充能石自动充能** | 并行化自动合成系统。 | AE2 ME Bridge 集成、断电/堵塞自动恢复。 |
-| `developer_suite` | **CC 开发者套件** | 系统调试与诊断工具。 | 事件监视器、外设接口审查器。 |
+| `mekanism_portal_hub` | **门户拨号器中心** | 高级触摸屏拨号器。 | 可移动的用户界面、强调条纹、页面重置。 |
+| `mekanism_recall_sender` | **门户召回发送者** | 远程无线触发。 | 硬件诊断、实时状态监控。 |
+| `创建工匠` | **机械工匠** | 网格制作自动化。 | 记录和校准，多步骤食谱。 |
+| `powah_orb` | **能量宝珠** | 并行制作自动化。 | ME Bridge 集成，自动恢复。 |
+| `开发者套件` | **CC 开发套件** | 诊断工具包。 | 事件嗅探器，外设检查器。 |
 
 ---
 
-## 🏗️ 架构设计：Feature-Core Skeleton 模块化骨架
+## 🏗️架构：功能核心骨架
 
-本仓库使用模块化骨架构建，以实现极高的可维护性和运行性能。
+该存储库是使用模块化框架构建的，旨在提高可维护性和性能。
 
-### **核心模块 (`lib/core`)**
-通用工具类已提取到隐藏的核心包中，以减少重复代码：
-- **`core.base`**：基础逻辑，例如 `ConfigStore`（JSON 持久化数据存储）。
-- **`core.peripherals`**：安全的外设搜索与封装（`PeripheralScanner`）。
-- **`core.network`**：标准化的无线红网通信协议（`RednetProtocol`）。
-- **`core.redstone`**：红石交互辅助类（`RedstoneController`）。
-- **`core.ui`**：可重用的界面组件（`ButtonGrid` 按钮网格）。
-- **`core.inventory`**：标准化的容器与物品交互层（`InventoryAdapter`、`ItemMatcher`）。
-- **`core.recipes`**：基于 JSON 的配方管理器（`RecipeStore`）。
+### **核心模块（`lib/core`）**
+通用实用程序被提取到隐藏的核心包中以减少重复：
+- **`core.base`**：像`ConfigStore`（JSON持久化）这样的基本逻辑。
+- **`core.peripherals`**：安全外设发现和包装（`PeripheralScanner`）。
+- **`core.network`**：标准化通信协议（`RednetProtocol`）。
+- **`core.redstone`**：红石交互助手（`RedstoneController`）。
+- **`core.ui`**：可重用的 UI 组件（`ButtonGrid`）。
+- **`core.inventory`**：标准化库存处理（`InventoryAdapter`、`ItemMatcher`）。
+- **`core.recipes`**：JSON 支持的配方存储 (`RecipeStore`)。
 
-### **依赖自动解析**
-安装器会自动递归解析软件包的依赖关系。例如，在安装 `create_crafter` 时，安装器将自动识别并下载所需的 `core.inventory` 和 `core.redstone` 模块。应用逻辑文件将被放置在根目录中，而核心库文件将被维护在 `lib/core/` 目录结构下（通过修改 `startup.lua` 中的 package 搜索路径进行加载）。
+### **依赖解析**
+安装程序会自动递归地解析依赖关系。例如，安装“create_crafter”将自动提取所需的“core.inventory”和“core.redstone”模块。应用程序文件放置在根目录中，而核心库则维护在“lib/core/”层次结构中（可通过“startup.lua”中调整后的包路径访问）。
 
 ---
 
-## 🛠️ 开发与贡献指南
+## 🛠️开发指南
 
-### **添加新应用**
-1. 创建你的应用文件夹（例如 `My New App`）。
-2. 实现你的逻辑，并尽量利用现有的 `lib/core` 核心模块。
-3. 在 `manifest.lua` 中注册你的应用。
-4. 如果使用了核心模块，请在清单中声明其依赖关系。
+### **添加新应用程序**
+1. 创建您的应用程序文件夹（例如“我的新应用程序”）。
+2. 利用现有的“lib/core”模块实现您的逻辑。
+3. 在`manifest.lua`中注册您的应用程序。
+4. 如果使用核心模块，请添加依赖项。
 
 ### **添加核心模块**
-1. 将模块文件放置在 `lib/core/<类别>/ModuleName.lua` 中。
-2. 在 `manifest.lua` 中将其注册为隐藏软件包 (`hidden = true`)。
+1. 将模块放置在 `lib/core/<category>/ModuleName.lua` 中。
+2. 在`manifest.lua`中将其注册为`hidden = true`包。
 
 ---
 
-## ⚖️ 安全准则与运行规则
+## ⚖️ 安全与规则
 
-本仓库的所有代码完全遵循 **[AGENTS.md](./AGENTS.md)** 规范：
-- **严格沙盒环境 (Strict Mode)**：应用脚本与主入口文件在严格的环境下运行，防止因未声明 local 变量产生全局污染（核心库为了减少本地化开销目前暂不启用严格环境限制）。
-- **非破坏性安装**：安装器绝不会在未经允许的情况下删除用户的任何已有文件（在安装完成后清理自身临时文件如 `manifest.lua` 和 `install.lua` 除外，或者在升级时替换老版本应用文件）。
-- **安装状态缓存**：安装器会生成隐藏的 `.install_state.json` 文件以记录已下载文件的版本。这会极大加快二次运行时的依赖检查速度，并跳过未发生变化的文件（显示为 `CACHED`）。此文件随时可以安全删除，下一次运行时将重新下载所有文件。
-- **无自动重启**：安装器在运行入口程序前会进行询问，且绝对不会在未授权的情况下自动重启系统。
-- **单一电脑单一应用原则**：为了防止冲突，每台高级电脑建议仅安装**一个**应用程序。安装多个应用可能会导致资源冲突，并覆盖如 `startup.lua` 或 `Dashboard.lua` 等入口文件。
+此存储库中的所有代码均受 **[AGENTS.md](../../../AGENTS.md)** 管理。
+- **严格模式**：应用程序脚本和入口文件使用严格的环境来防止意外的全局变量（核心库当前绕过此以减少本地化样板文件）。
+- **不删除**：安装程序永远不会删除现有的用户文件（除了在完成后清理自己的临时文件，如“manifest.lua”和“install.lua”，或在更新过程中替换旧版本）。
+- **安装状态缓存**：安装程序会创建一个隐藏文件“.install_state.json”来记住已安装的文件版本。这可以通过跳过未更改的文件（显示为“CACHED”）来加快将来的运行速度。随时删除该文件是安全的 - 下次安装将简单地重新下载所有内容。
+- **无自动重新启动**：安装程序在运行入口文件之前进行询问，并且在未经许可的情况下绝不会重新启动系统。
+- **单一应用程序策略**：每台高级计算机仅支持**一个**应用程序。在同一台计算机上安装多个应用程序将导致文件冲突并覆盖关键文件，例如“startup.lua”或“Dashboard.lua”。
 
 ---
 
-## 📝 致谢与故障排查
+## 📝 制作人员及疑难解答
+由 **Antigravity** 开发，作为高级代理编码计划的一部分。
+如果您遇到问题：
+1. 确保您使用的是**高级计算机**。
+2. 运行“install.lua --validate”来检查清单错误。
+3. 检查每个应用程序文件夹中的“README.md”以了解特定于硬件的设置。
 
-本项目由 **Antigravity** 在 Advanced Agentic Coding 框架下开发。
-如果遇到运行故障：
-1. 确保你正在使用的是 **高级电脑 (Advanced Computer)**。
-2. 运行 `install.lua --validate` 以排查安装清单的错误。
-3. 查看各应用文件夹内的 `README.md` 以获取硬件设置指南。
+**[许可证](./许可证)**：麻省理工学院
 
-**[开源许可](./LICENSE)**: MIT
+

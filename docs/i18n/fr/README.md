@@ -1,11 +1,13 @@
-> [!WARNING]
-> 🇫🇷 **fr / Français**
+﻿> [!WARNING]
+> 🇫🇷 **fr / Francais**
 > 
-> ⚠️ **Remarque**: Ce fichier README a été traduit automatiquement par une IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour obtenir la documentation la plus précise et à jour, veuillez vous référer au [README.md](../../../README.md) original en anglais.
+> Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
 
-<div align="center">
+🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Suite d'Automatisation CC:Tweaked de Zonk 🚀
+<div align="centre">
+
+# CC de Zonk : suite d'automatisation optimisée 🚀
 
 ![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
 ![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
@@ -20,87 +22,89 @@
 
 </div>
 
-Une collection de scripts d'automatisation de qualité professionnelle pour Minecraft **CC:Tweaked**, caractérisée par une architecture modulaire **Feature-Core**, une esthétique d'interface premium et un installateur robuste piloté par un manifeste.
+Une collection de scripts d'automatisation de qualité professionnelle pour Minecraft **CC:Tweaked**, comprenant une architecture modulaire **Feature-Core**, une esthétique d'interface utilisateur haut de gamme et un programme d'installation robuste piloté par manifeste.
+
 
 ---
 
-## 🚀 Installation
+## 🚀Installation
 
-Exécutez cette commande sur un **Ordinateur Avancé** :
+Exécutez cette commande sur un **ordinateur avancé** :
 
-1. Téléchargez le fichier `install.lua` depuis le dépôt :
+1. Téléchargez le fichier install.lua depuis le dépôt
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
-2. Exécutez le fichier `install.lua` :
+2. Exécutez le fichier install.lua
 ```bash
 install.lua
 ```
 
 ---
 
-## 📦 Paquets Disponibles
+## 📦 Forfaits disponibles
 
-| ID | Nom | Description | Caractéristiques Clés |
+| IDENTIFIANT | Nom | Description | Principales fonctionnalités |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **Portal Dialer Hub** | Sélecteur de portail tactile premium. | Interface déplaçable, bandes d'accentuation, réinitialisation de page. |
-| `mekanism_recall_sender`| **Portal Recall Sender** | Déclencheur sans fil à distance. | Diagnostics matériels, surveillance de l'état en direct. |
-| `create_crafter` | **Mechanical Crafter** | Automatisation de fabrication en grille. | Enregistrement et calibrage, recettes à étapes multiples. |
-| `powah_orb` | **Energizing Orb** | Automatisation de fabrication en parallèle. | Intégration ME Bridge, récupération automatique. |
-| `developer_suite` | **CC Developer Suite** | Boîte à outils de diagnostic. | Analyseur d'événements, inspecteur de périphériques. |
+| `mekanism_portal_hub` | ** Hub de numérotation de portail ** | Numéroteur à écran tactile haut de gamme. | Interface utilisateur mobile, bandes d'accentuation, réinitialisation de page. |
+| `mekanism_recall_sender` | **Expéditeur de rappel de portail** | Déclencheur sans fil à distance. | Diagnostics matériels, surveillance de l'état en direct. |
+| `create_crafter` | **Artisan mécanique** | Automatisation de la création de grilles. | Enregistrement et calibrage, recettes en plusieurs étapes. |
+| `powah_orb` | **Orbe énergisant** | Automatisation de la fabrication parallèle. | Intégration ME Bridge, récupération automatique. |
+| `developer_suite` | **Suite pour développeurs CC** | Boîte à outils de diagnostic. | Renifleur d'événements, inspecteur de périphériques. |
 
 ---
 
-## 🏗️ Architecture: Feature-Core Skeleton
+## 🏗️ Architecture : squelette de base des fonctionnalités
 
-Ce dépôt est conçu pour la maintenabilité et la performance grâce à une architecture modulaire squelette.
+Ce référentiel est construit pour la maintenabilité et les performances à l'aide d'un squelette modulaire.
 
-### **Modules Core (`lib/core`)**
-Les utilitaires génériques sont extraits dans des paquets core masqués pour réduire la duplication :
-- **`core.base`** : Logique fondamentale comme `ConfigStore` (persistance JSON).
-- **`core.peripherals`** : Découverte et enveloppement sécurisés des périphériques (`PeripheralScanner`).
+### **Modules de base (`lib/core`)**
+Les utilitaires génériques sont extraits dans des packages principaux cachés pour réduire la duplication :
+- **`core.base`** : Logique fondamentale comme `ConfigStore` (persistance JSON).
+- **`core.peripherals`** : découverte et emballage sécurisés de périphériques (`PeripheralScanner`).
 - **`core.network`** : Protocoles de communication standardisés (`RednetProtocol`).
-- **`core.redstone`** : Aides à l'interaction avec la redstone (`RedstoneController`).
-- **`core.ui`** : Composants d'interface utilisateur réutilisables (`ButtonGrid`).
-- **`core.inventory`** : Gestion standardisée des inventaires (`InventoryAdapter`, `ItemMatcher`).
-- **`core.recipes`** : Stockage de recettes basé sur JSON (`RecipeStore`).
+- **`core.redstone`** : assistants d'interaction Redstone (`RedstoneController`).
+- **`core.ui`** : composants d'interface utilisateur réutilisables (`ButtonGrid`).
+- **`core.inventory`** : gestion standardisée des stocks (`InventoryAdapter`, `ItemMatcher`).
+- **`core.recipes`** : stockage de recettes basé sur JSON (`RecipeStore`).
 
-### **Résolution des Dépendances**
-L'installateur résout automatiquement les dépendances de manière récursive. Par exemple, l'installation de `create_crafter` téléchargera automatiquement les modules requis `core.inventory` et `core.redstone`. Les fichiers d'application sont placés dans le répertoire racine, tandis que les bibliothèques du noyau sont conservées dans la hiérarchie `lib/core/` (accessible via des chemins de paquets ajustés dans `startup.lua`).
-
----
-
-## 🛠️ Directives de Développement
-
-### **Ajouter une Nouvelle Application**
-1. Créez le dossier de votre application (par exemple, `Ma Nouvelle App`).
-2. Implémentez votre logique, en tirant parti des modules existants dans `lib/core`.
-3. Enregistrez votre application dans `manifest.lua`.
-4. Ajoutez des dépendances si vous utilisez des modules core.
-
-### **Ajouter un Module Core**
-1. Placez le module dans `lib/core/<catégorie>/ModuleName.lua`.
-2. Enregistrez-le en tant que paquet masqué (`hidden = true`) dans `manifest.lua`.
+### **Résolution des dépendances**
+Le programme d'installation résout automatiquement les dépendances de manière récursive. Par exemple, l'installation de « create_crafter » extraira automatiquement les modules « core.inventory » et « core.redstone » requis. Les fichiers d'application sont placés dans le répertoire racine, tandis que les bibliothèques principales sont conservées dans la hiérarchie `lib/core/` (accessible via les chemins de paquets ajustés dans `startup.lua`).
 
 ---
 
-## ⚖️ Sécurité & Règles
+## 🛠️ Lignes directrices de développement
 
-Tout le code de ce dépôt est régi par **[AGENTS.md](./AGENTS.md)**.
-- **Mode Strict** : Les scripts d'application et les fichiers d'entrée utilisent un environnement strict pour éviter les variables globales accidentelles (les bibliothèques de base contournent actuellement cela pour réduire le code redondant de localisation).
-- **Pas de Suppression** : L'installateur ne supprime jamais les fichiers utilisateur existants (sauf pour nettoyer ses propres fichiers temporaires comme `manifest.lua` et `install.lua` après achèvement, ou remplacer les anciennes versions lors d'une mise à jour).
-- **Cache de l'État d'Installation** : L'installateur crée un fichier masqué `.install_state.json` pour mémoriser les versions des fichiers installés. Cela accélère les exécutions futures en sautant les fichiers inchangés (affichés comme `CACHED`). Il est sûr de supprimer ce fichier à tout moment — la prochaine installation téléchargera simplement tout à nouveau.
-- **Pas de Redémarrage Automatique** : L'installateur demande la permission avant d'exécuter des fichiers d'entrée et ne redémarre jamais le système sans autorisation.
-- **Politique d'Application Unique** : Une seule application est prise en charge par Ordinateur Avancé. L'installation de plusieurs applications sur le même ordinateur entraînera des collisions de fichiers et écrasera les fichiers critiques comme `startup.lua` ou `Dashboard.lua`.
+### **Ajout d'une nouvelle application**
+1. Créez votre dossier d'application (par exemple, « Ma nouvelle application »).
+2. Implémentez votre logique, en tirant parti des modules `lib/core` existants.
+3. Enregistrez votre application dans « manifest.lua ».
+4. Ajoutez des dépendances si vous utilisez des modules de base.
+
+### **Ajout d'un module principal**
+1. Placez le module dans `lib/core/<category>/ModuleName.lua`.
+2. Enregistrez-le en tant que package `hidden = true` dans `manifest.lua`.
 
 ---
 
-## 📝 Crédits & Dépannage
+## ⚖️ Sécurité et règles
 
+Tout le code de ce référentiel est régi par **[AGENTS.md](../../../AGENTS.md)**.
+- **Mode strict** : les scripts d'application et les fichiers d'entrée utilisent un environnement strict pour empêcher les globaux accidentels (les bibliothèques principales contournent actuellement cela pour réduire le passe-partout de localisation).
+- **Aucune suppression** : le programme d'installation ne supprime jamais les fichiers utilisateur existants (sauf pour nettoyer ses propres fichiers temporaires comme `manifest.lua` et `install.lua` une fois terminé, ou pour remplacer les anciennes versions lors d'une mise à jour).
+- **Install State Cache** : le programme d'installation crée un fichier caché « .install_state.json » pour mémoriser les versions de fichiers qui ont été installées. Cela accélère les exécutions futures en ignorant les fichiers qui n'ont pas changé (affichés comme « CACHED »). Vous pouvez supprimer ce fichier en toute sécurité à tout moment : la prochaine installation téléchargera simplement tout à nouveau.
+- **Pas de redémarrage automatique** : le programme d'installation demande avant d'exécuter les fichiers d'entrée et ne redémarre jamais le système sans autorisation.
+- **Politique d'application unique** : une seule **une** application est prise en charge par ordinateur avancé. L'installation de plusieurs applications sur le même ordinateur entraînera des collisions de fichiers et écrasera des fichiers critiques tels que « startup.lua » ou « Dashboard.lua ».
+
+---
+
+## 📝 Crédits et dépannage
 Développé par **Antigravity** dans le cadre de l'initiative Advanced Agentic Coding.
-Si vous rencontrez des problèmes :
-1. Assurez-vous d'utiliser un **Ordinateur Avancé**.
-2. Exécutez `install.lua --validate` pour vérifier les erreurs de manifeste.
-3. Consultez le `README.md` dans le dossier de chaque application pour la configuration matérielle spécifique.
+Si vous rencontrez des problèmes :
+1. Assurez-vous que vous utilisez un **ordinateur avancé**.
+2. Exécutez `install.lua --validate` pour vérifier les erreurs manifestes.
+3. Vérifiez le « README.md » dans le dossier de chaque application pour la configuration spécifique au matériel.
 
-**[LICENSE](./LICENSE)** : MIT
+**[LICENCE](./LICENCE)** : MIT
+
+

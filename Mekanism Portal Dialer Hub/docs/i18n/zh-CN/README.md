@@ -1,5 +1,5 @@
 ﻿> [!WARNING]
-> 🇿🇳 **zh-CN / Chinese (Simplified)**
+> 🇨🇳 **zh-CN / Chinese (Simplified)**
 > 
 > 注意：本自述文件由人工智能助手（反重力）自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原文 [README.md](../../../README.md).
 

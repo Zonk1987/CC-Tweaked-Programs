@@ -1,5 +1,5 @@
 ﻿> [!WARNING]
-> 🇩🇮 **de / Deutsch**
+> 🇩🇪 **de / Deutsch**
 > 
 > Hinweis: Diese README-Datei wurde automatisch von einem KI-Assistenten (Antigravity) übersetzt und kann Übersetzungsfehler oder Ungenauigkeiten enthalten. Für die genaueste und aktuellste Dokumentation beziehen Sie sich bitte auf das englische Original [README.md](../../../README.md).
 

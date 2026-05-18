@@ -1,11 +1,13 @@
-> [!WARNING]
-> 🇪🇸 **es / Español**
+﻿> [!WARNING]
+> 🇪🇸 **es / Espanol**
 > 
-> ⚠️ **Nota**: Este README fue traducido automáticamente por una IA (Antigravity) y puede contener errores o imprecisiones. Para obtener la documentación más precisa y actualizada, consulta el [README.md](../../../README.md) original en inglés.
+> Nota: Este README fue traducido automáticamente por un asistente de IA (Antigravity) y puede contener errores de traducción o imprecisiones. Para obtener la documentación más precisa y actualizada, consulte el original en inglés. [README.md](../../../README.md).
 
-<div align="center">
+🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-# Zonk's CC:Tweaked Automation Suite 🚀
+<div align="centro">
+
+# CC de Zonk: suite de automatización modificada 🚀
 
 ![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
 ![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
@@ -20,87 +22,89 @@
 
 </div>
 
-Una colección de scripts de automatización de calidad profesional para Minecraft **CC:Tweaked**, con una arquitectura modular **Feature-Core**, estética de interfaz premium y un robusto instalador controlado por manifiesto.
+Una colección de scripts de automatización de nivel profesional para Minecraft **CC:Tweaked**, que presenta una arquitectura modular **Feature-Core**, una estética de interfaz de usuario premium y un instalador robusto basado en manifiestos.
+
 
 ---
 
 ## 🚀 Instalación
 
-Ejecuta este comando en una **Computadora Avanzada**:
+Ejecute este comando en una **Computadora avanzada**:
 
-1. Descarga el archivo `install.lua` desde el repositorio:
+1. Descargue el archivo install.lua del repositorio.
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
-2. Ejecuta el archivo `install.lua`:
+2. Ejecute el archivo install.lua
 ```bash
 install.lua
 ```
 
 ---
 
-## 📦 Paquetes Disponibles
+## 📦 Paquetes disponibles
 
-| ID | Nombre | Descripción | Características Clave |
+| IDENTIFICACIÓN | Nombre | Descripción | Características clave |
 |:---|:---|:---|:---|
-| `mekanism_portal_hub` | **Portal Dialer Hub** | Marcador de portal táctil premium. | Interfaz móvil, franjas de acento, reinicio de página. |
-| `mekanism_recall_sender`| **Portal Recall Sender** | Activador inalámbrico remoto. | Diagnóstico de hardware, monitorización en vivo. |
-| `create_crafter` | **Mechanical Crafter** | Automatización de crafteo en cuadrícula. | Grabación y calibración, recetas de varios pasos. |
-| `powah_orb` | **Energizing Orb** | Automatización de crafteo en paralelo. | Integración con ME Bridge, autorecuperación. |
-| `developer_suite` | **CC Developer Suite** | Kit de herramientas de diagnóstico. | Sniffer de eventos, inspector de periféricos. |
+| `mekanismo_portal_hub` | **Centro de marcador del portal** | Marcador de pantalla táctil premium. | Interfaz de usuario móvil, rayas decorativas, restablecimiento de página. |
+| `mekanism_recall_sender` | **Remitente de recuperación del portal** | Disparador inalámbrico remoto. | Diagnóstico de hardware, monitoreo del estado en vivo. |
+| `crea_crafter` | **Artesano mecánico** | Automatización de elaboración de cuadrículas. | Grabación y calibración, recetas de varios pasos. |
+| `powah_orb` | **Orbe energizante** | Automatización de elaboración paralela. | Integración de ME Bridge, recuperación automática. |
+| `suite_desarrollador` | **Suite para desarrolladores CC** | Kit de herramientas de diagnóstico. | Rastreador de eventos, inspector de periféricos. |
 
 ---
 
-## 🏗️ Arquitectura: Feature-Core Skeleton
+## 🏗️ Arquitectura: esqueleto de funciones principales
 
-Este repositorio está diseñado para un mantenimiento sencillo y alto rendimiento mediante un esqueleto modular.
+Este repositorio está diseñado para brindar mantenimiento y rendimiento utilizando un esqueleto modular.
 
-### **Módulos Core (`lib/core`)**
-Las utilidades genéricas se extraen en paquetes core ocultos para reducir la duplicación:
+### **Módulos principales (`lib/core`)**
+Las utilidades genéricas se extraen en paquetes principales ocultos para reducir la duplicación:
 - **`core.base`**: Lógica fundamental como `ConfigStore` (persistencia JSON).
-- **`core.peripherals`**: Descubrimiento y envoltura segura de periféricos (`PeripheralScanner`).
+- **`core.peripherals`**: Descubrimiento y ajuste seguro de periféricos (`PeripheralScanner`).
 - **`core.network`**: Protocolos de comunicación estandarizados (`RednetProtocol`).
-- **`core.redstone`**: Ayudas de interacción con redstone (`RedstoneController`).
-- **`core.ui`**: Componentes de interfaz reutilizables (`ButtonGrid`).
-- **`core.inventory`**: Gestión de inventario estandarizada (`InventoryAdapter`, `ItemMatcher`).
-- **`core.recipes`**: Almacén de recetas respaldado por JSON (`RecipeStore`).
+- **`core.redstone`**: ayudantes de interacción de Redstone (`RedstoneController`).
+- **`core.ui`**: Componentes de UI reutilizables (`ButtonGrid`).
+- **`core.inventory`**: Manejo de inventario estandarizado (`InventoryAdapter`, `ItemMatcher`).
+- **`core.recipes`**: almacenamiento de recetas respaldado por JSON (`RecipeStore`).
 
-### **Resolución de Dependencias**
-El instalador resuelve automáticamente las dependencias de forma recursiva. Por ejemplo, instalar `create_crafter` descargará automáticamente los módulos requeridos `core.inventory` y `core.redstone`. Los archivos de la aplicación se colocan en el directorio raíz, mientras que las bibliotecas del núcleo se mantienen en la jerarquía `lib/core/` (accesible a través de rutas de paquete ajustadas en `startup.lua`).
-
----
-
-## 🛠️ Pautas de Desarrollo
-
-### **Añadir una Nueva Aplicación**
-1. Crea la carpeta de tu aplicación (por ejemplo, `Mi Nueva App`).
-2. Implementa tu lógica, aprovechando los módulos existentes de `lib/core`.
-3. Registra tu aplicación en `manifest.lua`.
-4. Añade dependencias si utilizas módulos core.
-
-### **Añadir un Módulo Core**
-1. Coloca el módulo en `lib/core/<categoría>/ModuleName.lua`.
-2. Regístralo como un paquete oculto (`hidden = true`) en `manifest.lua`.
+### **Resolución de dependencia**
+El instalador resuelve automáticamente las dependencias de forma recursiva. Por ejemplo, la instalación de `create_crafter` extraerá automáticamente los módulos `core.inventory` y `core.redstone` necesarios. Los archivos de la aplicación se colocan en el directorio raíz, mientras que las bibliotecas principales se mantienen en la jerarquía `lib/core/` (accesible a través de rutas de paquetes ajustadas en `startup.lua`).
 
 ---
 
-## ⚖️ Seguridad & Reglas
+## 🛠️ Pautas de desarrollo
 
-Todo el código en este repositorio se rige por **[AGENTS.md](./AGENTS.md)**.
-- **Modo Estricto**: Los scripts de aplicación y archivos de entrada utilizan un entorno estricto para evitar variables globales accidentales (las bibliotecas del núcleo omiten esto actualmente para reducir el código redundante de localización).
-- **Sin Eliminación**: El instalador nunca elimina archivos de usuario existentes (excepto para limpiar sus propios archivos temporales como `manifest.lua` e `install.lua` después de completar, o reemplazar versiones anteriores durante una actualización).
-- **Caché de Estado de Instalación**: El instalador crea un archivo oculto `.install_state.json` para recordar qué versiones de archivos se han instalado. Esto acelera futuras ejecuciones omitiendo archivos que no han cambiado (mostrados como `CACHED`). Es seguro eliminar este archivo en cualquier momento; la próxima instalación simplemente volverá a descargar todo.
-- **Sin Reinicio Automático**: El instalador solicita permiso antes de ejecutar archivos de entrada y nunca reinicia el sistema sin autorización.
-- **Política de App Única**: Solo se admite **una** aplicación por Computadora Avanzada. Instalar varias aplicaciones en la misma computadora provocará colisiones de archivos y sobrescribirá archivos críticos como `startup.lua` o `Dashboard.lua`.
+### **Agregar una nueva aplicación**
+1. Cree la carpeta de su aplicación (por ejemplo, "Mi nueva aplicación").
+2. Implemente su lógica, aprovechando los módulos `lib/core` existentes.
+3. Registre su aplicación en `manifest.lua`.
+4. Agregue dependencias si usa módulos principales.
+
+### **Agregar un módulo principal**
+1. Coloque el módulo en `lib/core/<categoría>/ModuleName.lua`.
+2. Regístrelo como un paquete `hidden = true` en `manifest.lua`.
 
 ---
 
-## 📝 Créditos & Resolución de Problemas
+## ⚖️ Seguridad y reglas
 
+Todo el código de este repositorio se rige por **[AGENTS.md](../../../AGENTS.md)**.
+- **Modo estricto**: los scripts de aplicaciones y los archivos de entrada utilizan un entorno estricto para evitar globales accidentales (las bibliotecas principales actualmente omiten esto para reducir el texto estándar de localización).
+- **Sin eliminación**: el instalador nunca elimina los archivos de usuario existentes (excepto para limpiar sus propios archivos temporales como `manifest.lua` e `install.lua` una vez completado, o reemplazar versiones anteriores durante una actualización).
+- **Instalar caché de estado**: el instalador crea un archivo oculto `.install_state.json` para recordar qué versiones de archivos se han instalado. Esto acelera las ejecuciones futuras al omitir archivos que no han cambiado (que se muestran como "CACHED"). Es seguro eliminar este archivo en cualquier momento; la próxima instalación simplemente volverá a descargarlo todo.
+- **Sin reinicio automático**: el instalador pregunta antes de ejecutar los archivos de entrada y nunca reinicia el sistema sin permiso.
+- **Política de aplicación única**: Solo se admite **una** aplicación por computadora avanzada. La instalación de varias aplicaciones en la misma computadora provocará colisiones de archivos y sobrescribirá archivos críticos como `startup.lua` o `Dashboard.lua`.
+
+---
+
+## 📝 Créditos y solución de problemas
 Desarrollado por **Antigravity** como parte de la iniciativa Advanced Agentic Coding.
-Si encuentras problemas:
-1. Asegúrate de estar usando una **Computadora Avanzada**.
-2. Ejecuta `install.lua --validate` para verificar errores en el manifiesto.
-3. Consulta el `README.md` dentro de la carpeta de cada aplicación para la configuración de hardware específica.
+Si tiene problemas:
+1. Asegúrese de estar utilizando una **Computadora avanzada**.
+2. Ejecute `install.lua --validate` para comprobar si hay errores de manifiesto.
+3. Verifique `README.md` dentro de la carpeta de cada aplicación para conocer la configuración específica del hardware.
 
-**[LICENSE](./LICENSE)**: MIT
+**[LICENCIA](./LICENCIA)**: MIT
+
+
