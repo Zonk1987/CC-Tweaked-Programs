@@ -8,19 +8,37 @@ set -e
 # Collect staged .lua files (only modified/added, not deleted)
 STAGED=$(git diff --cached --name-only --diff-filter=d | grep '\.lua$' || true)
 
-if [ -z "$STAGED" ]; then
-    exit 0
+if [ -n "$STAGED" ]; then
+    echo "🔍 Running luacheck on staged Lua files..."
+    if command -v luacheck &> /dev/null; then
+        luacheck $STAGED
+        echo "✅ luacheck passed."
+    else
+        echo "⚠️  luacheck not found — skipping syntax check."
+        echo "   Install with: luarocks install luacheck"
+    fi
 fi
 
-echo "🔍 Running luacheck on staged Lua files..."
-
-if ! command -v luacheck &> /dev/null; then
-    echo "⚠️  luacheck not found — skipping pre-commit check."
-    echo "   Install with: luarocks install luacheck"
-    exit 0
+# Automatically update the manifest before committing
+if [ -f "update_manifest.ps1" ]; then
+    echo "📦 Automatically updating sizes and hashes in manifest.lua..."
+    if command -v powershell.exe &> /dev/null; then
+        powershell.exe -ExecutionPolicy Bypass -File ./update_manifest.ps1
+        # If manifest.lua was changed, stage it so it gets committed
+        if git diff --name-only | grep -q 'manifest.lua'; then
+            echo "📝 Staging updated manifest.lua..."
+            git add manifest.lua
+        fi
+    elif command -v pwsh &> /dev/null; then
+        pwsh -ExecutionPolicy Bypass -File ./update_manifest.ps1
+        # If manifest.lua was changed, stage it so it gets committed
+        if git diff --name-only | grep -q 'manifest.lua'; then
+            echo "📝 Staging updated manifest.lua..."
+            git add manifest.lua
+        fi
+    else
+        echo "⚠️  PowerShell not found — manifest could not be auto-updated."
+    fi
 fi
 
-# Run luacheck on staged files only
-luacheck $STAGED
-
-echo "✅ luacheck passed — committing."
+echo "✅ Pre-commit hook completed successfully."
