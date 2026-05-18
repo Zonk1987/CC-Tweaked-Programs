@@ -1,0 +1,2 @@
+# Standardize line endings to LF for all Lua files across platforms
+*.lua text eol=lf

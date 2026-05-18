@@ -104,14 +104,19 @@ def main():
             local_path = urllib.parse.unquote(src)
             
             if os.path.exists(local_path):
-                size = os.path.getsize(local_path)
-                
-                # Calculate SHA256 hash
-                sha256_hash = hashlib.sha256()
+                # Read file as binary and normalize CRLF to LF in memory
                 with open(local_path, "rb") as bf:
-                    for byte_block in iter(lambda: bf.read(4096), b""):
-                        sha256_hash.update(byte_block)
-                file_hash = sha256_hash.hexdigest()
+                    content = bf.read()
+                
+                try:
+                    text = content.decode('utf-8')
+                    normalized = text.replace('\r\n', '\n')
+                    normalized_bytes = normalized.encode('utf-8')
+                except UnicodeDecodeError:
+                    normalized_bytes = content # Keep binary as-is if not UTF-8 text
+                
+                size = len(normalized_bytes)
+                file_hash = hashlib.sha256(normalized_bytes).hexdigest()
                 
                 # Update sizeBytes and hash inside the matched block
                 block = re.sub(r'sizeBytes\s*=\s*-?\d+', f'sizeBytes = {size}', block)
