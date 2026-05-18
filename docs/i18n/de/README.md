@@ -105,6 +105,6 @@ Wenn Sie auf Probleme stoßen:
 2. Führen Sie „install.lua --validate“ aus, um nach Manifestfehlern zu suchen.
 3. Überprüfen Sie die Datei „README.md“ im Ordner jeder Anwendung auf hardwarespezifische Einstellungen.
 
-**[LIZENZ](./LIZENZ)**: MIT
+**[LIZENZ](../../../LICENSE)**: MIT
 
 

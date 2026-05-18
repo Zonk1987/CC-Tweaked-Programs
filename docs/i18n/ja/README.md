@@ -105,6 +105,6 @@ Advanced Agenticcoding イニシアチブの一環として **Antigravity** に�
 2. `install.lua --validate` を実行してマニフェスト エラーを確認します。
 3. ハードウェア固有のセットアップについては、各アプリケーションのフォルダー内の「README.md」を確認してください。
 
-**[ライセンス](./ライセンス)**: MIT
+**[ライセンス](../../../LICENSE)**: MIT
 
 

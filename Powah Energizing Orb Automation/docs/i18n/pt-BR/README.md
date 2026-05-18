@@ -19,7 +19,7 @@
 - **Acesso direto ao provedor (opcional)** — Suporte completo para o mod **`ae2communicate`**. Quando emparelhado com o ME Bridge, ele permite filtrar receitas por **Provedores de padrões nomeados**, eliminando a necessidade de pesquisar em grandes redes.
 - **Precisão e Inteligência** — Manuseio automático de multiplicadores e validação exata de ingredientes com base em ID durante a importação.
 - **Compatibilidade com Modpack** — Alterne entre "Somente Powah" ou "Todos os Mods" (Tecla `M`) para suportar receitas de qualquer mod usando o Energizing Orb.
-- **Recuperação Automática** — Recuperação automatizada de itens e redefinição de orbe em caso de travamento de fabricação ou falhas de energia.
+- **Recuperação Automática** — Recuperação automatizada de itens e redefinição de orbe em caso de travamento de fabricação ou falta de energia.
 
 ---
 

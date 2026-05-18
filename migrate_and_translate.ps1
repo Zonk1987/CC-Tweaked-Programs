@@ -308,8 +308,17 @@ foreach ($project in $projects) {
         # Adjust relative root-level links to point to the correct depth (3 levels up)
         $translatedContent = $translatedContent -replace '\(\./AGENTS\.md\)', '(../../../AGENTS.md)'
         $translatedContent = $translatedContent -replace '\(AGENTS\.md\)', '(../../../AGENTS.md)'
-        $translatedContent = $translatedContent -replace '\(\./LICENSE\)', '(../../../LICENSE)'
-        $translatedContent = $translatedContent -replace '\(LICENSE\)', '(../../../LICENSE)'
+        
+        # Dynamically correct all translated license relative links back to '../../../LICENSE'
+        # Matches (./FILENAME) where FILENAME has no slashes and is not a markdown or image file
+        $translatedContent = [regex]::Replace($translatedContent, '\(\./([^/)]+)\)', {
+            param($m)
+            $f = $m.Groups[1].Value
+            if ($f -notlike "*AGENTS.md*" -and $f -notlike "*.md" -and $f -notlike "*.png" -and $f -notlike "*.jpg") {
+                return "(../../../LICENSE)"
+            }
+            return $m.Value
+        })
         
         # Prepend the disclaimer warning
         $disclaimer = Get-Disclaimer -Lang $lang -EngPath '../../../README.md'
@@ -369,8 +378,17 @@ if (Test-Path $rootReadmePath) {
         # Adjust relative root-level links to point to the correct depth (3 levels up)
         $translatedContent = $translatedContent -replace '\(\./AGENTS\.md\)', '(../../../AGENTS.md)'
         $translatedContent = $translatedContent -replace '\(AGENTS\.md\)', '(../../../AGENTS.md)'
-        $translatedContent = $translatedContent -replace '\(\./LICENSE\)', '(../../../LICENSE)'
-        $translatedContent = $translatedContent -replace '\(LICENSE\)', '(../../../LICENSE)'
+        
+        # Dynamically correct all translated license relative links back to '../../../LICENSE'
+        # Matches (./FILENAME) where FILENAME has no slashes and is not a markdown or image file
+        $translatedContent = [regex]::Replace($translatedContent, '\(\./([^/)]+)\)', {
+            param($m)
+            $f = $m.Groups[1].Value
+            if ($f -notlike "*AGENTS.md*" -and $f -notlike "*.md" -and $f -notlike "*.png" -and $f -notlike "*.jpg") {
+                return "(../../../LICENSE)"
+            }
+            return $m.Value
+        })
         
         $disclaimer = Get-Disclaimer -Lang $lang -EngPath '../../../README.md'
         

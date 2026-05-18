@@ -105,6 +105,6 @@ Si tiene problemas:
 2. Ejecute `install.lua --validate` para comprobar si hay errores de manifiesto.
 3. Verifique `README.md` dentro de la carpeta de cada aplicación para conocer la configuración específica del hardware.
 
-**[LICENCIA](./LICENCIA)**: MIT
+**[LICENCIA](../../../LICENSE)**: MIT
 
 
