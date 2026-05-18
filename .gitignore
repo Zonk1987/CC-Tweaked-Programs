@@ -15,3 +15,6 @@ FUTURE_PLANS.md
 # StyLua local executable
 stylua
 stylua.exe
+
+# Local manifest helper script
+update_manifest.ps1
