@@ -125,8 +125,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 2428,
-					hash = "3985e42fd66050ea3fb4023405757fd44a718b6d848708bce7b17ba0175b2386",
+					sizeBytes = 2517,
+					hash = "9964e32feb004eb0969221c7688ca1e79baec61785f450044d203c2d6a288a34",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/CrafterSystem.lua",
@@ -143,8 +143,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/Dashboard.lua",
 					target = "Dashboard.lua",
-					sizeBytes = 3835,
-					hash = "339c312fc9a716fae9c698539af949b525bde3049d26a0f26be9311ba797c507",
+					sizeBytes = 3990,
+					hash = "4f7a22bed6d7b87c5f2da14c584aa1dc5c04de782607170c671386af0f2dbef9",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/Chest.lua",
@@ -176,8 +176,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 2706,
-					hash = "7abda2ece739c6dac17244c0e477ccdac5b5f009c6156e39b3690a4861e62c4e",
+					sizeBytes = 2786,
+					hash = "9b7bfa13401bba2dc1a5ae7a943e7da36079a992e67a071a2a3406e3b3a80f7c",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/PowahSystem.lua",
@@ -227,14 +227,14 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 2056,
-					hash = "7f561b0b6698fc72e7afbea126c6b8f5141c8ac9a5eef73a8f7f3625ae1ee51d",
+					sizeBytes = 2132,
+					hash = "d762ac395494711391be65f836e71bc821f900c58401d1f8008cc13cc07edbff",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/HubSystem.lua",
 					target = "HubSystem.lua",
-					sizeBytes = 22203,
-					hash = "fa3e0b9c2789ec720b1bcfb051e3eddeb134cb30e25d8c99cdcdd1e9ef40ced2",
+					sizeBytes = 22915,
+					hash = "64128bcc5816468d3fb582e16b2a72adb7b0d4c0cac586f2c746efb8c5a2c6be",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/UUIDService.lua",
@@ -260,8 +260,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 6604,
-					hash = "ee1d4b9685ad56314ef8cee09451b47ecd31d3b7be3ba85038d9f5bfbde9a320",
+					sizeBytes = 6846,
+					hash = "8fa0178d584b1853651d1378a4cf0be6f5f749363af5e17b306338a79a154734",
 				},
 			},
 		},
@@ -279,8 +279,8 @@ return {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 11260,
-					hash = "94d0d5795e67438282223e486f50de0f9c29193fdf421bf27b033acd02f93cba",
+					sizeBytes = 11717,
+					hash = "07a87bee19fe2cb1db2a7124e3ecc70d952d18d195dab3e23bc8724d7258f19f",
 				},
 			},
 		},

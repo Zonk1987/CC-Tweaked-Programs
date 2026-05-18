@@ -85,48 +85,47 @@ def main():
             else:
                 print(f"SKIPPED version bump for: {app_dir} (No changes)")
 
-    # 2. Update sizeBytes in manifest.lua
+    # 2. Update sizeBytes and hash in manifest.lua
     manifest_path = "manifest.lua"
     if os.path.exists(manifest_path):
         with open(manifest_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+            content = f.read()
         
-        new_lines = []
-        for line in lines:
-            # Find lines containing source files
-            if 'source =' in line and 'target =' in line:
-                m = re.search(r'source\s*=\s*"([^"]+)"', line)
-                if m:
-                    src = m.group(1)
-                    # Clean up Windows backslashes if running locally
-                    src = src.replace('\\', '/')
-                    
-                    # The manifest contains URL-encoded paths (e.g. %20 for spaces)
-                    local_path = urllib.parse.unquote(src)
-                    
-                    if os.path.exists(local_path):
-                        size = os.path.getsize(local_path)
-                        
-                        # Calculate SHA256 hash
-                        sha256_hash = hashlib.sha256()
-                        with open(local_path, "rb") as bf:
-                            for byte_block in iter(lambda: bf.read(4096), b""):
-                                sha256_hash.update(byte_block)
-                        file_hash = sha256_hash.hexdigest()
-                        
-                        # Remove existing sizeBytes and hash if they exist
-                        line = re.sub(r',\s*sizeBytes\s*=\s*\d+', '', line)
-                        line = re.sub(r',\s*hash\s*=\s*"[^"]+"', '', line)
-                        
-                        # Inject new sizeBytes and hash right before the closing brace
-                        line = line.replace(' }', f', sizeBytes = {size}, hash = "{file_hash}" }}')
-                    else:
-                        print(f"Warning: Manifest source file not found: {local_path}")
-            new_lines.append(line)
+        # Regex pattern supporting both single-line and multiline files
+        pattern = r'(?s)\{\s*source\s*=\s*"([^"]+)"\s*,\s*target\s*=\s*"([^"]+)"\s*,\s*sizeBytes\s*=\s*(-?\d+)\s*,\s*hash\s*=\s*"([0-9a-fA-F]{64})"\s*,?\s*\}'
+        
+        def repl(match):
+            block = match.group(0)
+            src = match.group(1)
+            # Clean up Windows backslashes if running locally
+            src = src.replace('\\', '/')
             
+            # The manifest contains URL-encoded paths (e.g. %20 for spaces)
+            local_path = urllib.parse.unquote(src)
+            
+            if os.path.exists(local_path):
+                size = os.path.getsize(local_path)
+                
+                # Calculate SHA256 hash
+                sha256_hash = hashlib.sha256()
+                with open(local_path, "rb") as bf:
+                    for byte_block in iter(lambda: bf.read(4096), b""):
+                        sha256_hash.update(byte_block)
+                file_hash = sha256_hash.hexdigest()
+                
+                # Update sizeBytes and hash inside the matched block
+                block = re.sub(r'sizeBytes\s*=\s*-?\d+', f'sizeBytes = {size}', block)
+                block = re.sub(r'hash\s*=\s*"[0-9a-fA-F]{64}"', f'hash = "{file_hash}"', block)
+            else:
+                print(f"Warning: Manifest source file not found: {local_path}")
+            return block
+
+        updated_content = re.sub(pattern, repl, content)
+        
         with open(manifest_path, "w", encoding="utf-8") as f:
-            f.writelines(new_lines)
-        print("Manifest file sizes updated successfully.")
+            f.write(updated_content)
+        print("Manifest file sizes and hashes updated successfully.")
+
 
 if __name__ == "__main__":
     main()
