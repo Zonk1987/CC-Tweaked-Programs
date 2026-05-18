@@ -17,8 +17,8 @@ ignore = {
     "211/_ENV", -- Ignore OOP boilerplate
     "212/t",    -- Ignore OOP boilerplate
     "212/value",-- Ignore OOP boilerplate
-    "611",      -- Ignore lines containing only whitespace
-    "612",      -- Ignore lines containing trailing whitespace
+    -- "611",   -- (Enforced by StyLua) Lines containing only whitespace
+    -- "612",   -- (Enforced by StyLua) Lines containing trailing whitespace
     "631"       -- Ignore lines that are too long
 }
 

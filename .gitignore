@@ -11,3 +11,7 @@ FUTURE_PLANS.md
 
 # Local dev tooling — cloned by setup.ps1, not part of the project source
 .stubs/
+
+# StyLua local executable
+stylua
+stylua.exe

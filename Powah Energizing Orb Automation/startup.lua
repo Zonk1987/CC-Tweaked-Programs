@@ -19,26 +19,27 @@ HARDWARE SETUP:
 4. (Required) Connect an ME Bridge for the automated pattern import menu.
 5. Set your AE2 Pattern Provider to "Blocking Mode" facing the Buffer Chest.
 ================================================================================
-]]--
+]]
+--
 
 -- STRICT MODE (SAFE VERSION): Prevent accidental global variables only in THIS file
 local _ORIG_ENV = _ENV
 local _ENV = setmetatable({}, {
-    __index = _ORIG_ENV,
-    __newindex = function(t, key, value)
-        error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
-    end
+	__index = _ORIG_ENV,
+	__newindex = function(t, key, value)
+		error("Strict Mode: Forgot 'local' before variable '" .. tostring(key) .. "'!", 2)
+	end,
 })
 
 -- Configure library paths for lib/core
 local corePaths = {
-    "/lib/core/base/?.lua",
-    "/lib/core/peripherals/?.lua",
-    "/lib/core/inventory/?.lua",
-    "/lib/core/recipes/?.lua",
-    "/lib/core/ui/?.lua",
-    "/lib/core/network/?.lua",
-    "/lib/core/redstone/?.lua"
+	"/lib/core/base/?.lua",
+	"/lib/core/peripherals/?.lua",
+	"/lib/core/inventory/?.lua",
+	"/lib/core/recipes/?.lua",
+	"/lib/core/ui/?.lua",
+	"/lib/core/network/?.lua",
+	"/lib/core/redstone/?.lua",
 }
 package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
@@ -46,9 +47,9 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 local PowahSystem = require("PowahSystem")
 
 -- Execution Setup
-local chestPeripheral = peripheral.find("minecraft:chest") 
-                     or peripheral.find("ironchest:diamond_chest") 
-                     or peripheral.find("expandedstorage:netherite_chest")
+local chestPeripheral = peripheral.find("minecraft:chest")
+	or peripheral.find("ironchest:diamond_chest")
+	or peripheral.find("expandedstorage:netherite_chest")
 local chestName = chestPeripheral and peripheral.getName(chestPeripheral) or "left"
 
 -- Robust ME Bridge & Scanner detection
@@ -63,17 +64,17 @@ print("- Chest:      " .. chestName)
 print("- ME Bridge:  " .. (meBridgeName or "Not found"))
 print("- AE Scanner: " .. (aeScannerName or "None detected"))
 if aeScannerName then
-    local pType = peripheral.getType(aeScannerName)
-    print("  -> Found at: " .. aeScannerName)
-    print("  -> Type:     " .. (pType or "unknown"))
+	local pType = peripheral.getType(aeScannerName)
+	print("  -> Found at: " .. aeScannerName)
+	print("  -> Type:     " .. (pType or "unknown"))
 end
 os.sleep(1)
 
 local system = PowahSystem.new({
-    chestName = chestName,
-    recipeFile = "powah_recipes.json",
-    meBridgeName = meBridgeName,
-    aeScannerName = aeScannerName
+	chestName = chestName,
+	recipeFile = "powah_recipes.json",
+	meBridgeName = meBridgeName,
+	aeScannerName = aeScannerName,
 })
 
 system:start()
