@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Mekanism Portal Recall Sender v1.0.028-main
+Mekanism Portal Recall Sender v1.0.031-main
 ================================================================================
 ]]
 --
@@ -122,7 +122,7 @@ function RecallSender:drawTerminalHeader()
 	term.clear()
 	term.setCursorPos(1, 1)
 	term.setTextColor(colors.cyan)
-	print("Mekanism Portal Recall Sender v1.0.028-main")
+	print("Mekanism Portal Recall Sender v1.0.031-main")
 	term.setTextColor(colors.gray)
 	print("----------------------------------")
 	term.setTextColor(colors.white)
