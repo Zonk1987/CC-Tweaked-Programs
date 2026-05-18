@@ -1,4 +1,19 @@
+<div align="center">
+
 # Zonk's CC:Tweaked Automation Suite 🚀
+
+![CI Quality Checks](https://img.shields.io/github/actions/workflow/status/Zonk1987/CC-Tweaked-Programs/ci-checks.yml?branch=main&style=for-the-badge&label=CI%20Quality)
+![License](https://img.shields.io/github/license/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/Zonk1987/CC-Tweaked-Programs/main?style=for-the-badge)
+![Top Language](https://img.shields.io/github/languages/top/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
+![Repo Size](https://img.shields.io/github/repo-size/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
+![Open Issues](https://img.shields.io/github/issues/Zonk1987/CC-Tweaked-Programs?style=for-the-badge)
+
+![Lua](https://img.shields.io/badge/Lua-5.1-blue?style=for-the-badge&logo=lua)
+![CC:Tweaked](https://img.shields.io/badge/CC%3ATweaked-Compatible-orange?style=for-the-badge)
+![Manifest Installer](https://img.shields.io/badge/Installer-Manifest--Driven-purple?style=for-the-badge)
+
+</div>
 
 A collection of professional-grade automation scripts for Minecraft **CC:Tweaked**, featuring a modular **Feature-Core** architecture, premium UI aesthetics, and a robust manifest-driven installer.
 
