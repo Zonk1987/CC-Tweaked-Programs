@@ -115,7 +115,9 @@ function RecallSender:initHardware()
 		term.write("Ziel-Ort (Name): ")
 		term.setTextColor(colors.black)
 		local target = read() or "Unknown"
-		if target == "" then target = "Unknown" end
+		if target == "" then
+			target = "Unknown"
+		end
 
 		term.setCursorPos(2, 8)
 		term.setTextColor(colors.yellow)
@@ -205,8 +207,6 @@ function RecallSender:drawTerminalHeader()
 	print("\nStatus:  Waiting for Redstone signal...")
 	print("\n[Press 'C' for Configuration]")
 end
-
-
 
 --- Interactive configuration menu
 function RecallSender:configMenu()

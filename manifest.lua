@@ -280,8 +280,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 8052,
-					hash = "8593771224c3bbe1f4a258877dc22dc87dc2cdf67f297a42e625761d2f4c9b84",
+					sizeBytes = 8055,
+					hash = "8e768eed3d5f856de139360662d270c5d2d8f96084d1fc15fa715c886a76280a",
 				},
 			},
 		},
