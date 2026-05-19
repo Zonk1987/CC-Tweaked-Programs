@@ -67,10 +67,6 @@ function RecallSender.new()
 		modem = nil,
 	}, RecallSender)
 
-	if not fs.exists("config.json") then
-		self:setupWizard()
-	end
-
 	self:initHardware()
 	return self
 end
@@ -82,6 +78,65 @@ function RecallSender:initHardware()
 		theme = "dark",
 		enable_logging = true,
 		log_file = "logs/recall_sender_boot.log",
+	})
+
+	boot:addStep("setup", "Konfiguration", function()
+		if fs.exists("config.json") then
+			return true
+		end
+
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.clear()
+
+		local w, h = term.getSize()
+
+		-- Header
+		term.setBackgroundColor(colors.blue)
+		term.setTextColor(colors.black)
+		term.setCursorPos(1, 1)
+		term.write(string.rep(" ", w))
+		local title = "RECALL SENDER SETUP"
+		local pad = math.max(0, math.floor((w - #title) / 2))
+		term.setCursorPos(pad + 1, 1)
+		term.write(title)
+
+		-- Content
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+
+		term.setCursorPos(2, 3)
+		print("Willkommen beim Mekanism Recall Sender!")
+		term.setCursorPos(2, 4)
+		print("Bitte richte die erste Konfiguration ein.")
+
+		term.setCursorPos(2, 6)
+		term.setTextColor(colors.yellow)
+		term.write("Ziel-Ort (Name): ")
+		term.setTextColor(colors.black)
+		local target = read() or "Unknown"
+		if target == "" then target = "Unknown" end
+
+		term.setCursorPos(2, 8)
+		term.setTextColor(colors.yellow)
+		term.write("Modem-Kanal (Standard 99): ")
+		term.setTextColor(colors.black)
+		local chanInput = read()
+		local channel = tonumber(chanInput) or 99
+
+		self.configStore.data.target = target
+		self.configStore.data.channel = channel
+		self.configStore:save()
+
+		term.setCursorPos(2, 10)
+		term.setTextColor(colors.green)
+		print("Setup erfolgreich gespeichert!")
+		term.setTextColor(colors.black)
+		os_sleep(1.5)
+		return true
+	end, {
+		"Dieser Schritt wird nur beim ersten Start ausgefuehrt,",
+		"um das Standard-Ziel und den Funkkanal einzustellen.",
 	})
 
 	boot:addStep("modem", "Modem Scan", function()
@@ -151,24 +206,7 @@ function RecallSender:drawTerminalHeader()
 	print("\n[Press 'C' for Configuration]")
 end
 
---- Interactive setup for first-time use
-function RecallSender:setupWizard()
-	term.clear()
-	term.setCursorPos(1, 1)
-	print("=== Recall Sender Setup ===\n")
-	term.setTextColor(colors.yellow)
-	write("Target Location Name: ")
-	term.setTextColor(colors.white)
-	self.configStore.data.target = read() or "Unknown"
 
-	write("Communication Channel (default 99): ")
-	local chanInput = read()
-	self.configStore.data.channel = tonumber(chanInput) or 99
-
-	self.configStore:save()
-	print("\nSetup complete!")
-	os_sleep(1)
-end
 
 --- Interactive configuration menu
 function RecallSender:configMenu()
