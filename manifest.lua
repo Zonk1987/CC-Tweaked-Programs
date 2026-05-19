@@ -185,7 +185,7 @@ return {
 			description = "Multi-orb parallel processing with AE2 pattern import support.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.inventory", "core.recipes" },
+			dependencies = { "core.inventory", "core.recipes", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
@@ -288,7 +288,7 @@ return {
 			description = "Advanced hardware inspection and diagnostic toolkit.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.network" },
+			dependencies = { "core.network", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
