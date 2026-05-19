@@ -1,11 +1,11 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇧🇷 **pt-BR / Portugues (Brasil)**
 > 
 > Nota: Este README foi traduzido automaticamente por um assistente de IA (Antigravidade) e pode conter erros de tradução ou imprecisões. Para obter a documentação mais precisa e atualizada, consulte o original em inglês [README.md](../../../README.md).
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-<div alinhar="centro">
+<div align="center">
 
 # CC da Zonk: Suíte de automação ajustada 🚀
 

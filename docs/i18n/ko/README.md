@@ -1,11 +1,11 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇰🇷 **ko / Korean**
 > 
 > 참고: 이 README는 AI 보조원(반중력)에 의해 자동으로 번역되었으며 번역 오류나 부정확한 내용이 포함될 수 있습니다. 가장 정확하고 최신 문서를 보려면 영어 원본을 참조하십시오. [README.md](../../../README.md).
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-<div 정렬="중앙">
+<div align="center">
 
 # Zonk의 CC:Tweaked 자동화 제품군 🚀
 

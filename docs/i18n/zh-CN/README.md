@@ -1,11 +1,11 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇨🇳 **zh-CN / Chinese (Simplified)**
 > 
 > 注意：本自述文件由人工智能助手（反重力）自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原文 [README.md](../../../README.md).
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-<div对齐=“中心”>
+<div align="center">
 
 # Zonk 的 CC：调整的自动化套件 🚀
 

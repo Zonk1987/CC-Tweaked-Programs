@@ -1,11 +1,11 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇫🇷 **fr / Francais**
 > 
 > Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
 
 🌐 **Languages:** [English](../../../README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [Português (Brasil)](../pt-BR/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Русский](../ru/README.md) | [简体中文](../zh-CN/README.md)
 
-<div align="centre">
+<div align="center">
 
 # CC de Zonk : suite d'automatisation optimisée 🚀
 
