@@ -175,8 +175,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/ManageRecipes.lua",
 					target = "ManageRecipes.lua",
-					sizeBytes = 6275,
-					hash = "65ae29362d65cdd3645ad8530e6c1ecc92af379971d8030f2cf836da8815f424",
+					sizeBytes = 6305,
+					hash = "4fbaef9770f0d29f2a3371002ab267424576ff3ba3f8eff8f7b8c7290a480653",
 				},
 			},
 		},

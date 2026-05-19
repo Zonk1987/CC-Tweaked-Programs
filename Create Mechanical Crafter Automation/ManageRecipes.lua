@@ -123,11 +123,11 @@ function ManageRecipes:open()
 
 			term.setCursorPos(detailX, 3)
 			term.setTextColor(side == "right" and colors.yellow or colors.lightGray)
-			local title = current.name
-			if #title > detailW then
-				title = title:sub(1, detailW - 2) .. ".."
+			local recipeTitle = current.name
+			if #recipeTitle > detailW then
+				recipeTitle = recipeTitle:sub(1, detailW - 2) .. ".."
 			end
-			term.write(title)
+			term.write(recipeTitle)
 
 			term.setCursorPos(detailX, 4)
 			term.setTextColor(colors.gray)
