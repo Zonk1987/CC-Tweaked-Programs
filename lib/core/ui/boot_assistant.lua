@@ -305,12 +305,12 @@ function BootAssistant:handleClick(x, y)
 		end
 	elseif self.state == "STATE_POPUP" then
 		-- Klick auf Close Button [ X ]
-		-- Modal Größe: Breite 40, Höhe 11
-		local modalW, modalH = 40, 11
+		-- Modal Groesse: Breite 42, Hoehe 12 (muss mit drawPopup uebereinstimmen)
+		local modalW, modalH = 42, 12
 		local startX = math.floor((w - modalW) / 2) + 1
 		local startY = math.floor((h - modalH) / 2) + 1
 
-		local closeX = startX + modalW - 4
+		local closeX = startX + modalW - 5
 		local closeY = startY + 1
 
 		if x >= closeX and x <= closeX + 2 and y == closeY then
