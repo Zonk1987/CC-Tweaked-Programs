@@ -17,7 +17,8 @@ ButtonManager.__index = ButtonManager
 --- @param monitorName string The name of the monitor peripheral
 --- @return ButtonManager
 function ButtonManager.new(monitorName)
-	local mon = peripheral.wrap(monitorName)
+	local HAL = require("HAL")
+	local mon = HAL.wrap(monitorName)
 	if not mon then
 		error("Monitor not found: " .. monitorName)
 	end
