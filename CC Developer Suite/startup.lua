@@ -399,9 +399,7 @@ end
 function DevToolkit.networkScanner()
 	if RednetProtocol.isOpen() then
 		local activeModem = HAL.getModem()
-		print(
-			"Modem Side: " .. (activeModem and HAL.getName(activeModem) or "unknown")
-		)
+		print("Modem Side: " .. (activeModem and HAL.getName(activeModem) or "unknown"))
 		print("Scanning Rednet IDs (1-50)...")
 		local found = 0
 		for i = 1, 50 do

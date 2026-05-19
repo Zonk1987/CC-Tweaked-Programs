@@ -82,8 +82,12 @@ end
 --- @param name string
 --- @return string|nil
 function HAL.getType(name)
-	if not name or name == "" then return nil end
-	if not peripheral.isPresent(name) then return nil end
+	if not name or name == "" then
+		return nil
+	end
+	if not peripheral.isPresent(name) then
+		return nil
+	end
 	return peripheral.getType(name)
 end
 
@@ -92,8 +96,12 @@ end
 --- @param expectedType string
 --- @return boolean
 function HAL.hasType(name, expectedType)
-	if not name or name == "" then return false end
-	if not peripheral.isPresent(name) then return false end
+	if not name or name == "" then
+		return false
+	end
+	if not peripheral.isPresent(name) then
+		return false
+	end
 	if type(peripheral.hasType) == "function" then
 		return peripheral.hasType(name, expectedType) == true
 	end
@@ -111,7 +119,9 @@ end
 --- @param wrappedObj table|nil
 --- @return string|nil
 function HAL.getName(wrappedObj)
-	if not wrappedObj then return nil end
+	if not wrappedObj then
+		return nil
+	end
 	return peripheral.getName(wrappedObj)
 end
 
@@ -119,8 +129,12 @@ end
 --- @param name string
 --- @return table|nil
 function HAL.getMethods(name)
-	if not name or name == "" then return nil end
-	if not peripheral.isPresent(name) then return nil end
+	if not name or name == "" then
+		return nil
+	end
+	if not peripheral.isPresent(name) then
+		return nil
+	end
 	return peripheral.getMethods(name)
 end
 
@@ -137,7 +151,9 @@ end
 --- @param ... any
 --- @return any
 function HAL.call(name, method, ...)
-	if not name or not method then return nil end
+	if not name or not method then
+		return nil
+	end
 	return peripheral.call(name, method, ...)
 end
 

@@ -36,8 +36,8 @@ return {
 				{
 					source = "lib/core/peripherals/HAL.lua",
 					target = "lib/core/peripherals/HAL.lua",
-					sizeBytes = 4035,
-					hash = "a56be97a1268236b2f8bd0cf48d1d0eb44c4ac68ed0b92f1edb475abc0b14108",
+					sizeBytes = 4059,
+					hash = "9377c4ae70c7b5b1d7008bfc40ca1029697ea695e4934d9ab69cb72f3a51b63b",
 				},
 			},
 		},
@@ -305,8 +305,8 @@ return {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 12200,
-					hash = "a4a837a76dd32b1b13cc627c5d1bd17670b9e99b7943ef730fc30d3b4997f1c0",
+					sizeBytes = 12193,
+					hash = "6439e514761c5b3606685e5e51381ea76834b5a43ac3c0535d08be71e0637050",
 				},
 			},
 		},
