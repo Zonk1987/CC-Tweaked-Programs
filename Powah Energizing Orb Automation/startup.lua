@@ -90,7 +90,10 @@ boot:addStep("chest", "Puffer-Kiste Check", function()
 			if not isOrb and not isMeBridge and not isScanner then
 				-- Check if it is an inventory
 				local wrapped = peripheral.wrap(name)
-				if peripheral.hasType(name, "inventory") or (type(wrapped) == "table" and type(wrapped["list"]) == "function") then
+				if
+					peripheral.hasType(name, "inventory")
+					or (type(wrapped) == "table" and type(wrapped["list"]) == "function")
+				then
 					chestPeripheral = wrapped
 					break
 				end
