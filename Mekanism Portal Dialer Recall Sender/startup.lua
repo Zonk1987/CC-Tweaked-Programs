@@ -211,11 +211,16 @@ end
 --- Interactive configuration menu
 function RecallSender:configMenu()
 	while true do
+		local w, _ = term.getSize()
 		term.clear()
-		term.setCursorPos(1, 1)
 		term.setTextColor(colors.cyan)
-		print("=== Configuration Menu ===")
+		local title = "=== Configuration Menu ==="
+		local pad = math.max(0, math.floor((w - #title) / 2))
+		term.setCursorPos(pad + 1, 1)
+		term.write(title)
+
 		term.setTextColor(colors.white)
+		term.setCursorPos(1, 3)
 		print("1. Target Name       (Current: " .. self.configStore.data.target .. ")")
 		print("2. Recall Channel    (Current: " .. self.configStore.data.channel .. ")")
 		print("3. Save & Exit")
