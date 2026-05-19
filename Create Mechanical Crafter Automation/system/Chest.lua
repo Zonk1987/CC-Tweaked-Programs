@@ -10,9 +10,7 @@ local _ENV = setmetatable({}, {
 -- Localize globals
 local setmetatable = setmetatable
 local pairs = pairs
-
 local tonumber = tonumber
-
 local pcall = pcall
 
 local InventoryAdapter = require("InventoryAdapter")

@@ -2,6 +2,8 @@
 -- InventoryAdapter: Generic inventory handling and peripheral wrapping
 -- Governed by AGENTS.md
 
+local HAL = require("HAL")
+
 local InventoryAdapter = {}
 InventoryAdapter.__index = InventoryAdapter
 
@@ -15,7 +17,7 @@ InventoryAdapter.__index = InventoryAdapter
 function InventoryAdapter.new(name)
 	local self = setmetatable({
 		name = name,
-		native = peripheral.wrap(name),
+		native = HAL.get(name),
 	}, InventoryAdapter)
 	return self
 end
@@ -26,7 +28,7 @@ function InventoryAdapter:isPresent()
 	if not self.name or self.name == "" then
 		return false
 	end
-	local device = peripheral.wrap(self.name)
+	local device = HAL.get(self.name)
 	if device then
 		self.native = device
 		return true

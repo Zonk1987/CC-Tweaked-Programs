@@ -41,9 +41,14 @@ local corePaths = {
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
 }
-package.path = package.path .. ";" .. table.concat(corePaths, ";")
+local localPaths = {
+	"/system/?.lua",
+	"/ui/?.lua",
+}
+package.path = package.path .. ";" .. table.concat(corePaths, ";") .. ";" .. table.concat(localPaths, ";")
 
 -- Load the main system
+local HAL = require("HAL")
 local PowahSystem = require("PowahSystem")
 local BootAssistant = require("boot_assistant")
 
@@ -156,11 +161,20 @@ boot:run()
 -- Execution Setup
 local chestName = chestPeripheral and peripheral.getName(chestPeripheral) or "left"
 
+-- Register in HAL
+HAL.register("buffer", chestName)
+if meBridgeName then
+	HAL.register("me_bridge", meBridgeName)
+end
+if aeScannerName then
+	HAL.register("ae_scanner", aeScannerName)
+end
+
 local system = PowahSystem.new({
-	chestName = chestName,
+	chestName = "buffer",
 	recipeFile = "powah_recipes.json",
-	meBridgeName = meBridgeName,
-	aeScannerName = aeScannerName,
+	meBridgeName = meBridgeName and "me_bridge" or nil,
+	aeScannerName = aeScannerName and "ae_scanner" or nil,
 })
 
 system:start()

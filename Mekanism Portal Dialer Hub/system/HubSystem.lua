@@ -9,7 +9,7 @@ local _ENV = setmetatable({}, {
 local UUIDService = require("UUIDService")
 local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
-local PeripheralScanner = require("PeripheralScanner")
+local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 
 -- Localize globals
@@ -89,9 +89,9 @@ HubSystem.__index = HubSystem
 ---@param options table
 ---@return HubSystem
 function HubSystem.new(options)
-	local tp = PeripheralScanner.wrap(options.tpSide)
+	local tp = HAL.get(options.tpSide or "hub_teleporter")
 	if not tp then
-		error("Teleporter not found: " .. options.tpSide)
+		error("Teleporter not found: " .. tostring(options.tpSide))
 	end
 
 	local self = setmetatable({

@@ -80,6 +80,7 @@ function ImportMenu:isAlreadyImported(pattern)
 end
 
 --- Main UI loop for the import menu
+---@return boolean success, string|nil err
 function ImportMenu:open()
 	if not self.meBridge then
 		return false, "me_bridge_missing"

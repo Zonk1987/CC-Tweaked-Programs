@@ -11,6 +11,7 @@ local RecipeManager = require("RecipeManager")
 local Chest = require("Chest")
 local Orb = require("Orb")
 local ImportMenu = require("ImportMenu")
+local HAL = require("HAL")
 
 -- Localize globals
 local setmetatable = setmetatable
@@ -43,8 +44,8 @@ function PowahSystem.new(options)
 	self.dashboard = Dashboard.new()
 	self.recipeManager = RecipeManager.new(options.recipeFile or "powah_recipes.json", self.dashboard)
 	self.activeJobs = {}
-	self.meBridge = options.meBridgeName and peripheral.wrap(options.meBridgeName) or nil
-	self.aeScanner = options.aeScannerName and peripheral.wrap(options.aeScannerName) or nil
+	self.meBridge = options.meBridgeName and HAL.get(options.meBridgeName) or nil
+	self.aeScanner = options.aeScannerName and HAL.get(options.aeScannerName) or nil
 	return self
 end
 

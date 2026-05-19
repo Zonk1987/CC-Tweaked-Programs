@@ -26,8 +26,13 @@ local corePaths = {
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
 }
-package.path = package.path .. ";" .. table.concat(corePaths, ";")
+local localPaths = {
+	"/system/?.lua",
+	"/ui/?.lua",
+}
+package.path = package.path .. ";" .. table.concat(corePaths, ";") .. ";" .. table.concat(localPaths, ";")
 
+local HAL = require("HAL")
 local CrafterSystem = require("CrafterSystem")
 local BootAssistant = require("boot_assistant")
 
@@ -130,9 +135,12 @@ end, {
 
 boot:run()
 
+-- Register chest in HAL
+HAL.register("buffer", chestName)
+
 ---@type CrafterSystem
 local system = CrafterSystem.new({
-	chestName = chestName,
+	chestName = "buffer",
 	recipeFile = "crafter_recipes.json",
 })
 

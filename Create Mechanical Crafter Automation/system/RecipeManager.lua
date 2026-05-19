@@ -317,4 +317,5 @@ function RecipeManager:save()
 	RecipeStore.save(self)
 end
 
+-- Return the class module
 return RecipeManager

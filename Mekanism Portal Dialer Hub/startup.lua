@@ -26,8 +26,13 @@ local corePaths = {
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
 }
-package.path = package.path .. ";" .. table.concat(corePaths, ";")
+local localPaths = {
+	"/system/?.lua",
+	"/ui/?.lua",
+}
+package.path = package.path .. ";" .. table.concat(corePaths, ";") .. ";" .. table.concat(localPaths, ";")
 
+local HAL = require("HAL")
 local HubSystem = require("HubSystem")
 local ButtonGrid = require("ButtonGrid")
 local BootAssistant = require("boot_assistant")
@@ -81,10 +86,14 @@ end, {
 
 boot:run()
 
+-- Register in HAL
+HAL.register("hub_monitor", monitorName)
+HAL.register("hub_teleporter", tpName)
+
 -- Initialization
 local systemConfig = {
 	monitorSide = monitorName,
-	tpSide = tpName,
+	tpSide = "hub_teleporter",
 	gridColumns = 4,
 	gridRows = 4,
 	recallChannel = 99,
@@ -96,7 +105,7 @@ bm.mon.setTextScale(0.5) -- Locked at 0.5: Changing this breaks the line/char UI
 
 local system = HubSystem.new({
 	bm = bm,
-	tpSide = tpName,
+	tpSide = "hub_teleporter",
 	config = systemConfig,
 })
 
