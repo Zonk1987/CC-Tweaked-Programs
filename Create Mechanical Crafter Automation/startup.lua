@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Create Mechanical Crafter Automation v1.0.070-main
+Create Mechanical Crafter Automation v1.0.074-main
 ================================================================================
 Automates Mechanical Crafter grids from the 'Create' mod.
 ================================================================================
