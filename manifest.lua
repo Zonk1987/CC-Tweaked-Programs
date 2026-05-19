@@ -145,8 +145,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/CrafterSystem.lua",
 					target = "CrafterSystem.lua",
-					sizeBytes = 6517,
-					hash = "920ab3cfd9679658927baa29b5b93191f6d57983988fb81f964d881484530229",
+					sizeBytes = 6602,
+					hash = "48a719c1d7030ad30fbcf0b4772a9d938f9a8b3f5b6d7ec896b04901312fe824",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/RecipeManager.lua",
@@ -157,8 +157,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/Dashboard.lua",
 					target = "Dashboard.lua",
-					sizeBytes = 3835,
-					hash = "1bed6b1c9deb8a0dcd66f5437f0ab0c3b5d7462f1f279e6a8b7248448f4a17b1",
+					sizeBytes = 3952,
+					hash = "a1505e79a11b10ae06164748d0de1f27f800da4c78ba30f0892fe64fdc867eef",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/Chest.lua",
@@ -169,14 +169,14 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/CrafterGrid.lua",
 					target = "CrafterGrid.lua",
-					sizeBytes = 3734,
-					hash = "10acb7ce8d199d89480b2f0577c24a131b2f7457b4ce4e616b82cc6086e4ce70",
+					sizeBytes = 3853,
+					hash = "4da4756583b18788a17b87bcf6e5a2e87b72d7c1f498ac9bac303e521e7fc1b4",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/ManageRecipes.lua",
 					target = "ManageRecipes.lua",
-					sizeBytes = 6165,
-					hash = "99ea4e7047edcf2e75d97f6a802869d54d13dc1298bcc81cc3693c095130f434",
+					sizeBytes = 6275,
+					hash = "65ae29362d65cdd3645ad8530e6c1ecc92af379971d8030f2cf836da8815f424",
 				},
 			},
 		},
@@ -208,8 +208,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/Dashboard.lua",
 					target = "Dashboard.lua",
-					sizeBytes = 3329,
-					hash = "d5bc7ee57f3c11e35f35856657e7029e871891aeba02938f79878f14f0f09d92",
+					sizeBytes = 3459,
+					hash = "412e0402a084756ff0ae7211c985569b5ac30760b1eb18ab360fa40628138a50",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/Orb.lua",
@@ -226,8 +226,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/ImportMenu.lua",
 					target = "ImportMenu.lua",
-					sizeBytes = 10502,
-					hash = "0636a34693b14d0a8aab1acbdb1b3d5c17be7f043772f2fac300f8734f0cb579",
+					sizeBytes = 10685,
+					hash = "906649d809a5aaf239554eab3b4e7a65495d737aa78cf9695615d82d232a26d6",
 				},
 			},
 		},
@@ -247,8 +247,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/HubSystem.lua",
 					target = "HubSystem.lua",
-					sizeBytes = 22203,
-					hash = "f7de052396ed424d2ae4aa66bc330b3b7c318412ff7973981312940bfddc3af6",
+					sizeBytes = 22221,
+					hash = "c3aca89b98e4c4603b15b983aedfab882c9aae6f7d64881f69007e43da2bc504",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/UUIDService.lua",
@@ -280,8 +280,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 7021,
-					hash = "3366dde73162cafc59647bef6228194c6bb9d48ca536ca7769bc4c5936878076",
+					sizeBytes = 7032,
+					hash = "637dd45ce515feb8eb993c17b7b5329e7b5d335baedb7cc391c1fde26e28aa26",
 				},
 			},
 		},
@@ -299,8 +299,8 @@ return {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 12015,
-					hash = "6fa3a398fda7525c83d7d37a5d71daec4595abfdf051b4bc6c9323d02b480c5a",
+					sizeBytes = 12250,
+					hash = "6d28587513601b1047b485d9343f7c3a3771164f745e8ebb47f8038b029280d3",
 				},
 			},
 		},

@@ -171,7 +171,10 @@ function ImportMenu:open()
 				term.clear()
 				term.setCursorPos(1, 1)
 				term.setTextColor(colors.yellow)
-				term.write("=== SELECT AE2 PROVIDER (" .. #providers .. ") ===")
+				local title = "=== SELECT AE2 PROVIDER (" .. #providers .. ") ==="
+				local pad = math.max(0, math.floor((w - #title) / 2))
+				term.setCursorPos(pad + 1, 1)
+				term.write(title)
 				term.setCursorPos(1, 2)
 				term.setTextColor(colors.gray)
 				term.write(string.rep("-", w))
@@ -218,7 +221,6 @@ function ImportMenu:open()
 	while true do
 		term.clear()
 		-- Header
-		term.setCursorPos(1, 1)
 		term.setTextColor(colors.yellow)
 		local headerText = "=== AE2 PATTERN IMPORT ==="
 		if not scannerActive then
@@ -227,6 +229,8 @@ function ImportMenu:open()
 		elseif providerFilter then
 			headerText = "=== " .. providerFilter:upper() .. " (" .. #patterns .. ") ==="
 		end
+		local pad = math.max(0, math.floor((w - #headerText) / 2))
+		term.setCursorPos(pad + 1, 1)
 		term.write(headerText)
 		term.setCursorPos(1, 2)
 		term.setTextColor(colors.gray)

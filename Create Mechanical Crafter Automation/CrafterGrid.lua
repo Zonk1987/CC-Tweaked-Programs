@@ -39,12 +39,15 @@ end
 function CrafterGrid:runInteractiveCalibration()
 	term.clear()
 	term.setCursorPos(1, 1)
-	print("=== INITIAL SETUP: CRAFTER CALIBRATION ===")
+	local w, _ = term.getSize()
+	local title = "INITIAL SETUP: CRAFTER CALIBRATION"
+	local pad = math.max(0, math.floor((w - #title - 8) / 2))
+	print(string.rep(" ", pad) .. "=== " .. title .. " ===")
 	print("1. Connect all Mechanical Crafters with Wired Modems.")
 	print("2. Click the modems ONE BY ONE in order:")
 	print("   left-to-right, top-to-bottom.\n")
 	print("[Press ENTER when all modems are activated]")
-	print("------------------------------------------")
+	print(string.rep("-", w))
 
 	self.crafters = {}
 	while true do

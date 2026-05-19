@@ -182,12 +182,15 @@ function CrafterSystem:recordNewRecipeFlow()
 
 	term.clear()
 	term.setCursorPos(1, 1)
+	local w, _ = term.getSize()
 	if term.isColor() then
 		term.setTextColor(colors.cyan)
 	end
-	print("===================================")
-	print("      Record New Recipe")
-	print("===================================")
+	print(string.rep("=", w))
+	local title = "Record New Recipe"
+	local pad = math.max(0, math.floor((w - #title) / 2))
+	print(string.rep(" ", pad) .. title)
+	print(string.rep("=", w))
 	term.setTextColor(colors.white)
 	print("\n1. Place the items in the physical crafters")
 	print("2. Enter the name of your new recipe")

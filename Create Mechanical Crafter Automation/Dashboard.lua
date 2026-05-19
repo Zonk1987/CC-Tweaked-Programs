@@ -74,18 +74,22 @@ end
 
 --- Internal helper to draw the header
 local function drawHeader()
+	local w, _ = term.getSize()
 	term.setTextColor(colors.cyan)
-	print("===================================")
+	print(string.rep("=", w))
 	term.setTextColor(colors.yellow)
-	print("    Create Crafter System v1.0.070-main")
+	local title = "Create Crafter System v1.0.070-main"
+	local pad = math.max(0, math.floor((w - #title) / 2))
+	print(string.rep(" ", pad) .. title)
 	term.setTextColor(colors.cyan)
-	print("===================================")
+	print(string.rep("=", w))
 end
 
 --- Internal helper to draw the footer area
 function Dashboard:drawFooter()
+	local w, _ = term.getSize()
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	print(string.rep("-", w))
 	if self.errorMsg ~= "" then
 		term.setTextColor(colors.red)
 		print("ERROR: " .. self.errorMsg)
@@ -108,7 +112,8 @@ function Dashboard:drawMissingItems()
 		print("- " .. count .. "x " .. name)
 	end
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	local w, _ = term.getSize()
+	print(string.rep("-", w))
 end
 
 --- Draws the full dashboard UI
@@ -144,7 +149,8 @@ function Dashboard:draw()
 	print("Buffer:      " .. (self.chestName or "Unknown"))
 
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	local w, _ = term.getSize()
+	print(string.rep("-", w))
 
 	self:drawMissingItems()
 	self:drawFooter()

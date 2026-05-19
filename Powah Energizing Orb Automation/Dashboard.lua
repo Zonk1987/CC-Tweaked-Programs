@@ -72,16 +72,20 @@ end
 
 --- Draws the header section
 local function drawHeader()
+	local w, _ = term.getSize()
 	term.setTextColor(colors.yellow)
-	print("=== Powah Energizing Automation ===")
+	local title = "=== Powah Energizing Automation ==="
+	local pad = math.max(0, math.floor((w - #title) / 2))
+	print(string.rep(" ", pad) .. title)
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	print(string.rep("-", w))
 end
 
 --- Draws the footer section
 function Dashboard:drawFooter()
+	local w, _ = term.getSize()
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	print(string.rep("-", w))
 	if self.errorMsg ~= "" then
 		term.setTextColor(colors.red)
 		print("ERROR: " .. self.errorMsg)
@@ -120,7 +124,8 @@ function Dashboard:draw()
 	end
 
 	term.setTextColor(colors.cyan)
-	print("-----------------------------------")
+	local w, _ = term.getSize()
+	print(string.rep("-", w))
 
 	local jobsFound = false
 	for name, job in pairs(self.activeJobs or {}) do

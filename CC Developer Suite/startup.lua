@@ -88,14 +88,16 @@ local DevToolkit = {
 	modem = nil,
 }
 
---- Helper: Clear screen and draw header
 local function header(title)
 	term.clear()
 	term.setCursorPos(1, 1)
 	term.setTextColor(colors.yellow)
-	print("=== " .. title .. " ===")
+	local w, _ = term.getSize()
+	local titleStr = "=== " .. title .. " ==="
+	local pad = math.max(0, math.floor((w - #titleStr) / 2))
+	print(string.rep(" ", pad) .. titleStr)
 	term.setTextColor(colors.white)
-	print("----------------------------------")
+	print(string.rep("-", w))
 end
 
 --- Specialized Item Browser for Inventories
@@ -138,7 +140,10 @@ function DevToolkit.itemBrowser(peripheralName)
 		end
 
 		term.setTextColor(colors.yellow)
-		print("\n--- Slot " .. selected .. " Details ---")
+		local w, _ = term.getSize()
+		local detailTitle = "--- Slot " .. selected .. " Details ---"
+		local pad = math.max(0, math.floor((w - #detailTitle) / 2))
+		print("\n" .. string.rep(" ", pad) .. detailTitle)
 		term.setTextColor(colors.white)
 		if detail then
 			for k, v in pairs(detail) do
