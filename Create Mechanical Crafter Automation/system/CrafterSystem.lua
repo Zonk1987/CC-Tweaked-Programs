@@ -227,8 +227,13 @@ function CrafterSystem:recordNewRecipeFlow()
 	self.dashboard:draw()
 end
 
---- Starts the system
+--- Starts the system (backward compatibility)
 function CrafterSystem:start()
+	self:run()
+end
+
+--- Runs the system
+function CrafterSystem:run()
 	self.recipeManager:load(self.crafterGrid:getCount())
 	parallel_waitForAll(function()
 		self:mainLoop()

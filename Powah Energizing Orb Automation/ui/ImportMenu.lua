@@ -12,6 +12,7 @@ local term = term
 local colors = colors
 local os_sleep = os.sleep
 local os_pullEvent = os.pullEvent
+local HAL = require("HAL")
 local string = string
 local math = math
 local table_insert = table.insert
@@ -89,10 +90,10 @@ function ImportMenu:open()
 	-- Robust check: Is the scanner actually there?
 	local scannerActive = false
 	if self.aeScanner then
-		local ok, name = pcall(peripheral.getName, self.aeScanner)
-		if ok and name and peripheral.isPresent(name) then
+		local ok, name = pcall(HAL.getName, self.aeScanner)
+		if ok and name and HAL.isPresent(name) then
 			-- Verify it's actually a scanner and not some other device on that side
-			if peripheral.getType(name) == "ae2_scanner" then
+			if HAL.getType(name) == "ae2_scanner" then
 				scannerActive = true
 			end
 		end

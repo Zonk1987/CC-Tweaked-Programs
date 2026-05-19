@@ -27,7 +27,7 @@ local corePaths = {
 package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
 local ConfigStore = require("ConfigStore")
-local PeripheralScanner = require("PeripheralScanner")
+local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 local RedstoneController = require("RedstoneController")
 local BootAssistant = require("boot_assistant")
@@ -142,10 +142,12 @@ function RecallSender:initHardware()
 	})
 
 	boot:addStep("modem", "Modem Scan", function()
-		local modem, side = PeripheralScanner.find("modem")
+		local modem = HAL.getModem()
 		self.modem = modem
-		self.modemSide = side
-		if not side then
+		if modem then
+			self.modemSide = HAL.getName(modem)
+		end
+		if not self.modemSide then
 			return "WARN", "Kein Modem gefunden."
 		end
 		RednetProtocol.openAuto()
@@ -156,7 +158,7 @@ function RecallSender:initHardware()
 	})
 
 	boot:addStep("teleporter", "Teleporter Scan", function()
-		self.tp = PeripheralScanner.find("teleporter")
+		self.tp = HAL.getTeleporter()
 		if not self.tp then
 			return "WARN", "Kein lokaler Teleporter gefunden."
 		end

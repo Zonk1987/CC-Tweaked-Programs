@@ -7,9 +7,11 @@ local _ENV = setmetatable({}, {
 	end,
 })
 
+-- Dependencies
+local HAL = require("HAL")
+
 -- Localize globals
 local setmetatable = setmetatable
-local peripheral = peripheral
 local ipairs = ipairs
 local fs = fs
 local textutils = textutils
@@ -53,7 +55,7 @@ function CrafterGrid:runInteractiveCalibration()
 	while true do
 		local event, param1 = os_pullEvent()
 		if event == "peripheral" then
-			if peripheral.getType(param1) == "create:mechanical_crafter" then
+			if HAL.getType(param1) == "create:mechanical_crafter" then
 				self.crafters[#self.crafters + 1] = param1
 				print("Crafter #" .. #self.crafters .. " connected: " .. param1)
 			end
@@ -100,7 +102,7 @@ end
 function CrafterGrid:cachePeripherals()
 	self.cachedPeripherals = {}
 	for i, name in ipairs(self.crafters) do
-		self.cachedPeripherals[i] = peripheral.wrap(name)
+		self.cachedPeripherals[i] = HAL.wrap(name)
 	end
 end
 

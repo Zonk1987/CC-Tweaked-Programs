@@ -11,6 +11,7 @@ local _ENV = setmetatable({}, {
 local table_insert = table.insert
 local RecipeStore = require("RecipeStore")
 local ItemMatcher = require("ItemMatcher")
+local HAL = require("HAL")
 
 ---@class RecipeManager : RecipeStore
 ---@field dashboard Dashboard
@@ -257,7 +258,7 @@ function RecipeManager:recordRecipe(name, crafterGrid)
 	local charCode, itemsFound = 65, 0
 
 	for i = 1, count do
-		local p = peripheral.wrap(crafterGrid:getCrafterName(i))
+		local p = HAL.wrap(crafterGrid:getCrafterName(i))
 		---@cast p any
 		local item = p and p.getItemDetail(1)
 		local char = "0"

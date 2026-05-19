@@ -187,11 +187,12 @@ end
 
 -- Scannt Peripheriegeräte für das Diagnose-Untermenü
 function BootAssistant:scanPeripherals()
+	local HAL = require("HAL")
 	self.diagPeripherals = {}
-	local list = peripheral.getNames()
+	local list = HAL.getNames()
 	for _, name in ipairs(list) do
-		local pType = peripheral.getType(name)
-		local pMethods = peripheral.getMethods(name) or {}
+		local pType = HAL.getType(name)
+		local pMethods = HAL.getMethods(name) or {}
 		table.insert(self.diagPeripherals, {
 			name = name,
 			type = pType,

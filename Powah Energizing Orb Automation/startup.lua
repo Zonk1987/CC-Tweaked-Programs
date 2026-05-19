@@ -59,6 +59,7 @@ local boot = BootAssistant.new({
 	log_file = "logs/powah_boot.log",
 })
 
+local chestName = "left"
 local chestPeripheral
 boot:addStep("chest", "Puffer-Kiste Check", function()
 	-- Prioritize typical dedicated chests/buffers
@@ -75,9 +76,10 @@ boot:addStep("chest", "Puffer-Kiste Check", function()
 	}
 
 	for _, typeName in ipairs(prioritized) do
-		local found = peripheral.find(typeName)
-		if found then
-			chestPeripheral = found
+		local found = HAL.listNames(typeName)
+		if found[1] then
+			chestName = found[1]
+			chestPeripheral = HAL.wrap(found[1])
 			break
 		end
 	end
@@ -85,20 +87,21 @@ boot:addStep("chest", "Puffer-Kiste Check", function()
 	-- Fallback: Any connected peripheral that has inventory capability,
 	-- EXCEPT it must not be a powah energizing orb or an optional component like me_bridge/scanner
 	if not chestPeripheral then
-		local all = peripheral.getNames()
+		local all = HAL.getNames()
 		for _, name in ipairs(all) do
-			local pType = peripheral.getType(name)
+			local pType = HAL.getType(name)
 			local isOrb = pType and (pType:find("energizing_orb") or pType:find("powah"))
 			local isMeBridge = pType and (pType:find("meBridge") or pType:find("me_bridge"))
 			local isScanner = pType and pType:find("ae2_scanner")
 
 			if not isOrb and not isMeBridge and not isScanner then
 				-- Check if it is an inventory
-				local wrapped = peripheral.wrap(name)
+				local wrapped = HAL.wrap(name)
 				if
-					peripheral.hasType(name, "inventory")
+					HAL.hasType(name, "inventory")
 					or (type(wrapped) == "table" and type(wrapped["list"]) == "function")
 				then
+					chestName = name
 					chestPeripheral = wrapped
 					break
 				end
@@ -119,11 +122,14 @@ end, {
 
 local meBridgeName
 boot:addStep("me_bridge", "ME Bridge Check", function()
-	local meBridge = peripheral.find("meBridge") or peripheral.find("me_bridge")
-	if not meBridge then
+	local bridges = HAL.listNames("meBridge")
+	if #bridges == 0 then
+		bridges = HAL.listNames("me_bridge")
+	end
+	if #bridges == 0 then
 		return "WARN", "Keine ME Bridge gefunden."
 	end
-	meBridgeName = peripheral.getName(meBridge)
+	meBridgeName = bridges[1]
 	return true
 end, {
 	"Eine ME Bridge ist optional, wird aber fuer das",
@@ -133,11 +139,11 @@ end, {
 
 local aeScannerName
 boot:addStep("scanner", "AE2 Scanner Check", function()
-	local aeScanner = peripheral.find("ae2_scanner")
-	if not aeScanner then
+	local scanners = HAL.listNames("ae2_scanner")
+	if #scanners == 0 then
 		return "WARN", "Kein AE2 Scanner gefunden."
 	end
-	aeScannerName = peripheral.getName(aeScanner)
+	aeScannerName = scanners[1]
 	return true
 end, {
 	"Ein AE2 Scanner ist optional, hilft aber bei",
@@ -145,8 +151,8 @@ end, {
 })
 
 boot:addStep("orbs", "Energizing Orbs Scan", function()
-	local orbs = peripheral.find("powah:energizing_orb")
-	if not orbs then
+	local orbs = HAL.listNames("powah:energizing_orb")
+	if #orbs == 0 then
 		return "WARN", "Keine Energizing Orbs gefunden."
 	end
 	return true
@@ -157,9 +163,6 @@ end, {
 })
 
 boot:run()
-
--- Execution Setup
-local chestName = chestPeripheral and peripheral.getName(chestPeripheral) or "left"
 
 -- Register in HAL
 HAL.register("buffer", chestName)
@@ -177,4 +180,4 @@ local system = PowahSystem.new({
 	aeScannerName = aeScannerName and "ae_scanner" or nil,
 })
 
-system:start()
+system:run()

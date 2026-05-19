@@ -13,7 +13,6 @@ local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 
 -- Localize globals
-local peripheral = peripheral
 local colors = colors
 local term = term
 local os_sleep = os.sleep
@@ -111,7 +110,7 @@ function HubSystem.new(options)
 		activeOverlay = nil,
 		buffer = nil,
 		manualActive = nil,
-		monName = peripheral.getName(options.bm.mon.native or options.bm.mon),
+		monName = HAL.getName(options.bm.mon.native or options.bm.mon),
 		tpName = options.tpSide,
 
 		mekColors = {
@@ -661,7 +660,7 @@ function HubSystem:run()
 	self.modemSide = side or "None"
 
 	if side then
-		peripheral.call(side, "open", self.configStore.data.recallChannel or 99)
+		HAL.call(side, "open", self.configStore.data.recallChannel or 99)
 	end
 	self:drawTerminalHeader()
 	self:draw()

@@ -46,11 +46,11 @@ local boot = BootAssistant.new({
 
 local monitorName
 boot:addStep("monitor", "Monitor Scan", function()
-	local monitor = peripheral.find("monitor")
-	if not monitor then
+	local monitors = HAL.listNames("monitor")
+	if #monitors == 0 then
 		return false, "Kein Monitor gefunden."
 	end
-	monitorName = peripheral.getName(monitor)
+	monitorName = monitors[1]
 	return true
 end, {
 	"Verbinde einen fortgeschrittenen Monitor (Advanced Monitor)",
@@ -60,13 +60,17 @@ end, {
 
 local tpName
 boot:addStep("teleporter", "Teleporter Scan", function()
-	local teleporter = peripheral.find("mekanism:teleporter")
-		or peripheral.find("teleporter")
-		or peripheral.find("mekanismteleporter")
-	if not teleporter then
+	local teleporters = HAL.listNames("mekanism:teleporter")
+	if #teleporters == 0 then
+		teleporters = HAL.listNames("teleporter")
+	end
+	if #teleporters == 0 then
+		teleporters = HAL.listNames("mekanismteleporter")
+	end
+	if #teleporters == 0 then
 		return false, "Kein Mekanism Teleporter gefunden."
 	end
-	tpName = peripheral.getName(teleporter)
+	tpName = teleporters[1]
 	return true
 end, {
 	"Verbinde den Mekanism Teleporter mit dem PC.",
@@ -74,8 +78,8 @@ end, {
 })
 
 boot:addStep("modem", "Modem Scan", function()
-	local modem = peripheral.find("modem")
-	if not modem then
+	local modems = HAL.listNames("modem")
+	if #modems == 0 then
 		return "WARN", "Kein Modem gefunden."
 	end
 	return true

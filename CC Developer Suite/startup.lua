@@ -28,6 +28,7 @@ local corePaths = {
 }
 package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
+local HAL = require("HAL")
 local BootAssistant = require("boot_assistant")
 local boot = BootAssistant.new({
 	title = "DevSuite Boot Loader",
@@ -37,7 +38,7 @@ local boot = BootAssistant.new({
 })
 
 boot:addStep("modem", "Drahtloses Modem Check", function()
-	local modem = peripheral.find("modem")
+	local modem = HAL.getModem()
 	if not modem then
 		return "WARN", "Kein Modem. Rednet inaktiv."
 	end
@@ -48,7 +49,7 @@ end, {
 })
 
 boot:addStep("drive", "Disk-Laufwerk Check", function()
-	local drive = peripheral.find("drive")
+	local drive = HAL.get("drive", "drive")
 	if not drive then
 		return "WARN", "Kein Disk-Laufwerk gefunden."
 	end
@@ -64,7 +65,6 @@ local RednetProtocol = require("RednetProtocol")
 -- Localize globals
 local term = term
 local colors = colors
-local peripheral = peripheral
 local string = string
 local math = math
 local table = table
@@ -102,7 +102,7 @@ end
 
 --- Specialized Item Browser for Inventories
 function DevToolkit.itemBrowser(peripheralName)
-	local inv = peripheral.wrap(peripheralName)
+	local inv = HAL.wrap(peripheralName)
 	if not inv then
 		return
 	end
@@ -169,7 +169,7 @@ end
 --- Superior Peripheral Inspector
 function DevToolkit.peripheralInspector()
 	header("Superior Peripheral Inspector")
-	local names = peripheral.getNames()
+	local names = HAL.getNames()
 	if #names == 0 then
 		print("No peripherals found!")
 		os.sleep(1.5)
@@ -177,7 +177,7 @@ function DevToolkit.peripheralInspector()
 	end
 
 	for i, n in ipairs(names) do
-		print(i .. ". " .. n .. " [" .. (peripheral.getType(n) or "unknown") .. "]")
+		print(i .. ". " .. n .. " [" .. (HAL.getType(n) or "unknown") .. "]")
 	end
 	write("\nSelect Device [1-" .. #names .. "]: ")
 	local sel = tonumber(read())
@@ -185,8 +185,8 @@ function DevToolkit.peripheralInspector()
 
 	if sel and names[sel] then
 		local pName = names[sel]
-		local p = peripheral.wrap(pName)
-		local methods = peripheral.getMethods(pName)
+		local p = HAL.wrap(pName)
+		local methods = HAL.getMethods(pName)
 		if not p or not methods then
 			return
 		end
@@ -226,7 +226,7 @@ function DevToolkit.peripheralInspector()
 				os.pullEvent("key")
 				os.sleep(0.5)
 			elseif key == keys.b then
-				if peripheral.hasType(pName, "inventory") then
+				if HAL.hasType(pName, "inventory") then
 					DevToolkit.itemBrowser(pName)
 				else
 					print("\nThis device is not an inventory!")
@@ -398,8 +398,9 @@ end
 --- Network Scanner
 function DevToolkit.networkScanner()
 	if RednetProtocol.isOpen() then
+		local activeModem = HAL.getModem()
 		print(
-			"Modem Side: " .. (peripheral.find("modem") and peripheral.getName(peripheral.find("modem")) or "unknown")
+			"Modem Side: " .. (activeModem and HAL.getName(activeModem) or "unknown")
 		)
 		print("Scanning Rednet IDs (1-50)...")
 		local found = 0

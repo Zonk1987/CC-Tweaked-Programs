@@ -2,14 +2,16 @@
 -- RednetProtocol: Generic Rednet communication helpers
 -- Governed by AGENTS.md
 
+local HAL = require("HAL")
+
 local RednetProtocol = {}
 
 --- Opens rednet on the first available modem
 --- @return string|nil side The side rednet was opened on, or nil
 function RednetProtocol.openAuto()
-	local modem = peripheral.find("modem")
-	if modem then
-		local side = peripheral.getName(modem)
+	local modems = HAL.listNames("modem")
+	if modems[1] then
+		local side = modems[1]
 		if not rednet.isOpen(side) then
 			rednet.open(side)
 		end
@@ -21,9 +23,9 @@ end
 --- Checks if rednet is open on any modem
 --- @return boolean
 function RednetProtocol.isOpen()
-	local modems = { peripheral.find("modem") }
-	for _, modem in ipairs(modems) do
-		if rednet.isOpen(peripheral.getName(modem)) then
+	local modems = HAL.listNames("modem")
+	for _, side in ipairs(modems) do
+		if rednet.isOpen(side) then
 			return true
 		end
 	end
@@ -32,9 +34,8 @@ end
 
 --- Closes rednet on all modems
 function RednetProtocol.closeAll()
-	local modems = { peripheral.find("modem") }
-	for _, modem in ipairs(modems) do
-		local side = peripheral.getName(modem)
+	local modems = HAL.listNames("modem")
+	for _, side in ipairs(modems) do
 		if rednet.isOpen(side) then
 			rednet.close(side)
 		end
@@ -61,7 +62,7 @@ end
 --- @param channel number Modem channel
 --- @param payload table Data to send
 function RednetProtocol.transmit(channel, payload)
-	local modem = peripheral.find("modem")
+	local modem = HAL.getModem()
 	---@cast modem any
 	if modem then
 		modem.transmit(channel, os.getComputerID(), payload)

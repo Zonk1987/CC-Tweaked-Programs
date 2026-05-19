@@ -15,7 +15,6 @@ local HAL = require("HAL")
 
 -- Localize globals
 local setmetatable = setmetatable
-local peripheral = peripheral
 local ipairs = ipairs
 local pairs = pairs
 local os_sleep = os.sleep
@@ -52,9 +51,8 @@ end
 --- Finds an orb without a current job
 ---@return Orb|nil
 function PowahSystem:getFreeOrb()
-	local allOrbsNames = { peripheral.find("powah:energizing_orb") }
-	for _, orbPeripheral in ipairs(allOrbsNames) do
-		local name = peripheral.getName(orbPeripheral)
+	local allOrbsNames = HAL.listNames("powah:energizing_orb")
+	for _, name in ipairs(allOrbsNames) do
 		if not self.activeJobs[name] then
 			local orb = Orb.new(name)
 			if orb:isEmpty() then
@@ -127,7 +125,7 @@ function PowahSystem:process()
 			self.dashboard:setStatus("Waiting for items...")
 		end
 	else
-		local allOrbs = { peripheral.find("powah:energizing_orb") }
+		local allOrbs = HAL.listNames("powah:energizing_orb")
 		if #allOrbs > 0 then
 			self.dashboard:setStatus("All Orbs are busy...")
 		else
@@ -174,8 +172,13 @@ function PowahSystem:keyListener()
 	end
 end
 
---- Starts the system
+--- Starts the system (backward compatibility)
 function PowahSystem:start()
+	self:run()
+end
+
+--- Runs the system
+function PowahSystem:run()
 	self.recipeManager:load()
 	parallel_waitForAll(function()
 		self:mainLoop()

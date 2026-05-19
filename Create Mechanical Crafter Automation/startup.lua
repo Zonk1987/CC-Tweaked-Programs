@@ -58,9 +58,9 @@ boot:addStep("chest", "Puffer-Inventar Check", function()
 
 	local candidates = {}
 	for _, typeName in ipairs(prioritized) do
-		local found = { peripheral.find(typeName) }
-		for _, obj in ipairs(found) do
-			table.insert(candidates, peripheral.getName(obj))
+		local found = HAL.listNames(typeName)
+		for _, name in ipairs(found) do
+			table.insert(candidates, name)
 		end
 	end
 
@@ -77,9 +77,9 @@ boot:addStep("chest", "Puffer-Inventar Check", function()
 	end
 
 	-- Fallback: Any inventory that isn't a mechanical crafter
-	local all = peripheral.getNames()
+	local all = HAL.getNames()
 	for _, name in ipairs(all) do
-		if peripheral.getType(name) ~= "create:mechanical_crafter" and peripheral.hasType(name, "inventory") then
+		if HAL.getType(name) ~= "create:mechanical_crafter" and HAL.hasType(name, "inventory") then
 			chestName = name
 			return true
 		end
@@ -117,7 +117,7 @@ boot:addStep("calibration", "Crafter Kalibrierung", function()
 	-- Verify connected crafters
 	local missingCount = 0
 	for _, name in ipairs(mapping) do
-		if not peripheral.wrap(name) then
+		if not HAL.wrap(name) then
 			missingCount = missingCount + 1
 		end
 	end
@@ -147,4 +147,4 @@ local system = CrafterSystem.new({
 -- Pass chest name to dashboard for display
 system.dashboard.chestName = chestName
 
-system:start()
+system:run()
