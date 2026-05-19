@@ -87,7 +87,7 @@ return {
 					source = "lib/core/ui/boot_assistant.lua",
 					target = "lib/core/ui/boot_assistant.lua",
 					sizeBytes = 21827,
-					hash = "f3392a106cc02db6efd927a08b3e8e19c0b1154ee8818fbe96041a941f1737e6",
+					hash = "e3888173d67b5b21db0a5aa5a5d56e32c92e9de4e23adf59e3f12a228638a454",
 				},
 			},
 		},
