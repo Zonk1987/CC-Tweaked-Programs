@@ -1,2 +1,5 @@
 # Standardize line endings to LF for all Lua files across platforms
 *.lua text eol=lf
+
+# Ensure git hooks always have LF line endings, even on Windows
+.githooks/* text eol=lf
