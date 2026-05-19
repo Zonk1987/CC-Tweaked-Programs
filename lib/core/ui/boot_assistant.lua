@@ -109,7 +109,7 @@ function BootAssistant:log(lvl, msg, stepId)
 
     -- Optional in Datei schreiben
     if self.config.enable_logging then
-        local ok, err = pcall(function()
+        pcall(function()
             local dir = fs.getDir(self.config.log_file)
             if dir and dir ~= "" and not fs.exists(dir) then
                 fs.makeDir(dir)
@@ -120,9 +120,6 @@ function BootAssistant:log(lvl, msg, stepId)
                 file.close()
             end
         end)
-        if not ok then
-            -- Fallback: Geräuschlos ignorieren um Abstürze zu verhindern
-        end
     end
 
     -- Auto-Scroll zum Ende bei neuen Einträgen
@@ -426,7 +423,7 @@ function BootAssistant:drawProgressBar()
     self.win.setTextColor(colors.gray)
     self.win.setCursorPos(3, 6)
     self.win.write("0%")
-    
+
     local x25 = math.floor(barWidth * 0.25) + 3
     self.win.setCursorPos(x25, 6)
     self.win.write("25%")
@@ -574,7 +571,7 @@ end
 
 -- Zeichnet das Diagnose & Peripherie-Untermenü (STATE_DIAGNOSTICS)
 function BootAssistant:drawDiagnostics()
-    local w, h = self.win.getSize()
+    local _, h = self.win.getSize()
     local splitCol = 24
     local bottomRow = h - 2
 
@@ -604,7 +601,7 @@ function BootAssistant:drawDiagnostics()
                 self.win.setBackgroundColor(colors.white)
                 self.win.setTextColor(colors.black)
             end
-            
+
             -- Kürzen falls nötig
             local displayName = p.name .. " (" .. p.type .. ")"
             if #displayName > (splitCol - 5) then
