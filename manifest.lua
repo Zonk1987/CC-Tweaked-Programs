@@ -77,6 +77,20 @@ return {
 				},
 			},
 		},
+		["core.ui.boot_assistant"] = {
+			name = "Core UI Boot Assistant",
+			description = "Interactive boot loader and hardware diagnostics.",
+			hidden = true,
+			dependencies = { "core.peripherals" },
+			files = {
+				{
+					source = "lib/core/ui/boot_assistant.lua",
+					target = "lib/core/ui/boot_assistant.lua",
+					sizeBytes = 21827,
+					hash = "f3392a106cc02db6efd927a08b3e8e19c0b1154ee8818fbe96041a941f1737e6",
+				},
+			},
+		},
 		["core.inventory"] = {
 			name = "Core Inventory",
 			description = "Standardized inventory handling and item matching.",
