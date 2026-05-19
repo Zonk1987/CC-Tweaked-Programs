@@ -293,8 +293,8 @@ return {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 12016,
-					hash = "87185b767ad580e743d8bc164a0b938acbbc2ea0a65c8ff9d65167f181f84a8d",
+					sizeBytes = 12015,
+					hash = "f7c8c1d2cedd9fb40eabb967b9c0affedd694243d94482336ac796bc4616cb2c",
 				},
 			},
 		},

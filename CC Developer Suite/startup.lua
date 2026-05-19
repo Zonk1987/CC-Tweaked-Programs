@@ -61,7 +61,6 @@ boot:run()
 
 local RednetProtocol = require("RednetProtocol")
 
-
 -- Localize globals
 local term = term
 local colors = colors
