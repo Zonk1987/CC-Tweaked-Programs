@@ -56,16 +56,57 @@ local boot = BootAssistant.new({
 
 local chestPeripheral
 boot:addStep("chest", "Puffer-Kiste Check", function()
-	chestPeripheral = peripheral.find("minecraft:chest")
-		or peripheral.find("ironchest:diamond_chest")
-		or peripheral.find("expandedstorage:netherite_chest")
+	-- Prioritize typical dedicated chests/buffers
+	local prioritized = {
+		"minecraft:chest",
+		"ironchest:diamond_chest",
+		"expandedstorage:netherite_chest",
+		"ae2:ingredient_buffer",
+		"ae2:pattern_provider",
+		"sophisticatedstorage:barrel",
+		"sophisticatedstorage:chest",
+		"ironbarrels:barrel",
+		"barrel",
+	}
+
+	for _, typeName in ipairs(prioritized) do
+		local found = peripheral.find(typeName)
+		if found then
+			chestPeripheral = found
+			break
+		end
+	end
+
+	-- Fallback: Any connected peripheral that has inventory capability,
+	-- EXCEPT it must not be a powah energizing orb or an optional component like me_bridge/scanner
 	if not chestPeripheral then
-		return false, "Keine Kiste gefunden."
+		local all = peripheral.getNames()
+		for _, name in ipairs(all) do
+			local pType = peripheral.getType(name)
+			local isOrb = pType and (pType:find("energizing_orb") or pType:find("powah"))
+			local isMeBridge = pType and (pType:find("meBridge") or pType:find("me_bridge"))
+			local isScanner = pType and pType:find("ae2_scanner")
+
+			if not isOrb and not isMeBridge and not isScanner then
+				-- Check if it is an inventory
+				local wrapped = peripheral.wrap(name)
+				if peripheral.hasType(name, "inventory") or (type(wrapped) == "table" and type(wrapped["list"]) == "function") then
+					chestPeripheral = wrapped
+					break
+				end
+			end
+		end
+	end
+
+	if not chestPeripheral then
+		return false, "Keine Puffer-Kiste oder Puffer-Inventar gefunden."
 	end
 	return true
 end, {
-	"Setze eine Kiste (z.B. minecraft:chest, ironchest:diamond_chest) direkt neben den PC.",
-	"Diese Kiste empfaengt die Items vom AE2-System.",
+	"Setze eine Puffer-Kiste, einen ME Ingredient Buffer oder ein anderes",
+	"Puffer-Inventar (z.B. Sophisticated Storage, Barrels, Backpacks) direkt",
+	"neben den PC oder verbinde sie/ihn per Netzwerkkabel.",
+	"Dieser Speicher empfaengt die Items vom AE2/Refined Storage System.",
 })
 
 local meBridgeName

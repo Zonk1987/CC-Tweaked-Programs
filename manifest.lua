@@ -190,8 +190,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 3750,
-					hash = "e86a0aaf26240504fe65c6e21fa3a624fdc5eac62233b762c50dacfe72989746",
+					sizeBytes = 5075,
+					hash = "6e9167e6605e43edf4db4044d488abebb6f2fe81bd52c8f9d849ace485d5657e",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/PowahSystem.lua",
