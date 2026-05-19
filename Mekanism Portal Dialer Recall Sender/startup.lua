@@ -89,7 +89,7 @@ function RecallSender:initHardware()
 		term.setTextColor(colors.black)
 		term.clear()
 
-		local w, h = term.getSize()
+		local w, _ = term.getSize()
 
 		-- Header
 		term.setBackgroundColor(colors.blue)
