@@ -45,30 +45,72 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
 -- Load the main system
 local PowahSystem = require("PowahSystem")
+local BootAssistant = require("boot_assistant")
+
+local boot = BootAssistant.new({
+	title = "Powah Automation Loader",
+	theme = "dark",
+	enable_logging = true,
+	log_file = "logs/powah_boot.log",
+})
+
+local chestPeripheral
+boot:addStep("chest", "Puffer-Kiste Check", function()
+	chestPeripheral = peripheral.find("minecraft:chest")
+		or peripheral.find("ironchest:diamond_chest")
+		or peripheral.find("expandedstorage:netherite_chest")
+	if not chestPeripheral then
+		return false, "Keine Kiste gefunden."
+	end
+	return true
+end, {
+	"Setze eine Kiste (z.B. minecraft:chest, ironchest:diamond_chest) direkt neben den PC.",
+	"Diese Kiste empfaengt die Items vom AE2-System.",
+})
+
+local meBridgeName
+boot:addStep("me_bridge", "ME Bridge Check", function()
+	local meBridge = peripheral.find("meBridge") or peripheral.find("me_bridge")
+	if not meBridge then
+		return "WARN", "Keine ME Bridge gefunden."
+	end
+	meBridgeName = peripheral.getName(meBridge)
+	return true
+end, {
+	"Eine ME Bridge ist optional, wird aber fuer das",
+	"automatische Rezept-Import-Menue benoetigt.",
+	"Verbinde eine ME Bridge (AP) ueber ein Netzwerkkabel.",
+})
+
+local aeScannerName
+boot:addStep("scanner", "AE2 Scanner Check", function()
+	local aeScanner = peripheral.find("ae2_scanner")
+	if not aeScanner then
+		return "WARN", "Kein AE2 Scanner gefunden."
+	end
+	aeScannerName = peripheral.getName(aeScanner)
+	return true
+end, {
+	"Ein AE2 Scanner ist optional, hilft aber bei",
+	"der Erfassung des AE2-Netzwerkstatus.",
+})
+
+boot:addStep("orbs", "Energizing Orbs Scan", function()
+	local orbs = peripheral.find("powah:energizing_orb")
+	if not orbs then
+		return "WARN", "Keine Energizing Orbs gefunden."
+	end
+	return true
+end, {
+	"Verbinde die Energizing Orbs ueber Netzwerkkabel",
+	"und kabelgebundene Modems (Wired Modems) mit dem PC.",
+	"Aktiviere die Modems mit einem Rechtsklick!",
+})
+
+boot:run()
 
 -- Execution Setup
-local chestPeripheral = peripheral.find("minecraft:chest")
-	or peripheral.find("ironchest:diamond_chest")
-	or peripheral.find("expandedstorage:netherite_chest")
 local chestName = chestPeripheral and peripheral.getName(chestPeripheral) or "left"
-
--- Robust ME Bridge & Scanner detection
-local meBridge = peripheral.find("meBridge") or peripheral.find("me_bridge")
-local meBridgeName = meBridge and peripheral.getName(meBridge)
-
-local aeScanner = peripheral.find("ae2_scanner")
-local aeScannerName = aeScanner and peripheral.getName(aeScanner)
-
-print("Hardware Check:")
-print("- Chest:      " .. chestName)
-print("- ME Bridge:  " .. (meBridgeName or "Not found"))
-print("- AE Scanner: " .. (aeScannerName or "None detected"))
-if aeScannerName then
-	local pType = peripheral.getType(aeScannerName)
-	print("  -> Found at: " .. aeScannerName)
-	print("  -> Type:     " .. (pType or "unknown"))
-end
-os.sleep(1)
 
 local system = PowahSystem.new({
 	chestName = chestName,

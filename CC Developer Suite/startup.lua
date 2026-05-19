@@ -28,7 +28,39 @@ local corePaths = {
 }
 package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
+local BootAssistant = require("boot_assistant")
+local boot = BootAssistant.new({
+	title = "DevSuite Boot Loader",
+	theme = "dark",
+	enable_logging = true,
+	log_file = "logs/dev_suite_boot.log",
+})
+
+boot:addStep("modem", "Drahtloses Modem Check", function()
+	local modem = peripheral.find("modem")
+	if not modem then
+		return "WARN", "Kein Modem. Rednet inaktiv."
+	end
+	return true
+end, {
+	"Fuer Netzwerk-Scanner wird ein Modem benoetigt.",
+	"Setze ein drahtloses Modem an eine Seite des PCs.",
+})
+
+boot:addStep("drive", "Disk-Laufwerk Check", function()
+	local drive = peripheral.find("drive")
+	if not drive then
+		return "WARN", "Kein Disk-Laufwerk gefunden."
+	end
+	return true
+end, {
+	"Ein Disk-Laufwerk wird fuer Disketten benoetigt.",
+})
+
+boot:run()
+
 local RednetProtocol = require("RednetProtocol")
+
 
 -- Localize globals
 local term = term
