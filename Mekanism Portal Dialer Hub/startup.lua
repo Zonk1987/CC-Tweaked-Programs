@@ -30,29 +30,56 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
 local HubSystem = require("HubSystem")
 local ButtonGrid = require("ButtonGrid")
+local BootAssistant = require("boot_assistant")
 
--- Hardware Discovery
-local function findHardware()
+local boot = BootAssistant.new({
+	title = "Portal Hub Loader",
+	theme = "dark",
+	enable_logging = true,
+	log_file = "logs/portal_hub_boot.log",
+})
+
+local monitorName
+boot:addStep("monitor", "Monitor Scan", function()
 	local monitor = peripheral.find("monitor")
+	if not monitor then
+		return false, "Kein Monitor gefunden."
+	end
+	monitorName = peripheral.getName(monitor)
+	return true
+end, {
+	"Verbinde einen fortgeschrittenen Monitor (Advanced Monitor)",
+	"direkt mit dem PC oder per Netzwerkkabel und Modems.",
+	"Aktiviere Modems immer mit einem Rechtsklick!",
+})
+
+local tpName
+boot:addStep("teleporter", "Teleporter Scan", function()
 	local teleporter = peripheral.find("mekanism:teleporter")
 		or peripheral.find("teleporter")
 		or peripheral.find("mekanismteleporter")
+	if not teleporter then
+		return false, "Kein Mekanism Teleporter gefunden."
+	end
+	tpName = peripheral.getName(teleporter)
+	return true
+end, {
+	"Verbinde den Mekanism Teleporter mit dem PC.",
+	"Benutze dazu Modems und Netzwerkkabel.",
+})
 
-	local monitorName = monitor and peripheral.getName(monitor)
-	local tpName = teleporter and peripheral.getName(teleporter)
+boot:addStep("modem", "Modem Scan", function()
+	local modem = peripheral.find("modem")
+	if not modem then
+		return "WARN", "Kein Modem gefunden."
+	end
+	return true
+end, {
+	"Ein Modem ist optional, aber notwendig fuer den Empfang von",
+	"Recall-Signalen (Recall-Sender) aus anderen Dimensionen.",
+})
 
-	print("Hardware Scan:")
-	print("- Monitor:    " .. (monitorName or "MISSING"))
-	print("- Teleporter: " .. (tpName or "MISSING"))
-
-	return monitorName, tpName
-end
-
-local monitorName, tpName = findHardware()
-
-if not monitorName or not tpName then
-	error("Critical Hardware Missing! Check Modems & Connections.")
-end
+boot:run()
 
 -- Initialization
 local systemConfig = {

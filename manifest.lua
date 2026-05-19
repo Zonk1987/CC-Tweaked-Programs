@@ -134,13 +134,13 @@ return {
 			description = "Fully automated grid crafting for the Create mod with in-game recording.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.redstone", "core.inventory", "core.recipes" },
+			dependencies = { "core.redstone", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 2428,
-					hash = "b9ce0b10a7ab398ad94326a4ff60cf0bc9d38584392d4a42add0e31ac3269fed",
+					sizeBytes = 3880,
+					hash = "eff14f2f477fa41b7caa627fb4bdcc7e9ed45677631ee88601c3908cd3376d73",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/CrafterSystem.lua",
@@ -236,13 +236,13 @@ return {
 			description = "Premium touch-screen frequency manager for Mekanism Teleporters.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.base", "core.peripherals", "core.network", "core.ui" },
+			dependencies = { "core.base", "core.peripherals", "core.network", "core.ui", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 2056,
-					hash = "0a26447796c3a4ec9dafe5f65488191d36d7472f38f61007b51c58b084f0d6a6",
+					sizeBytes = 2754,
+					hash = "e054582b8d956e640878c098f8b61893e3f8831309f0ddcaa1eeb8043a545dab",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/HubSystem.lua",
@@ -269,13 +269,19 @@ return {
 			description = "Remote trigger for the Portal Hub system.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.base", "core.peripherals", "core.network", "core.redstone" },
+			dependencies = {
+				"core.base",
+				"core.peripherals",
+				"core.network",
+				"core.redstone",
+				"core.ui.boot_assistant",
+			},
 			files = {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 6604,
-					hash = "8096c1af1c1a125dbb275a6169c9c81104a19f48dfcdfa4a37a60c225d60fb0a",
+					sizeBytes = 7021,
+					hash = "3366dde73162cafc59647bef6228194c6bb9d48ca536ca7769bc4c5936878076",
 				},
 			},
 		},

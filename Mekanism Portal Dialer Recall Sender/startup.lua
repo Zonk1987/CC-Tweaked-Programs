@@ -30,6 +30,7 @@ local ConfigStore = require("ConfigStore")
 local PeripheralScanner = require("PeripheralScanner")
 local RednetProtocol = require("RednetProtocol")
 local RedstoneController = require("RedstoneController")
+local BootAssistant = require("boot_assistant")
 
 -- Localize globals
 local fs = fs
@@ -76,29 +77,39 @@ end
 
 --- Initial hardware check and setup
 function RecallSender:initHardware()
-	local modem, side = PeripheralScanner.find("modem")
-	self.modem = modem
-	self.modemSide = side
+	local boot = BootAssistant.new({
+		title = "Recall Sender Loader",
+		theme = "dark",
+		enable_logging = true,
+		log_file = "logs/recall_sender_boot.log",
+	})
 
-	-- Search for Teleporter (Flexible name: just "teleporter")
-	self.tp = PeripheralScanner.find("teleporter")
-
-	term.setTextColor(colors.yellow)
-	if side then
-		print("Main Modem: " .. side)
+	boot:addStep("modem", "Modem Scan", function()
+		local modem, side = PeripheralScanner.find("modem")
+		self.modem = modem
+		self.modemSide = side
+		if not side then
+			return "WARN", "Kein Modem gefunden."
+		end
 		RednetProtocol.openAuto()
-	end
+		return true
+	end, {
+		"Ein Modem (vorzugsweise Wireless Modem) wird benoetigt,",
+		"um das Recall-Signal drahtlos zu senden.",
+	})
 
-	if self.tp then
-		term.setTextColor(colors.lime)
-		print("Teleporter: Connected!")
-	else
-		term.setTextColor(colors.red)
-		print("Teleporter: NOT FOUND!")
-	end
+	boot:addStep("teleporter", "Teleporter Scan", function()
+		self.tp = PeripheralScanner.find("teleporter")
+		if not self.tp then
+			return "WARN", "Kein lokaler Teleporter gefunden."
+		end
+		return true
+	end, {
+		"Ein lokaler Teleporter ist optional. Der Recall Sender kann auch",
+		"als rein kabelloser Signalgeber fuer andere Portale dienen.",
+	})
 
-	term.setTextColor(colors.white)
-	os_sleep(1)
+	boot:run()
 end
 
 --- Refreshes the teleporter status
