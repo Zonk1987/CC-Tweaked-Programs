@@ -19,18 +19,17 @@ if [ -n "$STAGED" ]; then
     fi
 fi
 
-# Automatically update the manifest before committing
 if [ -f "update_manifest.ps1" ]; then
     echo "📦 Automatically updating sizes and hashes in manifest.lua..."
     if command -v powershell.exe &> /dev/null; then
-        powershell.exe -ExecutionPolicy Bypass -File ./update_manifest.ps1
+        powershell.exe -ExecutionPolicy Bypass -File update_manifest.ps1
         # If manifest.lua was changed, stage it so it gets committed
         if git diff --name-only | grep -q 'manifest.lua'; then
             echo "📝 Staging updated manifest.lua..."
             git add manifest.lua
         fi
     elif command -v pwsh &> /dev/null; then
-        pwsh -ExecutionPolicy Bypass -File ./update_manifest.ps1
+        pwsh -ExecutionPolicy Bypass -File update_manifest.ps1
         # If manifest.lua was changed, stage it so it gets committed
         if git diff --name-only | grep -q 'manifest.lua'; then
             echo "📝 Staging updated manifest.lua..."
