@@ -44,6 +44,9 @@ local Logger = require("Logger")
 local configStore = ConfigStore.new("config.json", {
 	hub_monitor = "top",
 	hub_teleporter = "bottom",
+	gridColumns = 4,
+	gridRows = 4,
+	recallChannel = 99,
 })
 
 local schema = {
@@ -157,9 +160,9 @@ HAL.register("hub_teleporter", tpName)
 local systemConfig = {
 	monitorSide = monitorName,
 	tpSide = "hub_teleporter",
-	gridColumns = 4,
-	gridRows = 4,
-	recallChannel = 99,
+	gridColumns = configStore:get("gridColumns", 4),
+	gridRows = configStore:get("gridRows", 4),
+	recallChannel = configStore:get("recallChannel", 99),
 	maxButtons = 24,
 }
 
