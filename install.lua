@@ -193,7 +193,11 @@ local function checkForSelfUpdate()
 
 	local remoteVer = parseVersion(content)
 	if not remoteVer then
-		-- Remote has no version key, meaning it is older than 1.1.0. Skip update silently.
+		-- Remote has no version key, meaning it is older than 1.1.0. Skip update.
+		term.setTextColor(colors.gray)
+		print("Installer is up to date (Version: " .. INSTALLER_VERSION .. ")")
+		term.setTextColor(colors.white)
+		os.sleep(5)
 		return false
 	end
 
