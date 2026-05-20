@@ -181,7 +181,7 @@ local function checkForSelfUpdate()
 	print("Checking for installer updates...")
 	term.setTextColor(colors.white)
 
-	local remoteUrl = REPO_URL .. "install.lua"
+	local remoteUrl = REPO_URL .. "install.lua?nocache=" .. os.epoch("utc")
 	local content, err = fetchUrl(remoteUrl)
 	if not content then
 		term.setTextColor(colors.red)
@@ -231,7 +231,7 @@ end
 local function loadManifest()
 	if not fs.exists(MANIFEST_NAME) then
 		print("Downloading manifest...")
-		local ok, err = downloadFile(REPO_URL .. MANIFEST_NAME, MANIFEST_NAME)
+		local ok, err = downloadFile(REPO_URL .. MANIFEST_NAME .. "?nocache=" .. os.epoch("utc"), MANIFEST_NAME)
 		if not ok then
 			return nil, "Failed to download manifest: " .. err
 		end
