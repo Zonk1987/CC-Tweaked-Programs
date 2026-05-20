@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇯🇵 **ja / Japanese**
 > 
 > 注: この README は AI アシスタント (Antigravity) によって自動的に翻訳されており、翻訳エラーや不正確な部分が含まれている可能性があります。最も正確で最新のドキュメントについては、オリジナルの英語版を参照してください。 [README.md](../../../README.md).
@@ -61,15 +61,16 @@ install.lua
 ### **コア モジュール (`lib/core`)**
 汎用ユーティリティは、重複を減らすために非表示のコア パッケージに抽出されます。
 - **`core.base`**: `ConfigStore` などの基本的なロジック (JSON 永続化)。
-- **`core.peripherals`**: 安全なペリフェラルの検出とラッピング (`PeripheralScanner`)。
+- **`core.peripherals`**: 安全な周辺機器（ペリフェラル）の検出、ラッピング、およびハードウェア抽象化 (`PeripheralScanner`, `HAL`)。
 - **`core.network`**: 標準化された通信プロトコル (`RednetProtocol`)。
 - **`core.redstone`**: レッドストーン インタラクション ヘルパー (`RedstoneController`)。
 - **`core.ui`**: 再利用可能な UI コンポーネント (`ButtonGrid`)。
+- **`core.ui.boot_assistant`**: インタラクティブな起動診断とブートガイダンス (`boot_assistant`)。
 - **`core.inventory`**: 標準化された在庫処理 (`InventoryAdapter`、`ItemMatcher`)。
 - **`core.recipes`**: JSON ベースのレシピ ストレージ (`RecipeStore`)。
 
 ### **依存関係の解決**
-インストーラーは依存関係を再帰的に自動的に解決します。たとえば、`create_crafter` をインストールすると、必要な `core.inventory` および `core.redstone` モジュールが自動的にプルされます。アプリケーション ファイルはルート ディレクトリに配置され、コア ライブラリは `lib/core/` 階層に維持されます (`startup.lua` 内の調整されたパッケージ パスを介してアクセス可能)。
+インストーラーは依存関係を再帰的に自動的に解決します。たとえば、`create_crafter` をインストールすると、必要な `core.inventory` および `core.redstone` モジュールが自動的にプルされます。エントリ ファイルはルート ディレクトリに `startup.lua` として配置され、アプリ モジュールは `system/` および `ui/` にインストールされます。コア ライブラリは `lib/core/` に維持されます (`startup.lua` 内の調整されたパッケージ パスを介してアクセス可能)。
 
 ---
 

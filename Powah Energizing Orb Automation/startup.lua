@@ -127,13 +127,13 @@ boot:addStep("me_bridge", "ME Bridge Check", function()
 		bridges = HAL.listNames("me_bridge")
 	end
 	if #bridges == 0 then
-		return "WARN", "Keine ME Bridge gefunden."
+		return false, "Keine ME Bridge gefunden."
 	end
 	meBridgeName = bridges[1]
 	return true
 end, {
-	"Eine ME Bridge ist optional, wird aber fuer das",
-	"automatische Rezept-Import-Menue benoetigt.",
+	"Eine ME Bridge ist erforderlich fuer den Betrieb",
+	"und das automatische Rezept-Import-Menue.",
 	"Verbinde eine ME Bridge (AP) ueber ein Netzwerkkabel.",
 })
 

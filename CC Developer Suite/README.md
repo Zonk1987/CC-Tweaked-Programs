@@ -2,7 +2,8 @@
 
 > The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 
-🌐 **Languages:** [English](README.md) | [Deutsch](docs/i18n/de/README.md) | [Español](docs/i18n/es/README.md) | [Français](docs/i18n/fr/README.md) | [Português (Brasil)](docs/i18n/pt-BR/README.md) | [日本語](docs/i18n/ja/README.md) | [한국어](docs/i18n/ko/README.md) | [Русский](docs/i18n/ru/README.md) | [简体中文](docs/i18n/zh-CN/README.md)
+
+🌐 **Languages:** [English](README.md) | [Deutsch](../docs/i18n/de/README.md) | [Español](../docs/i18n/es/README.md) | [Français](../docs/i18n/fr/README.md) | [Português (Brasil)](../docs/i18n/pt-BR/README.md) | [日本語](../docs/i18n/ja/README.md) | [한국어](../docs/i18n/ko/README.md) | [Русский](../docs/i18n/ru/README.md) | [简体中文](../docs/i18n/zh-CN/README.md)
 
 ---
 
@@ -56,6 +57,7 @@ A visual directory navigator. Browse folders, view file sizes, and manage your s
 
 ## 📝 Credits
 Developed as part of the **Advanced Agentic Coding** initiative for professional Minecraft automation.
+
 
 
 

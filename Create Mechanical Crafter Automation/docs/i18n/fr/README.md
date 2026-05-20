@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇫🇷 **fr / Francais**
 > 
 > Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
@@ -34,7 +34,7 @@
 - Connectez un **Modem filaire** à **chaque** Mechanical Crafter.
 - Connectez tous les modems à l'ordinateur avec des **câbles réseau**.
 - Cliquez avec le bouton droit sur les modems jusqu'à ce que l'**anneau rouge** s'allume.
-- **âš ï¸ IMPORTANT :** Vous DEVEZ activer les modems dans **ordre de lecture** (en haut à gauche – en haut à droite, puis ligne par ligne) pendant l'étalonnage.
+- **⚠️ IMPORTANT :** Vous DEVEZ activer les modems dans **ordre de lecture** (en haut à gauche – en haut à droite, puis ligne par ligne) pendant l'étalonnage.
 4. **Buffer Chest** — Connectez un coffre (par exemple, Diamond Chest) adjacent à l'ordinateur via un modem filaire.
 5. **Redstone Trigger** — Connectez un signal Redstone de **n'importe quel côté** de l'ordinateur aux Crafters.
 

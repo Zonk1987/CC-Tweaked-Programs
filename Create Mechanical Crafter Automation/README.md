@@ -1,8 +1,8 @@
-﻿# Create Mechanical Crafter Automation 🛠️
+# Create Mechanical Crafter Automation 🛠️
 
 > Fully automated, production-ready ComputerCraft system for the **Mechanical Crafters** from the **Create** mod. Designed for seamless integration with AE2 / Refined Storage in **Blocking Mode**.
 
-🌐 **Languages:** [English](README.md) | [Deutsch](docs/i18n/de/README.md) | [Español](docs/i18n/es/README.md) | [Français](docs/i18n/fr/README.md) | [Português (Brasil)](docs/i18n/pt-BR/README.md) | [日本語](docs/i18n/ja/README.md) | [한국어](docs/i18n/ko/README.md) | [Русский](docs/i18n/ru/README.md) | [简体中文](docs/i18n/zh-CN/README.md)
+🌐 **Languages:** [English](README.md) | [Deutsch](../docs/i18n/de/README.md) | [Español](../docs/i18n/es/README.md) | [Français](../docs/i18n/fr/README.md) | [Português (Brasil)](../docs/i18n/pt-BR/README.md) | [日本語](../docs/i18n/ja/README.md) | [한국어](../docs/i18n/ko/README.md) | [Русский](../docs/i18n/ru/README.md) | [简体中文](../docs/i18n/zh-CN/README.md)
 
 ---
 
@@ -23,12 +23,12 @@
 
 
 1. **Advanced Computer** — Required for the colored high-resolution dashboard.
-2. **Crafter Grid** — Build your array (e.g., 3Ã—3, 5Ã—5, 9Ã—9).
+2. **Crafter Grid** — Build your array (e.g., 3×3, 5×5, 9×9).
 3. **Networking (Crucial Step):**
    - Attach a **Wired Modem** to **every single** Mechanical Crafter.
    - Connect all modems to the Computer with **Networking Cables**.
    - Right-click modems until the **red ring** lights up.
-   - **âš ï¸ IMPORTANT:** You MUST activate the modems in **reading order** (top-left â†’ top-right, then row by row) during calibration.
+   - **⚠️ IMPORTANT:** You MUST activate the modems in **reading order** (top-left → top-right, then row by row) during calibration.
 4. **Buffer Chest** — Connect a chest (e.g., Diamond Chest) adjacent to the Computer via a Wired Modem.
 5. **Redstone Trigger** — Connect a Redstone signal from **any side** of the Computer to the Crafters.
 

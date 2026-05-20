@@ -61,15 +61,16 @@ install.lua
 ### **核心模块（`lib/core`）**
 通用实用程序被提取到隐藏的核心包中以减少重复：
 - **`core.base`**：像`ConfigStore`（JSON持久化）这样的基本逻辑。
-- **`core.peripherals`**：安全外设发现和包装（`PeripheralScanner`）。
+- **`core.peripherals`**：安全外设发现、包装与硬件抽象（`PeripheralScanner`，`HAL`）。
 - **`core.network`**：标准化通信协议（`RednetProtocol`）。
 - **`core.redstone`**：红石交互助手（`RedstoneController`）。
 - **`core.ui`**：可重用的 UI 组件（`ButtonGrid`）。
+- **`core.ui.boot_assistant`**：交互式启动诊断与引导提示（`boot_assistant`）。
 - **`core.inventory`**：标准化库存处理（`InventoryAdapter`、`ItemMatcher`）。
 - **`core.recipes`**：JSON 支持的配方存储 (`RecipeStore`)。
 
 ### **依赖解析**
-安装程序会自动递归地解析依赖关系。例如，安装“create_crafter”将自动提取所需的“core.inventory”和“core.redstone”模块。应用程序文件放置在根目录中，而核心库则维护在“lib/core/”层次结构中（可通过“startup.lua”中调整后的包路径访问）。
+安装程序会自动递归地解析依赖关系。例如，安装“create_crafter”将自动提取所需的“core.inventory”和“core.redstone”模块。入口文件放置在根目录中作为 `startup.lua`，而应用模块则安装到 `system/` 和 `ui/` 中。核心库则保留在 `lib/core/` 中（可通过 `startup.lua` 中调整后的包路径访问）。
 
 ---
 

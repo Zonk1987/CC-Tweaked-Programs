@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇧🇷 **pt-BR / Portugues (Brasil)**
 > 
 > Nota: Este README foi traduzido automaticamente por um assistente de IA (Antigravidade) e pode conter erros de tradução ou imprecisões. Para obter a documentação mais precisa e atualizada, consulte o original em inglês [README.md](../../../README.md).
@@ -71,7 +71,7 @@ Abra `startup` no computador para personalizar o comportamento do sistema:
 - **Próximo/Anterior** — Alterne entre as páginas se você tiver muitas frequências.
 
 ### **Modo de edição (ícone de configurações)**
-1. Toque no ícone **Â¤** no canto superior direito para entrar no Modo de Edição.
+1. Toque no ícone **¤** no canto superior direito para entrar no Modo de Edição.
 2. Selecione qualquer portal para abrir **Sobreposição de cores**.
 3. Escolha uma **Cor fixa** para esse portal específico ou selecione **RANDOM** para um ciclo de cores dinâmico.
 4. Use a barra **MOVE** na parte superior da sobreposição para deslocar a janela caso ela bloqueie sua visualização.

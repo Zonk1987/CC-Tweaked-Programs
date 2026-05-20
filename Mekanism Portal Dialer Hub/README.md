@@ -1,8 +1,8 @@
-﻿# Mekanism Portal Network (CC:Tweaked)
+# Mekanism Portal Network (CC:Tweaked)
 
 > A professional, high-performance touch interface for **Mekanism Teleporters**. Features a flicker-free double-buffered UI, multi-page frequency management, and a built-in frequency editor with color customization.
 
-🌐 **Languages:** [English](README.md) | [Deutsch](docs/i18n/de/README.md) | [Español](docs/i18n/es/README.md) | [Français](docs/i18n/fr/README.md) | [Português (Brasil)](docs/i18n/pt-BR/README.md) | [日本語](docs/i18n/ja/README.md) | [한국어](docs/i18n/ko/README.md) | [Русский](docs/i18n/ru/README.md) | [简体中文](docs/i18n/zh-CN/README.md)
+🌐 **Languages:** [English](README.md) | [Deutsch](../docs/i18n/de/README.md) | [Español](../docs/i18n/es/README.md) | [Français](../docs/i18n/fr/README.md) | [Português (Brasil)](../docs/i18n/pt-BR/README.md) | [日本語](../docs/i18n/ja/README.md) | [한국어](../docs/i18n/ko/README.md) | [Русский](../docs/i18n/ru/README.md) | [简体中文](../docs/i18n/zh-CN/README.md)
 
 ---
 
@@ -65,7 +65,7 @@ Open `startup` on the computer to customize the system behavior:
 - **Next/Prev** — Switch between pages if you have many frequencies.
 
 ### **Edit Mode (Settings Icon)**
-1. Tap the **Â¤** icon in the top right corner to enter Edit Mode.
+1. Tap the **¤** icon in the top right corner to enter Edit Mode.
 2. Select any portal to open the **Color Overlay**.
 3. Pick a **Fixed Color** for that specific portal or select **RANDOM** for dynamic color cycling.
 4. Use the **MOVE** bar at the top of the overlay to shift the window if it blocks your view.

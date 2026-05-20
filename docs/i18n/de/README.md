@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇩🇪 **de / Deutsch**
 > 
 > Hinweis: Diese README-Datei wurde automatisch von einem KI-Assistenten (Antigravity) übersetzt und kann Übersetzungsfehler oder Ungenauigkeiten enthalten. Für die genaueste und aktuellste Dokumentation beziehen Sie sich bitte auf das englische Original [README.md](../../../README.md).
@@ -61,15 +61,16 @@ Dieses Repository ist auf Wartbarkeit und Leistung ausgelegt und basiert auf ein
 ### **Kernmodule (`lib/core`)**
 Generische Dienstprogramme werden in versteckte Kernpakete extrahiert, um Duplikate zu reduzieren:
 - **`core.base`**: Grundlegende Logik wie `ConfigStore` (JSON-Persistenz).
-- **`core.peripherals`**: Sichere Erkennung und Verpackung von Peripheriegeräten („PeripheralScanner“).
+- **`core.peripherals`**: Sichere Erkennung, Verpackung und Hardware-Abstraktion von Peripheriegeräten (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Standardisierte Kommunikationsprotokolle (`RednetProtocol`).
 - **`core.redstone`**: Redstone-Interaktionshelfer („RedstoneController“).
 - **`core.ui`**: Wiederverwendbare UI-Komponenten („ButtonGrid“).
+- **`core.ui.boot_assistant`**: Interaktive Startdiagnose und Starthilfe (`boot_assistant`).
 - **`core.inventory`**: Standardisierte Inventarverwaltung („InventoryAdapter“, „ItemMatcher“).
 - **`core.recipes`**: JSON-gestützter Rezeptspeicher („RecipeStore“).
 
 ### **Abhängigkeitsauflösung**
-Das Installationsprogramm löst Abhängigkeiten automatisch rekursiv auf. Wenn Sie beispielsweise „create_crafter“ installieren, werden automatisch die erforderlichen Module „core.inventory“ und „core.redstone“ abgerufen. Anwendungsdateien werden im Stammverzeichnis abgelegt, während Kernbibliotheken in der „lib/core/“-Hierarchie verwaltet werden (zugänglich über angepasste Paketpfade in der „startup.lua“).
+Das Installationsprogramm löst Abhängigkeiten automatisch rekursiv auf. Wenn Sie beispielsweise „create_crafter“ installieren, werden automatisch die erforderlichen Module „core.inventory“ und „core.redstone“ abgerufen. Einstiegsdateien werden im Stammverzeichnis als `startup.lua` abgelegt, während App-Module in `system/` und `ui/` installiert werden. Kernbibliotheken verbleiben in `lib/core/` (zugänglich über angepasste Paketpfade in der `startup.lua`).
 
 ---
 

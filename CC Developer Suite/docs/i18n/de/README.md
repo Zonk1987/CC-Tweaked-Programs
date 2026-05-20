@@ -10,6 +10,7 @@
 > Das ultimative Toolset für **CC:Tweaked**-Power-User und Entwickler. Umfassende Hardware-Analyse, interaktives Durchsuchen von Elementen und Echtzeit-Ereignisüberwachung in einem professionellen Paket.
 
 
+
 ---
 
 ## 🚀 Installation
@@ -62,6 +63,7 @@ Ein visueller Verzeichnisnavigator. Durchsuchen Sie Ordner, zeigen Sie Dateigrö
 
 ## 📝 Credits
 Entwickelt im Rahmen der **Advanced Agentic Coding**-Initiative für die professionelle Minecraft-Automatisierung.
+
 
 
 

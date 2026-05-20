@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇪🇸 **es / Espanol**
 > 
 > Nota: Este README fue traducido automáticamente por un asistente de IA (Antigravity) y puede contener errores de traducción o imprecisiones. Para obtener la documentación más precisa y actualizada, consulte el original en inglés. [README.md](../../../README.md).
@@ -71,7 +71,7 @@ Abra `inicio` en la computadora para personalizar el comportamiento del sistema:
 - **Siguiente/Anterior**: cambia entre páginas si tienes muchas frecuencias.
 
 ### **Modo de edición (icono de configuración)**
-1. Toque el icono **Â¤** en la esquina superior derecha para ingresar al modo de edición.
+1. Toque el icono **¤** en la esquina superior derecha para ingresar al modo de edición.
 2. Seleccione cualquier portal para abrir **Superposición de color**.
 3. Elija un **Color fijo** para ese portal específico o seleccione **ALEATORIO** para un ciclo dinámico de colores.
 4. Utilice la barra **MOVER** en la parte superior de la superposición para mover la ventana si bloquea su vista.

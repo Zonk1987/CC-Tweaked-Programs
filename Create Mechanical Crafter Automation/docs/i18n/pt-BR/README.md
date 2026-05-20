@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇧🇷 **pt-BR / Portugues (Brasil)**
 > 
 > Nota: Este README foi traduzido automaticamente por um assistente de IA (Antigravidade) e pode conter erros de tradução ou imprecisões. Para obter a documentação mais precisa e atualizada, consulte o original em inglês [README.md](../../../README.md).
@@ -34,7 +34,7 @@
 - Conecte um **Modem com fio** a **cada** Mechanical Crafter.
 - Conecte todos os modems ao computador com **Cabos de rede**.
 - Clique com o botão direito nos modems até que o **anel vermelho** acenda.
-- **âš ï¸ IMPORTANTE:** Você DEVE ativar os modems em **ordem de leitura** (canto superior esquerdo → canto superior direito e, em seguida, linha por linha) durante a calibração.
+- **⚠️ IMPORTANTE:** Você DEVE ativar os modems em **ordem de leitura** (canto superior esquerdo → canto superior direito e, em seguida, linha por linha) durante a calibração.
 4. **Buffer Chest** — Conecte um baú (por exemplo, Diamond Chest) adjacente ao computador por meio de um modem com fio.
 5. **Redstone Trigger** — Conecte um sinal Redstone de **qualquer lado** do computador aos Crafters.
 

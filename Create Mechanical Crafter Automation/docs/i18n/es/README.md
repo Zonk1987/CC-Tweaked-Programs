@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇪🇸 **es / Espanol**
 > 
 > Nota: Este README fue traducido automáticamente por un asistente de IA (Antigravity) y puede contener errores de traducción o imprecisiones. Para obtener la documentación más precisa y actualizada, consulte el original en inglés. [README.md](../../../README.md).
@@ -34,7 +34,7 @@
 - Conecte un **módem con cable** a **cada** Mechanical Crafter.
 - Conecte todos los módems a la computadora con **Cables de red**.
 - Haga clic derecho en los módems hasta que se ilumine el **anillo rojo**.
-- **âš ï¸ IMPORTANTE:** DEBE activar los módems en **orden de lectura** (arriba a la izquierda → arriba a la derecha, luego fila por fila) durante la calibración.
+- **⚠️ IMPORTANTE:** DEBE activar los módems en **orden de lectura** (arriba a la izquierda → arriba a la derecha, luego fila por fila) durante la calibración.
 4. **Buffer Chest**: conecte un cofre (por ejemplo, Diamond Chest) adyacente a la computadora a través de un módem con cable.
 5. **Disparador de Redstone**: conecta una señal de Redstone desde **cualquier lado** de la computadora a los Crafters.
 

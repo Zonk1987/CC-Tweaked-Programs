@@ -61,15 +61,16 @@ Este repositorio está diseñado para brindar mantenimiento y rendimiento utiliz
 ### **Módulos principales (`lib/core`)**
 Las utilidades genéricas se extraen en paquetes principales ocultos para reducir la duplicación:
 - **`core.base`**: Lógica fundamental como `ConfigStore` (persistencia JSON).
-- **`core.peripherals`**: Descubrimiento y ajuste seguro de periféricos (`PeripheralScanner`).
+- **`core.peripherals`**: Descubrimiento, empaquetado y abstracción de hardware seguros de periféricos (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Protocolos de comunicación estandarizados (`RednetProtocol`).
 - **`core.redstone`**: ayudantes de interacción de Redstone (`RedstoneController`).
 - **`core.ui`**: Componentes de UI reutilizables (`ButtonGrid`).
+- **`core.ui.boot_assistant`**: Diagnóstico interactivo de inicio y guía de arranque (`boot_assistant`).
 - **`core.inventory`**: Manejo de inventario estandarizado (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`**: almacenamiento de recetas respaldado por JSON (`RecipeStore`).
 
 ### **Resolución de dependencia**
-El instalador resuelve automáticamente las dependencias de forma recursiva. Por ejemplo, la instalación de `create_crafter` extraerá automáticamente los módulos `core.inventory` y `core.redstone` necesarios. Los archivos de la aplicación se colocan en el directorio raíz, mientras que las bibliotecas principales se mantienen en la jerarquía `lib/core/` (accesible a través de rutas de paquetes ajustadas en `startup.lua`).
+El instalador resuelve automáticamente las dependencias de forma recursiva. Por ejemplo, la instalación de `create_crafter` extraerá automáticamente los módulos `core.inventory` y `core.redstone` necesarios. Los archivos de entrada se colocan en el directorio raíz como `startup.lua`, mientras que los módulos de la aplicación se instalan en `system/` y `ui/`. Las bibliotecas principales permanecen en `lib/core/` (accesibles a través de rutas de paquetes ajustadas en `startup.lua`).
 
 ---
 

@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇫🇷 **fr / Francais**
 > 
 > Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
@@ -71,7 +71,7 @@ Ouvrez le « démarrage » sur l'ordinateur pour personnaliser le comportement
 - **Suivant/Précédent** — Basculez entre les pages si vous avez plusieurs fréquences.
 
 ### **Mode édition (icône Paramètres)**
-1. Appuyez sur l'icône **Â¤** dans le coin supérieur droit pour accéder au mode édition.
+1. Appuyez sur l'icône **¤** dans le coin supérieur droit pour accéder au mode édition.
 2. Sélectionnez n'importe quel portail pour ouvrir la **Superposition de couleurs**.
 3. Choisissez une **Couleur fixe** pour ce portail spécifique ou sélectionnez **ALÉATOIRE** pour un cycle de couleurs dynamique.
 4. Utilisez la barre **MOVE** en haut de la superposition pour déplacer la fenêtre si elle bloque votre vue.

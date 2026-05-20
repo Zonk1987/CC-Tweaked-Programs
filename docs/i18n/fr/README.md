@@ -61,15 +61,16 @@ Ce référentiel est construit pour la maintenabilité et les performances à l'
 ### **Modules de base (`lib/core`)**
 Les utilitaires génériques sont extraits dans des packages principaux cachés pour réduire la duplication :
 - **`core.base`** : Logique fondamentale comme `ConfigStore` (persistance JSON).
-- **`core.peripherals`** : découverte et emballage sécurisés de périphériques (`PeripheralScanner`).
+- **`core.peripherals`** : Découverte, emballage et abstraction matérielle sécurisés de périphériques (`PeripheralScanner`, `HAL`).
 - **`core.network`** : Protocoles de communication standardisés (`RednetProtocol`).
 - **`core.redstone`** : assistants d'interaction Redstone (`RedstoneController`).
 - **`core.ui`** : composants d'interface utilisateur réutilisables (`ButtonGrid`).
+- **`core.ui.boot_assistant`** : Diagnostics de démarrage interactifs et guidage de démarrage (`boot_assistant`).
 - **`core.inventory`** : gestion standardisée des stocks (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`** : stockage de recettes basé sur JSON (`RecipeStore`).
 
 ### **Résolution des dépendances**
-Le programme d'installation résout automatiquement les dépendances de manière récursive. Par exemple, l'installation de « create_crafter » extraira automatiquement les modules « core.inventory » et « core.redstone » requis. Les fichiers d'application sont placés dans le répertoire racine, tandis que les bibliothèques principales sont conservées dans la hiérarchie `lib/core/` (accessible via les chemins de paquets ajustés dans `startup.lua`).
+Le programme d'installation résout automatiquement les dépendances de manière récursive. Par exemple, l'installation de « create_crafter » extraira automatiquement les modules « core.inventory » et « core.redstone » requis. Les fichiers d'entrée sont placés dans le répertoire racine sous le nom `startup.lua`, tandis que les modules d'application sont installés dans `system/` et `ui/`. Les bibliothèques principales restent dans `lib/core/` (accessible via les chemins de paquets ajustés dans `startup.lua`).
 
 ---
 

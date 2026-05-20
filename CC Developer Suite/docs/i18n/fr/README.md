@@ -10,6 +10,7 @@
 > L'ensemble d'outils définitif pour les utilisateurs expérimentés et les développeurs de **CC:Tweaked**. Analyse approfondie du matériel, navigation interactive entre les éléments et surveillance des événements en temps réel dans un seul package professionnel.
 
 
+
 ---
 
 ## 🚀Installation
@@ -62,6 +63,7 @@ Un navigateur d'annuaire visuel. Parcourez les dossiers, affichez la taille des 
 
 ## 📝 Crédits
 Développé dans le cadre de l'initiative **Advanced Agentic Coding** pour l'automatisation professionnelle de Minecraft.
+
 
 
 

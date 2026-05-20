@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇩🇪 **de / Deutsch**
 > 
 > Hinweis: Diese README-Datei wurde automatisch von einem KI-Assistenten (Antigravity) übersetzt und kann Übersetzungsfehler oder Ungenauigkeiten enthalten. Für die genaueste und aktuellste Dokumentation beziehen Sie sich bitte auf das englische Original [README.md](../../../README.md).
@@ -71,7 +71,7 @@ Wählen Sie **Mekanism Portal Dialer Hub** aus dem Menü. Das Installationsprogr
 - **Weiter/Zurück** – Wechseln Sie zwischen den Seiten, wenn Sie viele Frequenzen haben.
 
 ### **Bearbeitungsmodus (Einstellungssymbol)**
-1. Tippen Sie auf das **Â¤**-Symbol in der oberen rechten Ecke, um in den Bearbeitungsmodus zu gelangen.
+1. Tippen Sie auf das **¤**-Symbol in der oberen rechten Ecke, um in den Bearbeitungsmodus zu gelangen.
 2. Wählen Sie ein beliebiges Portal aus, um das **Farb-Overlay** zu öffnen.
 3. Wählen Sie eine **feste Farbe** für dieses bestimmte Portal oder wählen Sie **RANDOM** für dynamischen Farbwechsel.
 4. Verwenden Sie die **VERSCHIEBEN**-Leiste oben im Overlay, um das Fenster zu verschieben, wenn es Ihre Sicht blockiert.

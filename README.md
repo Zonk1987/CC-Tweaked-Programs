@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # Zonk's CC:Tweaked Automation Suite 🚀
 
@@ -55,15 +55,16 @@ This repository is built for maintainability and performance using a modular ske
 ### **Core Modules (`lib/core`)**
 Generic utilities are extracted into hidden core packages to reduce duplication:
 - **`core.base`**: Fundamental logic like `ConfigStore` (JSON persistence).
-- **`core.peripherals`**: Safe peripheral discovery and wrapping (`PeripheralScanner`).
+- **`core.peripherals`**: Safe peripheral discovery, wrapping, and hardware abstraction (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Standardized communication protocols (`RednetProtocol`).
 - **`core.redstone`**: Redstone interaction helpers (`RedstoneController`).
 - **`core.ui`**: Reusable UI components (`ButtonGrid`).
+- **`core.ui.boot_assistant`**: Interactive startup diagnostics and boot guidance (`boot_assistant`).
 - **`core.inventory`**: Standardized inventory handling (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`**: JSON-backed recipe storage (`RecipeStore`).
 
 ### **Dependency Resolution**
-The installer automatically resolves dependencies recursively. For example, installing `create_crafter` will automatically pull the required `core.inventory` and `core.redstone` modules. Application files are placed in the root directory, while core libraries are maintained in the `lib/core/` hierarchy (accessible via adjusted package paths in the `startup.lua`).
+The installer automatically resolves dependencies recursively. For example, installing `create_crafter` will automatically pull the required `core.inventory` and `core.redstone` modules. Entry files are placed in the root directory as `startup.lua`, while app modules are installed into `system/` and `ui/`. Core libraries remain in `lib/core/` (accessible via adjusted package paths in the `startup.lua`).
 
 ---
 

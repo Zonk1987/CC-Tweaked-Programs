@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇩🇪 **de / Deutsch**
 > 
 > Hinweis: Diese README-Datei wurde automatisch von einem KI-Assistenten (Antigravity) übersetzt und kann Übersetzungsfehler oder Ungenauigkeiten enthalten. Für die genaueste und aktuellste Dokumentation beziehen Sie sich bitte auf das englische Original [README.md](../../../README.md).
@@ -34,7 +34,7 @@
 - Schließen Sie ein **kabelgebundenes Modem** an **jeden einzelnen** Mechanical Crafter an.
 - Verbinden Sie alle Modems mit **Netzwerkkabeln** mit dem Computer.
 - Klicken Sie mit der rechten Maustaste auf Modems, bis der **rote Ring** aufleuchtet.
-- **âš ï¸ WICHTIG:** Sie MÜSSEN die Modems während der Kalibrierung in **Lesereihenfolge** (oben links → oben rechts, dann Zeile für Zeile) aktivieren.
+- **⚠️ WICHTIG:** Sie MÜSSEN die Modems während der Kalibrierung in **Lesereihenfolge** (oben links → oben rechts, dann Zeile für Zeile) aktivieren.
 4. **Puffertruhe** – Verbinden Sie eine Truhe (z. B. Diamond Chest) neben dem Computer über ein kabelgebundenes Modem.
 5. **Redstone-Trigger** – Verbinden Sie ein Redstone-Signal von **einer beliebigen Seite** des Computers mit den Crafters.
 
