@@ -164,8 +164,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 5467,
-					hash = "0bb8a70f50d0b4aa98fc6b2bb2b18e66a1f7619f713c50c38084852ce15d1a7f",
+					sizeBytes = 5474,
+					hash = "569840ea50511d0d09b4c2a4afe3b017676ed6b81aea6ce24cb5cb6b60536d3c",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",

@@ -88,8 +88,12 @@ local boot = BootAssistant.new({
 -- Execution Setup: Smart discovery for the buffer inventory
 local chestName = configStore:get("buffer", "left")
 boot:addStep("chest", "Puffer-Inventar Check", function()
-	-- 1. Check if configured chest exists and is an inventory
-	if chestName and HAL.wrap(chestName) and HAL.hasType(chestName, "inventory") then
+	if
+		chestName
+		and HAL.wrap(chestName)
+		and HAL.hasType(chestName, "inventory")
+		and HAL.getType(chestName) ~= "create:mechanical_crafter"
+	then
 		return true
 	end
 
