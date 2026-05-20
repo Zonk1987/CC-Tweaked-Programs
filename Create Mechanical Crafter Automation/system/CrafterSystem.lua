@@ -72,7 +72,13 @@ function CrafterSystem.new(options)
 		recipeManager = self.recipeManager,
 		dashboard = self.dashboard,
 	})
-	log(self, "info", "CrafterSystem initialized (chest: %s, recipeFile: %s)", options.chestName, options.recipeFile or "crafter_recipes.json")
+	log(
+		self,
+		"info",
+		"CrafterSystem initialized (chest: %s, recipeFile: %s)",
+		options.chestName,
+		options.recipeFile or "crafter_recipes.json"
+	)
 	return self
 end
 

@@ -63,7 +63,13 @@ function PowahSystem.new(options)
 	self.activeJobs = {}
 	self.meBridge = options.meBridgeName and HAL.get(options.meBridgeName) or nil
 	self.aeScanner = options.aeScannerName and HAL.get(options.aeScannerName) or nil
-	log(self, "info", "PowahSystem initialized (chest: %s, recipeFile: %s)", options.chestName, options.recipeFile or "powah_recipes.json")
+	log(
+		self,
+		"info",
+		"PowahSystem initialized (chest: %s, recipeFile: %s)",
+		options.chestName,
+		options.recipeFile or "powah_recipes.json"
+	)
 	return self
 end
 
@@ -99,7 +105,13 @@ function PowahSystem:checkActiveJobs()
 				if (os_epoch("utc") - job.startTime) > 60000 then
 					local timeoutMsg = "Timeout in " .. orbName .. ". Recovering..."
 					self.dashboard:setError(timeoutMsg)
-					log(self, "warn", "Timeout in '%s' during craft of recipe '%s'. Recovering items...", orbName, job.recipeName)
+					log(
+						self,
+						"warn",
+						"Timeout in '%s' during craft of recipe '%s'. Recovering items...",
+						orbName,
+						job.recipeName
+					)
 					orb:recover(self.chest.name)
 					self.activeJobs[orbName] = nil
 					os_sleep(1)
@@ -139,12 +151,25 @@ function PowahSystem:process()
 					startTime = os_epoch("utc"),
 					recipeName = readyRecipe.name,
 				}
-				log(self, "info", "Successfully started crafting on '%s' for recipe: %s", freeOrb.name, readyRecipe.name)
+				log(
+					self,
+					"info",
+					"Successfully started crafting on '%s' for recipe: %s",
+					freeOrb.name,
+					readyRecipe.name
+				)
 				self.dashboard:draw()
 			else
 				local errStr = err or "unknown error"
 				self.dashboard:setError("Transfer: " .. errStr)
-				log(self, "error", "Failed to transfer items to orb '%s' for recipe '%s': %s", freeOrb.name, readyRecipe.name, errStr)
+				log(
+					self,
+					"error",
+					"Failed to transfer items to orb '%s' for recipe '%s': %s",
+					freeOrb.name,
+					readyRecipe.name,
+					errStr
+				)
 				freeOrb:recover(self.chest.name)
 				os_sleep(1)
 			end

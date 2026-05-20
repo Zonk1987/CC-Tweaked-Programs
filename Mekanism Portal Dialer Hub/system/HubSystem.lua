@@ -172,7 +172,13 @@ function HubSystem.new(options)
 	}, HubSystem)
 
 	RednetProtocol.openAuto()
-	log(self, "info", "HubSystem initialized (monitor: %s, teleporter: %s)", self.monName or "Unknown", self.tpName or "Unknown")
+	log(
+		self,
+		"info",
+		"HubSystem initialized (monitor: %s, teleporter: %s)",
+		self.monName or "Unknown",
+		self.tpName or "Unknown"
+	)
 	return self
 end
 
@@ -696,7 +702,13 @@ function HubSystem:run()
 	if side then
 		HAL.call(side, "open", self.configStore.data.recallChannel or 99)
 	end
-	log(self, "info", "HubSystem running. Modem state: channel %d on side %s", self.configStore.data.recallChannel or 99, self.modemSide)
+	log(
+		self,
+		"info",
+		"HubSystem running. Modem state: channel %d on side %s",
+		self.configStore.data.recallChannel or 99,
+		self.modemSide
+	)
 	self:drawTerminalHeader()
 	self:draw()
 	while true do

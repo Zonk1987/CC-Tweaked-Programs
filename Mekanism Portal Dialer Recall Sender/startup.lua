@@ -88,7 +88,13 @@ function RecallSender.new()
 	}, RecallSender)
 
 	self:initHardware()
-	log(self, "info", "RecallSender initialized (target: %s, channel: %d)", self.configStore.data.target, self.configStore.data.channel)
+	log(
+		self,
+		"info",
+		"RecallSender initialized (target: %s, channel: %d)",
+		self.configStore.data.target,
+		self.configStore.data.channel
+	)
 	return self
 end
 
@@ -265,7 +271,13 @@ function RecallSender:configMenu()
 			self.configStore.data.channel = tonumber(input) or self.configStore.data.channel
 		elseif key == keys.three then
 			self.configStore:save()
-			log(self, "info", "Configuration saved via menu: target '%s', channel %d", self.configStore.data.target, self.configStore.data.channel)
+			log(
+				self,
+				"info",
+				"Configuration saved via menu: target '%s', channel %d",
+				self.configStore.data.target,
+				self.configStore.data.channel
+			)
 			self:drawTerminalHeader()
 			return
 		elseif key == keys.four then
@@ -281,7 +293,13 @@ end
 function RecallSender:broadcastRecall()
 	term.setTextColor(colors.yellow)
 	print("\n[!] Signal detected! Sending recall...")
-	log(self, "info", "Redstone signal detected. Broadcasting RECALL command for target portal '%s' on channel %d", self.configStore.data.target, self.configStore.data.channel)
+	log(
+		self,
+		"info",
+		"Redstone signal detected. Broadcasting RECALL command for target portal '%s' on channel %d",
+		self.configStore.data.target,
+		self.configStore.data.channel
+	)
 
 	local payload = { command = "RECALL", target = self.configStore.data.target }
 	RednetProtocol.transmit(self.configStore.data.channel, payload)
