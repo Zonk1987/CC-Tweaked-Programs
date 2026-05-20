@@ -94,7 +94,7 @@ function Dashboard:drawFooter()
 		term.setTextColor(colors.red)
 		print("ERROR: " .. self.errorMsg)
 	else
-		term.setTextColor(colors.lightGray)
+		term.setTextColor(colors.white)
 		print("[R] Reload  [S] Record  [M] Manage")
 	end
 end
@@ -107,7 +107,7 @@ function Dashboard:drawMissingItems()
 	term.setTextColor(colors.yellow)
 	print("Waiting to craft: " .. self.missingData.recipeName)
 	print("Missing Items:")
-	term.setTextColor(colors.lightGray)
+	term.setTextColor(colors.white)
 	for name, count in pairs(self.missingData.items) do
 		print("- " .. count .. "x " .. name)
 	end

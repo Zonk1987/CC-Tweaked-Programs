@@ -21,7 +21,7 @@ local PALETTES = {
 	dark = {
 		[colors.white] = 0x121214, -- Hintergrund (Canvas)
 		[colors.black] = 0xF5F6FA, -- Haupttext
-		[colors.gray] = 0x4A4D5A, -- Rahmen & Skala
+		[colors.gray] = 0x9A9C9F, -- Rahmen & Skala / Detailtexte (erhoehte Lesbarkeit)
 		[colors.blue] = 0x1F3A60, -- Header-Balken
 		[colors.green] = 0x00E676, -- Ladebalken / OK
 		[colors.red] = 0xFF5252, -- Fehler / FAIL
@@ -391,8 +391,9 @@ end
 -- Zeichnet den Standard-Header
 function BootAssistant:drawHeader()
 	local w, _ = self.win.getSize()
+	local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
 	self.win.setBackgroundColor(colors.blue)
-	self.win.setTextColor(colors.white)
+	self.win.setTextColor(textOnColor)
 
 	-- Zeile 1
 	self.win.setCursorPos(1, 1)
@@ -400,7 +401,7 @@ function BootAssistant:drawHeader()
 	-- Zeile 2
 	self.win.setCursorPos(1, 2)
 	self.win.write(string.rep(" ", w))
-	drawCenteredText(self.win, 2, self.config.title, colors.white, colors.blue)
+	drawCenteredText(self.win, 2, self.config.title, textOnColor, colors.blue)
 	-- Zeile 3
 	self.win.setCursorPos(1, 3)
 	self.win.write(string.rep(" ", w))
@@ -576,7 +577,8 @@ function BootAssistant:drawPopup()
 	self.win.write("HILFE & EMPFEHLUNG")
 	self.win.setCursorPos(startX + modalW - 5, startY + 1)
 	self.win.setBackgroundColor(colors.red)
-	self.win.setTextColor(colors.white)
+	local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
+	self.win.setTextColor(textOnColor)
 	self.win.write("[X]")
 	self.win.setBackgroundColor(colors.lightGray)
 
@@ -622,7 +624,8 @@ function BootAssistant:drawDiagnostics()
 			self.win.setCursorPos(3, y)
 			if pIdx == self.selectedPeripheralIdx then
 				self.win.setBackgroundColor(colors.blue)
-				self.win.setTextColor(colors.white)
+				local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
+				self.win.setTextColor(textOnColor)
 			else
 				self.win.setBackgroundColor(colors.white)
 				self.win.setTextColor(colors.black)

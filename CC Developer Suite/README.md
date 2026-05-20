@@ -1,4 +1,4 @@
-﻿# CC Developer Suite 🛠️🔬
+# CC Developer Suite 🛠️🔬
 
 > The definitive toolset for **CC:Tweaked** power users and developers. Deep hardware analysis, interactive item browsing, and real-time event monitoring in one professional package.
 

@@ -24,33 +24,35 @@
 
 Eine Sammlung professioneller Automatisierungsskripte für Minecraft **CC:Tweaked** mit einer modularen **Feature-Core**-Architektur, erstklassiger UI-Ästhetik und einem robusten manifestgesteuerten Installationsprogramm.
 
-
----
-
-## 🚀 Installation
+## 🚀 Installation & CLI-Optionen
 
 Führen Sie diesen Befehl auf einem **erweiterten Computer** aus:
 
-1. Laden Sie die Datei install.lua aus dem Repo herunter
+1. Laden Sie die Datei `install.lua` herunter:
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
-2. Führen Sie die Datei install.lua aus
+2. Führen Sie das Installationsprogramm aus:
 ```bash
 install.lua
 ```
 
+### **Installer CLI-Optionen**
+- `install.lua --validate`: Überprüft die Manifest-Struktur und validiert den Abhängigkeitsbaum.
+- `install.lua --dry-run`: Führt eine detaillierte Simulation der geplanten Installation durch, ohne Dateien herunterzuladen oder zu schreiben (ideal zum Testen von Updates).
+- `install.lua --force` oder `install.lua -f`: Umgeht den lokalen Cache-Check und erzwingt den vollständigen Neu-Download aller Systemdateien.
+
 ---
 
-## 📦 Verfügbare Pakete
+## 📦 Pakete
 
 | AUSWEIS | Name | Beschreibung | Hauptmerkmale |
 |:---|:---|:---|:---|
 | `mekanism_portal_hub` | [**Portal Dialer Hub**](../../../Mekanism%20Portal%20Dialer%20Hub/docs/i18n/de/README.md) | Premium-Touchscreen-Wählgerät. | Bewegliche Benutzeroberfläche, Akzentstreifen, Seitenzurücksetzung. |
 | `mekanism_recall_sender` | [**Portal Recall Sender**](../../../Mekanism%20Portal%20Dialer%20Recall%20Sender/docs/i18n/de/README.md) | Drahtloser Fernauslöser. | Hardware-Diagnose, Live-Statusüberwachung. |
-| `create_crafter` | [**Mechanical Crafter**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/de/README.md) | Automatisierung des Grid-Craftings. | Aufzeichnung und Kalibrierung, mehrstufige Rezepte. |
+| `create_crafter` | [**Mechanical Crafter**](../../../Create%20Mechanical%20Crafter%20Automation/docs/i18n/de/README.md) | Grid-Crafting-Automatisierung. | Aufzeichnung und Kalibrierung, mehrstufige Rezepte. |
 | `powah_orb` | [**Energizing Orb**](../../../Powah%20Energizing%20Orb%20Automation/docs/i18n/de/README.md) | Parallele Herstellungsautomatisierung. | ME Bridge-Integration, automatische Wiederherstellung. |
-| „developer_suite“. | [**CC Developer Suite**](../../../CC%20Developer%20Suite/docs/i18n/de/README.md) | Diagnose-Toolkit. | Ereignisschnüffler, Peripherieinspektor. |
+| `developer_suite` | [**CC Developer Suite**](../../../CC%20Developer%20Suite/docs/i18n/de/README.md) | Diagnose-Toolkit. | Ereignisschnüffler, Peripherieinspektor. |
 
 ---
 
@@ -65,9 +67,9 @@ Generische Dienstprogramme werden in versteckte Kernpakete extrahiert, um Duplik
 - **`core.peripherals`**: Sichere Erkennung, Verpackung und Hardware-Abstraktion von Peripheriegeräten (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Standardisierte Kommunikationsprotokolle (`RednetProtocol`).
 - **`core.redstone`**: Redstone-Interaktionshelfer („RedstoneController“).
-- **`core.ui`**: Wiederverwendbare UI-Komponenten („ButtonGrid“, `ConfigGUI`).
+- **`core.ui`**: Wiederverwendbare UI-Komponenten („ButtonGrid`, `ConfigGUI`).
 - **`core.ui.boot_assistant`**: Interaktive Startdiagnose und Starthilfe (`boot_assistant`).
-- **`core.inventory`**: Standardisierte Inventarverwaltung („InventoryAdapter“, „ItemMatcher“).
+- **`core.inventory`**: Standardisierte Inventarverwaltung („InventoryAdapter`, „ItemMatcher“).
 - **`core.recipes`**: JSON-gestützter Rezeptspeicher („RecipeStore“).
 
 ### **Abhängigkeitsauflösung**
@@ -93,6 +95,9 @@ Das Installationsprogramm löst Abhängigkeiten automatisch rekursiv auf. Wenn S
 
 Der gesamte Code in diesem Repository unterliegt **[AGENTS.md](../../../AGENTS.md)**.
 - **Strenger Modus**: Anwendungsskripte und Eintragsdateien verwenden eine strikte Umgebung, um versehentliche Globals zu verhindern (Kernbibliotheken umgehen dies derzeit, um den Lokalisierungs-Boilerplate zu reduzieren).
+- **Selbst-Update (Self-Update)**: Das Installationsprogramm prüft vor jedem Lauf vollautomatisch auf GitHub, ob eine neuere Version des Installers existiert, und aktualisiert sich nahtlos selbst, bevor es fortfährt.
+- **Transaktions-Rollback (Rollback Safety)**: Während der Aktualisierung erstellt der Installer temporäre `.bak`-Sicherungen. Sollte ein Download, Verbindungsfehler oder Größenabgleich mitten in der Installation fehlschlagen, wird ein vollautomates Rollback ausgelöst, das das System exakt in den vorherigen Zustand zurückversetzt.
+- **Geschützte Dateien (Overwrite Protection)**: Benutzerdateien wie `config.json`, `crafter_mapping.json`, `.env`, hardwarebezogene `*.local.json` Overrides sowie `user_*.json` Konfigurationen werden niemals überschrieben und bleiben vollautomatisch erhalten.
 - **Keine Löschung**: Das Installationsprogramm löscht niemals vorhandene Benutzerdateien (außer zum Bereinigen seiner eigenen temporären Dateien wie „manifest.lua“ und „install.lua“ nach Abschluss oder zum Ersetzen älterer Versionen während eines Updates).
 - **Install State Cache**: Das Installationsprogramm erstellt eine versteckte Datei „.install_state.json“, um sich zu merken, welche Dateiversionen installiert wurden. Dies beschleunigt zukünftige Ausführungen, indem Dateien übersprungen werden, die sich nicht geändert haben (angezeigt als „CACHED“). Sie können diese Datei jederzeit löschen – bei der nächsten Installation wird einfach alles erneut heruntergeladen.
 - **Kein automatischer Neustart**: Das Installationsprogramm fragt vor dem Ausführen der Eintragsdateien nach und startet das System niemals ohne Erlaubnis neu.

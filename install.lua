@@ -174,7 +174,7 @@ local function checkForSelfUpdate()
 	local remoteVer = parseVersion(content)
 	if not remoteVer then
 		-- Remote has no version key, meaning it is older than 1.1.0. Skip update.
-		term.setTextColor(colors.gray)
+		term.setTextColor(colors.cyan)
 		print("Installer is up to date (Version: " .. INSTALLER_VERSION .. ")")
 		term.setTextColor(colors.white)
 		os.sleep(5)
@@ -205,7 +205,7 @@ local function checkForSelfUpdate()
 		shell.run(selfPath, unpack(args))
 		return true
 	else
-		term.setTextColor(colors.gray)
+		term.setTextColor(colors.cyan)
 		print("Installer is up to date (Version: " .. INSTALLER_VERSION .. ")")
 		term.setTextColor(colors.white)
 		os.sleep(5)
@@ -215,10 +215,15 @@ end
 
 --- Load and validate the manifest
 local function loadManifest()
-	if not fs.exists(MANIFEST_NAME) then
-		print("Downloading manifest...")
-		local ok, err = downloadFile(REPO_URL .. MANIFEST_NAME .. "?nocache=" .. os.epoch("utc"), MANIFEST_NAME)
-		if not ok then
+	print("Downloading manifest...")
+	local ok, err = downloadFile(REPO_URL .. MANIFEST_NAME .. "?nocache=" .. os.epoch("utc"), MANIFEST_NAME)
+	if not ok then
+		if fs.exists(MANIFEST_NAME) then
+			term.setTextColor(colors.yellow)
+			print("Warning: Failed to download latest manifest (" .. tostring(err) .. "). Using cached local version.")
+			term.setTextColor(colors.white)
+			os.sleep(2)
+		else
 			return nil, "Failed to download manifest: " .. err
 		end
 	end
@@ -236,16 +241,16 @@ local function loadManifest()
 
 	-- loadstring is the Lua 5.1 compatible equivalent of load(chunk, name)
 	-- The sandbox env ({}) is set on the returned function via setfenv.
-	local fn, err = loadstring(content, "manifest")
+	local fn, parseErr = loadstring(content, "manifest")
 	if fn then
 		setfenv(fn, {})
 	end
 	if not fn then
-		return nil, "Manifest parse error: " .. err
+		return nil, "Manifest parse error: " .. parseErr
 	end
 
-	local ok, manifest = pcall(fn)
-	if not ok then
+	local pcallOk, manifest = pcall(fn)
+	if not pcallOk then
 		return nil, "Manifest execution error: " .. manifest
 	end
 	if type(manifest) ~= "table" or type(manifest.packages) ~= "table" then
@@ -337,10 +342,6 @@ local function resolve(manifest, packageId, resolvedPkgs, filesToDownload)
 	return filesToDownload, pkg
 end
 
---- Load the version-fingerprint cache (maps installed file paths to their manifest hash).
---- Purpose: detect whether a file's manifest version has changed since the last install,
---- allowing "UP TO DATE" skips without re-downloading. This is NOT a cryptographic
---- download verifier — transport integrity is guaranteed by HTTPS.
 --- Save the version-fingerprint cache
 local function saveInstallState(state)
 	local stateFile = ".install_state.json"

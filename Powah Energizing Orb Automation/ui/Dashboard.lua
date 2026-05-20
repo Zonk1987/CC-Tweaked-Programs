@@ -90,7 +90,7 @@ function Dashboard:drawFooter()
 		term.setTextColor(colors.red)
 		print("ERROR: " .. self.errorMsg)
 	else
-		term.setTextColor(colors.lightGray)
+		term.setTextColor(colors.white)
 		print("[R] Reload  [I] Import AE2")
 	end
 end
@@ -136,7 +136,7 @@ function Dashboard:draw()
 		jobsFound = true
 	end
 	if not jobsFound then
-		term.setTextColor(colors.lightGray)
+		term.setTextColor(colors.white)
 		print("No active crafting processes.")
 	end
 

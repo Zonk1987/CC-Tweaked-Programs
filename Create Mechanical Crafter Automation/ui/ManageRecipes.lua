@@ -122,7 +122,7 @@ function ManageRecipes:open()
 			local detailW = w - detailX + 1
 
 			term.setCursorPos(detailX, 3)
-			term.setTextColor(side == "right" and colors.yellow or colors.lightGray)
+			term.setTextColor(side == "right" and colors.yellow or colors.white)
 			local recipeTitle = current.name
 			if #recipeTitle > detailW then
 				recipeTitle = recipeTitle:sub(1, detailW - 2) .. ".."

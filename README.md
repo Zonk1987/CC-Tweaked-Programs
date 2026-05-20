@@ -21,18 +21,23 @@ A collection of professional-grade automation scripts for Minecraft **CC:Tweaked
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & CLI Options
 
 Run this command on an **Advanced Computer**:
 
-1. Download the install.lua file from the repo
+1. Download the `install.lua` file:
 ```bash
 wget https://raw.githubusercontent.com/Zonk1987/CC-Tweaked-Programs/main/install.lua
 ```
-2. Run the install.lua file
+2. Run the installer:
 ```bash
 install.lua
 ```
+
+### **Installer CLI Options**
+- `install.lua --validate`: Checks the manifest structure and validates dependency trees.
+- `install.lua --dry-run`: Performs a detailed simulation of the planned installation without writing or downloading any files (ideal for testing updates).
+- `install.lua --force` or `install.lua -f`: Bypasses the local version-fingerprint cache and forces a full re-download of all system files.
 
 ---
 
@@ -87,6 +92,9 @@ The installer automatically resolves dependencies recursively. For example, inst
 
 All code in this repository is governed by **[AGENTS.md](./AGENTS.md)**.
 - **Strict Mode**: Application scripts and entry files use a strict environment to prevent accidental globals (core libraries currently bypass this to reduce localization boilerplate).
+- **Self-Update**: The installer automatically checks whether a newer installer version is available on GitHub and upgrades itself transparently before continuing.
+- **Rollback Safety**: The installer creates temporary `.bak` copies of files being updated. If any download, connection, or size check fails mid-installation, it initiates an automatic transactional rollback to restore the system to its precise previous state.
+- **Protected Files (Overwrite Protection)**: Critical user files such as `config.json`, `crafter_mapping.json`, `.env`, any `*.local.json` hardware overrides, and `user_*.json` configurations are never overwritten and will be preserved automatically.
 - **No Deletion**: The installer never deletes existing user files (except for cleaning up its own temporary files like `manifest.lua` and `install.lua` after completion, or replacing older versions during an update).
 - **Install State Cache**: The installer creates a hidden file `.install_state.json` to remember which file versions have been installed. This speeds up future runs by skipping files that haven't changed (shown as `CACHED`). It is safe to delete this file at any time — the next install will simply re-download everything.
 - **No Auto-Reboot**: The installer asks before running entry files and never reboots the system without permission.
