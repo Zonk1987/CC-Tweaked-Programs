@@ -14,7 +14,7 @@ local BRANCH = "main"
 local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
 
 local MANIFEST_NAME = "manifest.lua"
-local INSTALLER_VERSION = "1.1.1"
+local INSTALLER_VERSION = "1.1.2"
 
 local args = { ... }
 
@@ -125,44 +125,25 @@ local function isVersionNewer(currentVer, remoteVer)
 end
 
 local protectedPatterns = {
-	"config%.json$",
-	"recipes%.json$",
-	"crafter_mapping%.json$",
-	"%.env$",
+	"^config%.json$",
+	"^recipes%.json$",
+	"^crafter_mapping%.json$",
+	"^%.env$",
+	"%.local%.json$",
+	"^user_.*%.json$",
 }
 
 --- Helper: Check if file path matches protected patterns
 local function isProtected(path)
+	local filename = fs.getName(path)
 	for _, pattern in ipairs(protectedPatterns) do
-		if path:find(pattern) then
+		if filename:find(pattern) then
 			return true
 		end
 	end
 	return false
 end
 
---- Helper: Detect local tweaks and create a backup if modified
-local function detectAndBackup(target, lastInstalledSize)
-	if not fs.exists(target) then
-		return
-	end
-	if lastInstalledSize then
-		local currentSize = fs.getSize(target)
-		if currentSize ~= lastInstalledSize then
-			local backupPath = target .. ".bak"
-			term.setTextColor(colors.yellow)
-			print(string.format("\n  [WARN] Local modifications detected in %s!", target))
-			write(string.format("  Creating backup: %s ... ", backupPath))
-			if fs.exists(backupPath) then
-				fs.delete(backupPath)
-			end
-			fs.copy(target, backupPath)
-			term.setTextColor(colors.lime)
-			print("OK")
-			term.setTextColor(colors.white)
-		end
-	end
-end
 
 --- Helper: Check if installer itself has an update, apply it and restart if so
 local function checkForSelfUpdate()
@@ -361,22 +342,6 @@ end
 --- Purpose: detect whether a file's manifest version has changed since the last install,
 --- allowing "UP TO DATE" skips without re-downloading. This is NOT a cryptographic
 --- download verifier — transport integrity is guaranteed by HTTPS.
-local function loadInstallState()
-	local stateFile = ".install_state.json"
-	if fs.exists(stateFile) then
-		local f = fs.open(stateFile, "r")
-		if f then
-			local data = f.readAll()
-			f.close()
-			local ok, state = pcall(textutils.unserializeJSON, data)
-			if ok and type(state) == "table" then
-				return state
-			end
-		end
-	end
-	return {}
-end
-
 --- Save the version-fingerprint cache
 local function saveInstallState(state)
 	local stateFile = ".install_state.json"
@@ -387,8 +352,57 @@ local function saveInstallState(state)
 	end
 end
 
+--- Load the version-fingerprint cache (maps installed file paths to their manifest hash).
+--- Purpose: detect whether a file's manifest version has changed since the last install,
+--- allowing "UP TO DATE" skips without re-downloading. This is NOT a cryptographic
+--- download verifier — transport integrity is guaranteed by HTTPS.
+local function loadInstallState()
+	local stateFile = ".install_state.json"
+	if fs.exists(stateFile) then
+		local f = fs.open(stateFile, "r")
+		if f then
+			local data = f.readAll()
+			f.close()
+			local ok, state = pcall(textutils.unserializeJSON, data)
+			if ok and type(state) == "table" then
+				if state.stateVersion == 2 and type(state.files) == "table" then
+					return state
+				else
+					-- Migration v1 -> v2
+					local migratedFiles = {}
+					for path, entry in pairs(state) do
+						if type(path) == "string" and path ~= "stateVersion" and path ~= "files" then
+							if type(entry) == "table" then
+								migratedFiles[path] = {
+									hash = entry.hash,
+									sizeBytes = entry.sizeBytes,
+								}
+							elseif type(entry) == "string" then
+								migratedFiles[path] = {
+									hash = entry,
+									sizeBytes = nil,
+								}
+							end
+						end
+					end
+					local newState = {
+						stateVersion = 2,
+						files = migratedFiles,
+					}
+					saveInstallState(newState)
+					return newState
+				end
+			end
+		end
+	end
+	return {
+		stateVersion = 2,
+		files = {},
+	}
+end
+
 --- Perform the installation
-local function install(packageId, manifest, isDryRun)
+local function install(packageId, manifest, isDryRun, isForce)
 	local ok, result, targetPkg = pcall(resolve, manifest, packageId)
 	if not ok or not targetPkg then
 		print("Error: " .. tostring(result or "Unknown error"))
@@ -405,6 +419,36 @@ local function install(packageId, manifest, isDryRun)
 		total = total + 1
 	end
 
+	local stats = {
+		cached = 0,
+		updated = 0,
+		preserved = 0,
+		failed = 0,
+	}
+
+	local backups = {}
+
+	local function rollback()
+		term.setTextColor(colors.red)
+		print("\nInstallation failed! Initiating rollback...")
+		for target, info in pairs(backups) do
+			if info.action == "restore" then
+				if fs.exists(target) then
+					fs.delete(target)
+				end
+				fs.copy(target .. ".bak", target)
+				fs.delete(target .. ".bak")
+			elseif info.action == "delete" then
+				if fs.exists(target) then
+					fs.delete(target)
+				end
+			end
+		end
+		term.setTextColor(colors.lime)
+		print("Rollback completed successfully. System state restored.")
+		term.setTextColor(colors.white)
+	end
+
 	local installState = loadInstallState()
 	local current = 0
 	for target, fileData in pairs(result) do
@@ -414,13 +458,10 @@ local function install(packageId, manifest, isDryRun)
 		local expectedHash = fileData.hash
 
 		local lastInstalledHash, lastInstalledSize
-		local stateEntry = installState[target]
+		local stateEntry = installState.files[target]
 		if type(stateEntry) == "table" then
 			lastInstalledHash = stateEntry.hash
 			lastInstalledSize = stateEntry.sizeBytes
-		elseif type(stateEntry) == "string" then
-			lastInstalledHash = stateEntry
-			lastInstalledSize = nil
 		end
 
 		local isFileProtected = fs.exists(target) and isProtected(target)
@@ -428,6 +469,7 @@ local function install(packageId, manifest, isDryRun)
 		if isDryRun then
 			if isFileProtected then
 				print(string.format("  [%d/%d] [PLAN] Preserve protected: %s", current, total, target))
+				stats.preserved = stats.preserved + 1
 			else
 				local wouldBackup = false
 				if fs.exists(target) and lastInstalledSize then
@@ -441,6 +483,7 @@ local function install(packageId, manifest, isDryRun)
 				else
 					print(string.format("  [%d/%d] [PLAN] Update: %s -> %s", current, total, source, target))
 				end
+				stats.updated = stats.updated + 1
 			end
 		else
 			local skipDownload = false
@@ -452,7 +495,8 @@ local function install(packageId, manifest, isDryRun)
 			-- NOTE: We do not recompute SHA256 locally (no native CC:Tweaked API; a pure-Lua
 			-- implementation would be too slow). Transport integrity is covered by HTTPS.
 			if
-				expectedHash
+				not isForce
+				and expectedHash
 				and fs.exists(target)
 				and lastInstalledHash == expectedHash
 				and (not expectedSize or fs.getSize(target) == expectedSize)
@@ -465,12 +509,47 @@ local function install(packageId, manifest, isDryRun)
 				term.setTextColor(colors.yellow)
 				print("PRESERVED")
 				term.setTextColor(colors.white)
+				stats.preserved = stats.preserved + 1
 			elseif skipDownload then
 				write(string.format("  [%d/%d] Skipping %s... ", current, total, target))
 				term.setTextColor(colors.blue)
 				print("CACHED")
+				stats.cached = stats.cached + 1
 			else
-				detectAndBackup(target, lastInstalledSize)
+				-- Create backup/transaction record
+				local backupPath = target .. ".bak"
+				if fs.exists(target) then
+					-- Check for manual tweaks/modifications warning
+					local isTweaked = false
+					if lastInstalledSize then
+						local currentSize = fs.getSize(target)
+						if currentSize ~= lastInstalledSize then
+							isTweaked = true
+						end
+					end
+					if isTweaked then
+						term.setTextColor(colors.yellow)
+						print(string.format("\n  [WARN] Local modifications detected in %s!", target))
+						write(string.format("  Creating backup: %s ... ", backupPath))
+						if fs.exists(backupPath) then
+							fs.delete(backupPath)
+						end
+						fs.copy(target, backupPath)
+						term.setTextColor(colors.lime)
+						print("OK")
+						term.setTextColor(colors.white)
+					else
+						-- Silent backup for transaction rollback
+						if fs.exists(backupPath) then
+							fs.delete(backupPath)
+						end
+						fs.copy(target, backupPath)
+					end
+					backups[target] = { action = "restore" }
+				else
+					backups[target] = { action = "delete" }
+				end
+
 				write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
 				local success, err = downloadFile(REPO_URL .. source, target)
 				if success then
@@ -493,16 +572,19 @@ local function install(packageId, manifest, isDryRun)
 								)
 							)
 							term.setTextColor(colors.white)
+							stats.failed = stats.failed + 1
+							rollback()
 							return
 						end
 					end
 					term.setTextColor(colors.lime)
 					print("OK")
+					stats.updated = stats.updated + 1
 					-- Store the manifest hash and size as the version fingerprint for this file.
 					-- On the next install run, this allows skipping the download if the
 					-- manifest version hasn't changed.
 					if expectedHash then
-						installState[target] = {
+						installState.files[target] = {
 							hash = expectedHash,
 							sizeBytes = fs.getSize(target),
 						}
@@ -513,6 +595,8 @@ local function install(packageId, manifest, isDryRun)
 					print("FAILED")
 					print("    Error: " .. err)
 					term.setTextColor(colors.white)
+					stats.failed = stats.failed + 1
+					rollback()
 					return
 				end
 			end
@@ -521,6 +605,26 @@ local function install(packageId, manifest, isDryRun)
 
 	term.setTextColor(colors.white)
 	print("\nTotal files processed: " .. total)
+
+	-- Beautiful Stats Summary
+	write("  Results: ")
+	term.setTextColor(colors.blue)
+	write(stats.cached .. " cached")
+	term.setTextColor(colors.gray)
+	write(", ")
+	term.setTextColor(colors.green)
+	write(stats.updated .. " updated")
+	term.setTextColor(colors.gray)
+	write(", ")
+	term.setTextColor(colors.yellow)
+	write(stats.preserved .. " preserved")
+	term.setTextColor(colors.gray)
+	write(", ")
+	term.setTextColor(colors.red)
+	write(stats.failed .. " failed")
+	term.setTextColor(colors.white)
+	print("\n")
+
 	if not isDryRun then
 		print("Installation complete.")
 
@@ -529,6 +633,16 @@ local function install(packageId, manifest, isDryRun)
 			fs.delete(MANIFEST_NAME)
 		end
 		print("Cleanup: Removed manifest.")
+
+		-- Clean up temporary rollback backup files
+		for target, info in pairs(backups) do
+			if info.action == "restore" then
+				local backupPath = target .. ".bak"
+				if fs.exists(backupPath) then
+					fs.delete(backupPath)
+				end
+			end
+		end
 
 		if targetPkg.entry and fs.exists(targetPkg.entry) then
 			print("\nWould you like to run " .. targetPkg.entry .. " now? (y/n)")
@@ -618,6 +732,7 @@ local function main()
 		end
 
 		local isDryRun = false
+		local isForce = false
 		local selectedPkgId = nil
 
 		for _, arg in ipairs(args) do
@@ -626,13 +741,15 @@ local function main()
 				return
 			elseif arg == "--dry-run" then
 				isDryRun = true
+			elseif arg == "--force" or arg == "-f" then
+				isForce = true
 			elseif manifest.packages[arg] then
 				selectedPkgId = arg
 			end
 		end
 
 		if selectedPkgId then
-			install(selectedPkgId, manifest, isDryRun)
+			install(selectedPkgId, manifest, isDryRun, isForce)
 			return
 		end
 
@@ -725,7 +842,7 @@ local function main()
 			elseif key == keys.enter then
 				term.clear()
 				term.setCursorPos(1, 1)
-				install(menu[selectedIndex].id, manifest, false)
+				install(menu[selectedIndex].id, manifest, false, isForce)
 				break
 			elseif key == keys.q then
 				term.clear()
