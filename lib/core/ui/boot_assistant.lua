@@ -244,6 +244,21 @@ function BootAssistant:handleEvent(eventData)
 	elseif eventType == "mouse_scroll" then
 		local direction = eventData[2]
 		self:handleScroll(direction)
+	elseif eventType == "key" then
+		local key = eventData[2]
+		if (key == keys.s or key == keys.c) and self.state == "STATE_NORMAL" and self.config.onSetup then
+			self:triggerSetup()
+		end
+	end
+end
+
+-- Triggers the setup callback and re-runs checks
+function BootAssistant:triggerSetup()
+	if type(self.config.onSetup) == "function" then
+		self:restorePalette()
+		pcall(self.config.onSetup, self.win)
+		self:applyPalette()
+		self:runChecks()
 	end
 end
 
@@ -283,6 +298,12 @@ function BootAssistant:handleClick(x, y)
 			self.peripheralOffset = 0
 			self.methodOffset = 0
 			self.state = "STATE_DIAGNOSTICS"
+			return
+		end
+
+		-- Klick auf Setup Button im Footer (Zeile h)
+		if self.config.onSetup and y == h and x >= 19 and x <= 29 then
+			self:triggerSetup()
 			return
 		end
 
@@ -511,6 +532,9 @@ function BootAssistant:drawFooterNormal()
 	self.win.setBackgroundColor(colors.lightGray)
 	self.win.setTextColor(colors.black)
 	self.win.write(" [ System-Info ] ")
+	if self.config.onSetup then
+		self.win.write(" [ Setup ] ")
+	end
 	self.win.setBackgroundColor(colors.white)
 end
 

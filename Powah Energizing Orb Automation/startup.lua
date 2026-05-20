@@ -51,18 +51,60 @@ package.path = package.path .. ";" .. table.concat(corePaths, ";") .. ";" .. tab
 local HAL = require("HAL")
 local PowahSystem = require("PowahSystem")
 local BootAssistant = require("boot_assistant")
+local ConfigStore = require("ConfigStore")
+local ConfigGUI = require("ConfigGUI")
+
+local configStore = ConfigStore.new("config.json", {
+	buffer = "left",
+	me_bridge = "back",
+	ae_scanner = "top",
+})
+
+local schema = {
+	{ key = "buffer", label = "Puffer-Kiste", type = "peripheral", peripheralType = "inventory", default = "left" },
+	{ key = "me_bridge", label = "ME Bridge", type = "peripheral", peripheralType = "meBridge", default = "back" },
+	{ key = "ae_scanner", label = "AE Scanner", type = "peripheral", peripheralType = "ae2_scanner", default = "top" },
+}
+
+-- Check CLI Arguments
+local args = { ... }
+local shouldRunConfig = false
+for _, arg in ipairs(args) do
+	if arg == "--config" or arg == "-c" then
+		shouldRunConfig = true
+	end
+end
+
+if shouldRunConfig then
+	local gui = ConfigGUI.new(configStore, schema)
+	gui:run()
+	term.clear()
+	term.setCursorPos(1, 1)
+	print("Setup abgeschlossen.")
+	return
+end
 
 local boot = BootAssistant.new({
 	title = "Powah Automation Loader",
 	theme = "dark",
 	enable_logging = true,
 	log_file = "logs/powah_boot.log",
+	onSetup = function()
+		local gui = ConfigGUI.new(configStore, schema)
+		gui:run()
+	end,
 })
 
-local chestName = "left"
+local chestName = configStore:get("buffer", "left")
 local chestPeripheral
 boot:addStep("chest", "Puffer-Kiste Check", function()
-	-- Prioritize typical dedicated chests/buffers
+	-- 1. Check if configured chest exists and is an inventory
+	if chestName and HAL.wrap(chestName) and HAL.hasType(chestName, "inventory") then
+		chestPeripheral = HAL.wrap(chestName)
+		return true
+	end
+
+	-- 2. Prioritize typical dedicated chests/buffers
 	local prioritized = {
 		"minecraft:chest",
 		"ironchest:diamond_chest",
@@ -80,6 +122,7 @@ boot:addStep("chest", "Puffer-Kiste Check", function()
 		if found[1] then
 			chestName = found[1]
 			chestPeripheral = HAL.wrap(found[1])
+			configStore:set("buffer", chestName, true)
 			break
 		end
 	end
@@ -103,6 +146,7 @@ boot:addStep("chest", "Puffer-Kiste Check", function()
 				then
 					chestName = name
 					chestPeripheral = wrapped
+					configStore:set("buffer", chestName, true)
 					break
 				end
 			end
@@ -120,8 +164,15 @@ end, {
 	"Dieser Speicher empfaengt die Items vom AE2/Refined Storage System.",
 })
 
-local meBridgeName
+local meBridgeName = configStore:get("me_bridge", "back")
 boot:addStep("me_bridge", "ME Bridge Check", function()
+	if meBridgeName and HAL.wrap(meBridgeName) then
+		local pType = HAL.getType(meBridgeName)
+		if pType and (pType:find("meBridge") or pType:find("me_bridge")) then
+			return true
+		end
+	end
+
 	local bridges = HAL.listNames("meBridge")
 	if #bridges == 0 then
 		bridges = HAL.listNames("me_bridge")
@@ -130,6 +181,7 @@ boot:addStep("me_bridge", "ME Bridge Check", function()
 		return false, "Keine ME Bridge gefunden."
 	end
 	meBridgeName = bridges[1]
+	configStore:set("me_bridge", meBridgeName, true)
 	return true
 end, {
 	"Eine ME Bridge ist erforderlich fuer den Betrieb",
@@ -137,13 +189,21 @@ end, {
 	"Verbinde eine ME Bridge (AP) ueber ein Netzwerkkabel.",
 })
 
-local aeScannerName
+local aeScannerName = configStore:get("ae_scanner", "top")
 boot:addStep("scanner", "AE2 Scanner Check", function()
+	if aeScannerName and HAL.wrap(aeScannerName) then
+		local pType = HAL.getType(aeScannerName)
+		if pType and pType:find("ae2_scanner") then
+			return true
+		end
+	end
+
 	local scanners = HAL.listNames("ae2_scanner")
 	if #scanners == 0 then
 		return "WARN", "Kein AE2 Scanner gefunden."
 	end
 	aeScannerName = scanners[1]
+	configStore:set("ae_scanner", aeScannerName, true)
 	return true
 end, {
 	"Ein AE2 Scanner ist optional, hilft aber bei",

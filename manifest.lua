@@ -19,6 +19,12 @@ return {
 					sizeBytes = 1747,
 					hash = "a00c219b5bff320199dcd48c0dd296c11e65f9e45dce46cd5c8c81ed9b43e866",
 				},
+				{
+					source = "lib/core/logger/Logger.lua",
+					target = "lib/core/logger/Logger.lua",
+					sizeBytes = 4032,
+					hash = "49fff1a9de90d01d819d58f42161c16252744b72245aca28d586465b884e6351",
+				},
 			},
 		},
 		["core.peripherals"] = {
@@ -81,6 +87,12 @@ return {
 					sizeBytes = 7225,
 					hash = "4db07bde8e4da2b2ed86dcd00d0154755d3a974f0829391b2ee342cd91c0a788",
 				},
+				{
+					source = "lib/core/ui/ConfigGUI.lua",
+					target = "lib/core/ui/ConfigGUI.lua",
+					sizeBytes = 10996,
+					hash = "d6c25de8f21b31c3047785647d93504de88ec3a4492b65c3a50e990a87366724",
+				},
 			},
 		},
 		["core.ui.boot_assistant"] = {
@@ -92,8 +104,8 @@ return {
 				{
 					source = "lib/core/ui/boot_assistant.lua",
 					target = "lib/core/ui/boot_assistant.lua",
-					sizeBytes = 18687,
-					hash = "f5944c42c00e74bf77df9e9724829bc6ae976361a269fb28a4ef84f5d432a7e5",
+					sizeBytes = 19345,
+					hash = "3bd3b11d85de2b297e91496397399725d1548a4c7f595b23f5f8109ca06a24f4",
 				},
 			},
 		},
@@ -145,8 +157,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 4007,
-					hash = "e8d794afecbc2c0e3dba61cd0ff149bf044bc4c15ce33a2ba3ac7b3be7cab80e",
+					sizeBytes = 5286,
+					hash = "339990aa111cb445b3ff8ee04ecdbf6d8eb6ee53b9ddea6f223b72bf2cdd1b58",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",
@@ -196,8 +208,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 5390,
-					hash = "72b12f533037261caeae5fa408502eac7f800ec7908a22a5a873e748d117f040",
+					sizeBytes = 7253,
+					hash = "7c97444b98ca669e0fc79cee8b4656e972a810d83f15772878de86b3f4ecaf68",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/system/PowahSystem.lua",
@@ -247,8 +259,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 3052,
-					hash = "e1ad94e76da1769a1d0cde216df3ecc16db2a881bb46b3e2ccada002b38729d2",
+					sizeBytes = 4503,
+					hash = "0043c4698d4e75ad7e9047895dbef96b5834185931ba7f445188b21e0bfcdf5c",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
