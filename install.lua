@@ -14,7 +14,7 @@ local BRANCH = "main"
 local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
 
 local MANIFEST_NAME = "manifest.lua"
-local INSTALLER_VERSION = "1.1.2"
+local INSTALLER_VERSION = "1.1.0"
 
 local args = { ... }
 
@@ -187,7 +187,7 @@ local function checkForSelfUpdate()
 		term.setTextColor(colors.red)
 		print("Warning: Could not check for updates (" .. tostring(err) .. ")")
 		term.setTextColor(colors.white)
-		os.sleep(2.5)
+		os.sleep(5)
 		return false
 	end
 
@@ -207,15 +207,16 @@ local function checkForSelfUpdate()
 			term.setTextColor(colors.red)
 			print("Error: Could not overwrite installer file")
 			term.setTextColor(colors.white)
-			os.sleep(2.5)
+			os.sleep(5)
 			return false
 		end
 		file.write(content)
 		file.close()
 
 		term.setTextColor(colors.lime)
-		print("Installer upgraded successfully! Restarting...")
+		print("Installer upgraded successfully! Restarting in 5 seconds...")
 		term.setTextColor(colors.white)
+		os.sleep(5)
 
 		shell.run(selfPath, unpack(args))
 		return true
@@ -223,6 +224,7 @@ local function checkForSelfUpdate()
 		term.setTextColor(colors.gray)
 		print("Installer is up to date (Version: " .. INSTALLER_VERSION .. ")")
 		term.setTextColor(colors.white)
+		os.sleep(5)
 		return false
 	end
 end
@@ -599,7 +601,7 @@ local function main()
 			term.setTextColor(colors.red)
 			print("Error checking for updates: " .. tostring(updated))
 			term.setTextColor(colors.white)
-			os.sleep(2.5)
+			os.sleep(5)
 		end
 
 		local manifest, err_manifest = loadManifest()
@@ -607,7 +609,7 @@ local function main()
 			term.setTextColor(colors.red)
 			print("Error: " .. err_manifest)
 			term.setTextColor(colors.white)
-			os.sleep(2.5)
+			os.sleep(5)
 			return
 		end
 
