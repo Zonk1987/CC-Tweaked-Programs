@@ -359,4 +359,3 @@ if shouldRunConfig then
 	return
 end
 app:run()
-
