@@ -152,7 +152,14 @@ return {
 			description = "Fully automated grid crafting for the Create mod with in-game recording.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.base", "core.ui", "core.redstone", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
+			dependencies = {
+				"core.base",
+				"core.ui",
+				"core.redstone",
+				"core.inventory",
+				"core.recipes",
+				"core.ui.boot_assistant",
+			},
 			files = {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
