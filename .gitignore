@@ -20,3 +20,4 @@ stylua.exe
 update_manifest.ps1
 migrate_and_translate.ps1
 migrate_and_translate_log.txt
+powershell.cmd
