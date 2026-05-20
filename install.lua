@@ -14,6 +14,7 @@ local BRANCH = "main"
 local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
 
 local MANIFEST_NAME = "manifest.lua"
+local INSTALLER_VERSION = "1.1.0"
 
 local args = { ... }
 
@@ -43,6 +44,187 @@ local function downloadFile(url, path)
 	file.write(content)
 	file.close()
 	return true
+end
+
+local PALETTE = {
+	[colors.black] = 0x121214, -- Canvas / Hintergrund (sehr edles Dunkelgrau)
+	[colors.white] = 0xF5F6FA, -- Haupttext (sehr edles Off-White)
+	[colors.gray] = 0x4A4D5A, -- Trennlinien & Rahmen
+	[colors.blue] = 0x1F3A60, -- Header-Hintergrund (Premium-Dunkelblau)
+	[colors.cyan] = 0x00B0FF, -- Akzentfarbe / Titel / Rahmen-Deko (Helles Cyan)
+	[colors.green] = 0x00E676, -- Erfolgsmeldungen (OK / CACHED)
+	[colors.yellow] = 0xFFD740, -- Warnungen & Highlights
+	[colors.red] = 0xFF5252, -- Fehler (FAIL / ERROR)
+	[colors.lightGray] = 0x1E1E24, -- Selektierte Items Hintergrund (Anthrazit)
+}
+
+local oldPalette = {}
+
+local function applyPalette()
+	for color, hex in pairs(PALETTE) do
+		local r, g, b = term.getPaletteColor(color)
+		oldPalette[color] = { r, g, b }
+		term.setPaletteColor(color, hex)
+	end
+end
+
+local function restorePalette()
+	for color, rgb in pairs(oldPalette) do
+		term.setPaletteColor(color, rgb[1], rgb[2], rgb[3])
+	end
+end
+
+--- Helper: Fetch URL content as string
+local function fetchUrl(url)
+	local response, err = http.get(url)
+	if not response then
+		return nil, "Connection failed: " .. (err or "unknown")
+	end
+	local content = response.readAll()
+	response.close()
+	return content
+end
+
+--- Helper: Parse version constant from file content
+local function parseVersion(content)
+	if not content then
+		return nil
+	end
+	return content:match("local%s+INSTALLER_VERSION%s*=%s*\"([^\"]+)\"")
+end
+
+--- Helper: Parse semantic version string into major, minor, patch numbers
+local function parseSemVer(verStr)
+	local major, minor, patch = verStr:match("^(%d+)%.(%d+)%.(%d+)$")
+	if major then
+		return tonumber(major), tonumber(minor), tonumber(patch)
+	end
+	return 0, 0, 0
+end
+
+--- Helper: Check if remote version is newer than current version
+local function isVersionNewer(currentVer, remoteVer)
+	local curMaj, curMin, curPat = parseSemVer(currentVer)
+	local remMaj, remMin, remPat = parseSemVer(remoteVer)
+
+	if remMaj > curMaj then
+		return true
+	end
+	if remMaj < curMaj then
+		return false
+	end
+
+	if remMin > curMin then
+		return true
+	end
+	if remMin < curMin then
+		return false
+	end
+
+	return remPat > curPat
+end
+
+local protectedPatterns = {
+	"config%.json$",
+	"recipes%.json$",
+	"crafter_mapping%.json$",
+	"%.env$",
+}
+
+--- Helper: Check if file path matches protected patterns
+local function isProtected(path)
+	for _, pattern in ipairs(protectedPatterns) do
+		if path:find(pattern) then
+			return true
+		end
+	end
+	return false
+end
+
+--- Helper: Detect local tweaks and create a backup if modified
+local function detectAndBackup(target, lastInstalledSize)
+	if not fs.exists(target) then
+		return
+	end
+	if lastInstalledSize then
+		local currentSize = fs.getSize(target)
+		if currentSize ~= lastInstalledSize then
+			local backupPath = target .. ".bak"
+			term.setTextColor(colors.yellow)
+			print(string.format("\n  [WARN] Local modifications detected in %s!", target))
+			write(string.format("  Creating backup: %s ... ", backupPath))
+			if fs.exists(backupPath) then
+				fs.delete(backupPath)
+			end
+			fs.copy(target, backupPath)
+			term.setTextColor(colors.lime)
+			print("OK")
+			term.setTextColor(colors.white)
+		end
+	end
+end
+
+--- Helper: Check if installer itself has an update, apply it and restart if so
+local function checkForSelfUpdate()
+	local selfPath = shell.getRunningProgram()
+	local isDryRun = false
+	for _, arg in ipairs(args) do
+		if arg == "--dry-run" then
+			isDryRun = true
+		end
+	end
+	if isDryRun or not selfPath or selfPath == "shell" then
+		return false
+	end
+
+	term.setTextColor(colors.yellow)
+	print("Checking for installer updates...")
+	term.setTextColor(colors.white)
+
+	local remoteUrl = REPO_URL .. "install.lua"
+	local content, err = fetchUrl(remoteUrl)
+	if not content then
+		term.setTextColor(colors.red)
+		print("Warning: Could not check for updates (" .. tostring(err) .. ")")
+		term.setTextColor(colors.white)
+		os.sleep(2.5)
+		return false
+	end
+
+	local remoteVer = parseVersion(content)
+	if not remoteVer then
+		-- Remote has no version key, meaning it is older than 1.1.0. Skip update silently.
+		return false
+	end
+
+	if isVersionNewer(INSTALLER_VERSION, remoteVer) then
+		term.setTextColor(colors.cyan)
+		print(string.format("New installer version found: %s (Current: %s)", remoteVer, INSTALLER_VERSION))
+		print("Upgrading installer...")
+
+		local file = fs.open(selfPath, "w")
+		if not file then
+			term.setTextColor(colors.red)
+			print("Error: Could not overwrite installer file")
+			term.setTextColor(colors.white)
+			os.sleep(2.5)
+			return false
+		end
+		file.write(content)
+		file.close()
+
+		term.setTextColor(colors.lime)
+		print("Installer upgraded successfully! Restarting...")
+		term.setTextColor(colors.white)
+
+		shell.run(selfPath, unpack(args))
+		return true
+	else
+		term.setTextColor(colors.gray)
+		print("Installer is up to date (Version: " .. INSTALLER_VERSION .. ")")
+		term.setTextColor(colors.white)
+		return false
+	end
 end
 
 --- Load and validate the manifest
@@ -225,11 +407,36 @@ local function install(packageId, manifest, isDryRun)
 		local expectedSize = fileData.sizeBytes
 		local expectedHash = fileData.hash
 
-		if isDryRun then
-			print(string.format("  [%d/%d] [PLAN] %s -> %s", current, total, source, target))
-		else
-			term.setTextColor(colors.gray)
+		local lastInstalledHash, lastInstalledSize
+		local stateEntry = installState[target]
+		if type(stateEntry) == "table" then
+			lastInstalledHash = stateEntry.hash
+			lastInstalledSize = stateEntry.sizeBytes
+		elseif type(stateEntry) == "string" then
+			lastInstalledHash = stateEntry
+			lastInstalledSize = nil
+		end
 
+		local isFileProtected = fs.exists(target) and isProtected(target)
+
+		if isDryRun then
+			if isFileProtected then
+				print(string.format("  [%d/%d] [PLAN] Preserve protected: %s", current, total, target))
+			else
+				local wouldBackup = false
+				if fs.exists(target) and lastInstalledSize then
+					local currentSize = fs.getSize(target)
+					if currentSize ~= lastInstalledSize then
+						wouldBackup = true
+					end
+				end
+				if wouldBackup then
+					print(string.format("  [%d/%d] [PLAN] Backup & Update: %s -> %s", current, total, source, target))
+				else
+					print(string.format("  [%d/%d] [PLAN] Update: %s -> %s", current, total, source, target))
+				end
+			end
+		else
 			local skipDownload = false
 
 			-- Version-fingerprint check: compare the manifest hash (= the version ID written
@@ -241,17 +448,23 @@ local function install(packageId, manifest, isDryRun)
 			if
 				expectedHash
 				and fs.exists(target)
-				and installState[target] == expectedHash
+				and lastInstalledHash == expectedHash
 				and (not expectedSize or fs.getSize(target) == expectedSize)
 			then
 				skipDownload = true
 			end
 
-			if skipDownload then
+			if isFileProtected then
+				write(string.format("  [%d/%d] Preserving %s... ", current, total, target))
+				term.setTextColor(colors.yellow)
+				print("PRESERVED")
+				term.setTextColor(colors.white)
+			elseif skipDownload then
 				write(string.format("  [%d/%d] Skipping %s... ", current, total, target))
 				term.setTextColor(colors.blue)
 				print("CACHED")
 			else
+				detectAndBackup(target, lastInstalledSize)
 				write(string.format("  [%d/%d] Downloading %s... ", current, total, target))
 				local success, err = downloadFile(REPO_URL .. source, target)
 				if success then
@@ -279,11 +492,14 @@ local function install(packageId, manifest, isDryRun)
 					end
 					term.setTextColor(colors.lime)
 					print("OK")
-					-- Store the manifest hash as the version fingerprint for this file.
+					-- Store the manifest hash and size as the version fingerprint for this file.
 					-- On the next install run, this allows skipping the download if the
 					-- manifest version hasn't changed.
 					if expectedHash then
-						installState[target] = expectedHash
+						installState[target] = {
+							hash = expectedHash,
+							sizeBytes = fs.getSize(target)
+						}
 						saveInstallState(installState)
 					end
 				else
@@ -372,128 +588,152 @@ end
 
 --- Main Entry Point
 local function main()
-	local manifest, err = loadManifest()
-	if not manifest then
-		print("Error: " .. err)
-		return
-	end
+	applyPalette()
 
-	local isDryRun = false
-	local selectedPkgId = nil
-
-	for _, arg in ipairs(args) do
-		if arg == "--validate" then
-			validateManifest(manifest)
+	local ok, err = pcall(function()
+		local ok_check, updated = pcall(checkForSelfUpdate)
+		if ok_check and updated then
 			return
-		elseif arg == "--dry-run" then
-			isDryRun = true
-		elseif manifest.packages[arg] then
-			selectedPkgId = arg
 		end
-	end
-
-	if selectedPkgId then
-		install(selectedPkgId, manifest, isDryRun)
-		return
-	end
-
-	-- Interactive Mode Setup
-	local menu = {}
-	for id, pkg in pairs(manifest.packages) do
-		if not pkg.hidden then
-			table.insert(menu, { id = id, name = pkg.name, desc = pkg.description })
+		if not ok_check then
+			term.setTextColor(colors.red)
+			print("Error checking for updates: " .. tostring(updated))
+			term.setTextColor(colors.white)
+			os.sleep(2.5)
 		end
-	end
-	table.sort(menu, function(a, b)
-		return a.id < b.id
-	end)
 
-	local selectedIndex = 1
+		local manifest, err_manifest = loadManifest()
+		if not manifest then
+			term.setTextColor(colors.red)
+			print("Error: " .. err_manifest)
+			term.setTextColor(colors.white)
+			os.sleep(2.5)
+			return
+		end
 
-	while true do
-		local w, h = term.getSize()
-		local leftWidth = math.floor(w * 0.45)
-		local rightWidth = w - leftWidth - 4
-		local rightX = leftWidth + 3
+		local isDryRun = false
+		local selectedPkgId = nil
 
-		term.setBackgroundColor(colors.black)
-		term.clear()
+		for _, arg in ipairs(args) do
+			if arg == "--validate" then
+				validateManifest(manifest)
+				return
+			elseif arg == "--dry-run" then
+				isDryRun = true
+			elseif manifest.packages[arg] then
+				selectedPkgId = arg
+			end
+		end
 
-		-- Dynamic Header
-		local line = string.rep("=", w)
-		local title = "Zonk's Universal Installer"
-		local titleX = math.floor((w - #title) / 2) + 1
+		if selectedPkgId then
+			install(selectedPkgId, manifest, isDryRun)
+			return
+		end
 
-		term.setCursorPos(1, 1)
-		term.setTextColor(colors.cyan)
-		term.write(line)
-		term.setCursorPos(titleX, 2)
-		term.write(title)
-		term.setCursorPos(1, 3)
-		term.write(line)
+		-- Interactive Mode Setup
+		local menu = {}
+		for id, pkg in pairs(manifest.packages) do
+			if not pkg.hidden then
+				table.insert(menu, { id = id, name = pkg.name, desc = pkg.description })
+			end
+		end
+		table.sort(menu, function(a, b)
+			return a.id < b.id
+		end)
 
-		-- Draw Columns
-		for i, item in ipairs(menu) do
-			local y = i + 4
-			if y > h - 2 then
+		local selectedIndex = 1
+
+		while true do
+			local w, h = term.getSize()
+			local leftWidth = math.floor(w * 0.45)
+			local rightWidth = w - leftWidth - 4
+			local rightX = leftWidth + 3
+
+			term.setBackgroundColor(colors.black)
+			term.clear()
+
+			-- Premium Header (Gefüllter blauer Header-Balken wie beim Boot-Assistenten)
+			term.setBackgroundColor(colors.blue)
+			term.setTextColor(colors.white)
+			for y = 1, 3 do
+				term.setCursorPos(1, y)
+				term.write(string.rep(" ", w))
+			end
+			local title = "ZONK'S UNIVERSAL INSTALLER"
+			local titleX = math.floor((w - #title) / 2) + 1
+			term.setCursorPos(titleX, 2)
+			term.write(title)
+			term.setBackgroundColor(colors.black)
+
+			-- Draw Columns
+			for i, item in ipairs(menu) do
+				local y = i + 4
+				if y > h - 2 then
+					break
+				end
+
+				term.setCursorPos(1, y)
+				local displayName = item.name:sub(1, leftWidth - 2)
+				if i == selectedIndex then
+					term.setBackgroundColor(colors.lightGray)
+					term.setTextColor(colors.cyan)
+					term.write("> " .. displayName .. string.rep(" ", leftWidth - #displayName - 1))
+					term.setBackgroundColor(colors.black)
+				else
+					term.setTextColor(colors.white)
+					term.write("  " .. displayName)
+				end
+			end
+
+			-- Separator (Dezenter als das grelle Cyan)
+			term.setTextColor(colors.gray)
+			for y = 4, h - 2 do
+				term.setCursorPos(leftWidth + 1, y)
+				term.write("|")
+			end
+
+			-- Description Box
+			local current = menu[selectedIndex]
+			term.setTextColor(colors.yellow)
+			local nextY = drawWrappedText(current.name:upper(), rightX, 5, rightWidth, true)
+
+			term.setTextColor(colors.gray)
+			term.setCursorPos(rightX, nextY)
+			term.write(string.rep("-", rightWidth))
+
+			term.setTextColor(colors.white)
+			drawWrappedText(current.desc, rightX, nextY + 2, rightWidth, false)
+
+			-- Status Bar
+			term.setTextColor(colors.gray)
+			term.setCursorPos(2, h)
+			term.write("[Arrows] Scroll | [Enter] Install | [Q] Quit")
+			term.setTextColor(colors.white)
+
+			-- Event Loop
+			local _, key = os.pullEvent("key")
+			if key == keys.up then
+				selectedIndex = selectedIndex > 1 and selectedIndex - 1 or #menu
+			elseif key == keys.down then
+				selectedIndex = selectedIndex < #menu and selectedIndex + 1 or 1
+			elseif key == keys.enter then
+				term.clear()
+				term.setCursorPos(1, 1)
+				install(menu[selectedIndex].id, manifest, false)
+				break
+			elseif key == keys.q then
+				term.clear()
+				term.setCursorPos(1, 1)
+				print("Exit.")
 				break
 			end
-
-			term.setCursorPos(1, y) -- Back to column 1
-			local displayName = item.name:sub(1, leftWidth - 2)
-			if i == selectedIndex then
-				term.setBackgroundColor(colors.gray)
-				term.setTextColor(colors.white)
-				term.write("> " .. displayName .. string.rep(" ", leftWidth - #displayName - 1))
-				term.setBackgroundColor(colors.black)
-			else
-				term.setTextColor(colors.lightGray)
-				term.write("  " .. displayName)
-			end
 		end
+	end)
 
-		-- Separator
-		term.setTextColor(colors.cyan)
-		for y = 4, h - 2 do
-			term.setCursorPos(leftWidth + 1, y)
-			term.write("|")
-		end
+	restorePalette()
 
-		-- Description Box
-		local current = menu[selectedIndex]
-		term.setTextColor(colors.yellow)
-		local nextY = drawWrappedText(current.name:upper(), rightX, 4, rightWidth, true)
-
-		term.setTextColor(colors.cyan)
-		term.setCursorPos(rightX, nextY)
-		term.write(string.rep("-", rightWidth))
-
-		term.setTextColor(colors.white)
-		drawWrappedText(current.desc, rightX, nextY + 2, rightWidth, false)
-
-		-- Status Bar
-		term.setTextColor(colors.gray)
-		term.setCursorPos(2, h)
-		term.write("[Arrows] Scroll | [Enter] Install | [Q] Quit")
-		term.setTextColor(colors.white)
-
-		-- Event Loop
-		local _, key = os.pullEvent("key")
-		if key == keys.up then
-			selectedIndex = selectedIndex > 1 and selectedIndex - 1 or #menu
-		elseif key == keys.down then
-			selectedIndex = selectedIndex < #menu and selectedIndex + 1 or 1
-		elseif key == keys.enter then
-			term.clear()
-			term.setCursorPos(1, 1)
-			install(menu[selectedIndex].id, manifest, false)
-			break
-		elseif key == keys.q then
-			term.clear()
-			term.setCursorPos(1, 1)
-			print("Exit.")
-			break
-		end
+	if not ok then
+		error(err, 0)
 	end
 end
 
