@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇯🇵 **ja / Japanese**
 > 
 > 注: この README は AI アシスタント (Antigravity) によって自動的に翻訳されており、翻訳エラーや不正確な部分が含まれている可能性があります。最も正確で最新のドキュメントについては、オリジナルの英語版を参照してください。 [README.md](../../../README.md).
@@ -88,15 +88,17 @@ install.lua
 
 ## ⚙️ 構成
 
-このシステムは、すぐに使用できるように設計されています。手動調整が必要な場合は、「startup.lua」を確認してください。
-```lua
-local system = PowahSystem.new({
-    chestName = "left", -- Or use auto-detection variable
-    recipeFile = "powah_recipes.json",
-    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
-    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
-})
-```
+システムには、設定を簡単にカスタマイズできるインタラクティブなグラフィカル設定メニューが用意されています。
+
+- **設定の構成**: 次のコマンドを実行することで、いつでも設定UIを起動できます。
+  ```bash
+  startup.lua --config
+  ```
+  または：
+  ```bash
+  startup.lua -c
+  ```
+  これにより、バッファチェストの選択、MEブリッジ名の指定、およびオプションのAEスキャナー周辺機器の割り当てを動的に行うことができます。設定は `config.json` に保存されます。
 
 ---
 

@@ -60,11 +60,12 @@ install.lua
 
 ### **核心模块（`lib/core`）**
 通用实用程序被提取到隐藏的核心包中以减少重复：
-- **`core.base`**：像`ConfigStore`（JSON持久化）这样的基本逻辑。
+- **`core.base`**：基本逻辑，如 `ConfigStore`（JSON 持久化）。
+- **`core.logger`**：基于文件的结构化日志（`Logger`）。
 - **`core.peripherals`**：安全外设发现、包装与硬件抽象（`PeripheralScanner`，`HAL`）。
 - **`core.network`**：标准化通信协议（`RednetProtocol`）。
 - **`core.redstone`**：红石交互助手（`RedstoneController`）。
-- **`core.ui`**：可重用的 UI 组件（`ButtonGrid`）。
+- **`core.ui`**：可重用的 UI 组件（`ButtonGrid`、`ConfigGUI`）。
 - **`core.ui.boot_assistant`**：交互式启动诊断与引导提示（`boot_assistant`）。
 - **`core.inventory`**：标准化库存处理（`InventoryAdapter`、`ItemMatcher`）。
 - **`core.recipes`**：JSON 支持的配方存储 (`RecipeStore`)。

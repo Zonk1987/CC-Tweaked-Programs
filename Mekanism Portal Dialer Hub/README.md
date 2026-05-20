@@ -51,10 +51,20 @@ Select **Mekanism Portal Dialer Hub** from the menu. The installer will automati
 
 ## ⚙️ Configuration
 
-Open `startup` on the computer to customize the system behavior:
+The system features an interactive, graphical configuration menu to easily customize peripheral settings:
 
-- `gridColumns` / `gridRows`: Adjust the number of buttons per page.
-- `recallChannel`: Set the modem channel for remote portal requests (default: 99).
+- **Configuring Settings**: You can run the configuration UI at any time by executing:
+  ```bash
+  startup.lua --config
+  ```
+  or:
+  ```bash
+  startup.lua -c
+  ```
+  This allows you to select the monitor and teleporter sides dynamically. Settings are persisted in `config.json`.
+- **Advanced Options**: To customize grid dimensions or the recall channel, you can edit the generated `config.json` file directly:
+  - `"gridColumns"` / `"gridRows"`: Adjust the button layout (defaults to 4x4).
+  - `"recallChannel"`: Set the modem channel for remote portal requests (default: 99).
 
 ---
 

@@ -61,10 +61,11 @@ install.lua
 ### **핵심 모듈(`lib/core`)**
 중복을 줄이기 위해 일반 유틸리티가 숨겨진 핵심 패키지로 추출됩니다.
 - **`core.base`**: `ConfigStore`(JSON 지속성)와 같은 기본 논리.
+- **`core.logger`**: 파일 기반 구조화된 로깅(`Logger`).
 - **`core.peripherals`**: 안전한 주변 장치 검색, 래핑 및 하드웨어 추상화 (`PeripheralScanner`, `HAL`).
 - **`core.network`**: 표준화된 통신 프로토콜(`RednetProtocol`).
 - **`core.redstone`**: Redstone 상호 작용 도우미(`RedstoneController`).
-- **`core.ui`**: 재사용 가능한 UI 구성요소(`ButtonGrid`).
+- **`core.ui`**: 재사용 가능한 UI 구성요소(`ButtonGrid`, `ConfigGUI`).
 - **`core.ui.boot_assistant`**: 대화형 시작 진단 및 부팅 안내 (`boot_assistant`).
 - **`core.inventory`**: 표준화된 인벤토리 처리(`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`**: JSON 지원 레시피 저장소(`RecipeStore`).

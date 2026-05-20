@@ -12,7 +12,7 @@
 - **Live Portal Status (Optional)** — Real-time monitoring of the local portal's state (e.g., "Ready", "No Power") if a local Teleporter block is physically attached (otherwise defaults to "Remote Hub only").
 - **Heartbeat Auto-Refresh** — Automatically updates the status every 2 seconds to keep the display synchronized with the Hub.
 - **Interactive Setup** — No code editing required. The script asks for the target location on the first run.
-- **Config Menu (Hotkeys)** — Press `C` on the computer terminal to change the destination name or channel.
+- **Config Menu & CLI Options** — Press `C` on the computer terminal, or run the script with `--config` / `-c` to change the destination name or channel.
 - **Dual-Path Protocol** — Sends commands via both standard Modem API and Rednet for maximum reliability.
 
 ---
@@ -45,7 +45,16 @@ Select **Mekanism Portal Recaller** from the menu.
 1. **First Run**: The computer will ask you for a **Target Name**. Enter the *exact name* of the frequency as it appears in your main Portal Hub (e.g., "Main Base").
 2. **Normal Operation**: The screen will show "Waiting for Redstone signal...".
 3. **Trigger**: Press your button. The Hub at your main base will instantly switch to your current location.
-4. **Configuration**: If you move the computer to a new base, press `C` on the keyboard to open the menu and change the target name.
+4. **Configuration**: If you move the computer to a new base, you can change the target name or channel at any time:
+   - **Hotkeys**: Press `C` on the keyboard while the program is running to open the configuration menu.
+   - **Command Line**: Run the program with the `--config` or `-c` argument:
+     ```bash
+     startup.lua --config
+     ```
+     or:
+     ```bash
+     startup.lua -c
+     ```
 
 ---
 

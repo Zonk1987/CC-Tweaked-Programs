@@ -82,7 +82,18 @@ install.lua
 
 ## ⚙️Configuration
 
-Le système est conçu pour fonctionner immédiatement. Les données d'étalonnage sont stockées dans `crafter_mapping.json`. Supprimez ce fichier pour déclencher un nouvel étalonnage.
+Le système dispose d'un menu de configuration graphique et interactif pour personnaliser facilement les paramètres :
+
+- **Configurer les paramètres** : Vous pouvez exécuter l'interface utilisateur de configuration à tout moment en exécutant :
+  ```bash
+  startup.lua --config
+  ```
+  ou :
+  ```bash
+  startup.lua -c
+  ```
+  Cela vous permet de sélectionner le coffre tampon et de personnaliser la couleur du tableau de bord de manière dynamique.
+- **Recalibrage** : Les mappages physiques des modems sont enregistrés dans `crafter_mapping.json`. Pour recalibrer la grille (par exemple, si vous avez modifié la disposition de vos Mechanical Crafters), supprimez simplement le fichier `crafter_mapping.json` et démarrez le programme normalement.
 
 ---
 

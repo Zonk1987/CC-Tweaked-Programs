@@ -61,10 +61,11 @@ Ce référentiel est construit pour la maintenabilité et les performances à l'
 ### **Modules de base (`lib/core`)**
 Les utilitaires génériques sont extraits dans des packages principaux cachés pour réduire la duplication :
 - **`core.base`** : Logique fondamentale comme `ConfigStore` (persistance JSON).
+- **`core.logger`** : Journalisation structurée basée sur des fichiers (`Logger`).
 - **`core.peripherals`** : Découverte, emballage et abstraction matérielle sécurisés de périphériques (`PeripheralScanner`, `HAL`).
 - **`core.network`** : Protocoles de communication standardisés (`RednetProtocol`).
 - **`core.redstone`** : assistants d'interaction Redstone (`RedstoneController`).
-- **`core.ui`** : composants d'interface utilisateur réutilisables (`ButtonGrid`).
+- **`core.ui`** : composants d'interface utilisateur réutilisables (`ButtonGrid`, `ConfigGUI`).
 - **`core.ui.boot_assistant`** : Diagnostics de démarrage interactifs et guidage de démarrage (`boot_assistant`).
 - **`core.inventory`** : gestion standardisée des stocks (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`** : stockage de recettes basé sur JSON (`RecipeStore`).

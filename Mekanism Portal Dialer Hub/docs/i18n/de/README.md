@@ -57,10 +57,20 @@ Wählen Sie **Mekanism Portal Dialer Hub** aus dem Menü. Das Installationsprogr
 
 ## ⚙️ Konfiguration
 
-Öffnen Sie „Startup“ auf dem Computer, um das Systemverhalten anzupassen:
+Das System verfügt über ein interaktives, grafisches Konfigurationsmenü zur einfachen Anpassung der Peripheriegeräte:
 
-- „gridColumns“ / „gridRows“: Passen Sie die Anzahl der Schaltflächen pro Seite an.
-- „recallChannel“: Legen Sie den Modemkanal für Remote-Portal-Anfragen fest (Standard: 99).
+- **Einstellungen konfigurieren**: Sie können das Konfigurationsmenü jederzeit über folgenden Befehl starten:
+  ```bash
+  startup.lua --config
+  ```
+  oder:
+  ```bash
+  startup.lua -c
+  ```
+  Dadurch können Sie den Monitor und den Teleporter dynamisch zuweisen. Die Einstellungen werden in `config.json` gespeichert.
+- **Erweiterte Optionen**: Um die Grid-Dimensionen oder den Recall-Kanal anzupassen, können Sie die generierte `config.json`-Datei direkt bearbeiten:
+  - `"gridColumns"` / `"gridRows"`: Passt das Schaltflächenlayout an (Standard: 4x4).
+  - `"recallChannel"`: Legt den Modemkanal für Remote-Portal-Anfragen fest (Standard: 99).
 
 ---
 

@@ -57,10 +57,20 @@ Selecione **Mekanism Portal Dialer Hub** no menu. O instalador baixará automati
 
 ## ⚙️ Configuração
 
-Abra `startup` no computador para personalizar o comportamento do sistema:
+O sistema possui um menu de configuração gráfico e interativo para personalizar facilmente os ajustes dos periféricos:
 
-- `gridColumns` / `gridRows`: Ajusta o número de botões por página.
-- `recallChannel`: Define o canal do modem para solicitações de portal remoto (padrão: 99).
+- **Ajustar as configurações**: Você pode iniciar a interface de usuário de configuração a qualquer momento executando:
+  ```bash
+  startup.lua --config
+  ```
+  ou:
+  ```bash
+  startup.lua -c
+  ```
+  Isso permite que você selecione o monitor e o teletransportador de forma dinâmica. As configurações são salvas em `config.json`.
+- **Opções Avançadas**: Para personalizar as dimensões da grade ou o canal de recall, você pode editar o arquivo `config.json` gerado diretamente:
+  - `"gridColumns"` / `"gridRows"`: Ajusta a disposição dos botões (padrão: 4x4).
+  - `"recallChannel"`: Configura o canal do modem para solicitações de portal remoto (padrão: 99).
 
 ---
 

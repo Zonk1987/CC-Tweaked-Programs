@@ -55,10 +55,11 @@ This repository is built for maintainability and performance using a modular ske
 ### **Core Modules (`lib/core`)**
 Generic utilities are extracted into hidden core packages to reduce duplication:
 - **`core.base`**: Fundamental logic like `ConfigStore` (JSON persistence).
+- **`core.logger`**: File-based structured logging (`Logger`).
 - **`core.peripherals`**: Safe peripheral discovery, wrapping, and hardware abstraction (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Standardized communication protocols (`RednetProtocol`).
 - **`core.redstone`**: Redstone interaction helpers (`RedstoneController`).
-- **`core.ui`**: Reusable UI components (`ButtonGrid`).
+- **`core.ui`**: Reusable UI components (`ButtonGrid`, `ConfigGUI`).
 - **`core.ui.boot_assistant`**: Interactive startup diagnostics and boot guidance (`boot_assistant`).
 - **`core.inventory`**: Standardized inventory handling (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`**: JSON-backed recipe storage (`RecipeStore`).

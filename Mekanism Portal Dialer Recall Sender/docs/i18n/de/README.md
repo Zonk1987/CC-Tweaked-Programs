@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇩🇪 **de / Deutsch**
 > 
 > Hinweis: Diese README-Datei wurde automatisch von einem KI-Assistenten (Antigravity) übersetzt und kann Übersetzungsfehler oder Ungenauigkeiten enthalten. Für die genaueste und aktuellste Dokumentation beziehen Sie sich bitte auf das englische Original [README.md](../../../README.md).
@@ -18,7 +18,7 @@
 - **Live-Portalstatus (optional)** – Echtzeitüberwachung des Status des lokalen Portals (z. B. „Bereit“, „Kein Strom“), wenn ein lokaler Teleporter-Block physisch angeschlossen ist (ansonsten ist die Standardeinstellung „Nur Remote-Hub“).
 - **Heartbeat Auto-Refresh** – Aktualisiert den Status automatisch alle 2 Sekunden, um die Anzeige mit dem Hub synchronisiert zu halten.
 - **Interaktive Einrichtung** – Keine Codebearbeitung erforderlich. Das Skript fragt beim ersten Durchlauf nach dem Zielort.
-- **Konfigurationsmenü (Hotkeys)** – Drücken Sie „C“ am Computerterminal, um den Zielnamen oder Kanal zu ändern.
+- **Konfigurationsmenü & CLI-Optionen** – Drücken Sie „C“ am Computerterminal oder führen Sie das Skript mit `--config` bzw. `-c` aus, um den Zielnamen oder Kanal zu ändern.
 - **Dual-Path-Protokoll** – Sendet Befehle sowohl über die Standard-Modem-API als auch über Rednet für maximale Zuverlässigkeit.
 
 ---
@@ -51,7 +51,16 @@ Wählen Sie **Mekanism Portal Recaller** aus dem Menü.
 1. **Erster Start**: Der Computer fragt Sie nach einem **Zielnamen**. Geben Sie den *genauen Namen* der Frequenz ein, wie er in Ihrem Hauptportal-Hub angezeigt wird (z. B. „Hauptbasis“).
 2. **Normaler Betrieb**: Auf dem Bildschirm wird „Warten auf Redstone-Signal…“ angezeigt.
 3. **Auslöser**: Drücken Sie Ihre Taste. Der Hub an Ihrer Hauptbasis wechselt sofort zu Ihrem aktuellen Standort.
-4. **Konfiguration**: Wenn Sie den Computer an eine neue Basis verschieben, drücken Sie „C“ auf der Tastatur, um das Menü zu öffnen und den Zielnamen zu ändern.
+4. **Konfiguration**: Wenn Sie den Computer an eine neue Basis verschieben, können Sie den Zielnamen oder Kanal jederzeit wie folgt ändern:
+   - **Hotkeys**: Drücken Sie während der Ausführung des Programms „C“ auf der Tastatur, um das Konfigurationsmenü zu öffnen.
+   - **Befehlszeile**: Starten Sie das Programm mit dem Argument `--config` oder `-c`:
+     ```bash
+     startup.lua --config
+     ```
+     oder:
+     ```bash
+     startup.lua -c
+     ```
 
 ---
 

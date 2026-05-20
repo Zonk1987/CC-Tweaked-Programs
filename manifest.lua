@@ -9,7 +9,7 @@ return {
 		------------------------------------------------------------------------
 		["core.base"] = {
 			name = "Core Base",
-			description = "Fundamental utilities (Config, Logger).",
+			description = "Fundamental utilities (Config Store).",
 			hidden = true,
 			dependencies = {},
 			files = {
@@ -19,6 +19,14 @@ return {
 					sizeBytes = 1747,
 					hash = "a00c219b5bff320199dcd48c0dd296c11e65f9e45dce46cd5c8c81ed9b43e866",
 				},
+			},
+		},
+		["core.logger"] = {
+			name = "Core Logger",
+			description = "File-based structured logging (Logger).",
+			hidden = true,
+			dependencies = {},
+			files = {
 				{
 					source = "lib/core/logger/Logger.lua",
 					target = "lib/core/logger/Logger.lua",
@@ -154,6 +162,7 @@ return {
 			entry = "startup.lua",
 			dependencies = {
 				"core.base",
+				"core.logger",
 				"core.ui",
 				"core.redstone",
 				"core.inventory",
@@ -210,7 +219,14 @@ return {
 			description = "Multi-orb parallel processing with AE2 pattern import support.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.base", "core.ui", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
+			dependencies = {
+				"core.base",
+				"core.logger",
+				"core.ui",
+				"core.inventory",
+				"core.recipes",
+				"core.ui.boot_assistant",
+			},
 			files = {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
@@ -261,7 +277,14 @@ return {
 			description = "Premium touch-screen frequency manager for Mekanism Teleporters.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.base", "core.peripherals", "core.network", "core.ui", "core.ui.boot_assistant" },
+			dependencies = {
+				"core.base",
+				"core.logger",
+				"core.peripherals",
+				"core.network",
+				"core.ui",
+				"core.ui.boot_assistant",
+			},
 			files = {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
@@ -296,6 +319,7 @@ return {
 			entry = "startup.lua",
 			dependencies = {
 				"core.base",
+				"core.logger",
 				"core.peripherals",
 				"core.network",
 				"core.redstone",
@@ -305,8 +329,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 9399,
-					hash = "d86abbfbc4e3130b862eaf14c8a66ded76e43bcd3f4a6e5b0a61c3e2f1a8a6ba",
+					sizeBytes = 9733,
+					hash = "e0ac3bac705aefb52f551a7b7278455e1247e6d1e58e81a9140ff7baab20f97b",
 				},
 			},
 		},

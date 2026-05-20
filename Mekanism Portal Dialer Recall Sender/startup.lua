@@ -105,6 +105,9 @@ function RecallSender:initHardware()
 		theme = "dark",
 		enable_logging = true,
 		log_file = "logs/recall_sender_boot.log",
+		onSetup = function()
+			self:configMenu()
+		end,
 	})
 
 	boot:addStep("setup", "Konfiguration", function()
@@ -339,5 +342,21 @@ function RecallSender:run()
 end
 
 -- Execution
+local args = { ... }
+local shouldRunConfig = false
+for _, arg in ipairs(args) do
+	if arg == "--config" or arg == "-c" then
+		shouldRunConfig = true
+	end
+end
+
 local app = RecallSender.new()
+if shouldRunConfig then
+	app:configMenu()
+	term.clear()
+	term.setCursorPos(1, 1)
+	print("Setup abgeschlossen.")
+	return
+end
 app:run()
+

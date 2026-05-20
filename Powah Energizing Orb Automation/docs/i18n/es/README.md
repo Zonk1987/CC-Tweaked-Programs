@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇪🇸 **es / Espanol**
 > 
 > Nota: Este README fue traducido automáticamente por un asistente de IA (Antigravity) y puede contener errores de traducción o imprecisiones. Para obtener la documentación más precisa y actualizada, consulte el original en inglés. [README.md](../../../README.md).
@@ -88,15 +88,17 @@ El sistema cuenta con un menú de importación inteligente (Tecla **`I`**):
 
 ## ⚙️ Configuración
 
-El sistema está diseñado para funcionar desde el primer momento. Si necesita ajustes manuales, consulte `startup.lua`:
-```lua
-local system = PowahSystem.new({
-    chestName = "left", -- Or use auto-detection variable
-    recipeFile = "powah_recipes.json",
-    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
-    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
-})
-```
+El sistema cuenta con un menú de configuración gráfico e interactivo para personalizar los ajustes fácilmente:
+
+- **Ajustar la configuración**: Puede ejecutar la interfaz de usuario de configuración en cualquier momento ejecutando:
+  ```bash
+  startup.lua --config
+  ```
+  o:
+  ```bash
+  startup.lua -c
+  ```
+  Esto le permite seleccionar el cofre de búfer, especificar el nombre del puente ME y asignar el periférico opcional del escáner AE de forma dinámica. Los ajustes se guardan en `config.json`.
 
 ---
 

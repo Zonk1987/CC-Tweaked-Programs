@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇫🇷 **fr / Francais**
 > 
 > Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
@@ -18,7 +18,7 @@
 - **État du portail en direct (facultatif)** — Surveillance en temps réel de l'état du portail local (par exemple, "Prêt", "Pas d'alimentation") si un bloc téléporteur local est physiquement connecté (sinon, la valeur par défaut est "Hub distant uniquement").
 - **Heartbeat Auto-Refresh** — Met automatiquement à jour l'état toutes les 2 secondes pour maintenir l'affichage synchronisé avec le Hub.
 - **Configuration interactive** — Aucune modification de code requise. Le script demande l'emplacement cible lors de la première exécution.
-- **Menu de configuration (raccourcis clavier)** — Appuyez sur « C » sur le terminal de l'ordinateur pour modifier le nom ou la chaîne de destination.
+- **Menu de configuration et options CLI** — Appuyez sur « C » sur le terminal de l'ordinateur, ou exécutez le script avec `--config` ou `-c` pour modifier le nom ou la chaîne de destination.
 - **Protocole Dual-Path** — Envoie des commandes via l'API du modem standard et Rednet pour une fiabilité maximale.
 
 ---
@@ -51,7 +51,16 @@ Sélectionnez **Mekanism Portal Recaller** dans le menu.
 1. **Première exécution** : L'ordinateur vous demandera un **Nom de la cible**. Entrez le *nom exact* de la fréquence telle qu'elle apparaît dans votre portail principal (par exemple, « Base principale »).
 2. **Fonctionnement normal** : L'écran affichera "En attente du signal Redstone...".
 3. **Déclencheur** : appuyez sur votre bouton. Le Hub de votre base principale basculera instantanément vers votre emplacement actuel.
-4. **Configuration** : Si vous déplacez l'ordinateur vers une nouvelle base, appuyez sur « C » sur le clavier pour ouvrir le menu et modifier le nom de la cible.
+4. **Configuration** : Si vous déplacez l'ordinateur vers une nouvelle base, vous pouvez modifier le nom ou le canal cible à tout moment :
+   - **Raccourcis clavier** : Appuyez sur « C » sur le clavier pendant que le programme est en cours d'exécution pour ouvrir le menu de configuration.
+   - **Ligne de commande** : Lancez le programme avec l'argument `--config` ou `-c` :
+     ```bash
+     startup.lua --config
+     ```
+     ou :
+     ```bash
+     startup.lua -c
+     ```
 
 ---
 

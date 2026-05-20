@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇪🇸 **es / Espanol**
 > 
 > Nota: Este README fue traducido automáticamente por un asistente de IA (Antigravity) y puede contener errores de traducción o imprecisiones. Para obtener la documentación más precisa y actualizada, consulte el original en inglés. [README.md](../../../README.md).
@@ -18,7 +18,7 @@
 - **Estado del portal en vivo (opcional)**: monitoreo en tiempo real del estado del portal local (por ejemplo, "Listo", "Sin energía") si hay un bloque de Teletransportador local conectado físicamente (de lo contrario, el valor predeterminado es "Solo concentrador remoto").
 - **Heartbeat Auto-Refresh**: actualiza automáticamente el estado cada 2 segundos para mantener la pantalla sincronizada con el Hub.
 - **Configuración interactiva**: no se requiere edición de código. El script solicita la ubicación de destino en la primera ejecución.
-- **Menú de configuración (teclas de acceso rápido)**: presione `C` en el terminal de la computadora para cambiar el nombre o canal de destino.
+- **Menú de configuración y opciones de CLI**: presione `C` en el terminal de la computadora, o ejecute el script con `--config` o `-c` para cambiar el nombre o canal de destino.
 - **Protocolo de ruta dual**: envía comandos a través de la API de módem estándar y Rednet para una máxima confiabilidad.
 
 ---
@@ -51,7 +51,16 @@ Seleccione **Recuperador del portal de mecanismo** en el menú.
 1. **Primera ejecución**: La computadora le pedirá un **Nombre de destino**. Ingrese el *nombre exacto* de la frecuencia tal como aparece en su Portal Hub principal (por ejemplo, "Base principal").
 2. **Operación normal**: La pantalla mostrará "Esperando señal de Redstone...".
 3. **Disparador**: Presiona tu botón. El Hub en su base principal cambiará instantáneamente a su ubicación actual.
-4. **Configuración**: Si mueve la computadora a una nueva base, presione `C` en el teclado para abrir el menú y cambiar el nombre del destino.
+4. **Configuración**: Si mueve la computadora a una nueva base, puede cambiar el nombre o canal de destino en cualquier momento:
+   - **Teclas de acceso rápido**: Presione `C` en el teclado mientras el programa se está ejecutando para abrir el menú de configuración.
+   - **Línea de comando**: Ejecute el programa con el argumento `--config` o `-c`:
+     ```bash
+     startup.lua --config
+     ```
+     o:
+     ```bash
+     startup.lua -c
+     ```
 
 ---
 

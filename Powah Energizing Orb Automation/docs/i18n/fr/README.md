@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇫🇷 **fr / Francais**
 > 
 > Remarque : Ce README a été automatiquement traduit par un assistant IA (Antigravity) et peut contenir des erreurs de traduction ou des inexactitudes. Pour la documentation la plus précise et la plus à jour, veuillez vous référer à la version originale en anglais. [README.md](../../../README.md).
@@ -86,17 +86,19 @@ Le système dispose d'un menu d'importation intelligent (Touche **`I`**) :
 
 ---
 
-## ⚙️Configuration
+## ⚙️ Configuration
 
-Le système est conçu pour fonctionner immédiatement. Si vous avez besoin d'ajustements manuels, vérifiez `startup.lua` :
-```lua
-local system = PowahSystem.new({
-    chestName = "left", -- Or use auto-detection variable
-    recipeFile = "powah_recipes.json",
-    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
-    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
-})
-```
+Le système dispose d'un menu de configuration graphique interactif pour personnaliser facilement les paramètres :
+
+- **Configuration des paramètres** : Vous pouvez lancer l'interface de configuration à tout moment en exécutant :
+  ```bash
+  startup.lua --config
+  ```
+  ou :
+  ```bash
+  startup.lua -c
+  ```
+  Cela vous permet de sélectionner le coffre tampon, de spécifier le nom du pont ME (ME Bridge) et d'attribuer dynamiquement le périphérique optionnel de scanner AE (AE Scanner). Les paramètres sont enregistrés dans `config.json`.
 
 ---
 

@@ -82,7 +82,18 @@ install.lua
 
 ## ⚙️ Konfiguration
 
-Das System ist so konzipiert, dass es sofort einsatzbereit ist. Kalibrierungsdaten werden in „crafter_mapping.json“ gespeichert. Löschen Sie diese Datei, um eine neue Kalibrierung auszulösen.
+Das System verfügt über ein interaktives, grafisches Konfigurationsmenü zur einfachen Anpassung der Einstellungen:
+
+- **Einstellungen konfigurieren**: Sie können das Konfigurationsmenü jederzeit über folgenden Befehl starten:
+  ```bash
+  startup.lua --config
+  ```
+  oder:
+  ```bash
+  startup.lua -c
+  ```
+  Dadurch können Sie die Puffer-Kiste auswählen und die Dashboard-Textfarbe dynamisch anpassen.
+- **Rekalibrierung**: Die physischen Modemmappings werden in `crafter_mapping.json` gespeichert. Um das Raster neu zu kalibrieren (z. B. wenn Sie das Layout der Crafter geändert haben), löschen Sie einfach die Datei `crafter_mapping.json` und starten Sie das Programm normal neu.
 
 ---
 

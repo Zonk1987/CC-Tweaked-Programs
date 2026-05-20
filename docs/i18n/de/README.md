@@ -61,10 +61,11 @@ Dieses Repository ist auf Wartbarkeit und Leistung ausgelegt und basiert auf ein
 ### **Kernmodule (`lib/core`)**
 Generische Dienstprogramme werden in versteckte Kernpakete extrahiert, um Duplikate zu reduzieren:
 - **`core.base`**: Grundlegende Logik wie `ConfigStore` (JSON-Persistenz).
+- **`core.logger`**: Dateibasiertes strukturiertes Logging (`Logger`).
 - **`core.peripherals`**: Sichere Erkennung, Verpackung und Hardware-Abstraktion von Peripheriegeräten (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Standardisierte Kommunikationsprotokolle (`RednetProtocol`).
 - **`core.redstone`**: Redstone-Interaktionshelfer („RedstoneController“).
-- **`core.ui`**: Wiederverwendbare UI-Komponenten („ButtonGrid“).
+- **`core.ui`**: Wiederverwendbare UI-Komponenten („ButtonGrid“, `ConfigGUI`).
 - **`core.ui.boot_assistant`**: Interaktive Startdiagnose und Starthilfe (`boot_assistant`).
 - **`core.inventory`**: Standardisierte Inventarverwaltung („InventoryAdapter“, „ItemMatcher“).
 - **`core.recipes`**: JSON-gestützter Rezeptspeicher („RecipeStore“).

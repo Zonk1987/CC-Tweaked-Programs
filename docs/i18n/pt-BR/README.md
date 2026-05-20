@@ -61,10 +61,11 @@ Este repositório foi construído para oferecer manutenção e desempenho usando
 ### **Módulos principais (`lib/core`)**
 Utilitários genéricos são extraídos em pacotes principais ocultos para reduzir a duplicação:
 - **`core.base`**: Lógica fundamental como `ConfigStore` (persistência JSON).
+- **`core.logger`**: Log estruturado baseado em arquivos (`Logger`).
 - **`core.peripherals`**: Descoberta, encapsulamento e abstração de hardware seguros de periféricos (`PeripheralScanner`, `HAL`).
 - **`core.network`**: Protocolos de comunicação padronizados (`RednetProtocol`).
 - **`core.redstone`**: Ajudantes de interação Redstone (`RedstoneController`).
-- **`core.ui`**: Componentes de UI reutilizáveis ​​(`ButtonGrid`).
+- **`core.ui`**: Componentes de UI reutilizáveis ​​(`ButtonGrid`, `ConfigGUI`).
 - **`core.ui.boot_assistant`**: Diagnóstico interativo de inicialização e orientação de boot (`boot_assistant`).
 - **`core.inventory`**: Manipulação de estoque padronizada (`InventoryAdapter`, `ItemMatcher`).
 - **`core.recipes`**: armazenamento de receitas baseado em JSON (`RecipeStore`).

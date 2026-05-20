@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇨🇳 **zh-CN / Chinese (Simplified)**
 > 
 > 注意：本自述文件由人工智能助手（反重力）自动翻译，可能包含翻译错误或不准确之处。如需最准确和最新的文档，请参阅英文原文 [README.md](../../../README.md).
@@ -86,17 +86,19 @@ install.lua
 
 ---
 
-## ⚙️配置
+## ⚙️ 配置
 
-该系统设计为开箱即用。如果需要手动调整，请检查“startup.lua”：
-```lua
-local system = PowahSystem.new({
-    chestName = "left", -- Or use auto-detection variable
-    recipeFile = "powah_recipes.json",
-    meBridgeName = "right", -- Required for imports: ME Bridge peripheral name
-    aeScannerName = "top" -- Optional: ae2communicate scanner peripheral name
-})
-```
+系统配备了交互式的图形配置菜单，可轻松自定义设置：
+
+- **配置设置**：您可以通过运行以下命令随时启动配置用户界面：
+  ```bash
+  startup.lua --config
+  ```
+  或者：
+  ```bash
+  startup.lua -c
+  ```
+  这允许您选择缓冲箱、指定 ME 桥的名称，并动态分配可选的 AE 扫描仪外设。设置将保存在 `config.json` 中。
 
 ---
 

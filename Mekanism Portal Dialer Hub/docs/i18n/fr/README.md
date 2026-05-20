@@ -55,12 +55,22 @@ Sélectionnez **Mekanism Portal Dialer Hub** dans le menu. Le programme d'instal
 
 ---
 
-## ⚙️Configuration
+## ⚙️ Configuration
 
-Ouvrez le « démarrage » sur l'ordinateur pour personnaliser le comportement du système :
+Le système dispose d'un menu de configuration graphique interactif pour personnaliser facilement les paramètres des périphériques :
 
-- `gridColumns` / `gridRows` : ajustez le nombre de boutons par page.
-- `recallChannel` : définit le canal du modem pour les requêtes du portail distant (par défaut : 99).
+- **Configuration des paramètres** : Vous pouvez lancer l'interface de configuration à tout moment en exécutant :
+  ```bash
+  startup.lua --config
+  ```
+  ou :
+  ```bash
+  startup.lua -c
+  ```
+  Cela vous permet de sélectionner dynamiquement le moniteur et le téléporteur. Les paramètres sont enregistrés dans `config.json`.
+- **Options avancées** : Pour personnaliser les dimensions de la grille ou le canal de rappel, vous pouvez modifier directement le fichier `config.json` généré :
+  - `"gridColumns"` / `"gridRows"` : Ajuste la disposition des boutons (par défaut : 4x4).
+  - `"recallChannel"` : Définit le canal du modem pour les demandes de rappel à distance (par défaut : 99).
 
 ---
 

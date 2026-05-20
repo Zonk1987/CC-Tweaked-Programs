@@ -61,10 +61,11 @@ install.lua
 ### **コア モジュール (`lib/core`)**
 汎用ユーティリティは、重複を減らすために非表示のコア パッケージに抽出されます。
 - **`core.base`**: `ConfigStore` などの基本的なロジック (JSON 永続化)。
+- **`core.logger`**: ファイルベースの構造化ロギング (`Logger`)。
 - **`core.peripherals`**: 安全な周辺機器（ペリフェラル）の検出、ラッピング、およびハードウェア抽象化 (`PeripheralScanner`, `HAL`)。
 - **`core.network`**: 標準化された通信プロトコル (`RednetProtocol`)。
 - **`core.redstone`**: レッドストーン インタラクション ヘルパー (`RedstoneController`)。
-- **`core.ui`**: 再利用可能な UI コンポーネント (`ButtonGrid`)。
+- **`core.ui`**: 再利用可能な UI コンポーネント (`ButtonGrid`, `ConfigGUI`)。
 - **`core.ui.boot_assistant`**: インタラクティブな起動診断とブートガイダンス (`boot_assistant`)。
 - **`core.inventory`**: 標準化された在庫処理 (`InventoryAdapter`、`ItemMatcher`)。
 - **`core.recipes`**: JSON ベースのレシピ ストレージ (`RecipeStore`)。

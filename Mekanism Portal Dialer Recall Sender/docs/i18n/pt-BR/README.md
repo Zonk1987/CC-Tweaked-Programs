@@ -1,4 +1,4 @@
-﻿> [!WARNING]
+> [!WARNING]
 > 🇧🇷 **pt-BR / Portugues (Brasil)**
 > 
 > Nota: Este README foi traduzido automaticamente por um assistente de IA (Antigravidade) e pode conter erros de tradução ou imprecisões. Para obter a documentação mais precisa e atualizada, consulte o original em inglês [README.md](../../../README.md).
@@ -18,7 +18,7 @@
 - **Status do portal ao vivo (opcional)** — Monitoramento em tempo real do estado do portal local (por exemplo, "Pronto", "Sem energia") se um bloco Teletransportador local estiver fisicamente conectado (caso contrário, o padrão é "Apenas hub remoto").
 - **Heartbeat Auto-Refresh** — Atualiza automaticamente o status a cada 2 segundos para manter a exibição sincronizada com o Hub.
 - **Configuração interativa** — Não é necessária edição de código. O script solicita o local de destino na primeira execução.
-- **Menu de configuração (teclas de atalho)** — Pressione `C` no terminal do computador para alterar o nome de destino ou canal.
+- **Menu de configuração e opções CLI** — Pressione `C` no terminal do computador, ou execute o script com `--config` / `-c` para alterar o nome de destino ou canal.
 - **Protocolo Dual-Path** — Envia comandos via API de modem padrão e Rednet para máxima confiabilidade.
 
 ---
@@ -51,7 +51,16 @@ Selecione **Recaller do Portal Mekanism** no menu.
 1. **Primeira execução**: O computador solicitará um **Nome de destino**. Insira o *nome exato* da frequência conforme aparece em seu Portal Hub principal (por exemplo, "Base Principal").
 2. **Operação normal**: A tela mostrará "Aguardando sinal Redstone...".
 3. **Gatilho**: Pressione o botão. O Hub na sua base principal mudará instantaneamente para a sua localização atual.
-4. **Configuração**: Se você mover o computador para uma nova base, pressione `C` no teclado para abrir o menu e alterar o nome do destino.
+4. **Configuração**: Se você mover o computador para uma nova base, poderá alterar o nome de destino ou canal a qualquer momento:
+   - **Teclas de atalho**: Pressione `C` no teclado enquanto o programa estiver em execução para abrir o menu de configuração.
+   - **Linha de comando**: Execute o programa com o argumento `--config` ou `-c`:
+     ```bash
+     startup.lua --config
+     ```
+     ou:
+     ```bash
+     startup.lua -c
+     ```
 
 ---
 

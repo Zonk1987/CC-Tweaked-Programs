@@ -82,7 +82,18 @@ install.lua
 
 ## ⚙️ Configuração
 
-O sistema foi projetado para funcionar imediatamente. Os dados de calibração são armazenados em `crafter_mapping.json`. Exclua este arquivo para acionar uma nova calibração.
+O sistema possui um menu de configuração gráfico e interativo para personalizar facilmente as configurações:
+
+- **Ajustar as configurações**: Você pode executar a interface de usuário de configuração a qualquer momento executando:
+  ```bash
+  startup.lua --config
+  ```
+  ou:
+  ```bash
+  startup.lua -c
+  ```
+  Isso permite selecionar o baú de buffer e personalizar a cor do painel de forma dinâmica.
+- **Recalibração**: Os mapeamentos dos modems físicos são armazenados em `crafter_mapping.json`. Para recalibrar a grade (por exemplo, se você alterou o layout dos seus Mechanical Crafters), basta excluir o arquivo `crafter_mapping.json` e iniciar o programa normalmente.
 
 ---
 

@@ -76,7 +76,18 @@ install.lua
 
 ## ⚙️ Configuration
 
-The system is designed to work out-of-the-box. Calibration data is stored in `crafter_mapping.json`. Delete this file to trigger a new calibration.
+The system features an interactive, graphical configuration menu to easily customize settings:
+
+- **Configuring Settings**: You can run the configuration UI at any time by executing:
+  ```bash
+  startup.lua --config
+  ```
+  or:
+  ```bash
+  startup.lua -c
+  ```
+  This allows you to select the buffer chest inventory and customize the dashboard color dynamically.
+- **Recalibration**: The physical modem layout mappings are saved in `crafter_mapping.json`. To recalibrate the grid (e.g., if you changed the layout of your Mechanical Crafters), simply delete the `crafter_mapping.json` file and start the program normally.
 
 ---
 
