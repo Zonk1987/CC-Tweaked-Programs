@@ -40,6 +40,7 @@ local corePaths = {
 	"/lib/core/ui/?.lua",
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
+	"/lib/core/logger/?.lua",
 }
 local localPaths = {
 	"/system/?.lua",
@@ -53,6 +54,7 @@ local PowahSystem = require("PowahSystem")
 local BootAssistant = require("boot_assistant")
 local ConfigStore = require("ConfigStore")
 local ConfigGUI = require("ConfigGUI")
+local Logger = require("Logger")
 
 local configStore = ConfigStore.new("config.json", {
 	buffer = "left",
@@ -233,11 +235,15 @@ if aeScannerName then
 	HAL.register("ae_scanner", aeScannerName)
 end
 
+-- Initialize Logger instance
+local logger = Logger.new({ logPath = "logs/powah.log" })
+
 local system = PowahSystem.new({
 	chestName = "buffer",
 	recipeFile = "powah_recipes.json",
 	meBridgeName = meBridgeName and "me_bridge" or nil,
 	aeScannerName = aeScannerName and "ae_scanner" or nil,
+	logger = logger,
 })
 
 system:run()

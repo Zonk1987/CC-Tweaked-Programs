@@ -25,6 +25,7 @@ local corePaths = {
 	"/lib/core/ui/?.lua",
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
+	"/lib/core/logger/?.lua",
 }
 local localPaths = {
 	"/system/?.lua",
@@ -37,6 +38,7 @@ local CrafterSystem = require("CrafterSystem")
 local BootAssistant = require("boot_assistant")
 local ConfigStore = require("ConfigStore")
 local ConfigGUI = require("ConfigGUI")
+local Logger = require("Logger")
 
 local configStore = ConfigStore.new("config.json", {
 	buffer = "left",
@@ -187,10 +189,14 @@ boot:run()
 -- Register chest in HAL
 HAL.register("buffer", chestName)
 
+-- Initialize Logger instance
+local logger = Logger.new({ logPath = "logs/crafter.log" })
+
 ---@type CrafterSystem
 local system = CrafterSystem.new({
 	chestName = "buffer",
 	recipeFile = "crafter_recipes.json",
+	logger = logger,
 })
 
 -- Pass chest name to dashboard for display

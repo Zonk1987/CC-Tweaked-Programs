@@ -25,6 +25,7 @@ local corePaths = {
 	"/lib/core/ui/?.lua",
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
+	"/lib/core/logger/?.lua",
 }
 local localPaths = {
 	"/system/?.lua",
@@ -38,6 +39,7 @@ local ButtonGrid = require("ButtonGrid")
 local BootAssistant = require("boot_assistant")
 local ConfigStore = require("ConfigStore")
 local ConfigGUI = require("ConfigGUI")
+local Logger = require("Logger")
 
 local configStore = ConfigStore.new("config.json", {
 	hub_monitor = "top",
@@ -164,10 +166,14 @@ local systemConfig = {
 local bm = ButtonGrid.new(monitorName)
 bm.mon.setTextScale(0.5) -- Locked at 0.5: Changing this breaks the line/char UI rendering
 
+-- Initialize Logger instance
+local logger = Logger.new({ logPath = "logs/portal.log" })
+
 local system = HubSystem.new({
 	bm = bm,
 	tpSide = "hub_teleporter",
 	config = systemConfig,
+	logger = logger,
 })
 
 system:run()

@@ -58,6 +58,8 @@ local keys = keys
 ---@field testModeCount number
 ---@field maxButtons number
 
+---@class Logger
+
 ---@class HubSystem
 ---@field tp table The teleporter peripheral
 ---@field bm ButtonGrid The button manager instance
@@ -81,8 +83,23 @@ local keys = keys
 ---@field activeOverlay table|nil
 ---@field testSelectedFrequency string|nil
 ---@field buffer table|nil
+---@field logger Logger|nil
 local HubSystem = {}
 HubSystem.__index = HubSystem
+
+--- Internal logging helper
+---@param self table
+---@param level string
+---@param msg string
+---@param ... any
+local function log(self, level, msg, ...)
+	if self.logger then
+		local func = self.logger[level]
+		if type(func) == "function" then
+			func(self.logger, msg, ...)
+		end
+	end
+end
 
 --- Creates a new HubSystem instance
 ---@param options table
@@ -96,6 +113,7 @@ function HubSystem.new(options)
 	local self = setmetatable({
 		tp = tp,
 		bm = options.bm,
+		logger = options.logger,
 		configStore = ConfigStore.new("config.json", options.config or {}),
 		colorStore = ConfigStore.new("portal_colors.json", {}),
 		frequencies = {},
@@ -154,6 +172,7 @@ function HubSystem.new(options)
 	}, HubSystem)
 
 	RednetProtocol.openAuto()
+	log(self, "info", "HubSystem initialized (monitor: %s, teleporter: %s)", self.monName or "Unknown", self.tpName or "Unknown")
 	return self
 end
 
@@ -181,6 +200,7 @@ end
 
 --- Interactive terminal configuration menu
 function HubSystem:configMenu()
+	log(self, "info", "Opened configuration menu on terminal.")
 	while true do
 		term.clear()
 		term.setCursorPos(1, 1)
@@ -198,22 +218,32 @@ function HubSystem:configMenu()
 			write("New Recall Channel: ")
 			os_sleep(0.1) -- Clear event buffer
 			local input = read()
-			self.configStore.data.recallChannel = tonumber(input) or self.configStore.data.recallChannel
+			local newChannel = tonumber(input)
+			if newChannel then
+				self.configStore.data.recallChannel = newChannel
+				log(self, "info", "Recall channel updated to %d.", newChannel)
+			end
 			os_sleep(0.5)
 		elseif key == keys.two then
 			term.setCursorPos(1, 8)
 			write("New Test Mode Count: ")
 			os_sleep(0.1) -- Clear event buffer
 			local input = read()
-			self.configStore.data.testModeCount = tonumber(input) or self.configStore.data.testModeCount
+			local newCount = tonumber(input)
+			if newCount then
+				self.configStore.data.testModeCount = newCount
+				log(self, "info", "Test mode count updated to %d.", newCount)
+			end
 			os_sleep(0.5)
 		elseif key == keys.three then
 			self.configStore:save()
+			log(self, "info", "Configuration saved.")
 			self:drawTerminalHeader()
 			self:draw()
 			return
 		elseif key == keys.four then
 			self.configStore:load()
+			log(self, "info", "Exited configuration menu without saving.")
 			self:drawTerminalHeader()
 			self:draw()
 			return
@@ -474,6 +504,7 @@ end
 --- Dials a portal
 function HubSystem:dial(portalName)
 	local color = self:getNextColor(portalName)
+	log(self, "info", "Dialing portal '%s' with color '%s'", portalName, color)
 	self.manualActive = portalName
 	self.bm:setActive(portalName)
 	self:drawContent()
@@ -483,6 +514,7 @@ function HubSystem:dial(portalName)
 	if not (self.configStore.data.testModeCount and self.configStore.data.testModeCount > 0) then
 		self.tp.setFrequency(portalName)
 		os_sleep(0.3)
+		log(self, "debug", "Set frequency color on teleporter to '%s'", color)
 		pcall(self.tp.setFrequencyColor, color)
 	else
 		self.testSelectedFrequency = portalName
@@ -555,6 +587,7 @@ function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
 		self.bm:add("SET_COL_" .. colorName, function()
 			self.colorStore.data[portalName] = colorName
 			self.colorStore:save()
+			log(self, "info", "Assigned custom color '%s' to portal '%s'", colorName, portalName)
 			self.activeOverlay = nil
 			self.bm.mon = oldMon
 			os_sleep(0.1)
@@ -567,6 +600,7 @@ function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
 	self.bm:add("RESET_BTN", function()
 		self.colorStore.data[portalName] = nil
 		self.colorStore:save()
+		log(self, "info", "Reset color assignment for portal '%s' to random", portalName)
 		self.activeOverlay = nil
 		self.bm.mon = oldMon
 		os_sleep(0.1)
@@ -662,6 +696,7 @@ function HubSystem:run()
 	if side then
 		HAL.call(side, "open", self.configStore.data.recallChannel or 99)
 	end
+	log(self, "info", "HubSystem running. Modem state: channel %d on side %s", self.configStore.data.recallChannel or 99, self.modemSide)
 	self:drawTerminalHeader()
 	self:draw()
 	while true do
@@ -695,15 +730,17 @@ function HubSystem:run()
 			local channel, msg = x, message
 			if channel == (self.configStore.data.recallChannel or 99) then
 				if type(msg) == "table" and msg.command == "RECALL" then
+					log(self, "info", "Received RECALL command via modem for portal: %s", msg.target)
 					self:dial(msg.target)
 				end
 			end
 		elseif ev == "rednet_message" then
 			local msg = x
 			if type(msg) == "table" and msg.command == "RECALL" then
+				log(self, "info", "Received RECALL command via Rednet for portal: %s", msg.target)
 				self:dial(msg.target)
 			end
-		elseif ev == "key" and side == keys.c then
+		elseif ev == "key" and _ == keys.c then
 			self:configMenu()
 		end
 	end

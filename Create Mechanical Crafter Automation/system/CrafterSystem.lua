@@ -26,6 +26,8 @@ local keys_r = keys.r
 local keys_s = keys.s
 local keys_m = keys.m
 
+---@class Logger
+
 ---@class CrafterSystem
 ---@field chest Chest
 ---@field dashboard Dashboard
@@ -35,14 +37,30 @@ local keys_m = keys.m
 ---@field craftStartTime number
 ---@field isRecording boolean
 ---@field manageRecipes ManageRecipes
+---@field logger Logger|nil
 local CrafterSystem = {}
 CrafterSystem.__index = CrafterSystem
+
+--- Internal logging helper
+---@param self table
+---@param level string
+---@param msg string
+---@param ... any
+local function log(self, level, msg, ...)
+	if self.logger then
+		local func = self.logger[level]
+		if type(func) == "function" then
+			func(self.logger, msg, ...)
+		end
+	end
+end
 
 --- Creates the main system
 ---@param options table
 ---@return CrafterSystem
 function CrafterSystem.new(options)
 	local self = setmetatable({}, CrafterSystem)
+	self.logger = options.logger
 	self.chest = Chest.new(options.chestName)
 	self.dashboard = Dashboard.new()
 	self.recipeManager = RecipeManager.new(options.recipeFile or "crafter_recipes.json", self.dashboard)
@@ -54,6 +72,7 @@ function CrafterSystem.new(options)
 		recipeManager = self.recipeManager,
 		dashboard = self.dashboard,
 	})
+	log(self, "info", "CrafterSystem initialized (chest: %s, recipeFile: %s)", options.chestName, options.recipeFile or "crafter_recipes.json")
 	return self
 end
 
@@ -61,6 +80,7 @@ end
 function CrafterSystem:process()
 	if not self.chest:isPresent() then
 		self.dashboard:setError("Buffer chest missing!")
+		log(self, "error", "Buffer chest missing!")
 		os_sleep(2)
 		return
 	end
@@ -69,6 +89,7 @@ function CrafterSystem:process()
 		self.crafterGrid:discoverCrafters()
 		if self.crafterGrid:getCount() == 0 then
 			self.dashboard:setError("No Mechanical Crafters found!")
+			log(self, "error", "No Mechanical Crafters found!")
 			os_sleep(2)
 			return
 		end
@@ -109,7 +130,9 @@ function CrafterSystem:handleOngoingCraft()
 		-- Jam detection (30 seconds)
 		if (os_epoch("utc") - self.craftStartTime) > 30000 then
 			local jammedMsg = self.crafterGrid:getJammedItem()
-			self.dashboard:setError("JAMMED: " .. (jammedMsg or "Unknown item stuck!"))
+			local errStr = "JAMMED: " .. (jammedMsg or "Unknown item stuck!")
+			self.dashboard:setError(errStr)
+			log(self, "warn", errStr)
 		end
 	end
 end
@@ -128,15 +151,19 @@ function CrafterSystem:handleNewCraft()
 		self.dashboard:setMissingItems(nil)
 		self.dashboard:draw()
 
+		log(self, "info", "Filling Crafters for recipe: %s", readyRecipe.name)
 		local success, err = self.chest:transferRecipe(readyRecipe, self.crafterGrid)
 		if success then
 			self.isCrafting = true
 			self.craftStartTime = os_epoch("utc")
 			self.dashboard:setLastCraft(readyRecipe.name)
 			self.dashboard:setStatus("Crafting " .. readyRecipe.name .. "...")
+			log(self, "info", "Successfully started crafting recipe: %s", readyRecipe.name)
 			RedstoneController.pulseAll()
 		else
-			self.dashboard:setError(err or "Transfer Error!")
+			local errStr = err or "Transfer Error!"
+			self.dashboard:setError(errStr)
+			log(self, "error", "Failed to transfer items for recipe '%s': %s", readyRecipe.name, errStr)
 			os_sleep(2)
 			self.dashboard:setError("")
 		end
@@ -163,6 +190,7 @@ function CrafterSystem:keyListener()
 		local _, key = os_pullEvent("key")
 		if key == keys_r then
 			self.dashboard:setStatus("Reloading recipes...")
+			log(self, "info", "Reloading recipes requested by keyboard trigger.")
 			self.recipeManager:load(self.crafterGrid:getCount())
 			self.crafterGrid:discoverCrafters()
 			os_sleep(0.5)

@@ -24,6 +24,8 @@ local parallel_waitForAll = (parallel --[[@as any]]).waitForAll
 local keys_r = keys.r
 local keys_i = keys.i
 
+---@class Logger
+
 ---@class PowahSystem
 ---@field chest Chest
 ---@field dashboard Dashboard
@@ -31,20 +33,37 @@ local keys_i = keys.i
 ---@field activeJobs table<string, table>
 ---@field meBridge any|nil
 ---@field aeScanner any|nil
+---@field logger Logger|nil
 local PowahSystem = {}
 PowahSystem.__index = PowahSystem
+
+--- Internal logging helper
+---@param self table
+---@param level string
+---@param msg string
+---@param ... any
+local function log(self, level, msg, ...)
+	if self.logger then
+		local func = self.logger[level]
+		if type(func) == "function" then
+			func(self.logger, msg, ...)
+		end
+	end
+end
 
 --- Creates the main system
 ---@param options table
 ---@return PowahSystem
 function PowahSystem.new(options)
 	local self = setmetatable({}, PowahSystem)
+	self.logger = options.logger
 	self.chest = Chest.new(options.chestName)
 	self.dashboard = Dashboard.new()
 	self.recipeManager = RecipeManager.new(options.recipeFile or "powah_recipes.json", self.dashboard)
 	self.activeJobs = {}
 	self.meBridge = options.meBridgeName and HAL.get(options.meBridgeName) or nil
 	self.aeScanner = options.aeScannerName and HAL.get(options.aeScannerName) or nil
+	log(self, "info", "PowahSystem initialized (chest: %s, recipeFile: %s)", options.chestName, options.recipeFile or "powah_recipes.json")
 	return self
 end
 
@@ -71,13 +90,16 @@ function PowahSystem:checkActiveJobs()
 			self.activeJobs[orbName] = nil
 		else
 			if orb:isEmpty() then
+				log(self, "info", "Job completed on orb '%s' for recipe: %s", orbName, job.recipeName)
 				self.dashboard:setLastCraft(job.recipeName)
 				self.activeJobs[orbName] = nil
 				self.dashboard:draw()
 			else
 				-- Timeout check (1 minute)
 				if (os_epoch("utc") - job.startTime) > 60000 then
-					self.dashboard:setError("Timeout in " .. orbName .. ". Recovering...")
+					local timeoutMsg = "Timeout in " .. orbName .. ". Recovering..."
+					self.dashboard:setError(timeoutMsg)
+					log(self, "warn", "Timeout in '%s' during craft of recipe '%s'. Recovering items...", orbName, job.recipeName)
 					orb:recover(self.chest.name)
 					self.activeJobs[orbName] = nil
 					os_sleep(1)
@@ -92,6 +114,7 @@ end
 function PowahSystem:process()
 	if not self.chest:isPresent() then
 		self.dashboard:setError("Chest missing!")
+		log(self, "error", "Buffer chest missing!")
 		os_sleep(2)
 		return
 	end
@@ -108,6 +131,7 @@ function PowahSystem:process()
 		local readyRecipe = self.recipeManager:findReadyRecipe(self.chest)
 		if readyRecipe then
 			self.dashboard:setStatus("Filling " .. freeOrb.name)
+			log(self, "info", "Filling orb '%s' for recipe: %s", freeOrb.name, readyRecipe.name)
 			local success, err = self.chest:transferRecipe(readyRecipe, freeOrb.name)
 
 			if success then
@@ -115,9 +139,12 @@ function PowahSystem:process()
 					startTime = os_epoch("utc"),
 					recipeName = readyRecipe.name,
 				}
+				log(self, "info", "Successfully started crafting on '%s' for recipe: %s", freeOrb.name, readyRecipe.name)
 				self.dashboard:draw()
 			else
-				self.dashboard:setError("Transfer: " .. (err or "unknown"))
+				local errStr = err or "unknown error"
+				self.dashboard:setError("Transfer: " .. errStr)
+				log(self, "error", "Failed to transfer items to orb '%s' for recipe '%s': %s", freeOrb.name, readyRecipe.name, errStr)
 				freeOrb:recover(self.chest.name)
 				os_sleep(1)
 			end
@@ -148,6 +175,7 @@ function PowahSystem:keyListener()
 		local _, key = os_pullEvent("key")
 		if key == keys_r then
 			self.dashboard:setStatus("Reloading recipes...")
+			log(self, "info", "Reloading recipes requested by keyboard trigger.")
 			self.recipeManager:load()
 			os_sleep(0.5)
 			self.dashboard:setStatus("Waiting for items...")
