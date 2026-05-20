@@ -90,7 +90,7 @@ local function parseVersion(content)
 	if not content then
 		return nil
 	end
-	return content:match("local%s+INSTALLER_VERSION%s*=%s*\"([^\"]+)\"")
+	return content:match('local%s+INSTALLER_VERSION%s*=%s*"([^"]+)"')
 end
 
 --- Helper: Parse semantic version string into major, minor, patch numbers
@@ -498,7 +498,7 @@ local function install(packageId, manifest, isDryRun)
 					if expectedHash then
 						installState[target] = {
 							hash = expectedHash,
-							sizeBytes = fs.getSize(target)
+							sizeBytes = fs.getSize(target),
 						}
 						saveInstallState(installState)
 					end
