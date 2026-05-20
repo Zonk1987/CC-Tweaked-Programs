@@ -152,7 +152,7 @@ return {
 			description = "Fully automated grid crafting for the Create mod with in-game recording.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.redstone", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
+			dependencies = { "core.base", "core.ui", "core.redstone", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
@@ -203,7 +203,7 @@ return {
 			description = "Multi-orb parallel processing with AE2 pattern import support.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.inventory", "core.recipes", "core.ui.boot_assistant" },
+			dependencies = { "core.base", "core.ui", "core.inventory", "core.recipes", "core.ui.boot_assistant" },
 			files = {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
