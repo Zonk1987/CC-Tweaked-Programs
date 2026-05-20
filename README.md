@@ -36,7 +36,7 @@ install.lua
 
 ### **Installer CLI Options**
 - `install.lua --validate`: Checks the manifest structure and validates dependency trees.
-- `install.lua --dry-run`: Performs a detailed simulation of the planned installation without writing or downloading any files (ideal for testing updates).
+- `install.lua --dry-run`: Simulates the selected package installation without downloading or writing application files (ideal for testing updates).
 - `install.lua --force` or `install.lua -f`: Bypasses the local version-fingerprint cache and forces a full re-download of all system files.
 
 ---

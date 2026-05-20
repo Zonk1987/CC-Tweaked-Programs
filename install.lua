@@ -354,7 +354,7 @@ end
 
 --- Load the version-fingerprint cache (maps installed file paths to their manifest hash).
 --- Purpose: detect whether a file's manifest version has changed since the last install,
---- allowing "UP TO DATE" skips without re-downloading. This is NOT a cryptographic
+--- allowing "CACHED" skips without re-downloading. This is NOT a cryptographic
 --- download verifier — transport integrity is guaranteed by HTTPS.
 local function loadInstallState()
 	local stateFile = ".install_state.json"
