@@ -14,7 +14,7 @@ local BRANCH = "main"
 local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
 
 local MANIFEST_NAME = "manifest.lua"
-local INSTALLER_VERSION = "1.1.1"
+local INSTALLER_VERSION = "1.1.2"
 
 local args = { ... }
 
