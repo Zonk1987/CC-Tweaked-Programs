@@ -31,7 +31,9 @@ local function getAttachedPeripherals(filter)
 	local lowerFilter = string.lower(filter)
 	for _, name in ipairs(all) do
 		local pType = peripheral.getType(name)
-		if (pType and string.find(string.lower(pType), lowerFilter)) or string.find(string.lower(name), lowerFilter) then
+		if
+			(pType and string.find(string.lower(pType), lowerFilter)) or string.find(string.lower(name), lowerFilter)
+		then
 			table.insert(matches, name)
 		end
 	end
@@ -90,7 +92,9 @@ function ConfigGUI:draw(termObj)
 	local startY = 5
 	for i, item in ipairs(self.schema) do
 		local y = startY + (i - 1) * 2
-		if y > h - 4 then break end -- Screen overflow guard
+		if y > h - 4 then
+			break
+		end -- Screen overflow guard
 
 		local value = self.store:get(item.key, item.default)
 		if type(value) == "boolean" then

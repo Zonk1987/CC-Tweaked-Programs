@@ -46,7 +46,13 @@ local configStore = ConfigStore.new("config.json", {
 
 local schema = {
 	{ key = "hub_monitor", label = "Hub Monitor", type = "peripheral", peripheralType = "monitor", default = "top" },
-	{ key = "hub_teleporter", label = "Hub Teleporter", type = "peripheral", peripheralType = "teleporter", default = "bottom" },
+	{
+		key = "hub_teleporter",
+		label = "Hub Teleporter",
+		type = "peripheral",
+		peripheralType = "teleporter",
+		default = "bottom",
+	},
 }
 
 -- Check CLI Arguments

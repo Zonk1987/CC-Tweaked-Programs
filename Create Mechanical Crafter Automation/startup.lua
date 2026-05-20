@@ -45,7 +45,13 @@ local configStore = ConfigStore.new("config.json", {
 
 local schema = {
 	{ key = "buffer", label = "Puffer-Inventar", type = "peripheral", peripheralType = "inventory", default = "left" },
-	{ key = "color", label = "Textfarbe", type = "choice", choices = { "white", "yellow", "orange", "red", "blue", "green", "black" }, default = "white" },
+	{
+		key = "color",
+		label = "Textfarbe",
+		type = "choice",
+		choices = { "white", "yellow", "orange", "red", "blue", "green", "black" },
+		default = "white",
+	},
 }
 
 -- Check CLI Arguments

@@ -90,8 +90,8 @@ return {
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
-					sizeBytes = 10609,
-					hash = "7a4341cae5d1a514d800bbe2b059d56f36241f9cc85c8fb3258859f5701eccef",
+					sizeBytes = 10619,
+					hash = "a593aa70778afd9e15ec4e06f989d41996ec6b9ca78a73fd984d29dc3869b63f",
 				},
 			},
 		},
@@ -157,8 +157,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 5286,
-					hash = "339990aa111cb445b3ff8ee04ecdbf6d8eb6ee53b9ddea6f223b72bf2cdd1b58",
+					sizeBytes = 5298,
+					hash = "f19144a321007e4d7fe694220191aeaeac3d818deb09925dbd7d82a6da6f7099",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",
@@ -259,8 +259,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 4503,
-					hash = "0043c4698d4e75ad7e9047895dbef96b5834185931ba7f445188b21e0bfcdf5c",
+					sizeBytes = 4515,
+					hash = "9d6c62f43a6abfbf45f06487af6d73eeccfb7b260d4af7df37229c12169e6c13",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
