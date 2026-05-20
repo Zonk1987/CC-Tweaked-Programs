@@ -2,6 +2,12 @@
 -- Logger: Universal Logging Utility with Log Rotation
 -- Governed by AGENTS.md
 
+---@class Logger
+---@field logPath string
+---@field maxFileSize number
+---@field maxBackups number
+---@field minLevel number
+---@field disabled boolean
 local Logger = {}
 Logger.__index = Logger
 

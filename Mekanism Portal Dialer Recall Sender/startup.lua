@@ -23,6 +23,7 @@ local corePaths = {
 	"/lib/core/ui/?.lua",
 	"/lib/core/network/?.lua",
 	"/lib/core/redstone/?.lua",
+	"/lib/core/logger/?.lua",
 }
 package.path = package.path .. ";" .. table.concat(corePaths, ";")
 
@@ -31,6 +32,7 @@ local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 local RedstoneController = require("RedstoneController")
 local BootAssistant = require("boot_assistant")
+local Logger = require("Logger")
 
 -- Localize globals
 local fs = fs
@@ -53,11 +55,28 @@ local read = read
 ---@field save fun(self: ConfigStore)
 ---@field load fun(self: ConfigStore)
 
+---@class Logger
+
 ---@class RecallSender
 ---@field configStore ConfigStore
 ---@field modem table|nil
+---@field logger Logger|nil
 local RecallSender = {}
 RecallSender.__index = RecallSender
+
+--- Internal logging helper
+---@param self table
+---@param level string
+---@param msg string
+---@param ... any
+local function log(self, level, msg, ...)
+	if self.logger then
+		local func = self.logger[level]
+		if type(func) == "function" then
+			func(self.logger, msg, ...)
+		end
+	end
+end
 
 --- Creates a new RecallSender
 ---@return RecallSender
@@ -65,9 +84,11 @@ function RecallSender.new()
 	local self = setmetatable({
 		configStore = ConfigStore.new("config.json", { target = "Unknown", channel = 99 }),
 		modem = nil,
+		logger = Logger.new({ logPath = "logs/recall_sender.log" }),
 	}, RecallSender)
 
 	self:initHardware()
+	log(self, "info", "RecallSender initialized (target: %s, channel: %d)", self.configStore.data.target, self.configStore.data.channel)
 	return self
 end
 
@@ -129,6 +150,7 @@ function RecallSender:initHardware()
 		self.configStore.data.target = target
 		self.configStore.data.channel = channel
 		self.configStore:save()
+		log(self, "info", "RecallSender setup complete. Target configured to '%s' on channel %d", target, channel)
 
 		term.setCursorPos(2, 10)
 		term.setTextColor(colors.green)
@@ -243,10 +265,12 @@ function RecallSender:configMenu()
 			self.configStore.data.channel = tonumber(input) or self.configStore.data.channel
 		elseif key == keys.three then
 			self.configStore:save()
+			log(self, "info", "Configuration saved via menu: target '%s', channel %d", self.configStore.data.target, self.configStore.data.channel)
 			self:drawTerminalHeader()
 			return
 		elseif key == keys.four then
 			self.configStore:load()
+			log(self, "info", "Exited configuration menu without saving.")
 			self:drawTerminalHeader()
 			return
 		end
@@ -257,6 +281,7 @@ end
 function RecallSender:broadcastRecall()
 	term.setTextColor(colors.yellow)
 	print("\n[!] Signal detected! Sending recall...")
+	log(self, "info", "Redstone signal detected. Broadcasting RECALL command for target portal '%s' on channel %d", self.configStore.data.target, self.configStore.data.channel)
 
 	local payload = { command = "RECALL", target = self.configStore.data.target }
 	RednetProtocol.transmit(self.configStore.data.channel, payload)
@@ -267,8 +292,9 @@ function RecallSender:broadcastRecall()
 	term.setTextColor(colors.white)
 end
 
---- Main runtime loop
+---@param self RecallSender
 function RecallSender:run()
+	log(self, "info", "RecallSender loop started. Waiting for redstone signals...")
 	self:drawTerminalHeader()
 	local messageTimer = nil
 	local refreshTimer = os_startTimer(2) -- Auto-refresh every 2s
