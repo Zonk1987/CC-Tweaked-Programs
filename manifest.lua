@@ -248,8 +248,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/Chest.lua",
 					target = "system/Chest.lua",
-					sizeBytes = 5014,
-					hash = "6661910fdfcc6de2226240059c1c807cccb2e62e1cbe6a6d6aeb1395c3f5a63b",
+					sizeBytes = 5044,
+					hash = "5799a32bca23583db9ed97331941acbd779b0b06af6bbc658c20aeef54584420",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterGrid.lua",

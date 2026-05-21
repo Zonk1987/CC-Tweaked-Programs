@@ -100,7 +100,10 @@ function Chest:transferRecipe(recipe, crafterGrid)
 							if listOk and listRes then
 								local _, crafterItem = next(listRes)
 								if crafterItem then
-									detailStr = "Crafter enthaelt bereits: " .. crafterItem.name .. " x" .. crafterItem.count
+									detailStr = "Crafter enthaelt bereits: "
+										.. crafterItem.name
+										.. " x"
+										.. crafterItem.count
 								else
 									detailStr = "Crafter ist leer, hat das Item aber dennoch abgelehnt!"
 								end
