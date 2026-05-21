@@ -20,6 +20,22 @@ function ConfigGUI.new(configStore, schema)
 	return self
 end
 
+--- Normalize a string for fuzzy comparison (lowercase, strip non-alphanum)
+local function normalizeFilter(s)
+	return tostring(s):lower():gsub("[^a-z0-9]", "")
+end
+
+--- Returns all type strings for a peripheral as a flat list
+local function getTypeList(name)
+	local raw = peripheral.getType(name)
+	if type(raw) == "table" then
+		return raw
+	elseif raw then
+		return { raw }
+	end
+	return {}
+end
+
 --- Scans and returns all peripherals matching a type/prefix or all if nil
 --- @param filter string|nil Optional search prefix
 --- @return table List of peripheral names
@@ -28,18 +44,45 @@ local function getAttachedPeripherals(filter)
 	if not filter then
 		return all
 	end
-	local matches = {}
+	local normalFilter = normalizeFilter(filter)
 	local lowerFilter = string.lower(filter)
+	local matches = {}
 	for _, name in ipairs(all) do
-		local pType = peripheral.getType(name)
+		local typeList = getTypeList(name)
 		local isMatch = false
-		if pType and string.find(string.lower(pType), lowerFilter) then
-			isMatch = true
-		elseif string.find(string.lower(name), lowerFilter) then
-			isMatch = true
-		elseif type(peripheral.hasType) == "function" and peripheral.hasType(name, filter) then
-			isMatch = true
-		elseif filter == "inventory" then
+
+		-- 1. Check if any type string contains the filter (exact or normalized fuzzy)
+		for _, pType in ipairs(typeList) do
+			local lowerType = string.lower(pType)
+			if string.find(lowerType, lowerFilter, 1, true) then
+				isMatch = true
+				break
+			end
+			-- Normalized fuzzy: "meBridge" matches "meBridge", "me_bridge", etc.
+			if normalizeFilter(pType):find(normalFilter, 1, true) then
+				isMatch = true
+				break
+			end
+		end
+
+		-- 2. Check if name contains the filter (direct or normalized)
+		if not isMatch then
+			if string.find(string.lower(name), lowerFilter, 1, true) then
+				isMatch = true
+			elseif normalizeFilter(name):find(normalFilter, 1, true) then
+				isMatch = true
+			end
+		end
+
+		-- 3. peripheral.hasType capability check (CC:Tweaked 1.99+)
+		if not isMatch and type(peripheral.hasType) == "function" then
+			if peripheral.hasType(name, filter) then
+				isMatch = true
+			end
+		end
+
+		-- 4. Inventory fallback: check list/size methods
+		if not isMatch and filter == "inventory" then
 			local device = peripheral.wrap(name)
 			if device and type(device["list"]) == "function" and type(device["size"]) == "function" then
 				isMatch = true
@@ -47,10 +90,16 @@ local function getAttachedPeripherals(filter)
 		end
 
 		-- Exclude mechanical crafters from the candidate list
-		if
-			isMatch
-			and (string.find(name, "mechanical_crafter") or (pType and string.find(pType, "mechanical_crafter")))
-		then
+		local isCrafter = string.find(name, "mechanical_crafter") ~= nil
+		if not isCrafter then
+			for _, pType in ipairs(typeList) do
+				if string.find(pType, "mechanical_crafter") then
+					isCrafter = true
+					break
+				end
+			end
+		end
+		if isMatch and isCrafter then
 			isMatch = false
 		end
 

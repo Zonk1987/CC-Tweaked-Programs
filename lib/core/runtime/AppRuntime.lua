@@ -197,10 +197,45 @@ function AppRuntime.run(appClass, options, ...)
 			boot:addStep(item.key, item.label .. " Check", function()
 				local configuredName = configStore:get(item.key, item.default)
 				if configuredName and HAL.wrap(configuredName) then
-					local pType = HAL.getType(configuredName)
-					local isTypeMatch = not item.peripheralType
-						or HAL.hasType(configuredName, item.peripheralType)
-						or (pType and pType:find(item.peripheralType))
+					-- Accept any present peripheral when no type filter is given
+					if not item.peripheralType then
+						return Result.ok(configuredName)
+					end
+
+					-- Normalize a type string for fuzzy comparison (lowercase, strip non-alphanum)
+					local function normalize(s)
+						return tostring(s):lower():gsub("[^a-z0-9]", "")
+					end
+
+					-- getType may return a table of types on newer CC:Tweaked builds
+					local rawType = HAL.getType(configuredName)
+					local typeList = {}
+					if type(rawType) == "table" then
+						for _, t in ipairs(rawType) do
+							table.insert(typeList, t)
+						end
+					elseif rawType then
+						table.insert(typeList, rawType)
+					end
+
+					local normalFilter = normalize(item.peripheralType)
+					local normalName = normalize(configuredName)
+
+					-- Accept if: type exact/hasType match, normalized type contains filter,
+					-- or the peripheral name normalizes to start with the filter
+					local isTypeMatch = HAL.hasType(configuredName, item.peripheralType)
+					if not isTypeMatch then
+						for _, t in ipairs(typeList) do
+							if normalize(t):find(normalFilter, 1, true) then
+								isTypeMatch = true
+								break
+							end
+						end
+					end
+					if not isTypeMatch then
+						-- Fuzzy name match: e.g. "me_bridge_0" matches filter "meBridge"
+						isTypeMatch = normalName:find(normalFilter, 1, true) ~= nil
+					end
 
 					if isTypeMatch then
 						return Result.ok(configuredName)
@@ -214,7 +249,7 @@ function AppRuntime.run(appClass, options, ...)
 					for _, name in ipairs(found) do
 						local pType = HAL.getType(name)
 						local isMechanicalCrafter = string.find(name, "mechanical_crafter")
-							or (pType and string.find(pType, "mechanical_crafter"))
+							or (type(pType) == "string" and string.find(pType, "mechanical_crafter"))
 						if not isMechanicalCrafter then
 							table.insert(validCandidates, name)
 						end
