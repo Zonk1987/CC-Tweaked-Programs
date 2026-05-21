@@ -190,8 +190,8 @@ return {
 				{
 					source = "lib/core/runtime/Scheduler.lua",
 					target = "lib/core/runtime/Scheduler.lua",
-					sizeBytes = 5536,
-					hash = "fdd99bf89b20ae7346f0059debd42d6d0982860796f1f3ed5880e65628a8bd12",
+					sizeBytes = 5698,
+					hash = "1c71feab3d023525676debf663dc9926e24feab58d1d223894d3fcebb27d570f",
 				},
 				{
 					source = "lib/core/runtime/Fiber.lua",

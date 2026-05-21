@@ -1,3 +1,6 @@
+--- @diagnostic disable: undefined-global, inject-field, duplicate-set-field
+-- luacheck: globals os
+
 --[[
 ================================================================================
 Scheduler Module v1.0.0
@@ -54,35 +57,35 @@ function Scheduler:run()
 	local originalSleep = os.sleep
 
 	-- Apply cooperative monkey-patches
-	os.pullEventRaw = function(sFilter)
+	rawset(os, "pullEventRaw", function(sFilter)
 		if self.activeFiber and self.running then
 			return coroutine.yield(sFilter)
 		else
 			return originalPullEventRaw(sFilter)
 		end
-	end
+	end)
 
-	os.pullEvent = function(sFilter)
+	rawset(os, "pullEvent", function(sFilter)
 		local eventData = { os.pullEventRaw(sFilter) }
 		if eventData[1] == "terminate" then
 			error("Terminated", 0)
 		end
 		return unpack(eventData)
-	end
+	end)
 
-	os.sleep = function(seconds)
+	rawset(os, "sleep", function(seconds)
 		if self.activeFiber and self.running then
 			coroutine.yield("sleep", seconds or 0.05)
 		else
 			originalSleep(seconds)
 		end
-	end
+	end)
 
 	local function cleanup()
 		-- Restore CC APIs
-		os.pullEventRaw = originalPullEventRaw
-		os.pullEvent = originalPullEvent
-		os.sleep = originalSleep
+		rawset(os, "pullEventRaw", originalPullEventRaw)
+		rawset(os, "pullEvent", originalPullEvent)
+		rawset(os, "sleep", originalSleep)
 		self.running = false
 	end
 
