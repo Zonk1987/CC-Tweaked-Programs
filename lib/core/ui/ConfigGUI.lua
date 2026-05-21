@@ -172,31 +172,7 @@ function ConfigGUI:draw(termObj)
 	termObj.write("[ ABBRECHEN ]")
 end
 
---- Splits a string into lines of a maximum width
---- @param text string The input string to wrap
---- @param maxWidth number The maximum width of a line
---- @return table List of wrapped lines
-local function wrapText(text, maxWidth)
-	local lines = {}
-	local currentLine = ""
 
-	for word in string.gmatch(text, "%S+") do
-		if #currentLine == 0 then
-			currentLine = word
-		elseif #currentLine + 1 + #word <= maxWidth then
-			currentLine = currentLine .. " " .. word
-		else
-			table.insert(lines, currentLine)
-			currentLine = word
-		end
-	end
-
-	if #currentLine > 0 then
-		table.insert(lines, currentLine)
-	end
-
-	return lines
-end
 
 --- Shows a dynamic overlay popup to edit/read a value
 function ConfigGUI:editValue(parentTerm, item)
@@ -339,7 +315,7 @@ function ConfigGUI:editValue(parentTerm, item)
 					self.store:set(item.key, options[localIndex])
 					self.modified = true
 					break
-				elseif p1 == keys.escape or p1 == keys["esc"] or p1 == 256 or p1 == 1 then
+				elseif p1 == keys["escape"] or p1 == keys["esc"] or p1 == 256 or p1 == 1 then
 					break
 				end
 			elseif event == "mouse_click" then
