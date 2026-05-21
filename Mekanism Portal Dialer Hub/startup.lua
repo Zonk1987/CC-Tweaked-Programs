@@ -7,6 +7,24 @@ Powered by Enterprise AppRuntime & Fiber Scheduler.
 ================================================================================
 ]]
 
+-- Configure library paths for lib/core
+local corePaths = {
+	"/lib/core/base/?.lua",
+	"/lib/core/peripherals/?.lua",
+	"/lib/core/inventory/?.lua",
+	"/lib/core/recipes/?.lua",
+	"/lib/core/ui/?.lua",
+	"/lib/core/network/?.lua",
+	"/lib/core/redstone/?.lua",
+	"/lib/core/logger/?.lua",
+	"/lib/core/runtime/?.lua",
+}
+local localPaths = {
+	"/system/?.lua",
+	"/ui/?.lua",
+}
+package.path = package.path .. ";" .. table.concat(corePaths, ";") .. ";" .. table.concat(localPaths, ";")
+
 local AppRuntime = require("AppRuntime")
 local HubApp = require("HubApp")
 

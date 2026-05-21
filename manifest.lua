@@ -9,7 +9,7 @@ return {
 		------------------------------------------------------------------------
 		["core.base"] = {
 			name = "Core Base",
-			description = "Fundamental utilities (Config Store).",
+			description = "Fundamental utilities (Config Store, Event Bus, Result wrapping).",
 			hidden = true,
 			dependencies = {},
 			files = {
@@ -18,6 +18,18 @@ return {
 					target = "lib/core/base/ConfigStore.lua",
 					sizeBytes = 1747,
 					hash = "a00c219b5bff320199dcd48c0dd296c11e65f9e45dce46cd5c8c81ed9b43e866",
+				},
+				{
+					source = "lib/core/base/EventBus.lua",
+					target = "lib/core/base/EventBus.lua",
+					sizeBytes = 3109,
+					hash = "b6b88cb42f4368293055eeed6b39a83f5e9ab8dfe75c2bb49db576093153dd13",
+				},
+				{
+					source = "lib/core/base/Result.lua",
+					target = "lib/core/base/Result.lua",
+					sizeBytes = 2188,
+					hash = "423fa03497574b1b396cff31c1204893be69a0c66075d490350492289d3d3688",
 				},
 			},
 		},
@@ -85,7 +97,7 @@ return {
 		},
 		["core.ui"] = {
 			name = "Core UI",
-			description = "Generic monitor and button handling.",
+			description = "Generic monitor, button, layout, and canvas drawing handling.",
 			hidden = true,
 			dependencies = { "core.peripherals" },
 			files = {
@@ -100,6 +112,18 @@ return {
 					target = "lib/core/ui/ConfigGUI.lua",
 					sizeBytes = 10619,
 					hash = "a593aa70778afd9e15ec4e06f989d41996ec6b9ca78a73fd984d29dc3869b63f",
+				},
+				{
+					source = "lib/core/ui/FlexLayout.lua",
+					target = "lib/core/ui/FlexLayout.lua",
+					sizeBytes = 4514,
+					hash = "e6f62d1acfb782ff390bfc01d85776c3fc0f790ad8e4a199b8a8542d82ca180b",
+				},
+				{
+					source = "lib/core/ui/VirtualCanvas.lua",
+					target = "lib/core/ui/VirtualCanvas.lua",
+					sizeBytes = 5296,
+					hash = "32d670a7f29748cb34ff98f943036c11f5cb8862bc4bcab13987c39b4a0d2de7",
 				},
 			},
 		},
@@ -151,6 +175,32 @@ return {
 				},
 			},
 		},
+		["core.runtime"] = {
+			name = "Core Runtime",
+			description = "Enterprise app runtime, cooperative multitasking scheduler, and fiber engine.",
+			hidden = true,
+			dependencies = { "core.base", "core.logger", "core.peripherals", "core.ui" },
+			files = {
+				{
+					source = "lib/core/runtime/AppRuntime.lua",
+					target = "lib/core/runtime/AppRuntime.lua",
+					sizeBytes = 9294,
+					hash = "0571188cd97a10aa6df8bed6167f53c1b465ef9bee5eee173e234ea7bedbe17e",
+				},
+				{
+					source = "lib/core/runtime/Scheduler.lua",
+					target = "lib/core/runtime/Scheduler.lua",
+					sizeBytes = 4346,
+					hash = "7f38411fb3fa656fba6bc5e1c18863ff9039647d915a03ae213b3261810b700b",
+				},
+				{
+					source = "lib/core/runtime/Fiber.lua",
+					target = "lib/core/runtime/Fiber.lua",
+					sizeBytes = 1913,
+					hash = "abb75a1059c25f4ae9a81cdf53cebee9a52c2a0b41a663dcb31859e8a2f54119",
+				},
+			},
+		},
 
 		------------------------------------------------------------------------
 		-- APPLICATION PACKAGES (User Programs)
@@ -168,13 +218,14 @@ return {
 				"core.inventory",
 				"core.recipes",
 				"core.ui.boot_assistant",
+				"core.runtime",
 			},
 			files = {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 1042,
-					hash = "636675a49a824a1c8ae7b92705956a1bd04a77685991705c258bd72aedf646ba",
+					sizeBytes = 1517,
+					hash = "004ada02ae998bb93e5cba01db2a839b4042944def9d5f0e52361c8543597b0e",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",
@@ -232,13 +283,14 @@ return {
 				"core.inventory",
 				"core.recipes",
 				"core.ui.boot_assistant",
+				"core.runtime",
 			},
 			files = {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 1123,
-					hash = "5296b6ca33c5d775377df3f9bd43cb467a7a685b09bf086dc9f816b0122df0f4",
+					sizeBytes = 1598,
+					hash = "717fd8351735a93704af26c369440afc719776ed6b070bd3b494d9b26cce0fff",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/system/PowahSystem.lua",
@@ -296,13 +348,14 @@ return {
 				"core.network",
 				"core.ui",
 				"core.ui.boot_assistant",
+				"core.runtime",
 			},
 			files = {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 1066,
-					hash = "ef0b648d06767f16e98c394bb704c3e2dd174dea72d86c75c196c9ce75a548d2",
+					sizeBytes = 1541,
+					hash = "a0f63ed737ecbd71e31a5ba8798eddd6e82b11c2bad0f2e031b89b7c7798840f",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
@@ -342,13 +395,14 @@ return {
 				"core.network",
 				"core.redstone",
 				"core.ui.boot_assistant",
+				"core.runtime",
 			},
 			files = {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 893,
-					hash = "6378bb26c62928e63dd4a1a260e25c704a7e6e1cf51a355fbdfbc950a646e022",
+					sizeBytes = 1368,
+					hash = "6da811ffa60a63dd095a853397e287742ba3f9c067ee97f55a5493e9ff6fed0a",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/system/RecallSenderApp.lua",
@@ -367,13 +421,13 @@ return {
 			description = "Advanced hardware inspection and diagnostic toolkit.",
 			hidden = false,
 			entry = "startup.lua",
-			dependencies = { "core.network", "core.ui.boot_assistant" },
+			dependencies = { "core.network", "core.ui.boot_assistant", "core.runtime" },
 			files = {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 920,
-					hash = "076d7ed8376c15cf2ec9cebb6bd842e74443977f6bbb034d4b07ad32f22d0893",
+					sizeBytes = 1395,
+					hash = "ac994d60bd362ea0c74a17d1343be7ed097b1107c8f80236e995b8f41b60eda9",
 				},
 				{
 					source = "CC%20Developer%20Suite/system/DevSuiteApp.lua",
