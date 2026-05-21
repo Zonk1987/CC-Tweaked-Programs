@@ -215,7 +215,9 @@ function AppRuntime.run(appClass, options, ...)
 				return Result.err(
 					"PERIPHERAL_MISSING",
 					"Geraet '" .. item.label .. "' nicht gefunden.",
-					"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'"
+					"Bitte verbinde ein passendes Geraet vom Typ '"
+						.. tostring(item.peripheralType or "unbekannt")
+						.. "'"
 				)
 			end, {
 				"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'",

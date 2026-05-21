@@ -210,9 +210,13 @@ function ConfigGUI:editValue(parentTerm, item)
 		local optionsStr = "Optionen: " .. table.concat(item.choices, ", ")
 		local wrapped = wrapText(optionsStr, popW - 6)
 		popWin.setCursorPos(3, 4)
-		if wrapped[1] then popWin.write(wrapped[1]) end
+		if wrapped[1] then
+			popWin.write(wrapped[1])
+		end
 		popWin.setCursorPos(3, 5)
-		if wrapped[2] then popWin.write(wrapped[2]) end
+		if wrapped[2] then
+			popWin.write(wrapped[2])
+		end
 
 		popWin.setCursorPos(3, 6)
 		popWin.setTextColor(colors.blue)
@@ -259,9 +263,13 @@ function ConfigGUI:editValue(parentTerm, item)
 		local optionsStr = "Geraete: " .. table.concat(options, ", ")
 		local wrapped = wrapText(optionsStr, popW - 6)
 		popWin.setCursorPos(3, 4)
-		if wrapped[1] then popWin.write(wrapped[1]) end
+		if wrapped[1] then
+			popWin.write(wrapped[1])
+		end
 		popWin.setCursorPos(3, 5)
-		if wrapped[2] then popWin.write(wrapped[2]) end
+		if wrapped[2] then
+			popWin.write(wrapped[2])
+		end
 
 		popWin.setCursorPos(3, 6)
 		popWin.setTextColor(colors.blue)
