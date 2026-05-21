@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Create Mechanical Crafter Automation v1.0.114-main
+Create Mechanical Crafter Automation v1.0.118-main
 ================================================================================
 Automates Mechanical Crafter grids from the 'Create' mod.
 Powered by Enterprise AppRuntime & Fiber Scheduler.
