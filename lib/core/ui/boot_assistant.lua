@@ -93,7 +93,7 @@ function BootAssistant.new(options)
 	end
 
 	-- Erstellung eines flackerfreien Windows
-	local w, h = self.win and self.win.getSize() or term.getSize()
+	local w, h = term.getSize()
 	self.win = window.create(term.current(), 1, 1, w, h, false)
 
 	-- Backup der alten Palette
