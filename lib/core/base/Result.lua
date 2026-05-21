@@ -7,6 +7,13 @@ inspired by Rust's Result type. Helps replace error-prone raw string returns.
 ================================================================================
 ]]
 
+---@class Result
+---@field _ok boolean
+---@field data any
+---@field code string
+---@field message string
+---@field hint string
+---@field severity string
 local Result = {}
 Result.__index = Result
 

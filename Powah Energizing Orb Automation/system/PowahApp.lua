@@ -80,12 +80,16 @@ function PowahApp:run()
 						recipeManager = self.system.recipeManager,
 						dashboard = self.system.dashboard,
 					})
-					local ok, err = menu:open()
-					if not ok then
-						if err == "me_bridge_missing" then
+					---@type any
+					local result = menu:open()
+					if result:isErr() then
+						local err = result:getError()
+						if err.code == "ME_BRIDGE_MISSING" then
 							self.system.dashboard:setError("No ME Bridge found!")
-						elseif err == "no_patterns_found" then
+						elseif err.code == "NO_PATTERNS_FOUND" then
 							self.system.dashboard:setError("No patterns found!")
+						else
+							self.system.dashboard:setError(err.message or "Unknown Error")
 						end
 						Scheduler.sleep(1.5)
 						self.system.dashboard:setError("")

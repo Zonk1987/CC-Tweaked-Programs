@@ -211,12 +211,16 @@ function PowahSystem:keyListener()
 				recipeManager = self.recipeManager,
 				dashboard = self.dashboard,
 			})
-			local ok, err = menu:open()
-			if not ok then
-				if err == "me_bridge_missing" then
+			---@type any
+			local result = menu:open()
+			if result:isErr() then
+				local err = result:getError()
+				if err.code == "ME_BRIDGE_MISSING" then
 					self.dashboard:setError("No ME Bridge found!")
-				elseif err == "no_patterns_found" then
+				elseif err.code == "NO_PATTERNS_FOUND" then
 					self.dashboard:setError("No patterns found!")
+				else
+					self.dashboard:setError(err.message or "Unknown Error")
 				end
 				os_sleep(1.5)
 				self.dashboard:setError("")

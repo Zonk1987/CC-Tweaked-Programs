@@ -13,6 +13,7 @@ local colors = colors
 local os_sleep = os.sleep
 local os_pullEvent = os.pullEvent
 local HAL = require("HAL")
+local Result = require("Result")
 local string = string
 local math = math
 local table_insert = table.insert
@@ -81,10 +82,10 @@ function ImportMenu:isAlreadyImported(pattern)
 end
 
 --- Main UI loop for the import menu
----@return boolean success, string|nil err
+---@return Result
 function ImportMenu:open()
 	if not self.meBridge then
-		return false, "me_bridge_missing"
+		return Result.err("ME_BRIDGE_MISSING", "ME Bridge nicht gefunden.", "Bitte stelle sicher, dass eine ME Bridge angeschlossen ist.")
 	end
 
 	-- Robust check: Is the scanner actually there?
@@ -204,7 +205,7 @@ function ImportMenu:open()
 					break
 				elseif key == keys_q then
 					self.dashboard.suppressDraw = false
-					return true
+					return Result.ok(true)
 				end
 			end
 		end
@@ -214,7 +215,7 @@ function ImportMenu:open()
 
 	if #patterns == 0 and not scannerActive then
 		self.dashboard.suppressDraw = false
-		return false, "no_patterns_found"
+		return Result.err("NO_PATTERNS_FOUND", "Keine Muster codiert im ME-Netzwerk gefunden.", "Bitte codiere mindestens ein Rezept im ME-System.")
 	end
 
 	selected = 1
@@ -385,7 +386,7 @@ function ImportMenu:open()
 
 	self.dashboard.suppressDraw = false
 	self.dashboard:draw()
-	return true
+	return Result.ok(true)
 end
 
 return ImportMenu

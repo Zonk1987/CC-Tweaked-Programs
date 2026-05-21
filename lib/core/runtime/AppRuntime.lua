@@ -15,6 +15,7 @@ local Logger = require("Logger")
 local HAL = require("HAL")
 local EventBus = require("EventBus")
 local Scheduler = require("Scheduler")
+local Result = require("Result")
 
 local AppRuntime = {}
 AppRuntime.__index = AppRuntime
@@ -100,7 +101,7 @@ local function runSafeMode(appName, configStore)
 				computerId = os.computerID(),
 				computerLabel = os.computerLabel() or "none",
 				peripherals = {},
-				config = configStore.config or {},
+				config = configStore.data or {},
 			}
 
 			local names = peripheral.getNames()
@@ -197,7 +198,7 @@ function AppRuntime.run(appClass, options, ...)
 			if configuredName and HAL.wrap(configuredName) then
 				local pType = HAL.getType(configuredName)
 				if pType and (not item.peripheralType or pType:find(item.peripheralType)) then
-					return true
+					return Result.ok(configuredName)
 				end
 			end
 
@@ -206,11 +207,15 @@ function AppRuntime.run(appClass, options, ...)
 				local found = HAL.listNames(item.peripheralType)
 				if found[1] then
 					configStore:set(item.key, found[1], true)
-					return true
+					return Result.ok(found[1])
 				end
 			end
 
-			return false, "Geraet '" .. item.label .. "' nicht gefunden."
+			return Result.err(
+				"PERIPHERAL_MISSING",
+				"Geraet '" .. item.label .. "' nicht gefunden.",
+				"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'"
+			)
 		end, {
 			"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'",
 			"mit dem Computer (physisch oder per Modems/Netzwerk).",

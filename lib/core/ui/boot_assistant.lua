@@ -165,6 +165,23 @@ function BootAssistant:runChecks()
 					step.status = "FAIL"
 					self:log("FAIL", "Fehler in Check '" .. step.title .. "': " .. tostring(res), step.id)
 					anyFailed = true
+				elseif type(res) == "table" and type(res.isOk) == "function" then
+					if res:isOk() then
+						if step.status ~= "OK" then
+							step.status = "OK"
+							self:log("OK", step.title .. " geladen.", step.id)
+						end
+					else
+						local err = res:getError() or {}
+						if err.severity == "warn" then
+							step.status = "WARN"
+							self:log("WARN", step.title .. ": " .. tostring(err.message or "Warnung"), step.id)
+						else
+							step.status = "FAIL"
+							self:log("FAIL", step.title .. " fehlgeschlagen: " .. tostring(err.message or "Nicht gefunden"), step.id)
+							anyFailed = true
+						end
+					end
 				elseif res == true then
 					if step.status ~= "OK" then
 						step.status = "OK"

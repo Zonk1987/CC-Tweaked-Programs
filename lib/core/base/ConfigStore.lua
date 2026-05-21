@@ -11,8 +11,12 @@ ConfigStore.__index = ConfigStore
 function ConfigStore.new(filename, defaults)
 	local self = setmetatable({
 		filename = filename,
-		data = defaults or {},
+		defaults = defaults or {},
+		data = {},
 	}, ConfigStore)
+	for k, v in pairs(self.defaults) do
+		self.data[k] = v
+	end
 	self:load()
 	return self
 end
@@ -81,6 +85,15 @@ function ConfigStore:set(key, value, autoSave)
 	if autoSave then
 		self:save()
 	end
+end
+
+--- Clears the config data and restores defaults, then saves
+function ConfigStore:clear()
+	self.data = {}
+	for k, v in pairs(self.defaults or {}) do
+		self.data[k] = v
+	end
+	self:save()
 end
 
 return ConfigStore
