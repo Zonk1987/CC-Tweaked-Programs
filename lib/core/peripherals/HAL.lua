@@ -1,4 +1,5 @@
---- @diagnostic disable: undefined-global
+---@diagnostic disable: undefined-global, undefined-field
+-- luacheck: globals peripheral
 -- HAL: Hardware Abstraction Layer gateway for unified peripheral resolution
 -- Governed by AGENTS.md
 
@@ -102,6 +103,12 @@ function HAL.hasType(name, expectedType)
 	if not peripheral.isPresent(name) then
 		return false
 	end
+	if expectedType == "inventory" then
+		local device = peripheral.wrap(name)
+		if device and type(device["list"]) == "function" and type(device["size"]) == "function" then
+			return true
+		end
+	end
 	if type(peripheral.hasType) == "function" then
 		return peripheral.hasType(name, expectedType) == true
 	end
@@ -142,6 +149,17 @@ end
 --- @param expectedType string
 --- @return table list
 function HAL.listNames(expectedType)
+	if expectedType == "inventory" then
+		local names = {}
+		local all = peripheral.getNames()
+		for _, name in ipairs(all) do
+			local device = peripheral.wrap(name)
+			if device and type(device["list"]) == "function" and type(device["size"]) == "function" then
+				table.insert(names, name)
+			end
+		end
+		return names
+	end
 	return PeripheralScanner.listNames(expectedType)
 end
 

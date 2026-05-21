@@ -62,8 +62,8 @@ return {
 				{
 					source = "lib/core/peripherals/HAL.lua",
 					target = "lib/core/peripherals/HAL.lua",
-					sizeBytes = 4059,
-					hash = "9377c4ae70c7b5b1d7008bfc40ca1029697ea695e4934d9ab69cb72f3a51b63b",
+					sizeBytes = 4627,
+					hash = "1ffd1fafc02c6c665aeedf4f8e660538dee77433ac52af1180259561032898c7",
 				},
 			},
 		},
@@ -110,8 +110,8 @@ return {
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
-					sizeBytes = 13725,
-					hash = "27f52cc22a3f1e3f6be32ed4897d11ff20d753c6e110a25a36f61c368b106853",
+					sizeBytes = 14009,
+					hash = "e4239b74af0463142ab3a25b4d119dda5e440566c47e6a335b9be26851612616",
 				},
 				{
 					source = "lib/core/ui/FlexLayout.lua",
@@ -184,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 9680,
-					hash = "bf7475fd6d70a7476955299b0f43c74aa80219a8fb501675df9b8b26ea71082d",
+					sizeBytes = 10156,
+					hash = "842adad67ff6760a4e8d72608d189a415c8128b69c7cbb0ddb1c79b181b12e7d",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",

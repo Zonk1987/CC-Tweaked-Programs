@@ -198,7 +198,11 @@ function AppRuntime.run(appClass, options, ...)
 				local configuredName = configStore:get(item.key, item.default)
 				if configuredName and HAL.wrap(configuredName) then
 					local pType = HAL.getType(configuredName)
-					if pType and (not item.peripheralType or pType:find(item.peripheralType)) then
+					local isTypeMatch = not item.peripheralType
+						or HAL.hasType(configuredName, item.peripheralType)
+						or (pType and pType:find(item.peripheralType))
+
+					if isTypeMatch then
 						return Result.ok(configuredName)
 					end
 				end
@@ -206,9 +210,18 @@ function AppRuntime.run(appClass, options, ...)
 				-- Auto-detect typical peripherals of this type
 				if item.peripheralType then
 					local found = HAL.listNames(item.peripheralType)
-					if found[1] then
-						configStore:set(item.key, found[1], true)
-						return Result.ok(found[1])
+					local validCandidates = {}
+					for _, name in ipairs(found) do
+						local pType = HAL.getType(name)
+						local isMechanicalCrafter = string.find(name, "mechanical_crafter")
+							or (pType and string.find(pType, "mechanical_crafter"))
+						if not isMechanicalCrafter then
+							table.insert(validCandidates, name)
+						end
+					end
+					if validCandidates[1] then
+						configStore:set(item.key, validCandidates[1], true)
+						return Result.ok(validCandidates[1])
 					end
 				end
 

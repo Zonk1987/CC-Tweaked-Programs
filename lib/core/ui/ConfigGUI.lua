@@ -1,4 +1,5 @@
---- @diagnostic disable: undefined-global
+---@diagnostic disable: undefined-global, undefined-field
+-- luacheck: globals peripheral colors term keys os window sleep read
 -- ConfigGUI: General In-Game Terminal Config Editor
 -- Governed by AGENTS.md
 
@@ -38,6 +39,11 @@ local function getAttachedPeripherals(filter)
 			isMatch = true
 		elseif type(peripheral.hasType) == "function" and peripheral.hasType(name, filter) then
 			isMatch = true
+		elseif filter == "inventory" then
+			local device = peripheral.wrap(name)
+			if device and type(device["list"]) == "function" and type(device["size"]) == "function" then
+				isMatch = true
+			end
 		end
 
 		-- Exclude mechanical crafters from the candidate list
