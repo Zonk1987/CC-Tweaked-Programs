@@ -93,8 +93,8 @@ function BootAssistant.new(options)
 	end
 
 	-- Erstellung eines flackerfreien Windows
-	local w, h = term.getSize()
-	self.win = window.create(term.current(), 1, 1, w, h, true)
+	local w, h = self.win and self.win.getSize() or term.getSize()
+	self.win = window.create(term.current(), 1, 1, w, h, false)
 
 	-- Backup der alten Palette
 	self.oldPalette = {}
@@ -255,6 +255,9 @@ end
 -- Hauptschleife
 function BootAssistant:run()
 	self:runChecks()
+	if self:isBootComplete() and self.state == "STATE_NORMAL" then
+		return
+	end
 
 	while true do
 		self:draw()
