@@ -119,11 +119,15 @@ function CrafterGrid:isEmpty()
 	for _, name in ipairs(self.crafters) do
 		local p = HAL.wrap(name)
 		if p then
-			local ok, items = pcall(function() return p.list() end)
+			local ok, items = pcall(function()
+				return p.list()
+			end)
 			if ok and items and next(items) ~= nil then
 				return false
 			end
-			local ok2, detail = pcall(function() return p.getItemDetail(1) end)
+			local ok2, detail = pcall(function()
+				return p.getItemDetail(1)
+			end)
 			if ok2 and detail then
 				return false
 			end
@@ -138,14 +142,18 @@ function CrafterGrid:getJammedItem()
 	for i, name in ipairs(self.crafters) do
 		local p = HAL.wrap(name)
 		if p then
-			local ok, items = pcall(function() return p.list() end)
+			local ok, items = pcall(function()
+				return p.list()
+			end)
 			if ok and items then
 				local _, item = next(items)
 				if item then
 					return "Crafter #" .. i .. " has " .. item.name
 				end
 			end
-			local ok2, detail = pcall(function() return p.getItemDetail(1) end)
+			local ok2, detail = pcall(function()
+				return p.getItemDetail(1)
+			end)
 			if ok2 and detail then
 				return "Crafter #" .. i .. " has " .. detail.name
 			end
