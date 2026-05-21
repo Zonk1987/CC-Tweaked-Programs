@@ -38,11 +38,15 @@ end
 local function runSafeMode(appName, configStore)
 	while true do
 		clearScreen()
-		if term.isColor() then term.setTextColor(colors.red) end
+		if term.isColor() then
+			term.setTextColor(colors.red)
+		end
 		print("==================================================")
 		print("          EMERGENCY SAFE MODE TERMINAL            ")
 		print("==================================================")
-		if term.isColor() then term.setTextColor(colors.white) end
+		if term.isColor() then
+			term.setTextColor(colors.white)
+		end
 		print("App: " .. tostring(appName))
 		print("Status: Main automation threads are SUSPENDED.\n")
 		print("1) System-Logs anzeigen")
@@ -96,7 +100,7 @@ local function runSafeMode(appName, configStore)
 				computerId = os.computerID(),
 				computerLabel = os.computerLabel() or "none",
 				peripherals = {},
-				config = configStore.config or {}
+				config = configStore.config or {},
 			}
 
 			local names = peripheral.getNames()
@@ -210,7 +214,7 @@ function AppRuntime.run(appClass, options, ...)
 		end, {
 			"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'",
 			"mit dem Computer (physisch oder per Modems/Netzwerk).",
-			"Aktiviere Modems immer mit einem Rechtsklick!"
+			"Aktiviere Modems immer mit einem Rechtsklick!",
 		})
 	end
 
@@ -244,7 +248,13 @@ function AppRuntime.run(appClass, options, ...)
 					local wrapped = pName and HAL.wrap(pName)
 
 					if not wrapped then
-						logger:warn("Watchdog: Hardware-Verbindung zu '" .. tostring(pKey) .. "' (" .. tostring(pName) .. ") verloren!")
+						logger:warn(
+							"Watchdog: Hardware-Verbindung zu '"
+								.. tostring(pKey)
+								.. "' ("
+								.. tostring(pName)
+								.. ") verloren!"
+						)
 						EventBus:emit("PERIPHERAL_LOST", pKey)
 
 						-- Attempt reconnection every 2 seconds
@@ -255,7 +265,9 @@ function AppRuntime.run(appClass, options, ...)
 							HAL.scan()
 							if pName and HAL.wrap(pName) then
 								reconnected = true
-								logger:info("Watchdog: Hardware '" .. tostring(pKey) .. "' erfolgreich wieder verbunden!")
+								logger:info(
+									"Watchdog: Hardware '" .. tostring(pKey) .. "' erfolgreich wieder verbunden!"
+								)
 								EventBus:emit("PERIPHERAL_RESTORED", pKey)
 							end
 						end
@@ -269,7 +281,7 @@ function AppRuntime.run(appClass, options, ...)
 	local appInstance = appClass.new({
 		config = configStore,
 		logger = logger,
-		scheduler = scheduler
+		scheduler = scheduler,
 	})
 
 	scheduler:spawn(function()
@@ -280,7 +292,9 @@ function AppRuntime.run(appClass, options, ...)
 		if not ok then
 			logger:error("Main App execution crash: " .. tostring(err))
 			if appInstance.shutdown then
-				pcall(function() appInstance:shutdown() end)
+				pcall(function()
+					appInstance:shutdown()
+				end)
 			end
 			error(err)
 		end
@@ -291,7 +305,9 @@ function AppRuntime.run(appClass, options, ...)
 
 	-- Geordnetes Beenden
 	if appInstance.shutdown then
-		pcall(function() appInstance:shutdown() end)
+		pcall(function()
+			appInstance:shutdown()
+		end)
 	end
 	logger:info(tostring(options.title) .. " geordnet beendet.")
 end

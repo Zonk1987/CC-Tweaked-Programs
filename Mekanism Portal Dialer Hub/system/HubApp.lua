@@ -106,7 +106,9 @@ function HubApp.new(options)
 			self.monitorLost = true
 			term.clear()
 			term.setCursorPos(1, 1)
-			if term.isColor() then term.setTextColor(colors.red) end
+			if term.isColor() then
+				term.setTextColor(colors.red)
+			end
 			print("==================================================")
 			print("        HARDWARE-VERBINDUNG VERLOREN              ")
 			print("==================================================")
@@ -285,8 +287,12 @@ end
 -- Geordnetes Beenden
 function HubApp:shutdown()
 	self.running = false
-	if self.unbindLost then self.unbindLost() end
-	if self.unbindRestored then self.unbindRestored() end
+	if self.unbindLost then
+		self.unbindLost()
+	end
+	if self.unbindRestored then
+		self.unbindRestored()
+	end
 	self.logger:info("HubApp heruntergefahren.")
 end
 

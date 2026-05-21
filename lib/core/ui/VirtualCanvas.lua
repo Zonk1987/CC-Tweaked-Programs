@@ -75,8 +75,12 @@ function VirtualCanvas:setPixel(x, y, char, fgCol, bgCol)
 
 	local cell = self.current[y][x]
 	cell.char = tostring(char):sub(1, 1) or " "
-	if fgCol then cell.fg = fgCol end
-	if bgCol then cell.bg = bgCol end
+	if fgCol then
+		cell.fg = fgCol
+	end
+	if bgCol then
+		cell.bg = bgCol
+	end
 end
 
 -- Write a string to the current buffer
@@ -86,7 +90,9 @@ end
 -- @param fgCol [number] Text color
 -- @param bgCol [number] Background color
 function VirtualCanvas:write(x, y, text, fgCol, bgCol)
-	if y < 1 or y > self.height then return end
+	if y < 1 or y > self.height then
+		return
+	end
 	text = tostring(text)
 
 	for i = 1, #text do
@@ -94,8 +100,12 @@ function VirtualCanvas:write(x, y, text, fgCol, bgCol)
 		if curX >= 1 and curX <= self.width then
 			local cell = self.current[y][curX]
 			cell.char = text:sub(i, i)
-			if fgCol then cell.fg = fgCol end
-			if bgCol then cell.bg = bgCol end
+			if fgCol then
+				cell.fg = fgCol
+			end
+			if bgCol then
+				cell.bg = bgCol
+			end
 		end
 	end
 end
@@ -124,7 +134,9 @@ end
 -- @param targetDevice [table] Optional device to draw to (defaults to self.device)
 function VirtualCanvas:flush(targetDevice)
 	local dev = targetDevice or self.device
-	if not dev then return end
+	if not dev then
+		return
+	end
 
 	-- Diff algorithm with run-length optimization (horizontal clustering)
 	for y = 1, self.height do
@@ -147,7 +159,9 @@ function VirtualCanvas:flush(targetDevice)
 					local nextPrev = self.previous[y][x]
 
 					-- Check if cell is dirty AND matches cluster colors
-					local isDirty = nextCur.char ~= nextPrev.char or nextCur.fg ~= nextPrev.fg or nextCur.bg ~= nextPrev.bg
+					local isDirty = nextCur.char ~= nextPrev.char
+						or nextCur.fg ~= nextPrev.fg
+						or nextCur.bg ~= nextPrev.bg
 					-- We also include matching clean cells if they have the same color, to save draw calls
 					local isSameColor = nextCur.fg == clusterFg and nextCur.bg == clusterBg
 

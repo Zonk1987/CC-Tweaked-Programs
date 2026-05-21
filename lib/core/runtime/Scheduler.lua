@@ -65,7 +65,12 @@ function Scheduler:run()
 					-- Event the fiber was waiting for has occurred
 					shouldResume = true
 					resumeArgs = { unpack(pulledEvent, 2) }
-				elseif fiber.sleepTimerId and pulledEvent and pulledEvent[1] == "timer" and pulledEvent[2] == fiber.sleepTimerId then
+				elseif
+					fiber.sleepTimerId
+					and pulledEvent
+					and pulledEvent[1] == "timer"
+					and pulledEvent[2] == fiber.sleepTimerId
+				then
 					-- Sleep timer of the fiber has fired
 					shouldResume = true
 					fiber.sleepTimerId = nil
