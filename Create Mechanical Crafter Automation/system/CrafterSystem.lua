@@ -174,7 +174,14 @@ function CrafterSystem:handleNewCraft()
 				errStr = errStr .. "\n" .. hintStr
 			end
 			self.dashboard:setError(errStr)
-			log(self, "error", "Failed to transfer items for recipe '%s': %s. Detail: %s", readyRecipe.name, err and err.message or errStr, hintStr)
+			log(
+				self,
+				"error",
+				"Failed to transfer items for recipe '%s': %s. Detail: %s",
+				readyRecipe.name,
+				err and err.message or errStr,
+				hintStr
+			)
 			os_sleep(4.5)
 			self.dashboard:setError("")
 		end

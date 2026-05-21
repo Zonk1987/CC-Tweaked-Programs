@@ -150,7 +150,9 @@ function Chest:transferRecipe(recipe, crafterGrid)
 							end
 
 							if localSides[self.name] then
-								detailStr = "Puffer ist als lokale Seite '" .. self.name .. "' konfiguriert! Verbinde ein Modem mit der Kiste und waehle deren Netzwerkname in '--config'."
+								detailStr = "Puffer ist als lokale Seite '"
+									.. self.name
+									.. "' konfiguriert! Verbinde ein Modem mit der Kiste und waehle deren Netzwerkname in '--config'."
 							end
 
 							return Result.err(
