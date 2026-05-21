@@ -276,6 +276,7 @@ function BootAssistant:run()
 	end
 
 	-- Aufräumen
+	self.win.setVisible(false)
 	self:restorePalette()
 	term.setBackgroundColor(colors.black)
 	term.setTextColor(colors.white)
