@@ -40,35 +40,25 @@ local function getAttachedPeripherals(filter)
 	return matches
 end
 
---- Draws a single bordered box using graphics characters
+--- Draws a single bordered box using clean ASCII characters
 local function drawBorder(win, x1, y1, x2, y2, bg, fg)
 	win.setBackgroundColor(bg)
 	win.setTextColor(fg)
 
 	-- Horizontal lines
-	local hLine = string.rep(string.char(140), x2 - x1 + 1)
+	local hLine = string.rep("-", x2 - x1 - 1)
 	win.setCursorPos(x1, y1)
-	win.write(hLine)
+	win.write("+" .. hLine .. "+")
 	win.setCursorPos(x1, y2)
-	win.write(hLine)
+	win.write("+" .. hLine .. "+")
 
-	-- Vertical lines & corners
+	-- Vertical lines
 	for y = y1 + 1, y2 - 1 do
 		win.setCursorPos(x1, y)
-		win.write(string.char(149))
+		win.write("|")
 		win.setCursorPos(x2, y)
-		win.write(string.char(149))
+		win.write("|")
 	end
-
-	-- Corners
-	win.setCursorPos(x1, y1)
-	win.write(string.char(156)) -- TL
-	win.setCursorPos(x2, y1)
-	win.write(string.char(148)) -- TR
-	win.setCursorPos(x1, y2)
-	win.write(string.char(141)) -- BL
-	win.setCursorPos(x2, y2)
-	win.write(string.char(133)) -- BR
 end
 
 --- Renders the ConfigGUI onto the terminal
@@ -105,8 +95,8 @@ function ConfigGUI:draw(termObj)
 
 		-- Draw active/selected background highlight
 		if i == self.selectedIndex then
-			termObj.setBackgroundColor(colors.lightGray)
-			termObj.setTextColor(colors.black)
+			termObj.setBackgroundColor(colors.blue)
+			termObj.setTextColor(colors.lightBlue)
 		else
 			termObj.setBackgroundColor(colors.white)
 			termObj.setTextColor(colors.gray)
@@ -123,7 +113,7 @@ function ConfigGUI:draw(termObj)
 		-- Value
 		termObj.setCursorPos(24, y)
 		if i == self.selectedIndex then
-			termObj.setTextColor(colors.blue)
+			termObj.setTextColor(colors.lightBlue)
 			termObj.write(string.format("< %s >", value))
 		else
 			termObj.setTextColor(colors.black)
@@ -132,7 +122,7 @@ function ConfigGUI:draw(termObj)
 	end
 
 	-- 3. Bottom controls / Buttons
-	termObj.setBackgroundColor(colors.lightGray)
+	termObj.setBackgroundColor(colors.white)
 	termObj.setTextColor(colors.black)
 	for y = h - 2, h do
 		termObj.setCursorPos(1, y)
@@ -146,30 +136,55 @@ function ConfigGUI:draw(termObj)
 
 	-- Action highlights
 	termObj.setCursorPos(4, h - 1)
+	termObj.setBackgroundColor(colors.white)
 	if self.selectedIndex == #self.schema + 1 then
-		termObj.setBackgroundColor(colors.green)
-		termObj.setTextColor(colors.white)
+		termObj.setTextColor(colors.green)
 	else
-		termObj.setBackgroundColor(colors.gray)
-		termObj.setTextColor(colors.white)
+		termObj.setTextColor(colors.black)
 	end
-	termObj.write(" [ SPEICHERN ] ")
+	termObj.write("[ SPEICHERN ]")
 
 	termObj.setCursorPos(24, h - 1)
+	termObj.setBackgroundColor(colors.white)
 	if self.selectedIndex == #self.schema + 2 then
-		termObj.setBackgroundColor(colors.red)
-		termObj.setTextColor(colors.white)
+		termObj.setTextColor(colors.red)
 	else
-		termObj.setBackgroundColor(colors.gray)
-		termObj.setTextColor(colors.white)
+		termObj.setTextColor(colors.black)
 	end
-	termObj.write(" [ ABBRECHEN ] ")
+	termObj.write("[ ABBRECHEN ]")
+end
+
+--- Splits a string into lines of a maximum width
+--- @param text string The input string to wrap
+--- @param maxWidth number The maximum width of a line
+--- @return table List of wrapped lines
+local function wrapText(text, maxWidth)
+	local lines = {}
+	local currentLine = ""
+
+	for word in string.gmatch(text, "%S+") do
+		if #currentLine == 0 then
+			currentLine = word
+		elseif #currentLine + 1 + #word <= maxWidth then
+			currentLine = currentLine .. " " .. word
+		else
+			table.insert(lines, currentLine)
+			currentLine = word
+		end
+	end
+
+	if #currentLine > 0 then
+		table.insert(lines, currentLine)
+	end
+
+	return lines
 end
 
 --- Shows a dynamic overlay popup to edit/read a value
 function ConfigGUI:editValue(parentTerm, item)
 	local w, h = parentTerm.getSize()
-	local popW, popH = 44, 7
+	local popW = 44
+	local popH = (item.type == "choice" or item.type == "peripheral") and 9 or 7
 	local popX = math.floor((w - popW) / 2) + 1
 	local popY = math.floor((h - popH) / 2) + 1
 
@@ -191,14 +206,19 @@ function ConfigGUI:editValue(parentTerm, item)
 		popWin.setVisible(false)
 		return
 	elseif item.type == "choice" then
-		-- Choice Selection Popup
+		-- Choice Selection Popup with Word-Wrapping and dynamic height (9)
+		local optionsStr = "Optionen: " .. table.concat(item.choices, ", ")
+		local wrapped = wrapText(optionsStr, popW - 6)
 		popWin.setCursorPos(3, 4)
-		popWin.write("Optionen: " .. table.concat(item.choices, ", "))
+		if wrapped[1] then popWin.write(wrapped[1]) end
 		popWin.setCursorPos(3, 5)
+		if wrapped[2] then popWin.write(wrapped[2]) end
+
+		popWin.setCursorPos(3, 6)
 		popWin.setTextColor(colors.blue)
 		popWin.write("Geben Sie einen der Werte ein: ")
 
-		popWin.setCursorPos(3, 6)
+		popWin.setCursorPos(3, 7)
 		term.redirect(popWin)
 		local input = read()
 		term.redirect(parentTerm)
@@ -218,7 +238,7 @@ function ConfigGUI:editValue(parentTerm, item)
 		end
 
 		if not valid and input and input ~= "" then
-			popWin.setCursorPos(3, 6)
+			popWin.setCursorPos(3, 8)
 			popWin.setTextColor(colors.red)
 			popWin.write("Ungueltige Option!")
 			sleep(1)
@@ -235,14 +255,19 @@ function ConfigGUI:editValue(parentTerm, item)
 			return
 		end
 
-		-- List peripherals
+		-- List peripherals with Word-Wrapping and dynamic height (9)
+		local optionsStr = "Geraete: " .. table.concat(options, ", ")
+		local wrapped = wrapText(optionsStr, popW - 6)
 		popWin.setCursorPos(3, 4)
-		popWin.write("Geraete: " .. table.concat(options, ", "))
+		if wrapped[1] then popWin.write(wrapped[1]) end
 		popWin.setCursorPos(3, 5)
+		if wrapped[2] then popWin.write(wrapped[2]) end
+
+		popWin.setCursorPos(3, 6)
 		popWin.setTextColor(colors.blue)
 		popWin.write("Name eingeben: ")
 
-		popWin.setCursorPos(3, 6)
+		popWin.setCursorPos(3, 7)
 		term.redirect(popWin)
 		local input = read()
 		term.redirect(parentTerm)
@@ -252,7 +277,7 @@ function ConfigGUI:editValue(parentTerm, item)
 			self.modified = true
 		end
 	else
-		-- Standard String/Number editor
+		-- Standard String/Number editor with standard height (7)
 		popWin.setCursorPos(3, 4)
 		popWin.setTextColor(colors.gray)
 		popWin.write("Aktuell: " .. tostring(currentValue))

@@ -17,16 +17,18 @@ local PALETTES = {
 		[colors.red] = 0xE74C3C, -- Fehler / FAIL
 		[colors.yellow] = 0xF1C40F, -- Warnungen / WARN
 		[colors.lightGray] = 0xE9EBF0, -- Popup-Hintergrund
+		[colors.lightBlue] = 0xF5F6FA, -- Textfarbe auf blauem Header (Immer Weiss/Hell)
 	},
 	dark = {
-		[colors.white] = 0x121214, -- Hintergrund (Canvas)
-		[colors.black] = 0xF5F6FA, -- Haupttext
+		[colors.white] = 0xF5F6FA, -- Textfarbe (Hell)
+		[colors.black] = 0x121214, -- Hintergrund (Canvas) (Dunkel)
 		[colors.gray] = 0x9A9C9F, -- Rahmen & Skala / Detailtexte (erhoehte Lesbarkeit)
 		[colors.blue] = 0x1F3A60, -- Header-Balken
 		[colors.green] = 0x00E676, -- Ladebalken / OK
 		[colors.red] = 0xFF5252, -- Fehler / FAIL
 		[colors.yellow] = 0xFFD740, -- Warnungen / WARN
 		[colors.lightGray] = 0x1E1E24, -- Popup-Hintergrund
+		[colors.lightBlue] = 0xF5F6FA, -- Textfarbe auf blauem Header (Immer Weiss/Hell)
 	},
 }
 
@@ -61,6 +63,34 @@ function BootAssistant.new(options)
 	self.selectedPeripheralIdx = 1
 	self.peripheralOffset = 0
 	self.methodOffset = 0
+
+	-- Theme-Farben initialisieren
+	self.themeColors = {}
+	if self.config.theme == "dark" then
+		self.themeColors.bg = colors.black
+		self.themeColors.fg = colors.white
+		self.themeColors.headerBg = colors.blue
+		self.themeColors.headerFg = colors.white
+		self.themeColors.popupBg = colors.lightGray
+		self.themeColors.popupFg = colors.white
+		self.themeColors.selectedBg = colors.blue
+		self.themeColors.selectedFg = colors.lightBlue
+		self.themeColors.border = colors.gray
+		self.themeColors.btnBg = colors.black
+		self.themeColors.btnFg = colors.white
+	else
+		self.themeColors.bg = colors.white
+		self.themeColors.fg = colors.black
+		self.themeColors.headerBg = colors.blue
+		self.themeColors.headerFg = colors.white
+		self.themeColors.popupBg = colors.lightGray
+		self.themeColors.popupFg = colors.black
+		self.themeColors.selectedBg = colors.blue
+		self.themeColors.selectedFg = colors.lightBlue
+		self.themeColors.border = colors.gray
+		self.themeColors.btnBg = colors.white
+		self.themeColors.btnFg = colors.black
+	end
 
 	-- Erstellung eines flackerfreien Windows
 	local w, h = term.getSize()
@@ -381,7 +411,7 @@ end
 -- Zeichnen-Manager
 function BootAssistant:draw()
 	self.win.setVisible(false)
-	self.win.setBackgroundColor(colors.white)
+	self.win.setBackgroundColor(self.themeColors.bg)
 	self.win.clear()
 
 	-- 1. Header (Immer sichtbar)
@@ -412,9 +442,8 @@ end
 -- Zeichnet den Standard-Header
 function BootAssistant:drawHeader()
 	local w, _ = self.win.getSize()
-	local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
-	self.win.setBackgroundColor(colors.blue)
-	self.win.setTextColor(textOnColor)
+	self.win.setBackgroundColor(self.themeColors.headerBg)
+	self.win.setTextColor(self.themeColors.headerFg)
 
 	-- Zeile 1
 	self.win.setCursorPos(1, 1)
@@ -422,7 +451,7 @@ function BootAssistant:drawHeader()
 	-- Zeile 2
 	self.win.setCursorPos(1, 2)
 	self.win.write(string.rep(" ", w))
-	drawCenteredText(self.win, 2, self.config.title, textOnColor, colors.blue)
+	drawCenteredText(self.win, 2, self.config.title, self.themeColors.headerFg, self.themeColors.headerBg)
 	-- Zeile 3
 	self.win.setCursorPos(1, 3)
 	self.win.write(string.rep(" ", w))
@@ -446,24 +475,24 @@ function BootAssistant:drawProgressBar()
 
 	-- Ladebalken Zeichnen (Zeile 5)
 	self.win.setCursorPos(3, 5)
-	self.win.setBackgroundColor(colors.white)
-	self.win.setTextColor(colors.gray)
+	self.win.setBackgroundColor(self.themeColors.bg)
+	self.win.setTextColor(self.themeColors.border)
 	self.win.write("[")
 
 	self.win.setBackgroundColor(colors.green)
 	self.win.write(string.rep(" ", filledWidth))
 
-	self.win.setBackgroundColor(colors.white)
-	self.win.setTextColor(colors.gray)
+	self.win.setBackgroundColor(self.themeColors.bg)
+	self.win.setTextColor(self.themeColors.border)
 	self.win.write(string.rep("-", barWidth - filledWidth))
 	self.win.write("]")
 
 	-- Prozentanzeige
-	self.win.setTextColor(colors.black)
+	self.win.setTextColor(self.themeColors.fg)
 	self.win.write(string.format(" %3d%%", math.floor(progress * 100)))
 
 	-- Skala-Beschriftung (Zeile 6)
-	self.win.setTextColor(colors.gray)
+	self.win.setTextColor(self.themeColors.border)
 	self.win.setCursorPos(3, 6)
 	self.win.write("0%")
 
@@ -491,13 +520,13 @@ function BootAssistant:drawLogBox()
 	local boxLeft = 3
 	local boxRight = w - 2
 
-	self.win.setTextColor(colors.black)
-	self.win.setBackgroundColor(colors.white)
+	self.win.setTextColor(self.themeColors.fg)
+	self.win.setBackgroundColor(self.themeColors.bg)
 	self.win.setCursorPos(boxLeft, boxTop - 1)
 	self.win.write("Boot-Log:")
 
 	-- Log-Rahmen oben & unten
-	self.win.setTextColor(colors.gray)
+	self.win.setTextColor(self.themeColors.border)
 	self.win.setCursorPos(boxLeft, boxTop)
 	self.win.write("+" .. string.rep("-", boxRight - boxLeft - 1) .. "+")
 	self.win.setCursorPos(boxLeft, boxBottom)
@@ -531,12 +560,12 @@ function BootAssistant:drawLogBox()
 				self.win.setTextColor(colors.red)
 				self.win.write("[ FAIL ] ")
 			else
-				self.win.setTextColor(colors.gray)
+				self.win.setTextColor(self.themeColors.border)
 				self.win.write("[ INFO ] ")
 			end
 
 			-- Text zeichnen
-			self.win.setTextColor(colors.black)
+			self.win.setTextColor(self.themeColors.fg)
 			local availWidth = boxRight - boxLeft - 13
 			local txt = entry.text
 			if #txt > availWidth then
@@ -551,13 +580,12 @@ end
 function BootAssistant:drawFooterNormal()
 	local _, h = self.win.getSize()
 	self.win.setCursorPos(2, h)
-	self.win.setBackgroundColor(colors.lightGray)
-	self.win.setTextColor(colors.black)
-	self.win.write(" [ System-Info ] ")
+	self.win.setBackgroundColor(self.themeColors.bg)
+	self.win.setTextColor(self.themeColors.fg)
+	self.win.write("[ System-Info ]")
 	if self.config.onSetup then
-		self.win.write(" [ Setup ] ")
+		self.win.write("  [ Setup ]")
 	end
-	self.win.setBackgroundColor(colors.white)
 end
 
 -- Zeichnet das Modal-Popup (STATE_POPUP)
@@ -573,14 +601,14 @@ function BootAssistant:drawPopup()
 	local startY = math.floor((h - modalH) / 2) + 1
 
 	-- Hintergrund schattieren/zeichnen
-	self.win.setBackgroundColor(colors.lightGray)
+	self.win.setBackgroundColor(self.themeColors.popupBg)
 	for y = startY, startY + modalH - 1 do
 		self.win.setCursorPos(startX, y)
 		self.win.write(string.rep(" ", modalW))
 	end
 
 	-- Rahmen
-	self.win.setTextColor(colors.gray)
+	self.win.setTextColor(self.themeColors.border)
 	self.win.setCursorPos(startX, startY)
 	self.win.write("+" .. string.rep("-", modalW - 2) .. "+")
 	self.win.setCursorPos(startX, startY + modalH - 1)
@@ -598,14 +626,13 @@ function BootAssistant:drawPopup()
 	self.win.write("HILFE & EMPFEHLUNG")
 	self.win.setCursorPos(startX + modalW - 5, startY + 1)
 	self.win.setBackgroundColor(colors.red)
-	local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
-	self.win.setTextColor(textOnColor)
+	self.win.setTextColor(colors.white) -- Schließknopf-Text immer Weiss
 	self.win.write("[X]")
-	self.win.setBackgroundColor(colors.lightGray)
+	self.win.setBackgroundColor(self.themeColors.popupBg)
 
 	-- Advice Text rendern
 	local maxVisibleAdvice = 7
-	self.win.setTextColor(colors.black)
+	self.win.setTextColor(self.themeColors.popupFg)
 	for i = 1, maxVisibleAdvice do
 		local lineIdx = i + self.helpOffset
 		local line = step.advice[lineIdx]
@@ -625,14 +652,14 @@ function BootAssistant:drawDiagnostics()
 	local bottomRow = h - 2
 
 	-- 1. Splitter-Linie
-	self.win.setTextColor(colors.gray)
+	self.win.setTextColor(self.themeColors.border)
 	for y = 5, bottomRow do
 		self.win.setCursorPos(splitCol, y)
 		self.win.write("|")
 	end
 
 	-- 2. Linke Spalte: Peripheriegeräte & System-Monitor
-	self.win.setTextColor(colors.black)
+	self.win.setTextColor(self.themeColors.fg)
 	self.win.setCursorPos(3, 4)
 	self.win.write("System-Komponenten:")
 
@@ -644,12 +671,11 @@ function BootAssistant:drawDiagnostics()
 			local y = 4 + i
 			self.win.setCursorPos(3, y)
 			if pIdx == self.selectedPeripheralIdx then
-				self.win.setBackgroundColor(colors.blue)
-				local textOnColor = (self.config.theme == "dark") and colors.black or colors.white
-				self.win.setTextColor(textOnColor)
+				self.win.setBackgroundColor(self.themeColors.selectedBg)
+				self.win.setTextColor(self.themeColors.selectedFg)
 			else
-				self.win.setBackgroundColor(colors.white)
-				self.win.setTextColor(colors.black)
+				self.win.setBackgroundColor(self.themeColors.bg)
+				self.win.setTextColor(self.themeColors.fg)
 			end
 
 			-- Kürzen falls nötig
@@ -660,10 +686,10 @@ function BootAssistant:drawDiagnostics()
 			self.win.write(displayName)
 		end
 	end
-	self.win.setBackgroundColor(colors.white)
+	self.win.setBackgroundColor(self.themeColors.bg)
 
 	-- 3. Rechte Spalte: Methoden-Verzeichnis & System-Monitor Info
-	self.win.setTextColor(colors.black)
+	self.win.setTextColor(self.themeColors.fg)
 	local selectedP = self.diagPeripherals[self.selectedPeripheralIdx]
 	if selectedP then
 		self.win.setCursorPos(splitCol + 2, 4)
@@ -705,10 +731,9 @@ function BootAssistant:drawDiagnostics()
 
 	-- 4. Footer (STATE_DIAGNOSTICS)
 	self.win.setCursorPos(2, h)
-	self.win.setBackgroundColor(colors.lightGray)
-	self.win.setTextColor(colors.black)
-	self.win.write(" [ Zurueck ] ")
-	self.win.setBackgroundColor(colors.white)
+	self.win.setBackgroundColor(self.themeColors.bg)
+	self.win.setTextColor(self.themeColors.fg)
+	self.win.write("[ Zurueck ]")
 end
 
 return BootAssistant

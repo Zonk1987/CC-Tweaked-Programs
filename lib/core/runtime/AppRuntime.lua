@@ -193,34 +193,36 @@ function AppRuntime.run(appClass, options, ...)
 
 	-- Populate boot assistant steps using the deklared schema
 	for _, item in ipairs(schema) do
-		boot:addStep(item.key, item.label .. " Check", function()
-			local configuredName = configStore:get(item.key, item.default)
-			if configuredName and HAL.wrap(configuredName) then
-				local pType = HAL.getType(configuredName)
-				if pType and (not item.peripheralType or pType:find(item.peripheralType)) then
-					return Result.ok(configuredName)
+		if item.type == "peripheral" then
+			boot:addStep(item.key, item.label .. " Check", function()
+				local configuredName = configStore:get(item.key, item.default)
+				if configuredName and HAL.wrap(configuredName) then
+					local pType = HAL.getType(configuredName)
+					if pType and (not item.peripheralType or pType:find(item.peripheralType)) then
+						return Result.ok(configuredName)
+					end
 				end
-			end
 
-			-- Auto-detect typical peripherals of this type
-			if item.peripheralType then
-				local found = HAL.listNames(item.peripheralType)
-				if found[1] then
-					configStore:set(item.key, found[1], true)
-					return Result.ok(found[1])
+				-- Auto-detect typical peripherals of this type
+				if item.peripheralType then
+					local found = HAL.listNames(item.peripheralType)
+					if found[1] then
+						configStore:set(item.key, found[1], true)
+						return Result.ok(found[1])
+					end
 				end
-			end
 
-			return Result.err(
-				"PERIPHERAL_MISSING",
-				"Geraet '" .. item.label .. "' nicht gefunden.",
-				"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'"
-			)
-		end, {
-			"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'",
-			"mit dem Computer (physisch oder per Modems/Netzwerk).",
-			"Aktiviere Modems immer mit einem Rechtsklick!",
-		})
+				return Result.err(
+					"PERIPHERAL_MISSING",
+					"Geraet '" .. item.label .. "' nicht gefunden.",
+					"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'"
+				)
+			end, {
+				"Bitte verbinde ein passendes Geraet vom Typ '" .. tostring(item.peripheralType or "unbekannt") .. "'",
+				"mit dem Computer (physisch oder per Modems/Netzwerk).",
+				"Aktiviere Modems immer mit einem Rechtsklick!",
+			})
+		end
 	end
 
 	-- Run boot steps
@@ -228,8 +230,10 @@ function AppRuntime.run(appClass, options, ...)
 
 	-- Register confirmed peripherals in HAL
 	for _, item in ipairs(schema) do
-		local configuredName = configStore:get(item.key, item.default)
-		HAL.register(item.key, configuredName)
+		if item.type == "peripheral" then
+			local configuredName = configStore:get(item.key, item.default)
+			HAL.register(item.key, configuredName)
+		end
 	end
 
 	-- 7. Core Logger initialization

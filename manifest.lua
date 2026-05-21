@@ -110,8 +110,8 @@ return {
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
-					sizeBytes = 10619,
-					hash = "a593aa70778afd9e15ec4e06f989d41996ec6b9ca78a73fd984d29dc3869b63f",
+					sizeBytes = 11425,
+					hash = "e908dd273c0be870c427d08d1f737414573230387bc1ccd3c8422a07dd667fc7",
 				},
 				{
 					source = "lib/core/ui/FlexLayout.lua",
@@ -136,8 +136,8 @@ return {
 				{
 					source = "lib/core/ui/boot_assistant.lua",
 					target = "lib/core/ui/boot_assistant.lua",
-					sizeBytes = 20287,
-					hash = "8a9b3388704f8b012d45689017cea1a1a2dd9204045ad9c4156889919ab0fe99",
+					sizeBytes = 21487,
+					hash = "0ef808d52ba53b5a74ec7d35a73bf0b41adbe602cc28c782b82964bee714efc5",
 				},
 			},
 		},
@@ -184,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 9556,
-					hash = "6350dd3b974dadd4c6af2d8734a07176ab656c69e60a53fdce8e8157f5893c6c",
+					sizeBytes = 9668,
+					hash = "3f34ab7374d58781455db277e390a6435e19c0544f26228874cc9bdeec7edf61",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",
