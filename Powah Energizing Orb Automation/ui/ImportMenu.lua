@@ -85,7 +85,11 @@ end
 ---@return Result
 function ImportMenu:open()
 	if not self.meBridge then
-		return Result.err("ME_BRIDGE_MISSING", "ME Bridge nicht gefunden.", "Bitte stelle sicher, dass eine ME Bridge angeschlossen ist.")
+		return Result.err(
+			"ME_BRIDGE_MISSING",
+			"ME Bridge nicht gefunden.",
+			"Bitte stelle sicher, dass eine ME Bridge angeschlossen ist."
+		)
 	end
 
 	-- Robust check: Is the scanner actually there?
@@ -215,7 +219,11 @@ function ImportMenu:open()
 
 	if #patterns == 0 and not scannerActive then
 		self.dashboard.suppressDraw = false
-		return Result.err("NO_PATTERNS_FOUND", "Keine Muster codiert im ME-Netzwerk gefunden.", "Bitte codiere mindestens ein Rezept im ME-System.")
+		return Result.err(
+			"NO_PATTERNS_FOUND",
+			"Keine Muster codiert im ME-Netzwerk gefunden.",
+			"Bitte codiere mindestens ein Rezept im ME-System."
+		)
 	end
 
 	selected = 1

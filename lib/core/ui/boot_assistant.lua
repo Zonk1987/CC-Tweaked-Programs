@@ -178,7 +178,11 @@ function BootAssistant:runChecks()
 							self:log("WARN", step.title .. ": " .. tostring(err.message or "Warnung"), step.id)
 						else
 							step.status = "FAIL"
-							self:log("FAIL", step.title .. " fehlgeschlagen: " .. tostring(err.message or "Nicht gefunden"), step.id)
+							self:log(
+								"FAIL",
+								step.title .. " fehlgeschlagen: " .. tostring(err.message or "Nicht gefunden"),
+								step.id
+							)
 							anyFailed = true
 						end
 					end

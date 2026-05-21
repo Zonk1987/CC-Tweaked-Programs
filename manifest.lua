@@ -136,8 +136,8 @@ return {
 				{
 					source = "lib/core/ui/boot_assistant.lua",
 					target = "lib/core/ui/boot_assistant.lua",
-					sizeBytes = 20254,
-					hash = "60c90a4cbb4f5f0fe140a2ff48e1ffb0c50429172b9b3cd3c0b862333af3867a",
+					sizeBytes = 20287,
+					hash = "8a9b3388704f8b012d45689017cea1a1a2dd9204045ad9c4156889919ab0fe99",
 				},
 			},
 		},
@@ -325,8 +325,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/ui/ImportMenu.lua",
 					target = "ui/ImportMenu.lua",
-					sizeBytes = 10968,
-					hash = "1400aa3ecf1fdaf566f7d5f2370943101121f3764ffd30adc13988bca647a4e4",
+					sizeBytes = 10994,
+					hash = "a844228b6e4e3bfbb48bfdb49b31c6ef8c2777f9e40c02b1e1a338ceaac7d8d3",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/system/PowahApp.lua",
