@@ -404,7 +404,7 @@ function DevSuiteApp:run()
 	self.logger:info("DevSuiteApp gestartet.")
 
 	while self.running do
-		header("Developer Suite v1.0.107-main")
+		header("Developer Suite v1.0.110-main")
 		print("1. Superior Inspector (Methods & Browser)")
 		print("2. Event Sniffer (Live OS Debug)")
 		print("3. Redstone Analyzer (Live Inputs)")
