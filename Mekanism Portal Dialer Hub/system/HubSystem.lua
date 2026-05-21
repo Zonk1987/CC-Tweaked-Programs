@@ -84,6 +84,7 @@ local keys = keys
 ---@field testSelectedFrequency string|nil
 ---@field buffer table|nil
 ---@field logger Logger|nil
+---@field nativeMon table|nil
 local HubSystem = {}
 HubSystem.__index = HubSystem
 
@@ -313,8 +314,12 @@ function HubSystem:draw()
 
 	local w, h = self.bm.mon.getSize()
 	if not self.buffer then
-		self.buffer = window.create(self.bm.mon, 1, 1, w, h, false)
-		self.bm.mon = self.buffer
+		if type(self.bm.mon.flush) == "function" then
+			self.buffer = self.bm.mon
+		else
+			self.buffer = window.create(self.bm.mon, 1, 1, w, h, false)
+			self.bm.mon = self.buffer
+		end
 	end
 
 	self.buffer.setVisible(false)

@@ -173,8 +173,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 5474,
-					hash = "8ababe973277395a85b7beaeb6782ead2a09eb63082b2c56e4355ea1dd801a99",
+					sizeBytes = 1042,
+					hash = "10fcda86737ed50c122ed4d2c231230ae538fc1db1b2518c979cc11b77f2ac63",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",
@@ -212,6 +212,12 @@ return {
 					sizeBytes = 6301,
 					hash = "c62383d7e149893a732f01df8651c5288f713ed934051fe5384ae06cca19d5a8",
 				},
+				{
+					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterApp.lua",
+					target = "system/CrafterApp.lua",
+					sizeBytes = 2432,
+					hash = "2e05485db524a773b6727ea88d2efda08868d03e897004edd6af748eacbec4dd",
+				},
 			},
 		},
 		["powah_orb"] = {
@@ -231,8 +237,8 @@ return {
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 7420,
-					hash = "f629b85a1fbef7f9ec8c1501ccbee544b7e10069ad14562fe3498f4f71d8dcda",
+					sizeBytes = 1123,
+					hash = "a88c11e8a6b333bd58e33aea165c1f8e2bbe34bb71fa166bd39b69e527670530",
 				},
 				{
 					source = "Powah%20Energizing%20Orb%20Automation/system/PowahSystem.lua",
@@ -270,6 +276,12 @@ return {
 					sizeBytes = 10734,
 					hash = "e46416d52b4fa2c40df6ff4d195a9699bae552295b4d29d32ab2b3d999760e1d",
 				},
+				{
+					source = "Powah%20Energizing%20Orb%20Automation/system/PowahApp.lua",
+					target = "system/PowahApp.lua",
+					sizeBytes = 3037,
+					hash = "12b0df11751092eace7e0790c4cc5dcb0754335c75bbece37ec9114b4d7ecda2",
+				},
 			},
 		},
 		["mekanism_portal_hub"] = {
@@ -289,14 +301,14 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 4832,
-					hash = "91b69fba038764abc36fe1ecf3ce7de10583817021d8ef8562259c9b0bc09849",
+					sizeBytes = 1066,
+					hash = "397065847ee0ddadb2401f3c3f53ec96eb4e6bfd891574add790c969ba221a92",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 23656,
-					hash = "ae64215b7c46d9e682f071a73562f1fb2ea555ddddf418aa723f676322d56f20",
+					sizeBytes = 23778,
+					hash = "7d1d695b23276aa6ab518aa3c2d26aca2d8b54dfb7b2e23ec12485210da41686",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
@@ -309,6 +321,12 @@ return {
 					target = "ui/Dashboard.lua",
 					sizeBytes = 4088,
 					hash = "e8eff4829d361c3932805a98259cdd457ac243619dced016305c6815016d667e",
+				},
+				{
+					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubApp.lua",
+					target = "system/HubApp.lua",
+					sizeBytes = 8649,
+					hash = "89046ca72f9f9d48bbd46fd859becaa69c2dca44450b70525ee65aad53192912",
 				},
 			},
 		},
@@ -329,8 +347,14 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 9732,
-					hash = "662a9faf67239f2854d8b2023adbe89b2b3195b20a44ddd22e4db42cf3e999ba",
+					sizeBytes = 893,
+					hash = "ed3340e75c4a95cd2e10db8d9c9b76ac87d57c3035046ff654c8b3fd2a021002",
+				},
+				{
+					source = "Mekanism%20Portal%20Dialer%20Recall%20Sender/system/RecallSenderApp.lua",
+					target = "system/RecallSenderApp.lua",
+					sizeBytes = 4463,
+					hash = "26183d41d984e6b0ebc60b5e7f396e7f412896d74ccc641601cda718b5060ba2",
 				},
 			},
 		},
@@ -348,8 +372,14 @@ return {
 				{
 					source = "CC%20Developer%20Suite/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 12193,
-					hash = "29577f505c1d7c907f8c7c3e7893fdeae17b399b6ca49d05429434ad5f6bb356",
+					sizeBytes = 920,
+					hash = "90dcab33194b4e25c016f611930fe4d080a2d829aa802f32c6700b708c8ac1b0",
+				},
+				{
+					source = "CC%20Developer%20Suite/system/DevSuiteApp.lua",
+					target = "system/DevSuiteApp.lua",
+					sizeBytes = 11388,
+					hash = "894a6ebd77030420d697c6c31dcbb2c26855e2e406d545f41caa191f9f03fda4",
 				},
 			},
 		},
