@@ -256,6 +256,11 @@ end
 function BootAssistant:run()
 	self:runChecks()
 	if self:isBootComplete() and self.state == "STATE_NORMAL" then
+		self:restorePalette()
+		term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.white)
+		term.clear()
+		term.setCursorPos(1, 1)
 		return
 	end
 

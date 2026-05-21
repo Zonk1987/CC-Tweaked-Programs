@@ -136,8 +136,8 @@ return {
 				{
 					source = "lib/core/ui/boot_assistant.lua",
 					target = "lib/core/ui/boot_assistant.lua",
-					sizeBytes = 21594,
-					hash = "85ee9ce7377e241511c1756250a5deda7b7060672a77bade8711320bec5f3f40",
+					sizeBytes = 21733,
+					hash = "6c5570813349e3580e638d2ccd33f09d2ba86093ee99eae7f4c3c646d9790879",
 				},
 			},
 		},
@@ -190,8 +190,8 @@ return {
 				{
 					source = "lib/core/runtime/Scheduler.lua",
 					target = "lib/core/runtime/Scheduler.lua",
-					sizeBytes = 4346,
-					hash = "7f38411fb3fa656fba6bc5e1c18863ff9039647d915a03ae213b3261810b700b",
+					sizeBytes = 5536,
+					hash = "fdd99bf89b20ae7346f0059debd42d6d0982860796f1f3ed5880e65628a8bd12",
 				},
 				{
 					source = "lib/core/runtime/Fiber.lua",

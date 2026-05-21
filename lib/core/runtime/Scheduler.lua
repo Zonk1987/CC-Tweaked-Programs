@@ -16,6 +16,7 @@ function Scheduler.new()
 	local self = setmetatable({}, Scheduler)
 	self.fibers = {}
 	self.running = false
+	self.activeFiber = nil
 	return self
 end
 
@@ -47,92 +48,140 @@ function Scheduler:run()
 	self.running = true
 	local pulledEvent = nil
 
-	while self.running and #self.fibers > 0 do
-		local deadIndices = {}
+	-- Preserve standard CC APIs
+	local originalPullEventRaw = os.pullEventRaw
+	local originalPullEvent = os.pullEvent
+	local originalSleep = os.sleep
 
-		-- 1. Run all fibers that are not waiting for an event or whose sleep timer expired
-		for i, fiber in ipairs(self.fibers) do
-			if fiber.status == "dead" or not fiber:isAlive() then
-				table.insert(deadIndices, 1, i)
-			else
-				local shouldResume = false
-				local resumeArgs = {}
+	-- Apply cooperative monkey-patches
+	os.pullEventRaw = function(sFilter)
+		if self.activeFiber and self.running then
+			return coroutine.yield(sFilter)
+		else
+			return originalPullEventRaw(sFilter)
+		end
+	end
 
-				if not fiber.waitingForEvent and not fiber.sleepTimerId then
-					-- Fiber is ready to run (unsuspended)
-					shouldResume = true
-				elseif fiber.waitingForEvent and pulledEvent and pulledEvent[1] == fiber.waitingForEvent then
-					-- Event the fiber was waiting for has occurred
-					shouldResume = true
-					resumeArgs = { unpack(pulledEvent, 2) }
-				elseif
-					fiber.sleepTimerId
-					and pulledEvent
-					and pulledEvent[1] == "timer"
-					and pulledEvent[2] == fiber.sleepTimerId
-				then
-					-- Sleep timer of the fiber has fired
-					shouldResume = true
-					fiber.sleepTimerId = nil
-					fiber.wakeTime = nil
-				end
+	os.pullEvent = function(sFilter)
+		local eventData = { os.pullEventRaw(sFilter) }
+		if eventData[1] == "terminate" then
+			error("Terminated", 0)
+		end
+		return unpack(eventData)
+	end
 
-				if shouldResume then
-					fiber.waitingForEvent = nil
-					local ok, action, param = fiber:resume(unpack(resumeArgs))
+	os.sleep = function(seconds)
+		if self.activeFiber and self.running then
+			coroutine.yield("sleep", seconds or 0.05)
+		else
+			originalSleep(seconds)
+		end
+	end
 
-					if not ok then
-						-- Fiber crashed
-						if term and term.isColor and term.isColor() then
-							local prevColor = term.getTextColor()
-							term.setTextColor(colors.red)
-							print("[Scheduler ERROR] Fiber '" .. fiber.name .. "' crashed: " .. tostring(action))
-							term.setTextColor(prevColor)
-						else
-							print("[Scheduler ERROR] Fiber '" .. fiber.name .. "' crashed: " .. tostring(action))
+	local function cleanup()
+		-- Restore CC APIs
+		os.pullEventRaw = originalPullEventRaw
+		os.pullEvent = originalPullEvent
+		os.sleep = originalSleep
+		self.running = false
+	end
+
+	local ok, err = pcall(function()
+		while self.running and #self.fibers > 0 do
+			local deadIndices = {}
+
+			-- 1. Run all fibers that are not waiting for an event or whose sleep timer expired
+			for i, fiber in ipairs(self.fibers) do
+				if fiber.status == "dead" or not fiber:isAlive() then
+					table.insert(deadIndices, 1, i)
+				else
+					local shouldResume = false
+					local resumeArgs = {}
+
+					if not fiber.waitingForEvent and not fiber.sleepTimerId then
+						-- Fiber is ready to run (unsuspended)
+						shouldResume = true
+					elseif fiber.waitingForEvent and pulledEvent then
+						if fiber.waitingForEvent == true or pulledEvent[1] == fiber.waitingForEvent then
+							-- Event the fiber was waiting for has occurred
+							shouldResume = true
+							resumeArgs = pulledEvent
 						end
-						-- Force status to dead
-						fiber.status = "dead"
-					else
-						-- Process yield command
-						if action == "sleep" then
-							local duration = tonumber(param) or 0.05
-							fiber.sleepTimerId = os.startTimer(duration)
-						elseif type(action) == "string" then
-							fiber.waitingForEvent = action
+					elseif
+						fiber.sleepTimerId
+						and pulledEvent
+						and pulledEvent[1] == "timer"
+						and pulledEvent[2] == fiber.sleepTimerId
+					then
+						-- Sleep timer of the fiber has fired
+						shouldResume = true
+						fiber.sleepTimerId = nil
+						fiber.wakeTime = nil
+					end
+
+					if shouldResume then
+						fiber.waitingForEvent = nil
+						self.activeFiber = fiber
+						local resumeOk, action, param = fiber:resume(unpack(resumeArgs))
+						self.activeFiber = nil
+
+						if not resumeOk then
+							-- Fiber crashed
+							if term and term.isColor and term.isColor() then
+								local prevColor = term.getTextColor()
+								term.setTextColor(colors.red)
+								print("[Scheduler ERROR] Fiber '" .. fiber.name .. "' crashed: " .. tostring(action))
+								term.setTextColor(prevColor)
+							else
+								print("[Scheduler ERROR] Fiber '" .. fiber.name .. "' crashed: " .. tostring(action))
+							end
+							-- Force status to dead
+							fiber.status = "dead"
+						else
+							-- Process yield command
+							if action == "sleep" then
+								local duration = tonumber(param) or 0.05
+								fiber.sleepTimerId = os.startTimer(duration)
+							else
+								fiber.waitingForEvent = action or true
+							end
 						end
 					end
 				end
 			end
-		end
 
-		-- 2. Clean up dead fibers
-		for _, idx in ipairs(deadIndices) do
-			table.remove(self.fibers, idx)
-		end
+			-- 2. Clean up dead fibers
+			for _, idx in ipairs(deadIndices) do
+				table.remove(self.fibers, idx)
+			end
 
-		-- 3. Yield to the CC OS and pull the next event
-		if self.running and #self.fibers > 0 then
-			-- We block and pull the next event
-			local eventData = { os.pullEventRaw() }
-			pulledEvent = eventData
+			-- 3. Yield to the CC OS and pull the next event
+			if self.running and #self.fibers > 0 then
+				-- We block and pull the next event using original to bypass monkey-patch
+				local eventData = { originalPullEventRaw() }
+				pulledEvent = eventData
 
-			-- Support manual termination via terminate event (Ctrl+T)
-			if eventData[1] == "terminate" then
-				if term and term.isColor and term.isColor() then
-					local prevColor = term.getTextColor()
-					term.setTextColor(colors.yellow)
-					print("\n[Scheduler] Termination request received. Shutting down...")
-					term.setTextColor(prevColor)
-				else
-					print("\n[Scheduler] Termination request received. Shutting down...")
+				-- Support manual termination via terminate event (Ctrl+T)
+				if eventData[1] == "terminate" then
+					if term and term.isColor and term.isColor() then
+						local prevColor = term.getTextColor()
+						term.setTextColor(colors.yellow)
+						print("\n[Scheduler] Termination request received. Shutting down...")
+						term.setTextColor(prevColor)
+					else
+						print("\n[Scheduler] Termination request received. Shutting down...")
+					end
+					self:stop()
 				end
-				self:stop()
 			end
 		end
-	end
+	end)
 
-	self.running = false
+	cleanup()
+
+	if not ok then
+		error(err, 0)
+	end
 end
 
 -- Stop the scheduler loop
