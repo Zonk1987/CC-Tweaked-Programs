@@ -110,8 +110,8 @@ return {
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
-					sizeBytes = 13740,
-					hash = "1c6b81d25e798d2376f678ed3ca575fa8021ce7c56d074adf1b3e177b82226ef",
+					sizeBytes = 13717,
+					hash = "1075a075062877c2fdf3fc9815954b145e7983de0924cbdf8b596524e50f4e49",
 				},
 				{
 					source = "lib/core/ui/FlexLayout.lua",

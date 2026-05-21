@@ -41,13 +41,7 @@ local function getAttachedPeripherals(filter)
 		end
 
 		-- Exclude mechanical crafters from the candidate list
-		if
-			isMatch
-			and (
-				string.find(name, "mechanical_crafter")
-				or (pType and string.find(pType, "mechanical_crafter"))
-			)
-		then
+		if isMatch and (string.find(name, "mechanical_crafter") or (pType and string.find(pType, "mechanical_crafter"))) then
 			isMatch = false
 		end
 
@@ -171,8 +165,6 @@ function ConfigGUI:draw(termObj)
 	end
 	termObj.write("[ ABBRECHEN ]")
 end
-
-
 
 --- Shows a dynamic overlay popup to edit/read a value
 function ConfigGUI:editValue(parentTerm, item)
