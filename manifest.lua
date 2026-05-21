@@ -254,8 +254,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterGrid.lua",
 					target = "system/CrafterGrid.lua",
-					sizeBytes = 3853,
-					hash = "f73d15acfc52be7de1b50e77ae48e149d50d50988484e648920af2b89702b20a",
+					sizeBytes = 4315,
+					hash = "a116c61ad08fc3ee7842ccaa0b77ddedfec319b034b3ff5eff36ec8a3fd075a7",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/ui/ManageRecipes.lua",
