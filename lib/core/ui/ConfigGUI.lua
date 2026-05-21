@@ -40,6 +40,17 @@ local function getAttachedPeripherals(filter)
 			isMatch = true
 		end
 
+		-- Exclude mechanical crafters from the candidate list
+		if
+			isMatch
+			and (
+				string.find(name, "mechanical_crafter")
+				or (pType and string.find(pType, "mechanical_crafter"))
+			)
+		then
+			isMatch = false
+		end
+
 		if isMatch then
 			table.insert(matches, name)
 		end
@@ -190,109 +201,200 @@ end
 --- Shows a dynamic overlay popup to edit/read a value
 function ConfigGUI:editValue(parentTerm, item)
 	local w, h = parentTerm.getSize()
-	local popW = 44
-	local popH = (item.type == "choice" or item.type == "peripheral") and 9 or 7
-	local popX = math.floor((w - popW) / 2) + 1
-	local popY = math.floor((h - popH) / 2) + 1
-
-	local popWin = window.create(parentTerm, popX, popY, popW, popH, true)
-	popWin.setBackgroundColor(colors.white)
-	popWin.clear()
-	drawBorder(popWin, 1, 1, popW, popH, colors.white, colors.gray)
-
-	popWin.setCursorPos(3, 2)
-	popWin.setTextColor(colors.black)
-	popWin.write("Aendere: " .. item.label)
-
 	local currentValue = self.store:get(item.key, item.default)
+	local popWin
 
 	if item.type == "boolean" then
 		-- Toggle Boolean immediately
 		self.store:set(item.key, not currentValue)
 		self.modified = true
-		popWin.setVisible(false)
 		return
-	elseif item.type == "choice" then
-		-- Choice Selection Popup with Word-Wrapping and dynamic height (9)
-		local optionsStr = "Optionen: " .. table.concat(item.choices, ", ")
-		local wrapped = wrapText(optionsStr, popW - 6)
-		popWin.setCursorPos(3, 4)
-		if wrapped[1] then
-			popWin.write(wrapped[1])
+	elseif item.type == "choice" or item.type == "peripheral" then
+		local options = {}
+		if item.type == "choice" then
+			options = item.choices
+		elseif item.type == "peripheral" then
+			options = getAttachedPeripherals(item.peripheralType)
+			if #options == 0 then
+				local popW = math.min(44, w - 4)
+				local popH = 5
+				local popX = math.floor((w - popW) / 2) + 1
+				local popY = math.floor((h - popH) / 2) + 1
+				popWin = window.create(parentTerm, popX, popY, popW, popH, true)
+				popWin.setBackgroundColor(colors.white)
+				popWin.clear()
+				drawBorder(popWin, 1, 1, popW, popH, colors.white, colors.gray)
+				popWin.setCursorPos(3, 3)
+				popWin.setTextColor(colors.red)
+				popWin.write("Keine passenden Geraete!")
+				sleep(1.5)
+				popWin.setVisible(false)
+				return
+			end
 		end
-		popWin.setCursorPos(3, 5)
-		if wrapped[2] then
-			popWin.write(wrapped[2])
+
+		local localIndex = 1
+		for idx, opt in ipairs(options) do
+			if tostring(opt) == tostring(currentValue) then
+				localIndex = idx
+				break
+			end
 		end
 
-		popWin.setCursorPos(3, 6)
-		popWin.setTextColor(colors.blue)
-		popWin.write("Geben Sie einen der Werte ein: ")
+		local maxVisible = 6
+		local numVisible = math.min(#options, maxVisible)
+		local popW = math.min(44, w - 4)
+		local popH = numVisible + 6
+		local popX = math.floor((w - popW) / 2) + 1
+		local popY = math.floor((h - popH) / 2) + 1
 
-		popWin.setCursorPos(3, 7)
-		term.redirect(popWin)
-		local input = read()
-		term.redirect(parentTerm)
+		popWin = window.create(parentTerm, popX, popY, popW, popH, true)
 
-		-- Validate choice
-		local valid = false
-		if input then
-			local lowerInput = string.lower(input)
-			for _, choice in ipairs(item.choices) do
-				if string.lower(tostring(choice)) == lowerInput then
-					self.store:set(item.key, choice)
+		local scrollOffset = 0
+		local function updateScroll()
+			if localIndex < 1 then
+				localIndex = #options
+			elseif localIndex > #options then
+				localIndex = 1
+			end
+
+			if localIndex <= scrollOffset then
+				scrollOffset = localIndex - 1
+			elseif localIndex > scrollOffset + maxVisible then
+				scrollOffset = localIndex - maxVisible
+			end
+		end
+
+		local function drawPopup()
+			popWin.setBackgroundColor(colors.white)
+			popWin.clear()
+			drawBorder(popWin, 1, 1, popW, popH, colors.white, colors.gray)
+
+			-- Title
+			popWin.setCursorPos(3, 2)
+			popWin.setTextColor(colors.black)
+			popWin.write("Aendere: " .. item.label)
+
+			-- Separator under title
+			popWin.setCursorPos(2, 3)
+			popWin.setTextColor(colors.gray)
+			popWin.write(string.rep("-", popW - 2))
+
+			-- Draw options
+			for i = 1, numVisible do
+				local optIdx = i + scrollOffset
+				local opt = options[optIdx]
+				if opt then
+					local y = 3 + i
+					popWin.setCursorPos(3, y)
+					if optIdx == localIndex then
+						popWin.setBackgroundColor(colors.blue)
+						popWin.setTextColor(colors.white)
+						popWin.write(string.rep(" ", popW - 4))
+						popWin.setCursorPos(4, y)
+						popWin.write("> " .. tostring(opt))
+					else
+						popWin.setBackgroundColor(colors.white)
+						popWin.setTextColor(colors.black)
+						popWin.write(string.rep(" ", popW - 4))
+						popWin.setCursorPos(4, y)
+						popWin.write("  " .. tostring(opt))
+					end
+				end
+			end
+
+			-- Reset background for footer
+			popWin.setBackgroundColor(colors.white)
+
+			-- Separator above footer
+			popWin.setCursorPos(2, popH - 2)
+			popWin.setTextColor(colors.gray)
+			popWin.write(string.rep("-", popW - 2))
+
+			-- Instructions
+			popWin.setCursorPos(3, popH - 1)
+			popWin.setTextColor(colors.gray)
+			local instStr = "Pfeiltasten: Wahl | Enter: OK"
+			if popW < 32 then
+				instStr = "Auf/Ab:Wahl Enter:OK"
+			end
+			popWin.write(instStr)
+		end
+
+		updateScroll()
+		drawPopup()
+
+		while true do
+			local event, p1, p2, p3 = os.pullEvent()
+			if event == "key" then
+				if p1 == keys.up then
+					localIndex = localIndex - 1
+					updateScroll()
+					drawPopup()
+				elseif p1 == keys.down then
+					localIndex = localIndex + 1
+					updateScroll()
+					drawPopup()
+				elseif p1 == keys.enter then
+					self.store:set(item.key, options[localIndex])
 					self.modified = true
-					valid = true
 					break
+				elseif p1 == keys.escape or p1 == keys["esc"] or p1 == 256 or p1 == 1 then
+					break
+				end
+			elseif event == "mouse_click" then
+				local x, y = p2, p3
+				if x >= popX + 2 and x <= popX + popW - 3 then
+					local clickY = y - popY - 3
+					if clickY >= 1 and clickY <= numVisible then
+						local clickedIdx = clickY + scrollOffset
+						if clickedIdx >= 1 and clickedIdx <= #options then
+							if localIndex == clickedIdx then
+								self.store:set(item.key, options[localIndex])
+								self.modified = true
+								break
+							else
+								localIndex = clickedIdx
+								updateScroll()
+								drawPopup()
+							end
+						end
+					end
+				end
+			elseif event == "mouse_scroll" then
+				local direction = p1
+				if direction < 0 then
+					if localIndex > 1 then
+						localIndex = localIndex - 1
+						updateScroll()
+						drawPopup()
+					end
+				else
+					if localIndex < #options then
+						localIndex = localIndex + 1
+						updateScroll()
+						drawPopup()
+					end
 				end
 			end
 		end
 
-		if not valid and input and input ~= "" then
-			popWin.setCursorPos(3, 8)
-			popWin.setTextColor(colors.red)
-			popWin.write("Ungueltige Option!")
-			sleep(1)
-		end
-	elseif item.type == "peripheral" then
-		-- Scans matching peripherals
-		local options = getAttachedPeripherals(item.peripheralType)
-		if #options == 0 then
-			popWin.setCursorPos(3, 4)
-			popWin.setTextColor(colors.red)
-			popWin.write("Keine passenden Geraete gefunden!")
-			sleep(1.5)
-			popWin.setVisible(false)
-			return
-		end
-
-		-- List peripherals with Word-Wrapping and dynamic height (9)
-		local optionsStr = "Geraete: " .. table.concat(options, ", ")
-		local wrapped = wrapText(optionsStr, popW - 6)
-		popWin.setCursorPos(3, 4)
-		if wrapped[1] then
-			popWin.write(wrapped[1])
-		end
-		popWin.setCursorPos(3, 5)
-		if wrapped[2] then
-			popWin.write(wrapped[2])
-		end
-
-		popWin.setCursorPos(3, 6)
-		popWin.setTextColor(colors.blue)
-		popWin.write("Name eingeben: ")
-
-		popWin.setCursorPos(3, 7)
-		term.redirect(popWin)
-		local input = read()
-		term.redirect(parentTerm)
-
-		if input ~= "" then
-			self.store:set(item.key, input)
-			self.modified = true
-		end
+		popWin.setVisible(false)
 	else
 		-- Standard String/Number editor with standard height (7)
+		local popW = 44
+		local popH = 7
+		local popX = math.floor((w - popW) / 2) + 1
+		local popY = math.floor((h - popH) / 2) + 1
+		popWin = window.create(parentTerm, popX, popY, popW, popH, true)
+		popWin.setBackgroundColor(colors.white)
+		popWin.clear()
+		drawBorder(popWin, 1, 1, popW, popH, colors.white, colors.gray)
+
+		popWin.setCursorPos(3, 2)
+		popWin.setTextColor(colors.black)
+		popWin.write("Aendere: " .. item.label)
+
 		popWin.setCursorPos(3, 4)
 		popWin.setTextColor(colors.gray)
 		popWin.write("Aktuell: " .. tostring(currentValue))
@@ -322,9 +424,9 @@ function ConfigGUI:editValue(parentTerm, item)
 				self.modified = true
 			end
 		end
-	end
 
-	popWin.setVisible(false)
+		popWin.setVisible(false)
+	end
 end
 
 --- Runs the interactive ConfigGUI loop
