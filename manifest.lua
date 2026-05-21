@@ -184,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 9509,
-					hash = "f97b140a74e0ec1cb345fab62fdc8608a8799dde3c97a8175f0bdd5326dc5993",
+					sizeBytes = 9556,
+					hash = "6350dd3b974dadd4c6af2d8734a07176ab656c69e60a53fdce8e8157f5893c6c",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",

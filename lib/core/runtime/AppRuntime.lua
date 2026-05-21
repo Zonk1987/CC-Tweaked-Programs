@@ -36,7 +36,7 @@ local function clearScreen()
 end
 
 -- Safe Mode emergency terminal interface
-local function runSafeMode(appName, configStore)
+local function runSafeMode(appName, configStore, logFilePath)
 	while true do
 		clearScreen()
 		if term.isColor() then
@@ -64,7 +64,7 @@ local function runSafeMode(appName, configStore)
 			clearScreen()
 			print("--- System-Logs (Letzte 20 Zeilen) ---")
 			-- Try reading logs from logs/ directory
-			local logFile = "logs/" .. appName:lower():gsub("%s+", "_") .. ".log"
+			local logFile = logFilePath or ("logs/" .. appName:lower():gsub("%s+", "_") .. ".log")
 			if fs.exists(logFile) then
 				local f = fs.open(logFile, "r")
 				local lines = {}
@@ -175,7 +175,7 @@ function AppRuntime.run(appClass, options, ...)
 
 	-- 5. Safe Mode execution
 	if isSafeMode then
-		runSafeMode(options.title or "CC-App", configStore)
+		runSafeMode(options.title or "CC-App", configStore, options.logFile)
 		return
 	end
 
