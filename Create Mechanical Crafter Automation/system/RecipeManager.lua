@@ -12,6 +12,7 @@ local table_insert = table.insert
 local RecipeStore = require("RecipeStore")
 local ItemMatcher = require("ItemMatcher")
 local HAL = require("HAL")
+local Result = require("Result")
 
 ---@class RecipeManager : RecipeStore
 ---@field dashboard Dashboard
@@ -74,25 +75,27 @@ end
 
 --- Loads and validates recipes from JSON
 ---@param crafterCount number|nil
----@return boolean success
+---@return Result
 function RecipeManager:load(crafterCount)
-	local ok, err = RecipeStore.load(self)
-	if not ok then
+	local res = RecipeStore.load(self)
+	if res:isErr() then
 		if not fs.exists(self.filename) then
 			self:generateExample(crafterCount)
-			return false
+			return Result.err("EXAMPLE_GENERATED", "Beispielrezept generiert.")
 		end
-		self.dashboard:setError("Load Error: " .. (err or "Unknown"))
-		return false
+		local err = res:getError()
+		local errStr = err and (err.message or err.code) or "Unknown error"
+		self.dashboard:setError("Load Error: " .. errStr)
+		return res
 	end
 
 	local validated = self:validate(self.recipes)
 	if validated then
 		self.recipes = validated
 		self.dashboard:setRecipeCount(#self.recipes)
-		return true
+		return Result.ok(true)
 	end
-	return false
+	return Result.err("VALIDATION_FAILED", self.dashboard.errorMsg or "Validierung fehlgeschlagen.")
 end
 
 --- Validates a raw recipe table
@@ -244,21 +247,25 @@ function RecipeManager:getMissingItems(chest, crafterCount)
 end
 
 --- Records a new recipe from physical crafters
+---@param name string
+---@param crafterGrid CrafterGrid
+---@return Result
 function RecipeManager:recordRecipe(name, crafterGrid)
 	local count = crafterGrid:getCount()
 	if count == 0 then
-		return false, "No crafters!"
+		return Result.err("NO_CRAFTERS", "Keine Crafter gefunden!")
 	end
 	local width = math.sqrt(count)
 	if width ~= math.floor(width) then
-		return false, "Grid not square!"
+		return Result.err("GRID_NOT_SQUARE", "Crafter-Grid ist nicht quadratisch!")
 	end
 
 	local keys, reverseKeys, pattern, currentLine = {}, {}, {}, ""
 	local charCode, itemsFound = 65, 0
 
 	for i = 1, count do
-		local p = HAL.wrap(crafterGrid:getCrafterName(i))
+		local cName = crafterGrid:getCrafterName(i)
+		local p = cName and HAL.wrap(cName) or nil
 		---@cast p any
 		local item = p and p.getItemDetail(1)
 		local char = "0"
@@ -279,7 +286,7 @@ function RecipeManager:recordRecipe(name, crafterGrid)
 	end
 
 	if itemsFound == 0 then
-		return false, "Crafters empty!"
+		return Result.err("CRAFTERS_EMPTY", "Mechanical Crafters sind leer!")
 	end
 	local file = fs.open(self.filename, "r")
 	local content = file and file.readAll() or "[]"
@@ -303,14 +310,18 @@ function RecipeManager:recordRecipe(name, crafterGrid)
 	end
 
 	local outFile = fs.open(self.filename, "w")
-	if outFile then
-		outFile.write(textutils.serializeJSON(raw))
-		outFile.close()
+	if not outFile then
+		return Result.err("FILE_WRITE_FAILED", "Konnte Rezeptdatei nicht schreiben.")
 	end
+	outFile.write(textutils.serializeJSON(raw))
+	outFile.close()
 
 	-- Reload into memory to sync state
-	self:load()
-	return true
+	local loadRes = self:load()
+	if loadRes:isErr() then
+		return loadRes
+	end
+	return Result.ok(true)
 end
 
 --- Saves current recipes to the file (delegated to RecipeStore)

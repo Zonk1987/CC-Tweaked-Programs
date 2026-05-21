@@ -1,6 +1,4 @@
---- @diagnostic disable: undefined-global
--- RecipeStore: Generic JSON-based recipe management
--- Governed by AGENTS.md
+local Result = require("Result")
 
 local RecipeStore = {}
 RecipeStore.__index = RecipeStore
@@ -21,39 +19,45 @@ function RecipeStore.new(filename)
 end
 
 --- Loads recipes from the file
---- @return boolean success, string|nil err
+--- @return Result
 function RecipeStore:load()
 	if not fs.exists(self.filename) then
-		self:save() -- Create empty file if missing
-		return true
+		local saveRes = self:save() -- Create empty file if missing
+		if saveRes:isErr() then
+			return saveRes
+		end
+		return Result.ok(self.recipes)
 	end
 
 	local file = fs.open(self.filename, "r")
 	if not file then
-		return false, "file_open_failed"
+		return Result.err("FILE_OPEN_FAILED", "Konnte Rezeptdatei nicht oeffnen.")
 	end
 	local content = file.readAll()
 	file.close()
 	if not content then
-		return false, "file_read_failed"
+		return Result.err("FILE_READ_FAILED", "Konnte Rezeptdatei nicht lesen.")
 	end
 
 	local data = textutils.unserializeJSON(content, {})
 	if type(data) ~= "table" then
-		return false, "invalid_json_format"
+		return Result.err("INVALID_JSON_FORMAT", "Ungueltiges JSON-Format in Rezeptdatei.")
 	end
 
 	self.recipes = data
-	return true
+	return Result.ok(self.recipes)
 end
 
 --- Saves current recipes to the file
+--- @return Result
 function RecipeStore:save()
 	local file = fs.open(self.filename, "w")
-	if file then
-		file.write(textutils.serialiseJSON(self.recipes))
-		file.close()
+	if not file then
+		return Result.err("FILE_WRITE_FAILED", "Konnte Rezeptdatei nicht zum Schreiben oeffnen.")
 	end
+	file.write(textutils.serialiseJSON(self.recipes))
+	file.close()
+	return Result.ok(true)
 end
 
 --- Adds or updates a recipe by its name

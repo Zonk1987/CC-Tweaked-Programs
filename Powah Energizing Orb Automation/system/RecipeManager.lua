@@ -11,6 +11,7 @@ local _ENV = setmetatable({}, {
 local table_insert = table.insert
 local RecipeStore = require("RecipeStore")
 local ItemMatcher = require("ItemMatcher")
+local Result = require("Result")
 
 ---@class RecipeManager : RecipeStore
 ---@field dashboard any
@@ -29,21 +30,23 @@ function RecipeManager.new(filename, dashboard)
 end
 
 --- Loads and validates recipes from JSON
----@return boolean success
+---@return Result
 function RecipeManager:load()
-	local ok, err = RecipeStore.load(self)
-	if not ok then
-		self.dashboard:setError("Load Error: " .. (err or "Unknown"))
-		return false
+	local res = RecipeStore.load(self)
+	if res:isErr() then
+		local err = res:getError()
+		local errStr = err and (err.message or err.code) or "Unknown error"
+		self.dashboard:setError("Load Error: " .. errStr)
+		return res
 	end
 
 	local validated = self:validate(self.recipes)
 	if validated then
 		self.recipes = validated
 		self.dashboard:setRecipeCount(#self.recipes)
-		return true
+		return Result.ok(true)
 	end
-	return false
+	return Result.err("VALIDATION_FAILED", self.dashboard.errorMsg or "Rezept-Validierung fehlgeschlagen.")
 end
 
 --- Adds a recipe to the list and saves it

@@ -15,6 +15,7 @@ local pcall = pcall
 
 local InventoryAdapter = require("InventoryAdapter")
 local ItemMatcher = require("ItemMatcher")
+local Result = require("Result")
 
 ---@class Chest : InventoryAdapter
 local Chest = setmetatable({}, { __index = InventoryAdapter })
@@ -32,11 +33,11 @@ end
 --- Transfers recipe ingredients to the crafter grid
 ---@param recipe table
 ---@param crafterGrid CrafterGrid
----@return boolean success, string|nil err
+---@return Result
 function Chest:transferRecipe(recipe, crafterGrid)
 	local p = self:getNative()
 	if not p then
-		return false, "chest_missing"
+		return Result.err("CHEST_MISSING", "Puffer-Kiste ist nicht angeschlossen.")
 	end
 
 	-- Find max index in ingredients to know how far to iterate
@@ -56,7 +57,11 @@ function Chest:transferRecipe(recipe, crafterGrid)
 		if itemName ~= nil and itemName ~= "null" and itemName ~= "" then
 			local crafterName = crafterGrid:getCrafterName(index)
 			if not crafterName then
-				return false, "missing_crafter_for_slot:" .. index
+				return Result.err(
+					"MISSING_CRAFTER",
+					"Kein Mechanical Crafter fuer Slot " .. index .. " gefunden.",
+					"Bitte stelle sicher, dass das gesamte Crafter-Netzwerk verkabelt ist."
+				)
 			end
 
 			local needed = 1
@@ -79,21 +84,33 @@ function Chest:transferRecipe(recipe, crafterGrid)
 						end
 						break
 					elseif not ok then
-						return false, "Network Error to " .. crafterName
+						return Result.err(
+							"NETWORK_ERROR",
+							"Netzwerk-Fehler bei Uebertragung an " .. crafterName,
+							"Bitte ueberpruefe Kabel/Modems zum Crafter."
+						)
 					elseif ok and moved == 0 then
 						-- Try to diagnose why it moved 0
-						return false, "Crafter " .. crafterName .. " rejected item (Full?)"
+						return Result.err(
+							"CRAFTER_REJECTED",
+							"Crafter " .. crafterName .. " hat das Item abgelehnt.",
+							"Moeglicherweise ist der Crafter blockiert oder bereits voll."
+						)
 					end
 				end
 			end
 
 			if not itemTransferred then
-				return false, "Transfer failed to " .. crafterName .. " (Item: " .. itemName .. ")"
+				return Result.err(
+					"TRANSFER_FAILED",
+					"Konnte Item '" .. itemName .. "' nicht an " .. crafterName .. " uebertragen.",
+					"Fehlt das Item in der Kiste oder ist der Crafter blockiert?"
+				)
 			end
 		end
 	end
 
-	return true
+	return Result.ok(true)
 end
 
 --- Checks if the peripheral is connected and valid (delegated to InventoryAdapter)

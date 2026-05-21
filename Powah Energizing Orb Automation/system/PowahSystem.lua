@@ -112,7 +112,12 @@ function PowahSystem:checkActiveJobs()
 						orbName,
 						job.recipeName
 					)
-					orb:recover(self.chest.name)
+					local recRes = orb:recover(self.chest.name)
+					if recRes:isErr() then
+						local err = recRes:getError()
+						local errStr = err and (err.message or err.code) or "Unknown error"
+						log(self, "error", "Failed to recover items from orb '%s': %s", orbName, errStr)
+					end
 					self.activeJobs[orbName] = nil
 					os_sleep(1)
 					self.dashboard:setError("")
@@ -144,9 +149,9 @@ function PowahSystem:process()
 		if readyRecipe then
 			self.dashboard:setStatus("Filling " .. freeOrb.name)
 			log(self, "info", "Filling orb '%s' for recipe: %s", freeOrb.name, readyRecipe.name)
-			local success, err = self.chest:transferRecipe(readyRecipe, freeOrb.name)
+			local res = self.chest:transferRecipe(readyRecipe, freeOrb.name)
 
-			if success then
+			if res:isOk() then
 				self.activeJobs[freeOrb.name] = {
 					startTime = os_epoch("utc"),
 					recipeName = readyRecipe.name,
@@ -160,7 +165,8 @@ function PowahSystem:process()
 				)
 				self.dashboard:draw()
 			else
-				local errStr = err or "unknown error"
+				local err = res:getError()
+				local errStr = err and (err.message or err.code) or "Unknown error"
 				self.dashboard:setError("Transfer: " .. errStr)
 				log(
 					self,
@@ -170,7 +176,12 @@ function PowahSystem:process()
 					readyRecipe.name,
 					errStr
 				)
-				freeOrb:recover(self.chest.name)
+				local recRes = freeOrb:recover(self.chest.name)
+				if recRes:isErr() then
+					local recErr = recRes:getError()
+					local recErrStr = recErr and (recErr.message or recErr.code) or "Unknown error"
+					log(self, "error", "Failed to recover items: %s", recErrStr)
+				end
 				os_sleep(1)
 			end
 		else

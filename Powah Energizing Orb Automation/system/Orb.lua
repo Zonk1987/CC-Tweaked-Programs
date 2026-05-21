@@ -8,6 +8,7 @@ local _ENV = setmetatable({}, {
 })
 
 local InventoryAdapter = require("InventoryAdapter")
+local Result = require("Result")
 
 ---@class Orb : InventoryAdapter
 local Orb = setmetatable({}, { __index = InventoryAdapter })
@@ -35,25 +36,25 @@ end
 
 --- Recovers items from the orb back to the chest
 ---@param targetName string
----@return boolean, string|nil
+---@return Result
 function Orb:recover(targetName)
 	if not targetName or targetName == "" then
-		return false, "invalid_target"
+		return Result.err("INVALID_TARGET", "Ungueltiger Ziel-Name fuer Wiederherstellung.")
 	end
 
 	local items, err = self:list()
 	if not items then
-		return false, err
+		return Result.err("LIST_FAILED", "Konnte Items in der Energizing-Kugel nicht auflisten.", err)
 	end
 
 	for slot, _ in pairs(items) do
 		local ok, pushErr = pcall(self.native.pushItems, targetName, slot)
 		if not ok then
-			return false, tostring(pushErr)
+			return Result.err("PUSH_FAILED", "Fehler beim Zurueckschieben der Items in die Puffer-Kiste.", tostring(pushErr))
 		end
 	end
 
-	return true
+	return Result.ok(true)
 end
 
 --- Checks if the peripheral is connected and valid (delegated to InventoryAdapter)

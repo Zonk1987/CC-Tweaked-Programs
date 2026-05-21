@@ -9,6 +9,7 @@ local _ENV = setmetatable({}, {
 
 local InventoryAdapter = require("InventoryAdapter")
 local ItemMatcher = require("ItemMatcher")
+local Result = require("Result")
 
 ---@class Chest : InventoryAdapter
 local Chest = setmetatable({}, { __index = InventoryAdapter })
@@ -26,20 +27,20 @@ end
 --- Transfers recipe items to an orb
 ---@param recipe table
 ---@param orbName string
----@return boolean success, string|nil err
+---@return Result
 function Chest:transferRecipe(recipe, orbName)
 	local p = self:getNative()
 	if not p then
-		return false, "chest_missing"
+		return Result.err("CHEST_MISSING", "Puffer-Kiste ist nicht angeschlossen.")
 	end
 
 	if not orbName or orbName == "" then
-		return false, "invalid_orb_name"
+		return Result.err("INVALID_ORB_NAME", "Ungueltiger Name fuer die Energizing-Kugel.")
 	end
 
 	local items, err = self:list()
 	if not items then
-		return false, err
+		return Result.err("LIST_FAILED", "Konnte Items der Puffer-Kiste nicht auflisten.", err)
 	end
 
 	for itemName, count in pairs(recipe.ingredients) do
@@ -56,11 +57,15 @@ function Chest:transferRecipe(recipe, orbName)
 		end
 
 		if transferred < count then
-			return false, "insufficient_items:" .. itemName
+			return Result.err(
+				"INSUFFICIENT_ITEMS",
+				"Nicht genuegend Items vorhanden: " .. itemName,
+				"Bitte stelle sicher, dass genuegend '" .. itemName .. "' in der Puffer-Kiste liegen."
+			)
 		end
 	end
 
-	return true
+	return Result.ok(true)
 end
 
 --- Checks if the peripheral is connected and valid (delegated to InventoryAdapter)

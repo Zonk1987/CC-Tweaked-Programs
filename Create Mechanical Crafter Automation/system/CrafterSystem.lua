@@ -158,8 +158,8 @@ function CrafterSystem:handleNewCraft()
 		self.dashboard:draw()
 
 		log(self, "info", "Filling Crafters for recipe: %s", readyRecipe.name)
-		local success, err = self.chest:transferRecipe(readyRecipe, self.crafterGrid)
-		if success then
+		local res = self.chest:transferRecipe(readyRecipe, self.crafterGrid)
+		if res:isOk() then
 			self.isCrafting = true
 			self.craftStartTime = os_epoch("utc")
 			self.dashboard:setLastCraft(readyRecipe.name)
@@ -167,7 +167,8 @@ function CrafterSystem:handleNewCraft()
 			log(self, "info", "Successfully started crafting recipe: %s", readyRecipe.name)
 			RedstoneController.pulseAll()
 		else
-			local errStr = err or "Transfer Error!"
+			local err = res:getError()
+			local errStr = err and (err.message or err.code) or "Unknown error"
 			self.dashboard:setError(errStr)
 			log(self, "error", "Failed to transfer items for recipe '%s': %s", readyRecipe.name, errStr)
 			os_sleep(2)
@@ -233,7 +234,7 @@ function CrafterSystem:recordNewRecipeFlow()
 
 	os_sleep(0.1) -- Debounce
 	local name = read()
-	if name == "" then
+	if not name or name == "" then
 		self.isRecording = false
 		self.dashboard.suppressDraw = false
 		self.dashboard:draw()
@@ -244,14 +245,16 @@ function CrafterSystem:recordNewRecipeFlow()
 	self.dashboard:setStatus("Recording " .. name .. "...")
 	self.dashboard:draw()
 
-	local success, err = self.recipeManager:recordRecipe(name, self.crafterGrid)
-	if success then
+	local res = self.recipeManager:recordRecipe(name, self.crafterGrid)
+	if res:isOk() then
 		self.dashboard:setError("Recipe saved successfully!")
 		self.recipeManager:load(self.crafterGrid:getCount())
 		-- Start crafting the recorded recipe immediately
 		RedstoneController.pulseAll()
 	else
-		self.dashboard:setError("Record Error: " .. (err or "Unknown"))
+		local err = res:getError()
+		local errStr = err and (err.message or err.code) or "Unknown error"
+		self.dashboard:setError("Record Error: " .. errStr)
 	end
 
 	os_sleep(2)
