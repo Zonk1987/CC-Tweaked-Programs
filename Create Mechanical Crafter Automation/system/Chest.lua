@@ -91,10 +91,37 @@ function Chest:transferRecipe(recipe, crafterGrid)
 						)
 					elseif ok and moved == 0 then
 						-- Try to diagnose why it moved 0
+						local detailStr
+						local pCrafter = peripheral.wrap(crafterName) --[[@as any]]
+						if pCrafter then
+							local listOk, listRes = pcall(function()
+								return pCrafter.list()
+							end)
+							if listOk and listRes then
+								local _, crafterItem = next(listRes)
+								if crafterItem then
+									detailStr = "Crafter enthaelt bereits: " .. crafterItem.name .. " x" .. crafterItem.count
+								else
+									detailStr = "Crafter ist leer, hat das Item aber dennoch abgelehnt!"
+								end
+							else
+								local detOk, detRes = pcall(function()
+									return pCrafter.getItemDetail(1)
+								end)
+								if detOk and detRes then
+									detailStr = "Crafter enthaelt bereits: " .. detRes.name .. " x" .. detRes.count
+								else
+									detailStr = "Crafter ist leer (oder nicht lesbar), hat das Item abgelehnt."
+								end
+							end
+						else
+							detailStr = "Crafter ist offline oder nicht erreichbar!"
+						end
+
 						return Result.err(
 							"CRAFTER_REJECTED",
 							"Crafter " .. crafterName .. " hat das Item abgelehnt.",
-							"Moeglicherweise ist der Crafter blockiert oder bereits voll."
+							detailStr
 						)
 					end
 				end
