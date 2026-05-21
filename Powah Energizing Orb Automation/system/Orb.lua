@@ -50,7 +50,11 @@ function Orb:recover(targetName)
 	for slot, _ in pairs(items) do
 		local ok, pushErr = pcall(self.native.pushItems, targetName, slot)
 		if not ok then
-			return Result.err("PUSH_FAILED", "Fehler beim Zurueckschieben der Items in die Puffer-Kiste.", tostring(pushErr))
+			return Result.err(
+				"PUSH_FAILED",
+				"Fehler beim Zurueckschieben der Items in die Puffer-Kiste.",
+				tostring(pushErr)
+			)
 		end
 	end
 
