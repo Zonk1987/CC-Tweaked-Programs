@@ -169,9 +169,13 @@ function CrafterSystem:handleNewCraft()
 		else
 			local err = res:getError()
 			local errStr = err and (err.message or err.code) or "Unknown error"
+			local hintStr = err and err.hint or ""
+			if hintStr ~= "" then
+				errStr = errStr .. "\n" .. hintStr
+			end
 			self.dashboard:setError(errStr)
-			log(self, "error", "Failed to transfer items for recipe '%s': %s", readyRecipe.name, errStr)
-			os_sleep(2)
+			log(self, "error", "Failed to transfer items for recipe '%s': %s. Detail: %s", readyRecipe.name, err and err.message or errStr, hintStr)
+			os_sleep(4.5)
 			self.dashboard:setError("")
 		end
 	else

@@ -13,6 +13,15 @@ local pairs = pairs
 local tonumber = tonumber
 local pcall = pcall
 
+local localSides = {
+	top = true,
+	bottom = true,
+	left = true,
+	right = true,
+	front = true,
+	back = true,
+}
+
 local InventoryAdapter = require("InventoryAdapter")
 local ItemMatcher = require("ItemMatcher")
 local Result = require("Result")
@@ -138,6 +147,10 @@ function Chest:transferRecipe(recipe, crafterGrid)
 								end
 							else
 								detailStr = "Crafter ist offline oder nicht erreichbar!"
+							end
+
+							if localSides[self.name] then
+								detailStr = "Puffer ist als lokale Seite '" .. self.name .. "' konfiguriert! Verbinde ein Modem mit der Kiste und waehle deren Netzwerkname in '--config'."
 							end
 
 							return Result.err(

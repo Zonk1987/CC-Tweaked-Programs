@@ -110,8 +110,8 @@ return {
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
-					sizeBytes = 11445,
-					hash = "73957452642065beef4793bf57661ef0f6052a1f16dbcdc836a098e1f75f27cf",
+					sizeBytes = 11642,
+					hash = "9a4970292fe0b1cdce844a605154f16789f130ad21ad91ad4bbd97eecd3a9cb7",
 				},
 				{
 					source = "lib/core/ui/FlexLayout.lua",
@@ -224,14 +224,14 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 1517,
-					hash = "22956a888be738562a75b5617a04a0562427a05e8571b59793eeee520c0c323f",
+					sizeBytes = 1910,
+					hash = "5e99d1f42f2426ae08091cab60d2f76c2989b4daa0a434dc6461036b83455f27",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterSystem.lua",
 					target = "system/CrafterSystem.lua",
-					sizeBytes = 7863,
-					hash = "226a69dec19eeb1710f4d915ade2cda022566434acf7a1115f957e3643b8d06f",
+					sizeBytes = 8022,
+					hash = "8f6f08bd9fef2e7682875256b0a9333a9c79c5c32a4bc6801b74257d07972298",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/RecipeManager.lua",
@@ -248,8 +248,8 @@ return {
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/Chest.lua",
 					target = "system/Chest.lua",
-					sizeBytes = 5640,
-					hash = "c00c74946a39e7abd895b0cb1d134003db0a53b9dcc14e327c7848094a66f6f0",
+					sizeBytes = 5964,
+					hash = "27c1039fabcb8696dd1b0fedb37304a27d38d4e69d73c952952b0d4052df752f",
 				},
 				{
 					source = "Create%20Mechanical%20Crafter%20Automation/system/CrafterGrid.lua",

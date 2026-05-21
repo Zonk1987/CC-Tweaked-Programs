@@ -7,6 +7,22 @@ Powered by Enterprise AppRuntime & Fiber Scheduler.
 ================================================================================
 ]]
 
+-- Auto-diagnose peripherals at boot
+pcall(function()
+	if not fs.exists("logs") then
+		fs.makeDir("logs")
+	end
+	local names = peripheral.getNames()
+	local f = fs.open("logs/peripherals.log", "w")
+	if f then
+		f.writeLine("Connected Peripherals:")
+		for _, name in ipairs(names) do
+			f.writeLine(" - " .. name .. " (" .. tostring(peripheral.getType(name)) .. ")")
+		end
+		f.close()
+	end
+end)
+
 -- Configure library paths for lib/core
 local corePaths = {
 	"/lib/core/base/?.lua",

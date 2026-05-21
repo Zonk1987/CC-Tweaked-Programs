@@ -31,9 +31,16 @@ local function getAttachedPeripherals(filter)
 	local lowerFilter = string.lower(filter)
 	for _, name in ipairs(all) do
 		local pType = peripheral.getType(name)
-		if
-			(pType and string.find(string.lower(pType), lowerFilter)) or string.find(string.lower(name), lowerFilter)
-		then
+		local isMatch = false
+		if pType and string.find(string.lower(pType), lowerFilter) then
+			isMatch = true
+		elseif string.find(string.lower(name), lowerFilter) then
+			isMatch = true
+		elseif type(peripheral.hasType) == "function" and peripheral.hasType(name, filter) then
+			isMatch = true
+		end
+
+		if isMatch then
 			table.insert(matches, name)
 		end
 	end
