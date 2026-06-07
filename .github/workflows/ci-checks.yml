@@ -256,7 +256,7 @@ jobs:
           luacheck .
 
       - name: StyLua formatting check
-        uses: JohnnyMorganz/stylua-action@v4
+        uses: JohnnyMorganz/stylua-action@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: latest
