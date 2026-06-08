@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Powah Energizing Orb Automation v1.0.146-main
+Powah Energizing Orb Automation v1.0.149-main
 ================================================================================
 Automates Powah Energizing Orbs with AE2 integration.
 Powered by Enterprise AppRuntime & Fiber Scheduler.
