@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Mekanism Portal Recall Sender v1.0.153-main
+Mekanism Portal Recall Sender v1.0.155-main
 ================================================================================
 Standardized Recall Sender for Interdimensional Portals.
 Powered by Enterprise AppRuntime & Fiber Scheduler.

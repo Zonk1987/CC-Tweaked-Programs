@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-Mekanism Portal Hub v1.0.153-main
+Mekanism Portal Hub v1.0.155-main
 ================================================================================
 Standardized Hub System for Interdimensional Portals.
 Powered by Enterprise AppRuntime & Fiber Scheduler.
