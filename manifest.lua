@@ -360,8 +360,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 24481,
-					hash = "c473e00331fd86f00a649207146cbc71db79cf099e1ad7a976d7614297e94606",
+					sizeBytes = 24480,
+					hash = "9ceab0d360b384731e7518aecc1ef2ec54979dc415383e0037eabd8d15fca31e",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
@@ -372,8 +372,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/ui/Dashboard.lua",
 					target = "ui/Dashboard.lua",
-					sizeBytes = 7053,
-					hash = "ec75a65c1a540489cdff81d05d27507b95d8e4e37a76ed4673ee77ee52bebcbe",
+					sizeBytes = 7051,
+					hash = "4e78d7d440922d978114e3e6d72fed8ec8d4d7e320d8f7688d43e57ec0ea69bb",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubApp.lua",

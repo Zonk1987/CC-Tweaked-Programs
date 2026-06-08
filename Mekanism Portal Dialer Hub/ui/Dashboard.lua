@@ -177,11 +177,11 @@ function Dashboard.drawAppFrame(bm, w, h, title, frameColor, swap, chars)
 	-- 2. Draw Title
 	bm.mon.setTextColor(colors.white)
 	bm.mon.setBackgroundColor(colors.black)
-	
+
 	-- Force clean spaces and wipe an extra cell on both sides to clear any graphical artifacts
 	local cleanTitle = " " .. title:match("^%s*(.-)%s*$") .. " "
 	local startX = math.floor((w - #cleanTitle) / 2) + 1
-	
+
 	bm.mon.setCursorPos(startX - 1, 2)
 	bm.mon.write(" " .. cleanTitle .. " ")
 
