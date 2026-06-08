@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-CC:Tweaked Developer Suite v1.0.149-main
+CC:Tweaked Developer Suite v1.0.152-main
 ================================================================================
 Advanced Hardware Inspection & Diagnostic Toolkit.
 Powered by Enterprise AppRuntime & Fiber Scheduler.
