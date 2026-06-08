@@ -476,19 +476,54 @@ function HubSystem:drawContent()
 			self.bm.mon.write(string.rep(" ", buttonWidth - 2))
 		end
 
-		-- 2. Draw the frame on top using FrameRenderer instead of drawButtonBox
+		-- 2. Draw the frame on top using custom logic for accurate texture pack rendering
 		local pTheme = Dashboard.Theme.portalBtn
-		FrameRenderer.drawFrame(
-			self.bm.mon,
-			bx,
-			by,
-			bx + buttonWidth - 1,
-			by + 4,
-			bColor,
-			bgColor,
-			pTheme.swap,
-			pTheme.chars
-		)
+		local chars = pTheme.chars or {}
+		
+		-- Make unselected borders black so they don't blend into the gray background
+		local borderColor = bColor
+		if not isSelected and not self.isEditMode then
+			borderColor = colors.black
+		end
+
+		local mon = self.bm.mon
+		mon.setTextColor(borderColor)
+		mon.setBackgroundColor(bgColor)
+
+		-- Corners (No swaps, exact texture pack mapping)
+		mon.setCursorPos(bx, by)
+		mon.write(string.char(chars.TL or 156))
+		mon.setCursorPos(bx + buttonWidth - 1, by)
+		mon.write(string.char(chars.TR or 147))
+		mon.setCursorPos(bx, by + 4)
+		mon.write(string.char(chars.BL or 141))
+		mon.setCursorPos(bx + buttonWidth - 1, by + 4)
+		mon.write(string.char(chars.BR or 142))
+
+		-- Horizontal edges
+		local hTop = string.rep(string.char(chars.H_TOP or 140), buttonWidth - 2)
+		local hBot = string.rep(string.char(chars.H_BOT or 140), buttonWidth - 2)
+		mon.setCursorPos(bx + 1, by)
+		mon.write(hTop)
+		mon.setCursorPos(bx + 1, by + 4)
+		mon.write(hBot)
+
+		-- Vertical edges
+		local vLeft = string.char(chars.V_LEFT or 149)
+		local vRight = string.char(chars.V_RIGHT or 149)
+		for row = by + 1, by + 3 do
+			-- Left edge
+			mon.setTextColor(borderColor)
+			mon.setBackgroundColor(bgColor)
+			mon.setCursorPos(bx, row)
+			mon.write(vLeft)
+
+			-- Right edge (Swap required since CC:Tweaked only provides left-half blocks)
+			mon.setTextColor(bgColor)
+			mon.setBackgroundColor(borderColor)
+			mon.setCursorPos(bx + buttonWidth - 1, row)
+			mon.write(vRight)
+		end
 
 		-- Draw Label AFTER boxes
 		local label = f.key
