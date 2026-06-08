@@ -372,8 +372,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 24298,
-					hash = "adc5d166483c27050a2fbfabb72a061325d846424d6998e53fdbb6b3d2cd4f0a",
+					sizeBytes = 24484,
+					hash = "298066d3ea6ce3a324bb5ccefd7e694bdcc1c24c04ef0379b6c00225815c7dcc",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",

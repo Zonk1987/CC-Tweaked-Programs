@@ -9,6 +9,7 @@ local _ENV = setmetatable({}, {
 local UUIDService = require("UUIDService")
 local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
+local FrameRenderer = require("FrameRenderer")
 local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 
@@ -475,8 +476,9 @@ function HubSystem:drawContent()
 			self.bm.mon.write(string.rep(" ", buttonWidth - 2))
 		end
 
-		-- 2. Draw the frame on top
-		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor)
+		-- 2. Draw the frame on top using FrameRenderer instead of drawButtonBox
+		local pTheme = Dashboard.Theme.portalBtn
+		FrameRenderer.drawFrame(self.bm.mon, bx, by, bx + buttonWidth - 1, by + 4, bColor, bgColor, pTheme.swap, pTheme.chars)
 
 		-- Draw Label AFTER boxes
 		local label = f.key
