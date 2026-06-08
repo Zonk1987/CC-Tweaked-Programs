@@ -205,6 +205,12 @@ return {
 					sizeBytes = 1913,
 					hash = "abb75a1059c25f4ae9a81cdf53cebee9a52c2a0b41a663dcb31859e8a2f54119",
 				},
+				{
+					source = "lib/core/runtime/HotReloader.lua",
+					target = "lib/core/runtime/HotReloader.lua",
+					sizeBytes = 2735,
+					hash = "e7ce98305ca2bf1146f1264cdeb8422bcfd2c0bb975a919f11e7320dbddd3471",
+				},
 			},
 		},
 
