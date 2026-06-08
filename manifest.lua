@@ -104,8 +104,8 @@ return {
 				{
 					source = "lib/core/ui/ButtonGrid.lua",
 					target = "lib/core/ui/ButtonGrid.lua",
-					sizeBytes = 7353,
-					hash = "d3be9bace62323c965a21305258a9a16b60f8249e3cf687f2ab98e82f0c1752c",
+					sizeBytes = 7356,
+					hash = "5e5cdb18e77b264f1b1ea3acbc07a9e488d4b4b8466ef20ebf319db1c5f84bc5",
 				},
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
@@ -184,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 12039,
-					hash = "e2bcd7e92b18627dee9849039f19bb98ac09aca21a7c10ff664d7617a5cc9379",
+					sizeBytes = 12054,
+					hash = "694a82c6cd46d2b2fc76c7ecbb985b1f378e86b174c97af05deb941252038c90",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",
@@ -360,8 +360,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 24480,
-					hash = "9ceab0d360b384731e7518aecc1ef2ec54979dc415383e0037eabd8d15fca31e",
+					sizeBytes = 24495,
+					hash = "1ca79e55e416e9eb495d9418c6efef1507098cdc4cf7048dee0533b693148afa",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
@@ -372,8 +372,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/ui/Dashboard.lua",
 					target = "ui/Dashboard.lua",
-					sizeBytes = 7051,
-					hash = "4e78d7d440922d978114e3e6d72fed8ec8d4d7e320d8f7688d43e57ec0ea69bb",
+					sizeBytes = 6996,
+					hash = "20b9467ebe2e4508e5488b3d0f8957746436eff5bd0cdc12f310fd9fdf558699",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubApp.lua",

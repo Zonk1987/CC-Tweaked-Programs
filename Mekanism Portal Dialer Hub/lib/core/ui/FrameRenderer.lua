@@ -23,8 +23,8 @@ produces a white border on a gray-filled box.
 --]]
 
 -- Localize globals (strict-mode safe)
-local colors  = colors
-local string  = string
+local colors = colors
+local string = string
 
 local FrameRenderer = {}
 
@@ -35,18 +35,17 @@ local FrameRenderer = {}
 --- Character configuration for drawing frames.
 --- These can be adjusted at runtime to use a different character set.
 FrameRenderer.CHARS = {
-	TL      = 151, -- Top-Left corner
-	TR      = 148, -- Top-Right corner
-	BL      = 138, -- Bottom-Left corner
-	BR      = 133, -- Bottom-Right corner
+	TL = 151, -- Top-Left corner
+	TR = 148, -- Top-Right corner
+	BL = 138, -- Bottom-Left corner
+	BR = 133, -- Bottom-Right corner
 	H_OUTER = 140, -- Horizontal outer edge
 	V_OUTER = 149, -- Vertical outer edge
-	H_MID   = 140, -- Horizontal middle line
-	V_MID   = 149, -- Vertical middle line
-	T_LEFT  = 157, -- T-Junction (Left)
-	T_RIGHT = 145 -- T-Junction (Right, drawn inverted)
+	H_MID = 140, -- Horizontal middle line
+	V_MID = 149, -- Vertical middle line
+	T_LEFT = 157, -- T-Junction (Left)
+	T_RIGHT = 145, -- T-Junction (Right, drawn inverted)
 }
-
 
 -- ---------------------------------------------------------------------------
 -- Private helpers
@@ -124,7 +123,9 @@ end
 --- @param innerColor number
 --- @param charOverride number|nil
 function FrameRenderer.drawHorizontalEdge(mon, x1, x2, y, outerColor, innerColor, charOverride)
-	if x2 < x1 then return end
+	if x2 < x1 then
+		return
+	end
 	prepare(mon, x1, y, outerColor, innerColor)
 	mon.write(string.rep(string.char(charOverride or FrameRenderer.CHARS.H_OUTER), x2 - x1 + 1))
 end
@@ -161,7 +162,9 @@ end
 
 --- Draws a horizontal middle line (separator).
 function FrameRenderer.drawHorizontalMid(mon, x1, x2, y, outerColor, innerColor)
-	if x2 < x1 then return end
+	if x2 < x1 then
+		return
+	end
 	prepare(mon, x1, y, outerColor, innerColor)
 	mon.write(string.rep(string.char(FrameRenderer.CHARS.H_MID), x2 - x1 + 1))
 end
@@ -169,7 +172,9 @@ end
 --- Draws a horizontal divider line with T-junctions on both ends.
 --- @param rightAligned boolean|nil If true, the right T-Junction is drawn inverted to match a right-aligned wall.
 function FrameRenderer.drawDivider(mon, x1, x2, y, outerColor, innerColor, rightAligned)
-	if x2 <= x1 + 1 then return end
+	if x2 <= x1 + 1 then
+		return
+	end
 
 	-- Left T-Junction
 	prepare(mon, x1, y, outerColor, innerColor)
@@ -234,7 +239,9 @@ FrameRenderer.drawLeftEdge = FrameRenderer.drawVerticalEdge
 --- @param swap       table|nil  Optional per-element swap flags (see above)
 --- @param chars      table|nil  Optional character overrides: { TL=156, H_OUTER=140, etc. }
 function FrameRenderer.drawFrame(mon, x1, y1, x2, y2, outerColor, innerColor, swap, chars)
-	if x2 < x1 or y2 < y1 then return end
+	if x2 < x1 or y2 < y1 then
+		return
+	end
 	swap = swap or {}
 	chars = chars or {}
 
