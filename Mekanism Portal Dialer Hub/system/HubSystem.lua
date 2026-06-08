@@ -9,7 +9,6 @@ local _ENV = setmetatable({}, {
 local UUIDService = require("UUIDService")
 local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
-local FrameRenderer = require("FrameRenderer")
 local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 
@@ -479,7 +478,7 @@ function HubSystem:drawContent()
 		-- 2. Draw the frame on top using custom logic for accurate texture pack rendering
 		local pTheme = Dashboard.Theme.portalBtn
 		local chars = pTheme.chars or {}
-		
+
 		-- Make unselected borders black so they don't blend into the gray background
 		local borderColor = bColor
 		if not isSelected and not self.isEditMode then
