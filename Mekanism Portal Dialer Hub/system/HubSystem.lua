@@ -478,7 +478,17 @@ function HubSystem:drawContent()
 
 		-- 2. Draw the frame on top using FrameRenderer instead of drawButtonBox
 		local pTheme = Dashboard.Theme.portalBtn
-		FrameRenderer.drawFrame(self.bm.mon, bx, by, bx + buttonWidth - 1, by + 4, bColor, bgColor, pTheme.swap, pTheme.chars)
+		FrameRenderer.drawFrame(
+			self.bm.mon,
+			bx,
+			by,
+			bx + buttonWidth - 1,
+			by + 4,
+			bColor,
+			bgColor,
+			pTheme.swap,
+			pTheme.chars
+		)
 
 		-- Draw Label AFTER boxes
 		local label = f.key
