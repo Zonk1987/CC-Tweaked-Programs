@@ -208,8 +208,8 @@ return {
 				{
 					source = "lib/core/runtime/HotReloader.lua",
 					target = "lib/core/runtime/HotReloader.lua",
-					sizeBytes = 2735,
-					hash = "e7ce98305ca2bf1146f1264cdeb8422bcfd2c0bb975a919f11e7320dbddd3471",
+					sizeBytes = 2958,
+					hash = "978a6cddd9c83b871814f988edc9fc79e283502e771850ec7832f0daef1c21cb",
 				},
 			},
 		},
@@ -372,8 +372,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 24834,
-					hash = "60db0307fbd7d2fb1bc1a3292e518670b33b8db45a9ac8f02a02a612618bb684",
+					sizeBytes = 24299,
+					hash = "48529dfe2b09935e289d151a20d7d872c51179643f50cd3d05a590a05bb042dc",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
