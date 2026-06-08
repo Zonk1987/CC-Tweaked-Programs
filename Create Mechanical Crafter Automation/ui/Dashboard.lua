@@ -78,7 +78,7 @@ local function drawHeader()
 	term.setTextColor(colors.cyan)
 	print(string.rep("=", w))
 	term.setTextColor(colors.yellow)
-	local title = "Create Crafter System v1.0.145-main"
+	local title = "Create Crafter System v1.0.146-main"
 	local pad = math.max(0, math.floor((w - #title) / 2))
 	print(string.rep(" ", pad) .. title)
 	term.setTextColor(colors.cyan)
