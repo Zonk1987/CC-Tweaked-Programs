@@ -11,7 +11,6 @@ local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
 local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
-local FrameRenderer = require("FrameRenderer")
 
 -- Localize globals
 local colors = colors
