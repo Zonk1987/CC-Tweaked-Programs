@@ -108,6 +108,12 @@ return {
 					hash = "5e5cdb18e77b264f1b1ea3acbc07a9e488d4b4b8466ef20ebf319db1c5f84bc5",
 				},
 				{
+					source = "lib/core/ui/FrameRenderer.lua",
+					target = "lib/core/ui/FrameRenderer.lua",
+					sizeBytes = 13897,
+					hash = "6eec3dbf9b4690931384395a2599806472b9b4a59f9fc98119d621f919aa237d",
+				},
+				{
 					source = "lib/core/ui/ConfigGUI.lua",
 					target = "lib/core/ui/ConfigGUI.lua",
 					sizeBytes = 15287,
