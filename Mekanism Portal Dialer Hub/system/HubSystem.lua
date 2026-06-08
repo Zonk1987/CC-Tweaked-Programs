@@ -49,7 +49,7 @@ local keys = keys
 ---@field drawHorizontalLine fun(self: HubButtonGrid, x1: number, x2: number, y: number, color: number)
 ---@field add fun(self: HubButtonGrid, name: string, callback: fun(), x1: number, x2: number, y1: number, y2: number, noLabel?: boolean, invisible?: boolean)
 ---@field setFlash fun(self: HubButtonGrid, key: string)
----@field drawButtonBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, frameColor: number, bgColor: number, chars?: table)
+---@field drawButtonBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
 ---@field drawBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
 ---@field checkClick fun(self: HubButtonGrid, x: number, y: number)
 
@@ -367,24 +367,12 @@ function HubSystem:draw()
 		local prevCol = isPrevFlash and colors.lime or colors.gray
 		local prevBG = isPrevFlash and colors.lime or colors.gray
 
-		-- Manual Fill
+		-- Manual Fill (Inner only)
 		self.bm.mon.setBackgroundColor(prevBG)
-		for row = navY, h - 1 do
-			self.bm.mon.setCursorPos(3, row)
-			self.bm.mon.write(string.rep(" ", 13))
-		end
+		self.bm.mon.setCursorPos(4, navY + 1)
+		self.bm.mon.write(string.rep(" ", 11))
 
-		FrameRenderer.drawFrame(
-			self.bm.mon,
-			3,
-			navY,
-			15,
-			h - 1,
-			prevCol,
-			colors.black,
-			Dashboard.Theme.smallBtn.swap,
-			Dashboard.Theme.smallBtn.chars
-		)
+		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol)
 		self.bm:add("PREV", function()
 			self.bm:setFlash("PREV")
 			self.currentPage = self.currentPage - 1
@@ -401,24 +389,12 @@ function HubSystem:draw()
 	local refreshCol = isRefreshFlash and colors.lime or colors.gray
 	local refreshBG = isRefreshFlash and colors.lime or colors.gray
 
-	-- Manual Fill
+	-- Manual Fill (Inner only)
 	self.bm.mon.setBackgroundColor(refreshBG)
-	for row = navY, h - 1 do
-		self.bm.mon.setCursorPos(mid - 7, row)
-		self.bm.mon.write(string.rep(" ", 15))
-	end
+	self.bm.mon.setCursorPos(mid - 6, navY + 1)
+	self.bm.mon.write(string.rep(" ", 13))
 
-	FrameRenderer.drawFrame(
-		self.bm.mon,
-		mid - 7,
-		navY,
-		mid + 7,
-		h - 1,
-		refreshCol,
-		colors.black,
-		Dashboard.Theme.smallBtn.swap,
-		Dashboard.Theme.smallBtn.chars
-	)
+	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol)
 	self.bm:add("REFRESH", function()
 		self.bm:setFlash("REFRESH")
 		self:draw()
@@ -433,24 +409,12 @@ function HubSystem:draw()
 		local nextCol = isNextFlash and colors.lime or colors.gray
 		local nextBG = isNextFlash and colors.lime or colors.gray
 
-		-- Manual Fill
+		-- Manual Fill (Inner only)
 		self.bm.mon.setBackgroundColor(nextBG)
-		for row = navY, h - 1 do
-			self.bm.mon.setCursorPos(w - 14, row)
-			self.bm.mon.write(string.rep(" ", 13))
-		end
+		self.bm.mon.setCursorPos(w - 13, navY + 1)
+		self.bm.mon.write(string.rep(" ", 11))
 
-		FrameRenderer.drawFrame(
-			self.bm.mon,
-			w - 14,
-			navY,
-			w - 2,
-			h - 1,
-			nextCol,
-			colors.black,
-			Dashboard.Theme.smallBtn.swap,
-			Dashboard.Theme.smallBtn.chars
-		)
+		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol)
 		self.bm:add("NEXT", function()
 			self.bm:setFlash("NEXT")
 			self.currentPage = self.currentPage + 1
@@ -507,23 +471,13 @@ function HubSystem:drawContent()
 
 		-- 1. Fill the entire button area manually with the background color
 		self.bm.mon.setBackgroundColor(bgColor)
-		for row = by, by + 4 do
-			self.bm.mon.setCursorPos(bx, row)
-			self.bm.mon.write(string.rep(" ", buttonWidth))
+		for row = by + 1, by + 3 do
+			self.bm.mon.setCursorPos(bx + 1, row)
+			self.bm.mon.write(string.rep(" ", buttonWidth - 2))
 		end
 
 		-- 2. Draw the frame on top
-		local portalChars = Dashboard.Theme.portalBtn.chars
-		FrameRenderer.drawButtonFrame(
-			self.bm.mon,
-			bx,
-			by,
-			bx + buttonWidth - 1,
-			by + 4,
-			bColor,
-			colors.black,
-			portalChars
-		)
+		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor)
 
 		-- Draw Label AFTER boxes
 		local label = f.key
