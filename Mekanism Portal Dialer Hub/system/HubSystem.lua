@@ -11,6 +11,7 @@ local Dashboard = require("Dashboard")
 local ConfigStore = require("ConfigStore")
 local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
+local FrameRenderer = require("FrameRenderer")
 
 -- Localize globals
 local colors = colors
@@ -371,7 +372,17 @@ function HubSystem:draw()
 		self.bm.mon.setCursorPos(4, navY + 1)
 		self.bm.mon.write(string.rep(" ", 11))
 
-		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol)
+		FrameRenderer.drawFrame(
+			self.bm.mon,
+			3,
+			navY,
+			15,
+			h - 1,
+			prevCol,
+			colors.black,
+			Dashboard.Theme.smallBtn.swap,
+			Dashboard.Theme.smallBtn.chars
+		)
 		self.bm:add("PREV", function()
 			self.bm:setFlash("PREV")
 			self.currentPage = self.currentPage - 1
@@ -393,7 +404,17 @@ function HubSystem:draw()
 	self.bm.mon.setCursorPos(mid - 6, navY + 1)
 	self.bm.mon.write(string.rep(" ", 13))
 
-	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol)
+	FrameRenderer.drawFrame(
+		self.bm.mon,
+		mid - 7,
+		navY,
+		mid + 7,
+		h - 1,
+		refreshCol,
+		colors.black,
+		Dashboard.Theme.smallBtn.swap,
+		Dashboard.Theme.smallBtn.chars
+	)
 	self.bm:add("REFRESH", function()
 		self.bm:setFlash("REFRESH")
 		self:draw()
@@ -413,7 +434,17 @@ function HubSystem:draw()
 		self.bm.mon.setCursorPos(w - 13, navY + 1)
 		self.bm.mon.write(string.rep(" ", 11))
 
-		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol)
+		FrameRenderer.drawFrame(
+			self.bm.mon,
+			w - 14,
+			navY,
+			w - 2,
+			h - 1,
+			nextCol,
+			colors.black,
+			Dashboard.Theme.smallBtn.swap,
+			Dashboard.Theme.smallBtn.chars
+		)
 		self.bm:add("NEXT", function()
 			self.bm:setFlash("NEXT")
 			self.currentPage = self.currentPage + 1
@@ -476,7 +507,17 @@ function HubSystem:drawContent()
 		end
 
 		-- 2. Draw the frame on top
-		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor)
+		local portalChars = Dashboard.Theme.portalBtn.chars
+		FrameRenderer.drawButtonFrame(
+			self.bm.mon,
+			bx,
+			by,
+			bx + buttonWidth - 1,
+			by + 4,
+			bColor,
+			colors.black,
+			portalChars
+		)
 
 		-- Draw Label AFTER boxes
 		local label = f.key
