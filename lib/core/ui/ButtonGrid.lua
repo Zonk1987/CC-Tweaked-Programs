@@ -1,4 +1,4 @@
---- @diagnostic disable: undefined-global
+---@diagnostic disable: undefined-global, undefined-field, deprecated
 -- ButtonGrid: Generic button and touch interaction for monitors
 -- Governed by AGENTS.md
 
@@ -40,8 +40,8 @@ end
 --- @param xmax number Right boundary
 --- @param ymin number Top boundary
 --- @param ymax number Bottom boundary
---- @param noLabel boolean|nil If true, no label will be drawn
-function ButtonGrid:add(name, func, xmin, xmax, ymin, ymax, noLabel)
+--- @param invisible boolean|nil If true, no button box will be drawn (invisible click zone)
+function ButtonGrid:add(name, func, xmin, xmax, ymin, ymax, noLabel, invisible)
 	local isActive = (name == self.activeKey)
 	-- Insert at the beginning of the list for highest click priority
 	table.insert(self.buttons, 1, {
@@ -53,6 +53,7 @@ function ButtonGrid:add(name, func, xmin, xmax, ymin, ymax, noLabel)
 		ymin = ymin,
 		ymax = ymax,
 		noLabel = noLabel,
+		invisible = invisible,
 	})
 end
 
@@ -96,6 +97,7 @@ end
 
 --- Internal helper to draw a single button
 function ButtonGrid:drawButton(btn)
+	if btn.invisible then return end
 	local isFlash = (btn.name == self.flashKey)
 	local bgColor = (btn.active or isFlash) and self.colorOn or self.colorOff
 	local fgColor = (btn.active or isFlash) and colors.black or colors.white
@@ -148,8 +150,8 @@ function ButtonGrid:drawButtonBox(x1, y1, x2, y2, color)
 	self.mon.setBackgroundColor(colors.black)
 	self.mon.setCursorPos(x1, y1)
 	self.mon.write(string.char(156)) -- TL
-	self.mon.setTextColor(colors.black)
-	self.mon.setBackgroundColor(color)
+	self.mon.setTextColor(color)
+	self.mon.setBackgroundColor(colors.black)
 	self.mon.setCursorPos(x2, y1)
 	self.mon.write(string.char(147)) -- TR (Bridge)
 	self.mon.setTextColor(color)

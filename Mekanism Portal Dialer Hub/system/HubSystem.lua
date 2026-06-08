@@ -32,21 +32,25 @@ local keys = keys
 ---@field save fun(self: ConfigStore)
 ---@field load fun(self: ConfigStore)
 
----@class ButtonGrid
----@field mon table
----@field activeKey string|nil
----@field flashKey string|nil
----@field colorOn number
----@field buttons table
----@field setActive fun(self: ButtonGrid, key: string|nil)
----@field resetButtons fun(self: ButtonGrid)
----@field drawFineBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
----@field drawHorizontalLine fun(self: ButtonGrid, x1: number, x2: number, y: number, color: number)
----@field add fun(self: ButtonGrid, name: string, callback: fun(), x1: number, x2: number, y1: number, y2: number, drawOnAdd?: boolean)
----@field setFlash fun(self: ButtonGrid, key: string)
----@field drawButtonBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, frameColor: number, bgColor: number)
----@field drawBox fun(self: ButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
----@field checkClick fun(self: ButtonGrid, x: number, y: number)
+---@class Dashboard
+---@field drawOverlayFrame fun(bm: table, x1: number, y1: number, x2: number, y2: number, swap: table|nil, chars: table|nil)
+---@field drawAppFrame fun(bm: table, w: number, h: number, title: string, frameColor: number)
+
+---@class HubButtonGrid
+---@field mon table Peripheral monitor object
+---@field buttons table<string, table> Registered buttons
+---@field colorOn number Color for active state
+---@field activeKey string|nil Persistent selection
+---@field flashKey string|nil Temporary highlight
+---@field setActive fun(self: HubButtonGrid, key: string|nil)
+---@field resetButtons fun(self: HubButtonGrid)
+---@field drawFineBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
+---@field drawHorizontalLine fun(self: HubButtonGrid, x1: number, x2: number, y: number, color: number)
+---@field add fun(self: HubButtonGrid, name: string, callback: fun(), x1: number, x2: number, y1: number, y2: number, noLabel?: boolean, invisible?: boolean)
+---@field setFlash fun(self: HubButtonGrid, key: string)
+---@field drawButtonBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, frameColor: number, bgColor: number, chars?: table)
+---@field drawBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
+---@field checkClick fun(self: HubButtonGrid, x: number, y: number)
 
 ---@class PortalConfig
 ---@field monitorSide string
@@ -60,9 +64,12 @@ local keys = keys
 
 ---@class Logger
 
+---@class UUIDService
+---@field resolve fun(self: UUIDService, uuid: string): string
+
 ---@class HubSystem
 ---@field tp table The teleporter peripheral
----@field bm ButtonGrid The button manager instance
+---@field bm HubButtonGrid The button manager instance
 ---@field configStore ConfigStore System configuration
 ---@field colorStore ConfigStore Color configuration
 ---@field frequencies table List of available frequencies
@@ -327,32 +334,24 @@ function HubSystem:draw()
 	self.buffer.clear()
 
 	local frameColor = self.isEditMode and colors.orange or colors.cyan
-	self.bm:drawFineBox(1, 1, w, h, frameColor)
-
-	self.bm.mon.setTextColor(colors.white)
 	local title = self.isEditMode and " EDIT MODE ACTIVE " or " MEKANISM PORTAL NETWORK "
-	self.bm.mon.setCursorPos(math.floor((w - #title) / 2) + 1, 2)
-	self.bm.mon.write(title)
-	self.bm:drawHorizontalLine(2, w - 1, 3, frameColor)
-	self.bm.mon.setCursorPos(1, 3)
-	self.bm.mon.write(string.char(157))
+	
+	Dashboard.drawAppFrame(self.bm, w, h, title, frameColor, { BL = true, BR = true, TR = true },
+		{ TR = 148, BR = 133, TL = 156, BL = 141 })
 
 	local editX = w - 2
 	self.bm:add("TOGGLE_EDIT", function()
 		self.isEditMode = not self.isEditMode
 		self:draw()
 		os_sleep(0.5)
-	end, editX - 1, w, 1, 3, true)
+	end, editX - 1, w, 1, 3, true, true)
 
 	self.bm.mon.setCursorPos(editX, 2)
-	self.bm.mon.setTextColor(self.isEditMode and colors.orange or colors.white)
+	self.bm.mon.setTextColor(frameColor)
 	self.bm.mon.write(string.char(164))
 
 	self:drawStatus(true)
 	self.bm.mon.setBackgroundColor(colors.black)
-	self.bm:drawHorizontalLine(2, w - 1, h - 4, frameColor)
-	self.bm.mon.setCursorPos(1, h - 4)
-	self.bm.mon.write(string.char(157))
 
 	local navY = h - 3
 	if self.currentPage > 1 then
@@ -367,7 +366,7 @@ function HubSystem:draw()
 			self.bm.mon.write(string.rep(" ", 13))
 		end
 
-		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol, prevBG)
+		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol, colors.black)
 		self.bm:add("PREV", function()
 			self.bm:setFlash("PREV")
 			self.currentPage = self.currentPage - 1
@@ -391,7 +390,7 @@ function HubSystem:draw()
 		self.bm.mon.write(string.rep(" ", 15))
 	end
 
-	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol, refreshBG)
+	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol, colors.black)
 	self.bm:add("REFRESH", function()
 		self.bm:setFlash("REFRESH")
 		self:draw()
@@ -413,7 +412,7 @@ function HubSystem:draw()
 			self.bm.mon.write(string.rep(" ", 13))
 		end
 
-		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol, nextBG)
+		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol, colors.black)
 		self.bm:add("NEXT", function()
 			self.bm:setFlash("NEXT")
 			self.currentPage = self.currentPage + 1
@@ -476,7 +475,8 @@ function HubSystem:drawContent()
 		end
 
 		-- 2. Draw the frame on top
-		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor, bgColor)
+		local portalChars = Dashboard.Theme.portalBtn.chars
+		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor, colors.black, portalChars)
 
 		-- Draw Label AFTER boxes
 		local label = f.key
@@ -563,7 +563,7 @@ function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
 
 	self.bm:resetButtons()
 	-- Overlay Shield still on main buffer to block background clicks
-	self.bm:add("OVERLAY_SHIELD", function() end, 1, w, 1, h, true)
+	self.bm:add("OVERLAY_SHIELD", function() end, 1, w, 1, h, true, true)
 
 	-- Draw frame (coordinates now relative to 'win', so 1,1 to boxW, boxH)
 	Dashboard.drawOverlayFrame(self.bm, 1, 1, boxW, boxH)
@@ -630,6 +630,9 @@ function HubSystem:drawColorOverlay(portalName, offsetX, offsetY, isRedraw)
 	win.write(" BACK ")
 
 	self.bm.mon = oldMon -- Restore main monitor for safety
+	if self.buffer and type(self.buffer.setVisible) == "function" then
+		self.buffer.setVisible(true)
+	end
 end
 
 --- Draws the status display (target frequency and system state)
@@ -662,7 +665,8 @@ function HubSystem:drawStatus(force)
 
 	-- Draw Frame around status (Kept safe from edges)
 	local w = self.bm.mon.getSize()
-	Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 3, 8)
+	-- The status box gets special treatment: it uses the top-aligned line (131) and swaps the bottom edge (using inverted 143 to get the bottom line)
+	Dashboard.drawOverlayFrame(self.bm, 3, 5, w - 3, 8, { bottom = true, right = true }, { H_TOP = 131, H_BOT = 143 })
 
 	-- Explicitly fill the ENTIRE interior with gray
 	self.bm:drawBox(4, 6, w - 4, 7, colors.gray)
@@ -694,9 +698,8 @@ function HubSystem:drawStatus(force)
 	if not isOverlayOpen then
 		self:drawContent()
 	end
-	if self.buffer then
-		self.buffer.setVisible(true)
-	end
+	-- NOTE: setVisible is handled by draw() after all layers are complete.
+	-- Calling it here early caused a partial-render blink (white/blue flicker).
 end
 
 --- Main runtime loop

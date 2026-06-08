@@ -496,3 +496,11 @@ A task is complete only when:
 - Errors are handled or clearly surfaced.
 - Documentation is updated when user-facing behavior changes.
 - Validation was run or limitations were clearly stated.
+
+---
+
+## UI Theme / Style Rules
+
+- **NEVER** modify the `Dashboard.Theme` configurations in `ui/Dashboard.lua` (or any related UI visual layout files such as `FrameRenderer.lua` and `VirtualCanvas.lua`) unless explicitly requested by the user.
+- **NEVER** change the character mappings (`chars`, e.g., `H_TOP`, `H_BOT`, `TL`, `TR`, `BL`, `BR`) or swap configurations (`swap`) or color selections that have been carefully calibrated by the user.
+- These visual layout settings and custom character/border alignments are fully customized by the user and must be treated as **FROZEN** during any functional refactoring or new feature additions.

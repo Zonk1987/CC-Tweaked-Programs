@@ -104,8 +104,8 @@ return {
 				{
 					source = "lib/core/ui/ButtonGrid.lua",
 					target = "lib/core/ui/ButtonGrid.lua",
-					sizeBytes = 7225,
-					hash = "4db07bde8e4da2b2ed86dcd00d0154755d3a974f0829391b2ee342cd91c0a788",
+					sizeBytes = 7353,
+					hash = "d3be9bace62323c965a21305258a9a16b60f8249e3cf687f2ab98e82f0c1752c",
 				},
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
@@ -184,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 11336,
-					hash = "153f75b6fd2abe62293010f4fb9593f974172d2adbdbdb55cf18d8e889e645db",
+					sizeBytes = 12039,
+					hash = "e2bcd7e92b18627dee9849039f19bb98ac09aca21a7c10ff664d7617a5cc9379",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",
@@ -354,14 +354,14 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/startup.lua",
 					target = "startup.lua",
-					sizeBytes = 1541,
-					hash = "c658721bac4b3835054a84dffe534af2e7d1567122233fe9f927fbd86f5850c0",
+					sizeBytes = 1715,
+					hash = "0f6a86d1f556e611b2bc03c993643c42234ec78c879dd12400c67ed64198a102",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 23778,
-					hash = "5a855c5a39ecf3c66dfc87b47abf55f6a0c5125ae3f7252b92d094144217e0d3",
+					sizeBytes = 24481,
+					hash = "c473e00331fd86f00a649207146cbc71db79cf099e1ad7a976d7614297e94606",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
@@ -372,14 +372,14 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/ui/Dashboard.lua",
 					target = "ui/Dashboard.lua",
-					sizeBytes = 4088,
-					hash = "e8eff4829d361c3932805a98259cdd457ac243619dced016305c6815016d667e",
+					sizeBytes = 7053,
+					hash = "ec75a65c1a540489cdff81d05d27507b95d8e4e37a76ed4673ee77ee52bebcbe",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubApp.lua",
 					target = "system/HubApp.lua",
-					sizeBytes = 8662,
-					hash = "da7bb6ceb70b3de1460c61418b3df5f368e02df71c6f3004827127686b757528",
+					sizeBytes = 9592,
+					hash = "72a9f530042f3f880822ddbde6d3ea607e34bd13c55af3b6d278706dac9e554f",
 				},
 			},
 		},

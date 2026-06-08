@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global, undefined-field, deprecated
 --[[
 ================================================================================
 AppRuntime Module v1.0.0
@@ -320,8 +321,8 @@ function AppRuntime.run(appClass, options, ...)
 						local reconnected = false
 						while not reconnected and scheduler.running do
 							Scheduler.sleep(2)
-							-- Refresh HAL scan
-							HAL.scan()
+							-- Refresh HAL scan (not needed for CC:Tweaked)
+							if HAL.scan then HAL.scan() end
 							if pName and HAL.wrap(pName) then
 								reconnected = true
 								logger:info(
@@ -343,6 +344,12 @@ function AppRuntime.run(appClass, options, ...)
 		scheduler = scheduler,
 	})
 
+	-- Hot-Reload Background Fiber
+	if options.hotReload then
+		local dirs = type(options.hotReload) == "table" and options.hotReload or { shell.dir(), "/lib" }
+		require("HotReloader").startWatcher(dirs, scheduler, logger)
+	end
+
 	scheduler:spawn(function()
 		local ok, err = pcall(function()
 			appInstance:run()
@@ -360,7 +367,16 @@ function AppRuntime.run(appClass, options, ...)
 	end, "App-Main")
 
 	-- 9. Start Scheduler event loop
+	local rebootRequested = false
+	local rebootListener = EventBus:on("APP_REBOOT_REQUESTED", function(changedFile)
+		logger:info("AppRuntime: Reboot requested due to change in " .. tostring(changedFile))
+		rebootRequested = true
+		scheduler:stop()
+	end)
+
 	scheduler:run()
+
+	EventBus:off("APP_REBOOT_REQUESTED", rebootListener)
 
 	-- Geordnetes Beenden
 	if appInstance.shutdown then
@@ -369,6 +385,10 @@ function AppRuntime.run(appClass, options, ...)
 		end)
 	end
 	logger:info(tostring(options.title) .. " geordnet beendet.")
+
+	if rebootRequested then
+		return "reboot"
+	end
 end
 
 return AppRuntime

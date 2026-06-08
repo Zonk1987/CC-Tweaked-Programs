@@ -16,6 +16,12 @@ local HubSystem = require("HubSystem")
 local ButtonGrid = require("ButtonGrid")
 local RednetProtocol = require("RednetProtocol")
 
+---@diagnostic disable: undefined-global
+local colors = colors
+local term = term
+local keys = keys
+---@diagnostic enable: undefined-global
+
 -- ============================================================================
 -- Private Helper: CanvasWrapper
 -- ============================================================================
@@ -23,61 +29,81 @@ local RednetProtocol = require("RednetProtocol")
 -- This allows existing components (ButtonGrid, Dashboard) to draw seamlessly
 -- onto the double-buffered VirtualCanvas without code modifications.
 local CanvasWrapper = {}
-CanvasWrapper.__index = CanvasWrapper
 
 function CanvasWrapper.new(virtualCanvas, physicalDevice)
-	local self = setmetatable({}, CanvasWrapper)
-	self.canvas = virtualCanvas
-	self.physical = physicalDevice
-	self.curX = 1
-	self.curY = 1
-	self.fg = colors.white
-	self.bg = colors.black
+	local self = {
+		canvas = virtualCanvas,
+		physical = physicalDevice,
+		native = physicalDevice,
+		curX = 1,
+		curY = 1,
+		fg = colors.white,
+		bg = colors.black,
+	}
+
+	self.getSize = function()
+		return self.canvas.width, self.canvas.height
+	end
+
+	self.clear = function()
+		self.canvas:clear(self.bg)
+	end
+
+	self.setBackgroundColor = function(color)
+		self.bg = color
+	end
+
+	self.setTextColor = function(color)
+		self.fg = color
+	end
+
+	self.setCursorPos = function(x, y)
+		self.curX = x
+		self.curY = y
+	end
+
+	self.write = function(text)
+		self.canvas:write(self.curX, self.curY, text, self.fg, self.bg)
+		self.curX = self.curX + #text
+	end
+
+	self.blit = function(text, fgColors, bgColors)
+		for i = 1, #text do
+			local char = text:sub(i, i)
+			local fgCol = 2 ^ tonumber(fgColors:sub(i, i), 16)
+			local bgCol = 2 ^ tonumber(bgColors:sub(i, i), 16)
+			self.canvas:write(self.curX + i - 1, self.curY, char, fgCol, bgCol)
+		end
+		self.curX = self.curX + #text
+	end
+
+	self.clearLine = function()
+		self.canvas:drawBox(1, self.curY, self.canvas.width, 1, self.bg)
+	end
+
+	self.setTextScale = function(scale)
+		if self.physical and type(self.physical.setTextScale) == "function" then
+			self.physical.setTextScale(scale)
+			local w, h = self.physical.getSize()
+			self.canvas:setSize(w, h)
+		end
+	end
+
+	self.flush = function()
+		self.canvas:flush(self.physical)
+	end
+
+	self.setVisible = function(visible)
+		if visible then
+			self.flush()
+		end
+	end
+
+	if physicalDevice then
+		setmetatable(self, { __index = physicalDevice })
+	end
+
 	return self
-end
-
-function CanvasWrapper:getSize()
-	return self.canvas.width, self.canvas.height
-end
-
-function CanvasWrapper:clear()
-	self.canvas:clear(self.bg)
-end
-
-function CanvasWrapper:setBackgroundColor(color)
-	self.bg = color
-end
-
-function CanvasWrapper:setTextColor(color)
-	self.fg = color
-end
-
-function CanvasWrapper:setCursorPos(x, y)
-	self.curX = x
-	self.curY = y
-end
-
-function CanvasWrapper:write(text)
-	self.canvas:write(self.curX, self.curY, text, self.fg, self.bg)
-	self.curX = self.curX + #text
-end
-
-function CanvasWrapper:setTextScale(scale)
-	if self.physical and type(self.physical.setTextScale) == "function" then
-		self.physical.setTextScale(scale)
-		local w, h = self.physical.getSize()
-		self.canvas:setSize(w, h)
-	end
-end
-
-function CanvasWrapper:setVisible(visible)
-	if visible then
-		self:flush()
-	end
-end
-
-function CanvasWrapper:flush()
-	self.canvas:flush(self.physical)
 end
 
 -- ============================================================================
@@ -165,9 +191,13 @@ function HubApp:initMonitor()
 		return
 	end
 
+	-- Manually clear the physical monitor to black to match the VirtualCanvas's default state
+	monitor.setBackgroundColor(colors.black)
+	monitor.clear()
+
 	local canvas = VirtualCanvas.new(monitor)
 	local canvasWrapper = CanvasWrapper.new(canvas, monitor)
-	canvasWrapper:setTextScale(0.5)
+	canvasWrapper.setTextScale(0.5)
 
 	self.canvasWrapper = canvasWrapper
 
@@ -194,13 +224,15 @@ function HubApp:run()
 	local bm = ButtonGrid.new(monitorName)
 	bm.mon = self.canvasWrapper
 
+	local tpName = self.config:get("hub_teleporter", "bottom")
+
 	-- 4. Instantiation of HubSystem
 	self.system = HubSystem.new({
 		bm = bm,
-		tpSide = "hub_teleporter",
+		tpSide = tpName,
 		config = {
 			monitorSide = monitorName,
-			tpSide = "hub_teleporter",
+			tpSide = tpName,
 			gridColumns = self.config:get("gridColumns", 4),
 			gridRows = self.config:get("gridRows", 4),
 			recallChannel = self.config:get("recallChannel", 99),
@@ -211,6 +243,9 @@ function HubApp:run()
 
 	-- Assign the canvas wrapper as nativeMon to HubSystem for double-buffering flushes
 	self.system.nativeMon = self.canvasWrapper
+
+	-- Set the modem side so the terminal UI knows we finished searching
+	self.system.modemSide = openSide or "None"
 
 	-- 5. Render initial UI
 	self.system:drawTerminalHeader()
@@ -223,6 +258,7 @@ function HubApp:run()
 		while self.running do
 			local _, touchedSide, x, y = Scheduler.waitEvent("monitor_touch")
 			if self.running and touchedSide == self.monitorName and not self.monitorLost then
+				self.logger:debug("Touch received: x=%d, y=%d", x, y)
 				if self.system.isMovingOverlay then
 					self.system.isMovingOverlay = false
 					if self.system.activeOverlay then
