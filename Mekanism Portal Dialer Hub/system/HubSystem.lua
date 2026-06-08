@@ -12,7 +12,6 @@ local ConfigStore = require("ConfigStore")
 local HAL = require("HAL")
 local RednetProtocol = require("RednetProtocol")
 
-
 -- Localize globals
 local colors = colors
 local term = term
