@@ -48,7 +48,7 @@ local keys = keys
 ---@field drawHorizontalLine fun(self: HubButtonGrid, x1: number, x2: number, y: number, color: number)
 ---@field add fun(self: HubButtonGrid, name: string, callback: fun(), x1: number, x2: number, y1: number, y2: number, noLabel?: boolean, invisible?: boolean)
 ---@field setFlash fun(self: HubButtonGrid, key: string)
----@field drawButtonBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
+---@field drawButtonBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, frameColor: number, bgColor: number, chars?: table)
 ---@field drawBox fun(self: HubButtonGrid, x1: number, y1: number, x2: number, y2: number, color: number)
 ---@field checkClick fun(self: HubButtonGrid, x: number, y: number)
 
@@ -195,7 +195,7 @@ function HubSystem:drawTerminalHeader()
 	term.clear()
 	term.setCursorPos(1, 1)
 	term.setTextColor(colors.cyan)
-	print("Mekanism Portal Hub v1.0.159-main")
+	print("Mekanism Portal Hub v1.0.136-main")
 	term.setTextColor(colors.gray)
 	local w, _ = term.getSize()
 	print(string.rep("-", w))
@@ -335,16 +335,9 @@ function HubSystem:draw()
 
 	local frameColor = self.isEditMode and colors.orange or colors.cyan
 	local title = self.isEditMode and " EDIT MODE ACTIVE " or " MEKANISM PORTAL NETWORK "
-
-	Dashboard.drawAppFrame(
-		self.bm,
-		w,
-		h,
-		title,
-		frameColor,
-		{ BL = true, BR = true, TR = true },
-		{ TR = 148, BR = 133, TL = 156, BL = 141 }
-	)
+	
+	Dashboard.drawAppFrame(self.bm, w, h, title, frameColor, { BL = true, BR = true, TR = true },
+		{ TR = 148, BR = 133, TL = 156, BL = 141 })
 
 	local editX = w - 2
 	self.bm:add("TOGGLE_EDIT", function()
@@ -366,12 +359,14 @@ function HubSystem:draw()
 		local prevCol = isPrevFlash and colors.lime or colors.gray
 		local prevBG = isPrevFlash and colors.lime or colors.gray
 
-		-- Manual Fill (Inner only)
+		-- Manual Fill
 		self.bm.mon.setBackgroundColor(prevBG)
-		self.bm.mon.setCursorPos(4, navY + 1)
-		self.bm.mon.write(string.rep(" ", 11))
+		for row = navY, h - 1 do
+			self.bm.mon.setCursorPos(3, row)
+			self.bm.mon.write(string.rep(" ", 13))
+		end
 
-		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol)
+		self.bm:drawButtonBox(3, navY, 15, h - 1, prevCol, colors.black)
 		self.bm:add("PREV", function()
 			self.bm:setFlash("PREV")
 			self.currentPage = self.currentPage - 1
@@ -388,12 +383,14 @@ function HubSystem:draw()
 	local refreshCol = isRefreshFlash and colors.lime or colors.gray
 	local refreshBG = isRefreshFlash and colors.lime or colors.gray
 
-	-- Manual Fill (Inner only)
+	-- Manual Fill
 	self.bm.mon.setBackgroundColor(refreshBG)
-	self.bm.mon.setCursorPos(mid - 6, navY + 1)
-	self.bm.mon.write(string.rep(" ", 13))
+	for row = navY, h - 1 do
+		self.bm.mon.setCursorPos(mid - 7, row)
+		self.bm.mon.write(string.rep(" ", 15))
+	end
 
-	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol)
+	self.bm:drawButtonBox(mid - 7, navY, mid + 7, h - 1, refreshCol, colors.black)
 	self.bm:add("REFRESH", function()
 		self.bm:setFlash("REFRESH")
 		self:draw()
@@ -408,12 +405,14 @@ function HubSystem:draw()
 		local nextCol = isNextFlash and colors.lime or colors.gray
 		local nextBG = isNextFlash and colors.lime or colors.gray
 
-		-- Manual Fill (Inner only)
+		-- Manual Fill
 		self.bm.mon.setBackgroundColor(nextBG)
-		self.bm.mon.setCursorPos(w - 13, navY + 1)
-		self.bm.mon.write(string.rep(" ", 11))
+		for row = navY, h - 1 do
+			self.bm.mon.setCursorPos(w - 14, row)
+			self.bm.mon.write(string.rep(" ", 13))
+		end
 
-		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol)
+		self.bm:drawButtonBox(w - 14, navY, w - 2, h - 1, nextCol, colors.black)
 		self.bm:add("NEXT", function()
 			self.bm:setFlash("NEXT")
 			self.currentPage = self.currentPage + 1
@@ -470,59 +469,14 @@ function HubSystem:drawContent()
 
 		-- 1. Fill the entire button area manually with the background color
 		self.bm.mon.setBackgroundColor(bgColor)
-		for row = by + 1, by + 3 do
-			self.bm.mon.setCursorPos(bx + 1, row)
-			self.bm.mon.write(string.rep(" ", buttonWidth - 2))
+		for row = by, by + 4 do
+			self.bm.mon.setCursorPos(bx, row)
+			self.bm.mon.write(string.rep(" ", buttonWidth))
 		end
 
-		-- 2. Draw the frame on top using custom logic for accurate texture pack rendering
-		local pTheme = Dashboard.Theme.portalBtn
-		local chars = pTheme.chars or {}
-
-		-- Make unselected borders black so they don't blend into the gray background
-		local borderColor = bColor
-		if not isSelected and not self.isEditMode then
-			borderColor = colors.black
-		end
-
-		local mon = self.bm.mon
-		mon.setTextColor(borderColor)
-		mon.setBackgroundColor(bgColor)
-
-		-- Corners (No swaps, exact texture pack mapping)
-		mon.setCursorPos(bx, by)
-		mon.write(string.char(chars.TL or 156))
-		mon.setCursorPos(bx + buttonWidth - 1, by)
-		mon.write(string.char(chars.TR or 147))
-		mon.setCursorPos(bx, by + 4)
-		mon.write(string.char(chars.BL or 141))
-		mon.setCursorPos(bx + buttonWidth - 1, by + 4)
-		mon.write(string.char(chars.BR or 142))
-
-		-- Horizontal edges
-		local hTop = string.rep(string.char(chars.H_TOP or 140), buttonWidth - 2)
-		local hBot = string.rep(string.char(chars.H_BOT or 140), buttonWidth - 2)
-		mon.setCursorPos(bx + 1, by)
-		mon.write(hTop)
-		mon.setCursorPos(bx + 1, by + 4)
-		mon.write(hBot)
-
-		-- Vertical edges
-		local vLeft = string.char(chars.V_LEFT or 149)
-		local vRight = string.char(chars.V_RIGHT or 149)
-		for row = by + 1, by + 3 do
-			-- Left edge
-			mon.setTextColor(borderColor)
-			mon.setBackgroundColor(bgColor)
-			mon.setCursorPos(bx, row)
-			mon.write(vLeft)
-
-			-- Right edge (Swap required since CC:Tweaked only provides left-half blocks)
-			mon.setTextColor(bgColor)
-			mon.setBackgroundColor(borderColor)
-			mon.setCursorPos(bx + buttonWidth - 1, row)
-			mon.write(vRight)
-		end
+		-- 2. Draw the frame on top
+		local portalChars = Dashboard.Theme.portalBtn.chars
+		self.bm:drawButtonBox(bx, by, bx + buttonWidth - 1, by + 4, bColor, colors.black, portalChars)
 
 		-- Draw Label AFTER boxes
 		local label = f.key

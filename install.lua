@@ -14,7 +14,7 @@ local BRANCH = "main"
 local REPO_URL = "https://raw.githubusercontent.com/" .. OWNER .. "/" .. REPO .. "/" .. BRANCH .. "/"
 
 local MANIFEST_NAME = "manifest.lua"
-local INSTALLER_VERSION = "1.1.4"
+local INSTALLER_VERSION = "1.1.3"
 
 local args = { ... }
 
@@ -41,15 +41,8 @@ local function downloadFile(url, path)
 	if not file then
 		return false, "Could not open file for writing"
 	end
-	local ok, writeErr = pcall(function()
-		file.write(content)
-	end)
+	file.write(content)
 	file.close()
-
-	if not ok then
-		fs.delete(path)
-		return false, "Write failed (Out of space?): " .. tostring(writeErr)
-	end
 	return true
 end
 
@@ -545,13 +538,16 @@ local function install(packageId, manifest, isDryRun, isForce)
 						term.setTextColor(colors.lime)
 						print("OK")
 						term.setTextColor(colors.white)
-						backups[target] = { action = "restore" }
 					else
-						-- Delete original file first to free up space (prevents hitting 1MB disk limit)
-						-- Unmodified files don't need local backups, they can be re-downloaded if needed
-						fs.delete(target)
-						backups[target] = { action = "delete" }
+						-- Silent backup for transaction rollback
+						if fs.exists(backupPath) then
+							fs.delete(backupPath)
+						end
+						fs.copy(target, backupPath)
 					end
+					backups[target] = { action = "restore" }
+				else
+					backups[target] = { action = "delete" }
 				end
 
 				write(string.format("  [%d/%d] Downloading %s... ", current, total, target))

@@ -24,17 +24,17 @@ local Dashboard = {}
 Dashboard.Theme = {
 	overlay = {
 		swap = { bottom = true, right = true },
-		chars = { H_TOP = 131, H_BOT = 143 },
+		chars = { H_TOP = 131, H_BOT = 143 }
 	},
 	swatch = {
 		swap = { right = true, BR = true, BL = true },
 		chars = { TR = 147, TL = 156, BL = 141, BR = 142 },
 		outerColor = colors.lightGray,
-		innerColor = colors.gray,
+		innerColor = colors.gray
 	},
 	smallBtn = {
 		swap = { TL = true, BL = true },
-		chars = { TL = 152, TR = 144, BL = 137, H_TOP = 140, H_BOT = 140 },
+		chars = { TL = 152, TR = 144, BL = 137, H_TOP = 140, H_BOT = 140 }
 	},
 	portalBtn = {
 		chars = {
@@ -45,9 +45,9 @@ Dashboard.Theme = {
 			TL = 156,
 			TR = 147,
 			BL = 141,
-			BR = 142,
-		},
-	},
+			BR = 142
+		}
+	}
 }
 
 --- Draws a fancy window frame for overlays.
@@ -107,14 +107,14 @@ end
 --- @param chars  table|nil Optional character overrides
 --- @param swap   table|nil Optional swap overrides
 function Dashboard.drawSmallButtonFrame(bm, x1, y1, x2, y2, chars, swap)
-	local frameColor = colors.black
-	local buttonBG = colors.gray
-	chars = chars or Dashboard.Theme.smallBtn.chars
-	swap = swap or Dashboard.Theme.smallBtn.swap
+	local frameColor       = colors.black
+	local buttonBG         = colors.gray
+	chars                  = chars or Dashboard.Theme.smallBtn.chars
+	swap                   = swap or Dashboard.Theme.smallBtn.swap
 	local char_TL, char_TR = chars.TL or 151, chars.TR or 148
 	local char_BL, char_BR = chars.BL or 130, chars.BR or 129
-	local char_H_TOP = chars.H_TOP or chars.H or 140
-	local char_H_BOT = chars.H_BOT or chars.H or 140
+	local char_H_TOP       = chars.H_TOP or chars.H or 140
+	local char_H_BOT       = chars.H_BOT or chars.H or 140
 
 	bm:drawBox(x1, y1, x2, y2, buttonBG)
 
@@ -177,11 +177,11 @@ function Dashboard.drawAppFrame(bm, w, h, title, frameColor, swap, chars)
 	-- 2. Draw Title
 	bm.mon.setTextColor(colors.white)
 	bm.mon.setBackgroundColor(colors.black)
-
+	
 	-- Force clean spaces and wipe an extra cell on both sides to clear any graphical artifacts
 	local cleanTitle = " " .. title:match("^%s*(.-)%s*$") .. " "
 	local startX = math.floor((w - #cleanTitle) / 2) + 1
-
+	
 	bm.mon.setCursorPos(startX - 1, 2)
 	bm.mon.write(" " .. cleanTitle .. " ")
 

@@ -97,9 +97,7 @@ end
 
 --- Internal helper to draw a single button
 function ButtonGrid:drawButton(btn)
-	if btn.invisible then
-		return
-	end
+	if btn.invisible then return end
 	local isFlash = (btn.name == self.flashKey)
 	local bgColor = (btn.active or isFlash) and self.colorOn or self.colorOff
 	local fgColor = (btn.active or isFlash) and colors.black or colors.white

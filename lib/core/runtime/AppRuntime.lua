@@ -322,9 +322,7 @@ function AppRuntime.run(appClass, options, ...)
 						while not reconnected and scheduler.running do
 							Scheduler.sleep(2)
 							-- Refresh HAL scan (not needed for CC:Tweaked)
-							if HAL.scan then
-								HAL.scan()
-							end
+							if HAL.scan then HAL.scan() end
 							if pName and HAL.wrap(pName) then
 								reconnected = true
 								logger:info(

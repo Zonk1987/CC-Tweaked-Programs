@@ -104,14 +104,8 @@ return {
 				{
 					source = "lib/core/ui/ButtonGrid.lua",
 					target = "lib/core/ui/ButtonGrid.lua",
-					sizeBytes = 7356,
-					hash = "5e5cdb18e77b264f1b1ea3acbc07a9e488d4b4b8466ef20ebf319db1c5f84bc5",
-				},
-				{
-					source = "lib/core/ui/FrameRenderer.lua",
-					target = "lib/core/ui/FrameRenderer.lua",
-					sizeBytes = 13897,
-					hash = "6eec3dbf9b4690931384395a2599806472b9b4a59f9fc98119d621f919aa237d",
+					sizeBytes = 7353,
+					hash = "d3be9bace62323c965a21305258a9a16b60f8249e3cf687f2ab98e82f0c1752c",
 				},
 				{
 					source = "lib/core/ui/ConfigGUI.lua",
@@ -190,8 +184,8 @@ return {
 				{
 					source = "lib/core/runtime/AppRuntime.lua",
 					target = "lib/core/runtime/AppRuntime.lua",
-					sizeBytes = 12054,
-					hash = "694a82c6cd46d2b2fc76c7ecbb985b1f378e86b174c97af05deb941252038c90",
+					sizeBytes = 12039,
+					hash = "e2bcd7e92b18627dee9849039f19bb98ac09aca21a7c10ff664d7617a5cc9379",
 				},
 				{
 					source = "lib/core/runtime/Scheduler.lua",
@@ -204,12 +198,6 @@ return {
 					target = "lib/core/runtime/Fiber.lua",
 					sizeBytes = 1913,
 					hash = "abb75a1059c25f4ae9a81cdf53cebee9a52c2a0b41a663dcb31859e8a2f54119",
-				},
-				{
-					source = "lib/core/runtime/HotReloader.lua",
-					target = "lib/core/runtime/HotReloader.lua",
-					sizeBytes = 2958,
-					hash = "978a6cddd9c83b871814f988edc9fc79e283502e771850ec7832f0daef1c21cb",
 				},
 			},
 		},
@@ -372,8 +360,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubSystem.lua",
 					target = "system/HubSystem.lua",
-					sizeBytes = 25807,
-					hash = "b8be76c429bfc14cd71b068bda063411424134cae9f3722ad242bb46f9cb47c8",
+					sizeBytes = 24481,
+					hash = "c473e00331fd86f00a649207146cbc71db79cf099e1ad7a976d7614297e94606",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/UUIDService.lua",
@@ -384,8 +372,8 @@ return {
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/ui/Dashboard.lua",
 					target = "ui/Dashboard.lua",
-					sizeBytes = 6996,
-					hash = "20b9467ebe2e4508e5488b3d0f8957746436eff5bd0cdc12f310fd9fdf558699",
+					sizeBytes = 7053,
+					hash = "ec75a65c1a540489cdff81d05d27507b95d8e4e37a76ed4673ee77ee52bebcbe",
 				},
 				{
 					source = "Mekanism%20Portal%20Dialer%20Hub/system/HubApp.lua",

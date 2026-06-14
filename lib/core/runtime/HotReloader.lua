@@ -63,43 +63,32 @@ end
 function HotReloader.startWatcher(directories, scheduler, logger)
 	scheduler:spawn(function()
 		local fileTimes = {}
-
+		
 		-- Initial scan
 		local files = collectFiles(directories)
 		for _, file in ipairs(files) do
-			local ok, attr = pcall(fs.attributes, file)
-			if ok and attr then
-				fileTimes[file] = attr.modified
-			end
+			local mtime = fs.attributes(file).modified
+			fileTimes[file] = mtime
 		end
-
+		
 		if logger then
 			logger:info("HotReloader: Watching " .. #files .. " files in " .. #directories .. " directories.")
 		end
 
 		while scheduler.running do
 			Scheduler.sleep(1) -- Check every 1 second
-
+			
 			local changed = false
 			local changedFile = nil
-
+			
 			-- Re-scan to detect changes or newly added files
 			local currentFiles = collectFiles(directories)
 			for _, file in ipairs(currentFiles) do
-				local ok, attr = pcall(fs.attributes, file)
-				if not ok or not attr then
-					if fileTimes[file] then
-						changed = true
-						changedFile = file
-						break
-					end
-				else
-					local mtime = attr.modified
-					if not fileTimes[file] or fileTimes[file] ~= mtime then
-						changed = true
-						changedFile = file
-						break
-					end
+				local mtime = fs.attributes(file).modified
+				if not fileTimes[file] or fileTimes[file] ~= mtime then
+					changed = true
+					changedFile = file
+					break
 				end
 			end
 
