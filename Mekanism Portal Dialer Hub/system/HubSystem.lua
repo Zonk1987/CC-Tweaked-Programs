@@ -336,8 +336,15 @@ function HubSystem:draw()
 	local frameColor = self.isEditMode and colors.orange or colors.cyan
 	local title = self.isEditMode and " EDIT MODE ACTIVE " or " MEKANISM PORTAL NETWORK "
 
-	Dashboard.drawAppFrame(self.bm, w, h, title, frameColor, { BL = true, BR = true, TR = true },
-		{ TR = 148, BR = 133, TL = 156, BL = 141 })
+	Dashboard.drawAppFrame(
+		self.bm,
+		w,
+		h,
+		title,
+		frameColor,
+		{ BL = true, BR = true, TR = true },
+		{ TR = 148, BR = 133, TL = 156, BL = 141 }
+	)
 
 	local editX = w - 2
 	self.bm:add("TOGGLE_EDIT", function()
