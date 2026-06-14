@@ -33,8 +33,11 @@ local keys = keys
 ---@field load fun(self: ConfigStore)
 
 ---@class Dashboard
+---@field Theme table Centralized visual theme configuration
 ---@field drawOverlayFrame fun(bm: table, x1: number, y1: number, x2: number, y2: number, swap: table|nil, chars: table|nil)
----@field drawAppFrame fun(bm: table, w: number, h: number, title: string, frameColor: number)
+---@field drawAppFrame fun(bm: table, w: number, h: number, title: string, frameColor: number, swap: table|nil, chars: table|nil)
+---@field drawColorSwatchFrame fun(bm: table, x1: number, y1: number, x2: number, y2: number, color: number, swap: table|nil, chars: table|nil, frameOuterColor: number|nil, frameInnerColor: number|nil)
+---@field drawSmallButtonFrame fun(bm: table, x1: number, y1: number, x2: number, y2: number, chars: table|nil, swap: table|nil)
 
 ---@class HubButtonGrid
 ---@field mon table Peripheral monitor object
