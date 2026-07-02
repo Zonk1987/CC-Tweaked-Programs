@@ -152,10 +152,14 @@ function ButtonGrid:drawButtonBox(x1, y1, x2, y2, color)
 	self.mon.setBackgroundColor(colors.black)
 	self.mon.setCursorPos(x1, y1)
 	self.mon.write(string.char(156)) -- TL
-	self.mon.setTextColor(color)
-	self.mon.setBackgroundColor(colors.black)
+	-- TR is drawn swapped (fg/bg inverted): char 147's subpixels sit on the top
+	-- row, so unswapped it renders one subpixel too high. Inverting shows the
+	-- complement (middle bar + bottom-right), aligning with the top edge and
+	-- connecting down into the right vertical.
+	self.mon.setTextColor(colors.black)
+	self.mon.setBackgroundColor(color)
 	self.mon.setCursorPos(x2, y1)
-	self.mon.write(string.char(147)) -- TR (Bridge)
+	self.mon.write(string.char(147)) -- TR (Bridge, swapped)
 	self.mon.setTextColor(color)
 	self.mon.setBackgroundColor(colors.black)
 	self.mon.setCursorPos(x1, y2)

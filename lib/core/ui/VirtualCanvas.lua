@@ -153,28 +153,27 @@ function VirtualCanvas:flush(targetDevice)
 				local clusterFg = curCell.fg
 				local clusterBg = curCell.bg
 
-				-- Scan ahead for contiguous cells with the SAME fg and bg colors
+				-- Scan ahead for contiguous cells with the SAME fg and bg colors.
+				-- IMPORTANT: a cell may only join the cluster if its colors match,
+				-- because the whole cluster is drawn with one fg/bg pair. A dirty
+				-- cell with different colors ends this cluster and starts its own
+				-- on the next outer-loop iteration (otherwise it would be painted
+				-- in the wrong colors and the diff buffer would mask it forever).
 				while x <= self.width do
 					local nextCur = self.current[y][x]
 					local nextPrev = self.previous[y][x]
 
-					-- Check if cell is dirty AND matches cluster colors
-					local isDirty = nextCur.char ~= nextPrev.char
-						or nextCur.fg ~= nextPrev.fg
-						or nextCur.bg ~= nextPrev.bg
-					-- We also include matching clean cells if they have the same color, to save draw calls
 					local isSameColor = nextCur.fg == clusterFg and nextCur.bg == clusterBg
-
-					if isDirty or (isSameColor and #clusterText > 0) then
-						table.insert(clusterText, nextCur.char)
-						-- Update previous buffer in-place to keep sync
-						nextPrev.char = nextCur.char
-						nextPrev.fg = nextCur.fg
-						nextPrev.bg = nextCur.bg
-						x = x + 1
-					else
+					if not isSameColor then
 						break
 					end
+
+					table.insert(clusterText, nextCur.char)
+					-- Update previous buffer in-place to keep sync
+					nextPrev.char = nextCur.char
+					nextPrev.fg = nextCur.fg
+					nextPrev.bg = nextCur.bg
+					x = x + 1
 				end
 
 				-- Draw the collected cluster
