@@ -6,7 +6,7 @@ Standardized Hub System for Interdimensional Portals.
 Powered by Enterprise AppRuntime & Fiber Scheduler.
 ================================================================================
 ]]
-
+print("Starting Mekanism Portal Hub v1.0.159-main...")
 -- Configure library paths for lib/core
 local corePaths = {
 	"/lib/core/base/?.lua",
